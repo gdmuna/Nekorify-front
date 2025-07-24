@@ -1,0 +1,21 @@
+{
+	"name": "uni-preset-vue",
+	"version": "0.0.1",
+	"description": "uni-app preset for vue-cli",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "fxy060608",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"download-git-repo": "^1.1.0",
+		"fs-extra": "^9.0.1",
+		"glob": "^7.1.3",
+		"isbinaryfile": "^3.0.3",
+		"ora": "^3.0.0",
+		"rimraf": "^2.6.2",
+		"strip-json-comments": "^2.0.1",
+		"user-home": "^2.0.0"
+	}
+}
