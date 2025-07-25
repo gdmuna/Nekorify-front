@@ -13,6 +13,7 @@
     "@fullcalendar/daygrid": "^6.1.18",
     "@fullcalendar/interaction": "^6.1.18",
     "@tailwindcss/vite": "^4.1.11",
+    "@vueuse/core": "^13.5.0",
     "alova": "^3.3.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

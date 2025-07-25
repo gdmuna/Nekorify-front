@@ -1,6 +1,6 @@
 <template>
     <div>
-        article
+        resourcesHub
     </div>
 </template>
 

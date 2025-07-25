@@ -1,16 +1,16 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import landingPage from '../views/landingPage/index.vue'
 import home from '../views/home/index.vue'
-import article from '../views/article/index.vue'
-import resource from '../views/resource/index.vue'
+import articles from '../views/articles/index.vue'
+import resourcesHub from '../views/resourcesHub/index.vue'
 
 
 
 const routes = [
   { path: '/', component: landingPage },
   { path: '/home', component: home },
-  { path: '/article', component: article },
-  { path: '/resource', component: resource}
+  { path: '/article', component: articles },
+  { path: '/resource', component: resourcesHub}
 ]
 
 const router = createRouter({

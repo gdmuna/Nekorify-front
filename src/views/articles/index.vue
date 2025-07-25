@@ -1,6 +1,6 @@
 <template>
     <div>
-        resource
+        articles
     </div>
 </template>
 
