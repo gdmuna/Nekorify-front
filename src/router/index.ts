@@ -3,14 +3,15 @@ import landingPage from '../views/landingPage/index.vue'
 import home from '../views/home/index.vue'
 import articles from '../views/articles/index.vue'
 import resourcesHub from '../views/resourcesHub/index.vue'
-
+import announcements from '../views/announcements/index.vue'
 
 
 const routes = [
   { path: '/', component: landingPage },
   { path: '/home', component: home },
-  { path: '/article', component: articles },
-  { path: '/resource', component: resourcesHub}
+  { path: '/articles', component: articles },
+  { path: '/resourcesHub', component: resourcesHub},
+  { path: '/announcements', component: announcements },
 ]
 
 const router = createRouter({
