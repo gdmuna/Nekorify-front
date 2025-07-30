@@ -1,0 +1,88 @@
+<template>
+    <svg ref="matrix" :width="width" :height="height"
+        :viewBox="`0 0 ${viewBoxWidth} ${viewBoxHeight}`" shape-rendering="crispEdges" preserveAspectRatio="none">
+        <!-- 循环渲染行 -->
+        <g v-for="(_, i) in rowCount" :key="i">
+            <!-- 循环渲染列 -->
+            <polygon 
+                v-for="(_, j) in colCount" 
+                :key="j" 
+                :points="hexPoints(i, j)" 
+                fill="#0E100F" 
+                stroke="#262520"
+                stroke-width="0.03" 
+                pointer-events="visiblePainted" 
+                class="transition-[fill] fill-[#0E100F] duration-200"
+                @mouseenter="onEnter(`${i}-${j}`)" 
+                @mouseleave="onLeave(`${i}-${j}`)" 
+                :polygon-id="`${i}-${j}`" />
+        </g>
+    </svg>
+</template>
+
+<script setup lang="ts">
+import { defineProps, ref, computed } from 'vue'
+
+const props = defineProps<{
+    width?: number
+    height?: number
+}>()
+
+// 设置默认宽高
+const width = props.width ?? 800
+const height = props.height ?? 600
+
+// 常量定义
+const a = 0.5       // 六边形外接圆半径
+const dx = a * Math.sqrt(3)  // 列间距（水平方向中心点距离）
+const dy = a * 1.5  // 行间距（垂直方向中心点距离）
+
+const matrix = ref<SVGSVGElement | null>(null)
+
+const colCount = computed(() => Math.ceil(width / (dx * 100)))
+const rowCount = computed(() => Math.ceil(height / (dy * 100)))
+
+const viewBoxWidth = computed(() => dx * (colCount.value + 0.5))
+const viewBoxHeight = computed(() => {
+    // 基础高度 = 顶部间距 + 行数×行高 + 底部间距
+    return a + (rowCount.value * dy) + a
+})
+
+function onEnter(id: string) {
+    matrix.value?.querySelector(`g polygon[polygon-id="${id}"]`)?.classList.add('hex-hover')
+}
+
+function onLeave(id: string) {
+    setTimeout(() => {
+        const element = matrix.value?.querySelector(`g polygon.hex-hover[polygon-id="${id}"]`)
+        if (element) {
+            element.classList.remove('hex-hover')
+        }
+    }, 100)
+}
+
+/**
+ * 生成单个六边形的顶点坐标
+ * @param i - 行索引（从0开始）
+ * @param j - 列索引（从0开始）
+ * @returns 六边形6个顶点的坐标字符串
+ */
+const hexPoints = (i: number, j: number) => {
+    const offsetX = (i % 2) * dx / 2
+    const centerX = j * dx + dx / 2 + offsetX
+    const centerY = a + i * dy
+
+    return Array.from({ length: 6 }).map((_, k) => {
+        const angle = Math.PI / 6 + k * Math.PI / 3
+        const x = centerX + a * Math.cos(angle)
+        const y = centerY + a * Math.sin(angle)
+        return `${x},${y}`
+    }).join(' ')
+}
+</script>
+
+<style scoped>
+.hex-hover {
+    fill: #39372C;
+}
+</style>
