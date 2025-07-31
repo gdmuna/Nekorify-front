@@ -1,21 +1,13 @@
 <template>
-    <svg ref="matrix" :width="width" :height="height"
-        :viewBox="`0 0 ${viewBoxWidth} ${viewBoxHeight}`" shape-rendering="crispEdges" preserveAspectRatio="none">
+    <svg ref="matrix" :width="width" :height="height" :viewBox="`0 0 ${viewBoxWidth} ${viewBoxHeight}`"
+        shape-rendering="crispEdges" preserveAspectRatio="none">
         <!-- 循环渲染行 -->
         <g v-for="(_, i) in rowCount" :key="i">
             <!-- 循环渲染列 -->
-            <polygon 
-                v-for="(_, j) in colCount" 
-                :key="j" 
-                :points="hexPoints(i, j)" 
-                fill="#0E100F" 
-                stroke="#262520"
-                stroke-width="0.03" 
-                pointer-events="visiblePainted" 
-                class="transition-[fill] fill-[#0E100F] duration-200"
-                @mouseenter="onEnter(`${i}-${j}`)" 
-                @mouseleave="onLeave(`${i}-${j}`)" 
-                :polygon-id="`${i}-${j}`" />
+            <polygon v-for="(_, j) in colCount" :key="j" :points="hexPoints(i, j)" fill="#0E100F" stroke="#262520"
+                stroke-width="0.03" pointer-events="visiblePainted"
+                class="transition-[fill] fill-[#0E100F] duration-200" @mouseenter="onEnter(`${i}-${j}`)"
+                @mouseleave="onLeave(`${i}-${j}`)" :polygon-id="`${i}-${j}`" />
         </g>
     </svg>
 </template>
@@ -58,7 +50,7 @@ function onLeave(id: string) {
         if (element) {
             element.classList.remove('hex-hover')
         }
-    }, 100)
+    }, 125)
 }
 
 /**
