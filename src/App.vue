@@ -1,5 +1,5 @@
 <template>
-    <div :class="['w-full flex flex-col dark:text-[#FEFCE4]', smootherReady ? '' : 'hidden']">
+    <div class="w-full flex flex-col dark:text-[#FEFCE4]">
         <!-- 页眉 -->
         <Header />
         <!-- 消息弹窗挂载点 -->
@@ -19,17 +19,17 @@ import { Toaster } from 'vue-sonner'
 // 导入组件
 import Header from '@/components/header.vue'
 
-import { onMounted, onBeforeMount, ref, nextTick } from 'vue'
+import { onMounted, onBeforeMount, ref } from 'vue'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
-
-
-const smootherReady = ref<Boolean>(false)
 
 // 动态设置根元素字体大小
 function setRootFontSize() {
     const html = document.documentElement;
-    html.style.fontSize = Math.max((html.clientWidth / 1280) * 12, 16) + 'px';
+    const val = Math.max((html.clientWidth / 1280) * 12, 16)
+    console.log(val)
+    html.style.fontSize = val + 'px'
+
 }
 window.addEventListener('resize', setRootFontSize);
 
@@ -43,12 +43,9 @@ onMounted(() => {
     ScrollSmoother.create({
         wrapper: '#app',
         content: '#content',
-        smooth: 0.75,
-        effects: true
+        smooth: 0.75
     })
-    nextTick(() => {
-        smootherReady.value = true
-    })
+    
 })
 
 

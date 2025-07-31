@@ -1,9 +1,9 @@
 <template>
-    <div class="relative text-[#0E100F] text-4xl font-extrabold text-center flex">
-        <p :class="['title absolute px-8 py-3 rounded-lg z-10', titleA_color ? `bg-[${titleA_color}]` : '']">
+    <div class="text-[#0E100F] text-4xl font-extrabold flex flex-col items-start">
+        <p class="title px-8 py-3 rounded-lg z-10" :style="{ backgroundColor: titleA_color }">
             {{ titleA }}
         </p>
-        <p :class="['absolute px-8 py-3 rounded-lg translate-y-[90%] ml-8', titleB_color ? `bg-[${titleB_color}]` : '']">
+        <p class="px-8 py-3 rounded-lg ml-8 -translate-y-1.5" :style="{ backgroundColor: titleB_color }">
             {{ titleB }}
         </p>
     </div>

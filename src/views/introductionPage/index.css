@@ -12,3 +12,16 @@
     background: linear-gradient(0.00deg, rgba(14, 16, 15, 1), rgba(14, 16, 15, 1) 50%, rgba(14, 16, 15, 0.5) 75%, rgba(14, 16, 15, 0) 100%);
 }
 
+.code-JS {
+    background: linear-gradient(90deg, rgba(247, 178, 30, 1), rgba(247, 245, 30, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.Association {
+    background: linear-gradient(88.77deg, rgba(117, 168, 237, 1), rgba(146, 219, 242, 1) 50%, rgba(210, 210, 247, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
