@@ -14,7 +14,7 @@
             </div>
             <!-- 窗口内容区域 -->
             <div class="border-0 rounded-lg shadow-lg dark:bg-[#16191D] min-w-[20rem] min-h-[10rem]
-        flex flex-col items-start justify-between p-4 pb-2">
+        flex flex-col items-start justify-between p-2">
                 <slot name="main" />
             </div>
         </div>

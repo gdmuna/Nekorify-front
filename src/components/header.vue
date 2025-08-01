@@ -1,38 +1,33 @@
 <template>
-    <div class="sticky top-0 left-0 w-full h-12 bg-white dark:bg-[#111111] shadow z-50 px-4">
+    <div class="sticky top-0 left-0 w-full h-12 bg-white dark:bg-[#0E100F] shadow z-50 px-4">
         <header
             class="flex items-center justify-between">
             <!-- 页眉左侧内容 -->
             <div class="flex items-center">
                 <!-- LOGO -->
                 <p class="font-bold text-2xl select-none cursor-pointer" @click="routerGoTo('/')">NA&ACM</p>
-                <div class="h-10 w-[1px] mx-2 bg-neutral-200 dark:bg-neutral-700 select-none"></div>
-                <a href="https://github.com/gdmuna/Nekorify-front" target="_blank" rel="noopener noreferrer"
-                    class="font-bold text-2xl select-none">
-                    Nekorify
-                </a>
                 <!-- 导航菜单 -->
                 <nav class="flex items-center ml-2">
                     <Button variant="link" @click="routerGoTo('/home')"
-                        class="text-xl font-[500] m-0 select-none cursor-pointer dark:text-[#FEFCE4]">
+                        class="text-lg font-[500] m-0 select-none cursor-pointer dark:text-[#FEFCE4]">
                         <Home />
                         首页
                     </Button>
                     <div class="h-10 w-[1px] m-0 bg-neutral-200 dark:bg-neutral-700 select-none"></div>
                     <Button variant="link" @click="routerGoTo('/announcements')"
-                        class="text-xl font-[500] m-0 select-none cursor-pointer dark:text-[#FEFCE4]">
+                        class="text-lg font-[500] m-0 select-none cursor-pointer dark:text-[#FEFCE4]">
                         <Megaphone />
                         公告
                     </Button>
                     <div class="h-10 w-[1px] m-0 bg-neutral-200 dark:bg-neutral-700 select-none"></div>
                     <Button variant="link" @click="routerGoTo('/articles')"
-                        class="text-xl font-[500] m-0 select-none cursor-pointer dark:text-[#FEFCE4]">
+                        class="text-lg font-[500] m-0 select-none cursor-pointer dark:text-[#FEFCE4]">
                         <ScrollText />
                         文章
                     </Button>
                     <div class="h-10 w-[1px] m-0 bg-neutral-200 dark:bg-neutral-700 select-none"></div>
                     <Button variant="link" @click="routerGoTo('/resourcesHub')"
-                        class="text-xl font-[500] m-0 select-none cursor-pointer dark:text-[#FEFCE4]">
+                        class="text-lg font-[500] m-0 select-none cursor-pointer dark:text-[#FEFCE4]">
                         <Database />
                         资源站
                     </Button>

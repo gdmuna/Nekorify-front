@@ -14,8 +14,10 @@
         bg-gray-100 dark:bg-[#0E100F]">
             <matrix class="absolute z-1 select-none" :width="setion1_width" :height="setion1_height"
                 v-if="setion1_width > 0 && setion1_height > 0" />
+                <!-- section 主内容 -->
             <div class="z-10 w-full min-h-[calc(100dvh-4rem)] flex flex-col lg:flex-row
             items-center justify-evenly pointer-events-none *:pointer-events-auto">
+                <!-- 左侧内容 -->
                 <div class="relative text-7xl font-bold tracking-[0.2em] !pointer-events-none mb-20">
                     <div class="relative z-30 leading-[1.4em]">
                         <h1 class="text-[#9C95F8]">TECH</h1>
@@ -41,6 +43,7 @@
                         <h1 class="text-[#53B7DE]">WORLD</h1>
                     </div>
                 </div>
+                <!-- 右侧内容 -->
                 <macWindow class="mb-20">
                     <template #TR>
                         <img src="@/assets/icons8-javascript.svg" alt="JavaScript" class="size-6">
@@ -72,8 +75,10 @@
             </div>
         </section>
         <!-- Section 2 -->
-        <section class="relative min-h-[100dvh] bg-gray-200 dark:bg-[#0E100F]">
+        <section class="relative bg-gray-200 dark:bg-[#0E100F]">
+            <!-- 背景过渡 -->
             <div class="absolute top-0 left-0 w-full h-72 z-10 pointer-events-none gradientBg" />
+            <!-- section 主内容 -->
             <div class="w-full h-full pt-72">
                 <!-- section title -->
                 <titleBlock class="ml-8" titleA="WHO" titleA_color="#F5C7F8" titleB="WE ARE" titleB_color="#EF8D36" />
@@ -86,6 +91,7 @@
                         <BrainCircuit class="inline size-12" />
                     </h2>
                 </div>
+                <!-- card-1 -->
                 <div class="relative mt-40">
                     <div ref="lottieContainerA" class="size-[42rem] absolute top-0 left-0"></div>
                     <macWindow border class="w-128 ml-auto mr-20">
@@ -104,6 +110,7 @@
                         </template>
                     </macWindow>
                 </div>
+                <!-- card-2 -->
                 <div class="relative mt-100">
                     <macWindow border class="w-128 ml-20">
                         <template #TR>
@@ -112,7 +119,7 @@
                         </template>
                         <template #main>
                             <div class="flex-1 flex justify-between items-center w-full h-full">
-                                <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-36">
+                                <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-32">
                                 <div class="bg-[#595959] w-[1px] self-stretch mr-4" />
                                 <div class="flex-1">
                                     ​​ACM协会（GDMU-ACM）​​主攻​​算法与AI应用​​，除系统训练数据结构和竞赛编程外，更深化​​深度学习与计算机视觉领域​​（含目标检测模型如YOLO的实战训练），培养前沿技术研究能力。
@@ -120,10 +127,11 @@
                             </div>
                         </template>
                     </macWindow>
-                    <div ref="lottieContainerB" class="size-[42rem] absolute top-0 right-0 -translate-y-1/8"></div>
+                    <div ref="lottieContainerB" class="size-[42rem] absolute top-0 right-0 -translate-y-1/2"></div>
                 </div>
-                <div class="flex items-center justify-evenly mt-64">
-                    <img ref="cat_smile" src="/src/assets/猫-笑.png" alt="" class="size-64">
+                <!-- card-3 -->
+                <div class="flex items-center justify-evenly mt-48">
+                    <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64">
                     <macWindow border class="w-128">
                         <template #TR>
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
@@ -132,19 +140,29 @@
                         </template>
                         <template #main>
                             <div class="flex-1 flex items-center w-full h-full text-xl">
-                                <div class="flex-1">
-                                    网络协会锻造​​工程实现能力​​，ACM协会锤炼​​算法与模型研发能力​​，共同构建覆盖“​​系统开发-核心算法-AI应用​​”的全链条技术生态，赋能成员向全栈工程师、算法研究员等高阶方向发展。
+                                <div class="flex-1 ml-2">
+                                    <span class="card-3-1 text-[#0E100F] text-center rounded inline-block px-2 font-extrabold">
+                                        二者分工协作
+                                    </span>
+                                    <span>
+                                        网络协会锻造​​工程实现能力​​，ACM协会锤炼​​算法与模型研发能力​​，共同构建覆盖“​​系统开发-核心算法-AI应用​​”的全链条技术生态，赋能成员向全栈工程师、算法研究员等高阶方向发展。
+                                    </span>
                                 </div>
                             </div>
                         </template>
                     </macWindow>
-                    <img ref="fish_smile" src="/src/assets/鱼-笑.png" alt="" class="size-64">
+                    <img ref="fish_smile" src="/src/assets/鱼-笑.webp" alt="" class="size-64">
                 </div>
             </div>
         </section>
         <!-- Section 3 -->
-        <section class="min-h-[100dvh] flex items-center justify-center bg-gray-100 dark:bg-[#0E100F]">
-            <h1>宣传页 Section 3</h1>
+        <section class="bg-gray-100 dark:bg-[#0E100F]">
+            <div class="w-full h-full pt-36">
+                <!-- section 主内容 -->
+                <div class="w-full h-[100dvh] pt-12">
+                    <titleBlock class="ml-8 mt-8" titleA="WHAT SKILLS" titleA_color="#9C95F8" titleB="CAN YOU MASTER" titleB_color="#53B7DE" />
+                </div>
+            </div>
         </section>
         <!-- Section 4 -->
         <section class="min-h-[100dvh] flex items-center justify-center bg-gray-200 dark:bg-[#0E100F]">
@@ -172,7 +190,6 @@ import titleBlock from '@/components/titleBlock.vue';
 // 导入图标
 import { MoveDown } from 'lucide-vue-next';
 import { BrainCircuit } from 'lucide-vue-next';
-
 import { ChevronRight } from 'lucide-vue-next';
 
 // @ts-ignore
@@ -182,9 +199,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.js'
 
 import lottie from 'lottie-web'
 
-// @ts-ignore
 import Webdesign from '@/assets/Webdesign.json';
-// @ts-ignore
 import programmingLottie from '@/assets/programming.json';
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";

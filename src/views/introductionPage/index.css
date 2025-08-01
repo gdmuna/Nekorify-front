@@ -5,7 +5,7 @@
 }
 
 .animate-dash {
-    animation: dash-move 1s linear infinite;
+    animation: dash-move 2s linear infinite;
 }
 
 .gradientBg {
@@ -24,4 +24,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+
+.card-3-1 {
+    background: linear-gradient(270.00deg, rgba(247, 189, 248, 1),rgba(255, 135, 9, 1) 100%);
 }
