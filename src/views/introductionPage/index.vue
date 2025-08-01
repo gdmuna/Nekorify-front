@@ -182,7 +182,7 @@
                         </div>
                         <!-- 横向滚动内容 - card -->
                         <div class="ml-32 flex space-x-32">
-                            <macWindow border class="!w-96 !h-82">
+                            <macWindow border class="!w-110 !h-90">
                                 <template #TR>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
@@ -201,7 +201,7 @@
                                     </div>
                                 </template>
                             </macWindow>
-                            <macWindow border class="!w-96 !h-82">
+                            <macWindow border class="!w-110 !h-90">
                                 <template #TR>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
@@ -220,7 +220,7 @@
                                     </div>
                                 </template>
                             </macWindow>
-                            <macWindow border class="!w-96 !h-82">
+                            <macWindow border class="!w-110 !h-90">
                                 <template #TR>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
@@ -239,7 +239,7 @@
                                     </div>
                                 </template>
                             </macWindow>
-                            <macWindow border class="!w-96 !h-82">
+                            <macWindow border class="!w-110 !h-90">
                                 <template #TR>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
@@ -258,7 +258,7 @@
                                     </div>
                                 </template>
                             </macWindow>
-                            <macWindow border class="!w-96 !h-82">
+                            <macWindow border class="!w-110 !h-90">
                                 <template #TR>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
@@ -277,7 +277,7 @@
                                     </div>
                                 </template>
                             </macWindow>
-                            <macWindow border class="!w-96 !h-82">
+                            <macWindow border class="!w-110 !h-90">
                                 <template #TR>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-ACM</span>
@@ -296,7 +296,7 @@
                                     </div>
                                 </template>
                             </macWindow>
-                            <macWindow border class="!w-96 !h-82">
+                            <macWindow border class="!w-110 !h-90">
                                 <template #TR>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-ACM</span>
@@ -315,7 +315,7 @@
                                     </div>
                                 </template>
                             </macWindow>
-                            <macWindow border class="!w-96 !h-82">
+                            <macWindow border class="!w-110 !h-90">
                                 <template #TR>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-ACM</span>
