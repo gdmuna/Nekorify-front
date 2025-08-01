@@ -10,7 +10,7 @@
             </div>
         </Teleport>
         <!-- Section 1 -->
-        <section ref="section1" class="relative min-h-[calc(100dvh-3rem)] flex items-center justify-center
+        <section ref="section1" class="relative min-h-[calc(100dvh-3.5rem)] flex items-center justify-center
         bg-gray-100 dark:bg-[#0E100F]">
             <matrix class="absolute z-1 select-none" :width="setion1_width" :height="setion1_height"
                 v-if="setion1_width > 0 && setion1_height > 0" />
@@ -94,7 +94,7 @@
                 <!-- card-1 -->
                 <div class="relative mt-40">
                     <div ref="lottieContainerA" class="size-[42rem] absolute top-0 left-0"></div>
-                    <macWindow border class="w-128 ml-auto mr-20">
+                    <macWindow border class="!w-128 ml-auto mr-20">
                         <template #TR>
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                             <span class="text-lg Association">GDMU-NA</span>
@@ -112,7 +112,7 @@
                 </div>
                 <!-- card-2 -->
                 <div class="relative mt-100">
-                    <macWindow border class="w-128 ml-20">
+                    <macWindow border class="!w-128 ml-20">
                         <template #TR>
                             <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                             <span class="text-lg Association">GDMU-ACM</span>
@@ -132,7 +132,7 @@
                 <!-- card-3 -->
                 <div class="flex items-center justify-evenly mt-48">
                     <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64">
-                    <macWindow border class="w-128">
+                    <macWindow border class="!w-128">
                         <template #TR>
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                             <div class="bg-[#595959] w-[1px] self-stretch" />
@@ -159,8 +159,170 @@
         <section class="bg-gray-100 dark:bg-[#0E100F]">
             <div class="w-full h-full pt-36">
                 <!-- section 主内容 -->
-                <div class="w-full h-[100dvh] pt-12">
+                <div ref="section3_main" class="w-full h-[100dvh] pt-14 flex flex-col">
+                    <!-- section title -->
                     <titleBlock class="ml-8 mt-8" titleA="WHAT SKILLS" titleA_color="#9C95F8" titleB="CAN YOU MASTER" titleB_color="#53B7DE" />
+                    <!-- 横向滚动容器 -->
+                    <div ref="section3_scrollContainer" class="w-full h-full flex items-center">
+                        <!-- 横向滚动内容 - title -->
+                        <div class="h-full w-fit flex flex-col items-start justify-evenly space-y-8 text-7xl font-bold ml-32 whitespace-nowrap">
+                            <h1>
+                                <span class="mr-8">NOT A</span>
+                                <span class="section-3-title-1 rounded-lg text-[#0E100F] inline-block px-8 py-2">FACTORY</span>
+                            </h1>
+                            <h1 class="ml-24">
+                                <span class="mr-8">BUT A</span>
+                                <span class="section-3-title-2 rounded-lg text-[#0E100F] inline-block px-8 py-2">FOUNDRY</span>
+                            </h1>
+                        </div>
+                        <!-- 横向滚动内容 - card -->
+                        <div class="ml-32 flex space-x-32">
+                            <macWindow border class="!w-96 !h-82">
+                                <template #TR>
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <span class="text-lg Association">GDMU-NA</span>
+                                </template>
+                                <template #main>
+                                    <div class="flex flex-col items-center justify-between h-full w-full">
+                                        <div class="flex items-center justify-center border-b-1 border-[#595959] mx-16 w-full">
+                                            <img src="/src/assets/C++-logo.svg" alt="" class="size-20">
+                                            <span class="code-cpp text-3xl font-bold">C++</span>
+                                        </div>
+                                        <p class="flex-1 flex items-center justify-center p-4 text-lg font-bold tracking-wider">
+                                            中低级语言，继承C的高效性并支持面向对象。提供内存操作能力，适用系统编程、游戏引擎（Unreal）及高性能计算场景。
+                                        </p>
+                                    </div>
+                                </template>
+                            </macWindow>
+                            <macWindow border class="!w-96 !h-82">
+                                <template #TR>
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <span class="text-lg Association">GDMU-NA</span>
+                                </template>
+                                <template #main>
+                                    <div class="flex flex-col items-center justify-between h-full w-full">
+                                        <div class="flex items-center justify-between border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
+                                            <img src="/src/assets/javascript.svg" alt="" class="size-16">
+                                            <span class="code-JS text-3xl font-bold">JavaScript</span>
+                                        </div>
+                                        <p class="flex-1 flex items-center justify-center p-4 text-lg font-bold tracking-wider">
+                                            浏览器端的脚本语言，实现网页动态交互（如表单验证、内容更新）。支持异步请求（AJAX），现也可通过Node.js运行于服务器端。
+                                        </p>
+                                    </div>
+                                </template>
+                            </macWindow>
+                            <macWindow border class="!w-96 !h-82">
+                                <template #TR>
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <span class="text-lg Association">GDMU-NA</span>
+                                </template>
+                                <template #main>
+                                    <div class="flex flex-col items-center justify-between h-full w-full">
+                                        <div class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
+                                            <img src="/src/assets/vue-js.svg" alt="" class="size-16">
+                                            <span class="brand-vue text-3xl font-bold">VUE</span>
+                                        </div>
+                                        <p class="flex-1 flex items-center justify-center p-4 text-lg font-bold tracking-wider">
+                                            渐进式前端框架，轻量易上手。采用组件化设计，支持双向数据绑定，简化单页面应用（SPA）开发，生态丰富（Vuex/Vue Router）。
+                                        </p>
+                                    </div>
+                                </template>
+                            </macWindow>
+                            <macWindow border class="!w-96 !h-82">
+                                <template #TR>
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <span class="text-lg Association">GDMU-NA</span>
+                                </template>
+                                <template #main>
+                                    <div class="flex flex-col items-center justify-between h-full w-full">
+                                        <div class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
+                                            <img src="/src/assets/express-js.svg" alt="" class="size-16">
+                                            <span class="brand-express text-3xl font-bold">Express</span>
+                                        </div>
+                                        <p class="flex-1 flex items-center justify-center p-4 text-lg font-bold tracking-wider">
+                                            Node.js的Web框架，提供路由、中间件等工具。以简约灵活著称，可快速构建RESTful API及服务器端应用。
+                                        </p>
+                                    </div>
+                                </template>
+                            </macWindow>
+                            <macWindow border class="!w-96 !h-82">
+                                <template #TR>
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <span class="text-lg Association">GDMU-NA</span>
+                                </template>
+                                <template #main>
+                                    <div class="flex flex-col items-center justify-between h-full w-full">
+                                        <div class="flex items-center justify-center border-b-1 border-[#595959] px-14 space-x-4 w-full">
+                                            <img src="/src/assets/mysql-logo.svg" alt="" class="size-20">
+                                            <span class="brand-mysql text-3xl font-bold">MySQL</span>
+                                        </div>
+                                        <p class="flex-1 flex items-center justify-center p-4 text-lg font-bold tracking-wider">
+                                            开源关系型数据库，使用SQL管理数据。支持ACID事务，适用于中小型应用，常与LAMP（Linux+Apache+MySQL+PHP）栈搭配。
+                                        </p>
+                                    </div>
+                                </template>
+                            </macWindow>
+                            <macWindow border class="!w-96 !h-82">
+                                <template #TR>
+                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
+                                    <span class="text-lg Association">GDMU-ACM</span>
+                                </template>
+                                <template #main>
+                                    <div class="flex flex-col items-center justify-between h-full w-full">
+                                        <div class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
+                                            <img src="/src/assets/python.svg" alt="" class="size-16">
+                                            <span class="code-python text-3xl font-bold">Python</span>
+                                        </div>
+                                        <p class="flex-1 flex items-center justify-center p-4 text-lg font-bold tracking-wider">
+                                            解释型高级语言，语法简洁易读，支持多范式编程。广泛应用于Web后端（Django）、数据分析（Pandas）、AI（PyTorch）等领域。
+                                        </p>
+                                    </div>
+                                </template>
+                            </macWindow>
+                            <macWindow border class="!w-96 !h-82">
+                                <template #TR>
+                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
+                                    <span class="text-lg Association">GDMU-ACM</span>
+                                </template>
+                                <template #main>
+                                    <div class="flex flex-col items-center justify-between h-full w-full">
+                                        <div class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
+                                            <img src="/src/assets/pytorch.svg" alt="" class="size-16">
+                                            <span class="brand-pytorch text-3xl font-bold">PyTorch</span>
+                                        </div>
+                                        <p class="flex-1 flex items-center justify-center p-4 text-lg font-bold tracking-wider">
+                                            Python深度学习框架，由Facebook开发。动态计算图便于调试，提供自动求导功能，广泛用于研究（如YOLO模型训练）与生产。
+                                        </p>
+                                    </div>
+                                </template>
+                            </macWindow>
+                            <macWindow border class="!w-96 !h-82">
+                                <template #TR>
+                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
+                                    <span class="text-lg Association">GDMU-ACM</span>
+                                </template>
+                                <template #main>
+                                    <div class="flex flex-col items-center justify-between h-full w-full">
+                                        <div class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-4 w-full">
+                                            <img src="/src/assets/yolo.svg" alt="" class="size-16">
+                                            <span class="brand-yolo text-3xl font-bold">YOLO</span>
+                                        </div>
+                                        <p class="flex-1 flex items-center justify-center p-4 text-lg font-bold tracking-wider">
+                                            实时目标检测算法（You Only Look Once）。单次前向传播预测多目标位置与类别，速度极快，适用自动驾驶、安防监控等场景。
+                                        </p>
+                                    </div>
+                                </template>
+                            </macWindow>
+                        </div>
+                        <!-- card 后的文字 -->
+                            <div class="flex-1 flex flex-col items-start justify-center text-7xl font-bold whitespace-nowrap mx-28">
+                                <h1>NEXT</h1>
+                                <h1>
+                                    <span class="mr-8">YOUR TURN TO</span>
+                                    <span class="section-3-title-3 text-[#0E100F] inline-block px-8 py-2 rounded-lg">FORGE</span>
+                                </h1>
+                            </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -202,6 +364,7 @@ import lottie from 'lottie-web'
 import Webdesign from '@/assets/Webdesign.json';
 import programmingLottie from '@/assets/programming.json';
 
+import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 const introPageRoot = ref<HTMLElement | null>(null);
@@ -215,6 +378,9 @@ const lottieContainerB = ref<HTMLElement | null>(null);
 
 const cat_smile = ref<HTMLImageElement | null>(null);
 const fish_smile = ref<HTMLImageElement | null>(null);
+
+const section3_main = ref<HTMLElement | null>(null);
+const section3_scrollContainer = ref<HTMLElement | null>(null);
 
 onMounted(() => {
     if (section1.value) {
@@ -250,6 +416,28 @@ onMounted(() => {
         smoother.effects(fish_smile.value, {
             speed: '1.2',
         })
+    }
+    // 横向滚动动画
+    if (section3_scrollContainer.value) {
+        const scrollContainer = section3_scrollContainer.value;
+        if (scrollContainer) {
+            const totalWidth = scrollContainer.scrollWidth;
+            const containerWidth = scrollContainer.clientWidth;
+            const scrollLength = totalWidth - containerWidth;
+
+            gsap.to(scrollContainer, {
+                x: -scrollLength,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: section3_main.value,
+                    start: "top top",
+                    end: () => `+=${scrollLength}`,
+                    pin: true,
+                    scrub: true,
+                    anticipatePin: 1
+                }
+            });
+        }
     }
 })
 

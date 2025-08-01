@@ -12,13 +12,6 @@
     background: linear-gradient(0.00deg, rgba(14, 16, 15, 1), rgba(14, 16, 15, 1) 50%, rgba(14, 16, 15, 0.5) 75%, rgba(14, 16, 15, 0) 100%);
 }
 
-.code-JS {
-    background: linear-gradient(90deg, rgba(247, 178, 30, 1), rgba(247, 245, 30, 1) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
 .Association {
     background: linear-gradient(88.77deg, rgba(117, 168, 237, 1), rgba(146, 219, 242, 1) 50%, rgba(210, 210, 247, 1) 100%);
     -webkit-background-clip: text;
@@ -27,5 +20,75 @@
 }
 
 .card-3-1 {
-    background: linear-gradient(270.00deg, rgba(247, 189, 248, 1),rgba(255, 135, 9, 1) 100%);
+    background: linear-gradient(270.00deg, rgba(247, 189, 248, 1), rgba(255, 135, 9, 1) 100%);
 }
+
+.section-3-title-1 {
+    background: linear-gradient(175.00deg, rgba(102, 102, 102, 1), rgba(102, 102, 102, 0) 100%);
+}
+
+.section-3-title-2 {
+    background: linear-gradient(125.94deg, rgba(247, 189, 248, 1), rgba(47, 60, 192, 1) 100%);
+}
+
+.section-3-title-3 {
+    background: linear-gradient(90.00deg, rgba(10, 228, 72, 1),rgba(171, 255, 132, 1) 100%);
+}
+
+.brand-vue {
+    background: linear-gradient(90.00deg, rgba(66, 211, 146, 1), rgba(97, 134, 244, 1) 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+.brand-express {
+    background: linear-gradient(90.00deg, rgba(205, 205, 161, 1),rgba(124, 120, 109, 1) 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+.brand-mysql {
+    background: linear-gradient(90.00deg, rgba(255, 79, 79, 1),rgba(145, 173, 54, 1) 50%,rgba(88, 196, 183, 1) 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+
+.brand-pytorch {
+    background: linear-gradient(270.00deg, rgba(221, 61, 72, 1),rgba(238, 21, 38, 1) 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+.brand-yolo {
+    background: linear-gradient(90.00deg, rgba(11, 35, 169, 1),rgba(8, 207, 235, 1) 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+.code-cpp {
+    background: linear-gradient(90.00deg, rgba(0, 68, 130, 1), rgba(101, 154, 210, 1) 50%, rgba(0, 89, 156, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.code-JS {
+    background: linear-gradient(90deg, rgba(247, 178, 30, 1), rgba(247, 245, 30, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.code-python {
+    background: linear-gradient(90.00deg, rgba(2, 119, 189, 1),rgba(255, 193, 7, 1) 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
