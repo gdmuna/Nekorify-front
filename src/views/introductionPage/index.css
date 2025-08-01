@@ -92,3 +92,9 @@
     background-clip:text;
 }
 
+.section-4-title-1 {
+    background: linear-gradient(90.00deg, rgba(117, 168, 237, 1),rgba(146, 219, 242, 1) 50%,rgba(210, 210, 247, 1) 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
