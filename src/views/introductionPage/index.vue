@@ -209,7 +209,7 @@
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
-                                            class="flex items-center justify-between border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
+                                            class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
                                             <img src="/src/assets/javascript.svg" alt="" class="size-16">
                                             <span class="code-JS text-3xl font-bold">JavaScript</span>
                                         </div>
