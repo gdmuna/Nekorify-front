@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
-import { ChevronDown } from 'lucide-vue-next'
 import {
   AccordionHeader,
   AccordionTrigger,
@@ -17,14 +16,11 @@ const delegatedProps = reactiveOmit(props, 'class')
 <template>
   <AccordionHeader class="flex">
     <AccordionTrigger data-slot="accordion-trigger" v-bind="delegatedProps" :class="cn(
-      'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 py-10 text-left text-sm font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180',
+      'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 py-8 text-left text-sm font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180',
       props.class,
     )
       ">
       <slot />
-      <slot name="icon">
-        
-      </slot>
     </AccordionTrigger>
   </AccordionHeader>
 </template>

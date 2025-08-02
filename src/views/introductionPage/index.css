@@ -32,43 +32,43 @@
 }
 
 .section-3-title-3 {
-    background: linear-gradient(90.00deg, rgba(10, 228, 72, 1),rgba(171, 255, 132, 1) 100%);
+    background: linear-gradient(90.00deg, rgba(10, 228, 72, 1), rgba(171, 255, 132, 1) 100%);
 }
 
 .brand-vue {
     background: linear-gradient(90.00deg, rgba(66, 211, 146, 1), rgba(97, 134, 244, 1) 100%);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .brand-express {
-    background: linear-gradient(90.00deg, rgba(205, 205, 161, 1),rgba(124, 120, 109, 1) 100%);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
+    background: linear-gradient(90.00deg, rgba(205, 205, 161, 1), rgba(124, 120, 109, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .brand-mysql {
-    background: linear-gradient(90.00deg, rgba(255, 79, 79, 1),rgba(145, 173, 54, 1) 50%,rgba(88, 196, 183, 1) 100%);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
+    background: linear-gradient(90.00deg, rgba(255, 79, 79, 1), rgba(145, 173, 54, 1) 50%, rgba(88, 196, 183, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 
 .brand-pytorch {
-    background: linear-gradient(270.00deg, rgba(221, 61, 72, 1),rgba(238, 21, 38, 1) 100%);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
+    background: linear-gradient(270.00deg, rgba(221, 61, 72, 1), rgba(238, 21, 38, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .brand-yolo {
-    background: linear-gradient(90.00deg, rgba(11, 35, 169, 1),rgba(8, 207, 235, 1) 100%);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
+    background: linear-gradient(90.00deg, rgba(11, 35, 169, 1), rgba(8, 207, 235, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .code-cpp {
@@ -86,15 +86,32 @@
 }
 
 .code-python {
-    background: linear-gradient(90.00deg, rgba(2, 119, 189, 1),rgba(255, 193, 7, 1) 100%);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
+    background: linear-gradient(90.00deg, rgba(2, 119, 189, 1), rgba(255, 193, 7, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .section-4-title-1 {
-    background: linear-gradient(90.00deg, rgba(117, 168, 237, 1),rgba(146, 219, 242, 1) 50%,rgba(210, 210, 247, 1) 100%);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
+    background: linear-gradient(90.00deg, rgba(117, 168, 237, 1), rgba(146, 219, 242, 1) 50%, rgba(210, 210, 247, 1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-4-block-1 {
+    background: linear-gradient(90deg, #27C93F, #53B7DE);
+    box-shadow: 0 5px 15px rgba(39, 201, 63, 0.3);
+}
+
+.section-4-block-1:hover {
+    box-shadow: 0 8px 20px rgba(39, 201, 63, 0.4);
+}
+
+.critical-shadow {
+    text-shadow: 0 0 5px rgba(255, 95, 86, 0.8);
+}
+
+.error-address {
+    text-shadow: 0 0 5px rgba(245, 199, 248, 0.5);
 }

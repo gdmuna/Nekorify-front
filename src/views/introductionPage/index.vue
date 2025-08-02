@@ -1,7 +1,7 @@
 <template>
     <div ref="introPageRoot" class="w-full dark:text-[#FEFCE4] *:px-8">
         <Teleport to="body">
-            <div class="fixed bottom-0 right-0 z-50 mr-5 flex flex-col items-end pointer-events-none">
+            <div class="fixed bottom-0 right-0 z-50 mr-5 flex flex-col items-end pointer-events-none dark:text-[#FEFCE4]">
                 <p class="rotate-90 origin-right tracking-widest">SCROLL</p>
                 <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <line x1="1" y1="0" x2="1" y2="80" stroke="#FEFCE4" stroke-width="2" stroke-dasharray="8 8"
@@ -181,6 +181,8 @@
                             </h1>
                         </div>
                         <!-- 横向滚动内容 - card -->
+                        <!-- 为什么不使用 v-for ? -->
+                        <!-- 每张卡片main区域上部的logo中空白区域所占比例都不同，为了视觉一致性，需要微调，故不使用 v-for -->
                         <div class="ml-32 flex space-x-32">
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
@@ -247,8 +249,8 @@
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
-                                            class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/express-js.svg" alt="" class="size-16">
+                                            class="flex items-center justify-center border-b-1 border-[#595959] px-14 space-x-2 w-full">
+                                            <img src="/src/assets/express-js.svg" alt="" class="size-20">
                                             <span class="brand-express text-3xl font-bold">Express</span>
                                         </div>
                                         <p
@@ -355,21 +357,87 @@
                 <!-- section title -->
                 <titleBlock class="ml-8" titleA="QUESTION" titleA_color="#27AFA5" titleB="AND ANSWER"
                     titleB_color="#119DEC" />
-                <QA class="mt-32"/>
-                <div class="w-full border-t-2 border-[#bbb89c] " />
-                <h1 class="text-center section-4-title-1 flex flex-col justify-center text-7xl font-bold mt-32 px-32 space-y-8">
+                <QA class="mt-32 mx-4"/>
+                <h1 class="text-center section-4-title-1 flex flex-col justify-center text-7xl font-bold m-32 mb-16 space-y-8">
                     <p class="self-start">WHERE CURIOSITY</p>
                     <p class="self-end">BECOMES ENGINEERING</p>
                 </h1>
+                <macWindow border class="mx-auto">
+                    <template #TR>
+                        <SquareTerminal class="text-[#595F66]"/>
+                        <span class="text-[#595F66]">Terminal</span>
+                    </template>
+                    <template #main>
+                        <div class="flex-1 flex-col items-start justify-start w-full h-full space-y-4 m-2 mr-32">
+                            <p class="text-[#53B7DE]">> RESOURCE_MONITOR --community=NA_ACM</p>
+                            <p class="critical-shadow text-[#FF5F56] font-bold">[CRITICAL] ENGINEER_DEFICIT @ <span class="text-[#F5C7F8] error-address">0xFE</span></p>
+                            <p class="critical-shadow text-[#FF5F56] font-bold text-lg mt-16">FATAL: FULL-STACK NODES REQUIRED</p>
+                            <p class="text-[#FFBD2E] font-bold mt-8 mb-4">> ACTION REQUIRED:</p>
+                            <p class="section-4-block-1 inline-block px-4 py-2 text-[#0E100F] rounded-md font-bold cursor-pointer mb-2 duration-300 hover:-translate-y-0.5 select-none">CLICK TO DEPLOY NEW NODE</p>
+                        </div>
+                    </template>
+                </macWindow>
             </div>
         </section>
         <!-- Section 5 -->
-        <section class="min-h-[100dvh] flex items-center justify-center bg-gray-100 dark:bg-[#0E100F]">
-            <h1>宣传页 Section 5</h1>
+        <section class="min-h-[100dvh] bg-gray-100 dark:bg-[#0E100F]">
+            <div class="pt-36">
+                <!-- section 主内容 -->
+                <h1 class="text-8xl text-center font-bold">贡献者</h1>
+                <!-- 贡献者名单 -->
+                <div class="w-full grid grid-cols-3 gap-20 mt-24 px-4">
+                    <macWindow border class="!h-78">
+                    <template #main>
+                        <div class="flex-1 flex items-center">
+                            <div class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
+                                <img src="/src/assets/xl-xlxl.jpg" alt="" class="size-24 rounded-full">
+                                <p class="text-2xl">xl-xlxl</p>
+                                
+                            </div>
+                            <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
+                                <p class="text-lg whitespace-pre-wrap">GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                            </div>
+                        </div>
+                    </template>
+                </macWindow>
+                <macWindow border class="!h-78">
+                    <template #main>
+                        <div class="flex-1 flex items-center">
+                            <div class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
+                                <img src="/src/assets/Almighty.jpg" alt="" class="size-24 rounded-full">
+                                <p class="text-2xl">Almighty</p>
+                                
+                            </div>
+                            <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
+                                <p class="text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                            </div>
+                        </div>
+                    </template>
+                </macWindow>
+                <macWindow border class="!h-78">
+                    <template #main>
+                        <div class="flex-1 flex items-center">
+                            <div class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
+                                <img src="/src/assets/FOV-RGT.jpg" alt="" class="size-24 rounded-full">
+                                <p class="text-2xl">FOV-RGT</p>
+                                
+                            </div>
+                            <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
+                                <p class="text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                            </div>
+                        </div>
+                    </template>
+                </macWindow>
+                
+                </div>
+            </div>
         </section>
         <!-- Section 6 -->
-        <section class="min-h-[100dvh] flex items-center justify-center bg-gray-200 dark:bg-[#0E100F]">
-            <h1>宣传页 Section 6</h1>
+        <section class="min-h-[100dvh] bg-gray-200 dark:bg-[#0E100F]">
+            <div class="pt-16">
+                <!-- section 主内容 -->
+                <h1 class="text-8xl text-center font-bold">致谢名单</h1>
+            </div>
         </section>
     </div>
 </template>
@@ -387,6 +455,7 @@ import QA from '@/components/QA.vue';
 import { MoveDown } from 'lucide-vue-next';
 import { BrainCircuit } from 'lucide-vue-next';
 import { ChevronRight } from 'lucide-vue-next';
+import { SquareTerminal } from 'lucide-vue-next';
 
 // @ts-ignore
 import Prism from 'prismjs'
