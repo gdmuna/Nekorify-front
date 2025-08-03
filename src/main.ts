@@ -2,6 +2,7 @@
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { CustomBounce } from "gsap/CustomBounce";
+import { CustomWiggle } from "gsap/CustomWiggle";
 import { SlowMo } from "gsap/EasePack";
 import { Draggable } from "gsap/Draggable";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
@@ -23,6 +24,7 @@ import { TextPlugin } from "gsap/TextPlugin";
 gsap.registerPlugin(
     CustomEase,
     CustomBounce,
+    CustomWiggle,
     SlowMo,
     Draggable,
     DrawSVGPlugin,

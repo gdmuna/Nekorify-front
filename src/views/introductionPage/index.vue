@@ -1,7 +1,7 @@
 <template>
     <div ref="introPageRoot" class="w-full dark:text-[#FEFCE4] *:px-8">
         <Teleport to="body">
-            <div class="fixed bottom-0 right-0 z-50 mr-5 flex flex-col items-end pointer-events-none dark:text-[#FEFCE4]">
+            <div class="fixed bottom-0 right-0 z-50 mr-5 flex flex-col items-end dark:text-[#FEFCE4]">
                 <p class="rotate-90 origin-right tracking-widest">SCROLL</p>
                 <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <line x1="1" y1="0" x2="1" y2="80" stroke="#FEFCE4" stroke-width="2" stroke-dasharray="8 8"
@@ -86,15 +86,28 @@
                     <h1 class="text-9xl">
                         WE ARE THE
                     </h1>
-                    <h2 class="text-6xl mt-4 flex items-center space-x-6">
-                        <span>DEVELOPER</span>
-                        <BrainCircuit class="inline size-12" />
-                    </h2>
+                    <div ref="section2_title_1" class="relative w-full h-[3.75rem] mt-4 overflow-hidden">
+                        <h2 ref="section2_dynamicTitle_1"
+                            class="text-6xl flex items-center space-x-6 absolute left-1/2 -translate-x-1/2">
+                            <span class="block">DEVELOPER</span>
+                            <BrainCircuit class="size-12" />
+                        </h2>
+                        <h2 ref="section2_dynamicTitle_2"
+                            class="text-6xl flex items-center space-x-6 absolute left-1/2 -translate-x-1/2">
+                            <span class="block">ARCHITECT</span>
+                            <Puzzle class="size-12" />
+                        </h2>
+                        <h2 ref="section2_dynamicTitle_3"
+                            class="text-6xl flex items-center space-x-6 absolute left-1/2 -translate-x-1/2">
+                            <span class="block">EXPLORER</span>
+                            <Satellite class="size-12" />
+                        </h2>
+                    </div>
                 </div>
                 <!-- card-1 -->
                 <div class="relative mt-40">
                     <div ref="lottieContainerA" class="size-[42rem] absolute top-0 left-0"></div>
-                    <macWindow border class="!w-128 ml-auto mr-20">
+                    <macWindow border enterAnimate enableSplitText class="!w-128 ml-auto mr-20">
                         <template #TR>
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                             <span class="text-lg Association">GDMU-NA</span>
@@ -103,7 +116,7 @@
                             <div class="flex-1 flex justify-between items-center w-full h-full">
                                 <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-36">
                                 <div class="bg-[#595959] w-[1px] self-stretch mr-4" />
-                                <div class="flex-1">
+                                <div class="flex-1 text-lg split-text">
                                     网络协会（GDMU-NA）​​专注​​全栈开发与系统运维​​，成员通过开源项目实践​​前后端开发、数据库构建与服务器管理​​，支撑校园数字化服务（如网办大厅）。
                                 </div>
                             </div>
@@ -112,7 +125,7 @@
                 </div>
                 <!-- card-2 -->
                 <div class="relative mt-100">
-                    <macWindow border class="!w-128 ml-20">
+                    <macWindow border enterAnimate enableSplitText class="!w-128 ml-20">
                         <template #TR>
                             <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                             <span class="text-lg Association">GDMU-ACM</span>
@@ -121,18 +134,19 @@
                             <div class="flex-1 flex justify-between items-center w-full h-full">
                                 <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-32">
                                 <div class="bg-[#595959] w-[1px] self-stretch mr-4" />
-                                <div class="flex-1">
+                                <div class="flex-1 text-lg split-text">
                                     ​​ACM协会（GDMU-ACM）​​主攻​​算法与AI应用​​，除系统训练数据结构和竞赛编程外，更深化​​深度学习与计算机视觉领域​​（含目标检测模型如YOLO的实战训练），培养前沿技术研究能力。
                                 </div>
                             </div>
                         </template>
                     </macWindow>
-                    <div ref="lottieContainerB" class="size-[42rem] absolute top-0 right-0 -translate-y-1/2"></div>
+                    <div ref="lottieContainerB" class="size-[42rem] absolute top-0 right-0 -translate-y-1/2">
+                    </div>
                 </div>
                 <!-- card-3 -->
                 <div class="flex items-center justify-evenly mt-48">
                     <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64">
-                    <macWindow border class="!w-128">
+                    <macWindow border enterAnimate enableSplitText class="!w-128">
                         <template #TR>
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                             <div class="bg-[#595959] w-[1px] self-stretch" />
@@ -140,7 +154,7 @@
                         </template>
                         <template #main>
                             <div class="flex-1 flex items-center w-full h-full text-xl">
-                                <div class="flex-1 ml-2">
+                                <div class="flex-1 ml-2 split-text">
                                     <span
                                         class="card-3-1 text-[#0E100F] text-center rounded inline-block px-2 font-extrabold">
                                         二者分工协作
@@ -169,15 +183,15 @@
                         <!-- 横向滚动内容 - title -->
                         <div
                             class="h-full w-fit flex flex-col items-start justify-evenly space-y-8 text-7xl font-bold ml-32 whitespace-nowrap">
-                            <h1>
+                            <h1 ref="section-3-title-1">
                                 <span class="mr-8">NOT A</span>
                                 <span
-                                    class="section-3-title-1 rounded-lg text-[#0E100F] inline-block px-8 py-2">FACTORY</span>
+                                    class="section-3-title-1-block rounded-lg text-[#0E100F] inline-block px-8 py-2">FACTORY</span>
                             </h1>
-                            <h1 class="ml-24">
+                            <h1 ref="section-3-title-2" class="ml-24">
                                 <span class="mr-8">BUT A</span>
                                 <span
-                                    class="section-3-title-2 rounded-lg text-[#0E100F] inline-block px-8 py-2">FOUNDRY</span>
+                                    class="section-3-title-2-block rounded-lg text-[#0E100F] inline-block px-8 py-2">FOUNDRY</span>
                             </h1>
                         </div>
                         <!-- 横向滚动内容 - card -->
@@ -338,13 +352,13 @@
                             </macWindow>
                         </div>
                         <!-- card 后的文字 -->
-                        <div
+                        <div ref="section-3-title-3"
                             class="flex-1 flex flex-col items-start justify-center text-7xl font-bold whitespace-nowrap mx-28">
                             <h1>NEXT</h1>
                             <h1>
                                 <span class="mr-8">YOUR TURN TO</span>
                                 <span
-                                    class="section-3-title-3 text-[#0E100F] inline-block px-8 py-2 rounded-lg">FORGE</span>
+                                    class="section-3-title-3-block text-[#0E100F] inline-block px-8 py-2 rounded-lg">FORGE</span>
                             </h1>
                         </div>
                     </div>
@@ -357,84 +371,88 @@
                 <!-- section title -->
                 <titleBlock class="ml-8" titleA="QUESTION" titleA_color="#27AFA5" titleB="AND ANSWER"
                     titleB_color="#119DEC" />
-                <QA class="mt-32 mx-4"/>
-                <h1 class="text-center section-4-title-1 flex flex-col justify-center text-7xl font-bold m-32 mb-16 space-y-8">
+                <QA class="mt-32 mx-4" />
+                <h1
+                    class="text-center section-4-title-1 flex flex-col justify-center text-7xl font-bold m-32 mb-16 space-y-8">
                     <p class="self-start">WHERE CURIOSITY</p>
                     <p class="self-end">BECOMES ENGINEERING</p>
                 </h1>
-                <macWindow border class="mx-auto">
+                <macWindow border enterAnimate class="mx-auto">
                     <template #TR>
-                        <SquareTerminal class="text-[#595F66]"/>
+                        <SquareTerminal class="text-[#595F66]" />
                         <span class="text-[#595F66]">Terminal</span>
                     </template>
                     <template #main>
                         <div class="flex-1 flex-col items-start justify-start w-full h-full space-y-4 m-2 mr-32">
                             <p class="text-[#53B7DE]">> RESOURCE_MONITOR --community=NA_ACM</p>
-                            <p class="critical-shadow text-[#FF5F56] font-bold">[CRITICAL] ENGINEER_DEFICIT @ <span class="text-[#F5C7F8] error-address">0xFE</span></p>
-                            <p class="critical-shadow text-[#FF5F56] font-bold text-lg mt-16">FATAL: FULL-STACK NODES REQUIRED</p>
+                            <p class="critical-shadow text-[#FF5F56] font-bold">[CRITICAL] ENGINEER_DEFICIT @ <span
+                                    class="text-[#F5C7F8] error-address">0xFE</span></p>
+                            <p class="critical-shadow text-[#FF5F56] font-bold text-lg mt-16">FATAL: FULL-STACK NODES
+                                REQUIRED</p>
                             <p class="text-[#FFBD2E] font-bold mt-8 mb-4">> ACTION REQUIRED:</p>
-                            <p class="section-4-block-1 inline-block px-4 py-2 text-[#0E100F] rounded-md font-bold cursor-pointer mb-2 duration-300 hover:-translate-y-0.5 select-none">CLICK TO DEPLOY NEW NODE</p>
+                            <p
+                                class="section-4-block-1 inline-block px-4 py-2 text-[#0E100F] rounded-md font-bold cursor-pointer mb-2 duration-300 hover:-translate-y-0.5 select-none">
+                                CLICK TO DEPLOY NEW NODE</p>
                         </div>
                     </template>
                 </macWindow>
             </div>
         </section>
         <!-- Section 5 -->
-        <section class="min-h-[100dvh] bg-gray-100 dark:bg-[#0E100F]">
+        <section class="bg-gray-100 dark:bg-[#0E100F]">
             <div class="pt-36">
                 <!-- section 主内容 -->
                 <h1 class="text-8xl text-center font-bold">贡献者</h1>
                 <!-- 贡献者名单 -->
                 <div class="w-full grid grid-cols-3 gap-20 mt-24 px-4">
                     <macWindow border class="!h-78">
-                    <template #main>
-                        <div class="flex-1 flex items-center">
-                            <div class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
-                                <img src="/src/assets/xl-xlxl.jpg" alt="" class="size-24 rounded-full">
-                                <p class="text-2xl">xl-xlxl</p>
-                                
+                        <template #main>
+                            <div class="flex-1 flex items-center">
+                                <div
+                                    class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
+                                    <img src="/src/assets/xl-xlxl.jpg" alt="" class="size-24 rounded-full">
+                                    <p class="text-2xl">xl-xlxl</p>
+                                </div>
+                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
+                                    <p class="text-lg whitespace-pre-wrap">GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                                </div>
                             </div>
-                            <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                <p class="text-lg whitespace-pre-wrap">GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                        </template>
+                    </macWindow>
+                    <macWindow border class="!h-78">
+                        <template #main>
+                            <div class="flex-1 flex items-center">
+                                <div
+                                    class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
+                                    <img src="/src/assets/Almighty.jpg" alt="" class="size-24 rounded-full">
+                                    <p class="text-2xl">Almighty</p>
+                                </div>
+                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
+                                    <p class="text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </macWindow>
-                <macWindow border class="!h-78">
-                    <template #main>
-                        <div class="flex-1 flex items-center">
-                            <div class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
-                                <img src="/src/assets/Almighty.jpg" alt="" class="size-24 rounded-full">
-                                <p class="text-2xl">Almighty</p>
-                                
+                        </template>
+                    </macWindow>
+                    <macWindow border class="!h-78">
+                        <template #main>
+                            <div class="flex-1 flex items-center">
+                                <div
+                                    class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
+                                    <img src="/src/assets/FOV-RGT.jpg" alt="" class="size-24 rounded-full">
+                                    <p class="text-2xl">FOV-RGT</p>
+                                </div>
+                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
+                                    <p class="text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                                </div>
                             </div>
-                            <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                <p class="text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
-                            </div>
-                        </div>
-                    </template>
-                </macWindow>
-                <macWindow border class="!h-78">
-                    <template #main>
-                        <div class="flex-1 flex items-center">
-                            <div class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
-                                <img src="/src/assets/FOV-RGT.jpg" alt="" class="size-24 rounded-full">
-                                <p class="text-2xl">FOV-RGT</p>
-                                
-                            </div>
-                            <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                <p class="text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
-                            </div>
-                        </div>
-                    </template>
-                </macWindow>
-                
+                        </template>
+                    </macWindow>
                 </div>
             </div>
         </section>
         <!-- Section 6 -->
         <section class="min-h-[100dvh] bg-gray-200 dark:bg-[#0E100F]">
-            <div class="pt-16">
+            <div class="pt-32">
                 <!-- section 主内容 -->
                 <h1 class="text-8xl text-center font-bold">致谢名单</h1>
             </div>
@@ -443,7 +461,7 @@
 </template>
 <script setup lang="ts">
 
-import { onMounted, ref, nextTick } from 'vue';
+import { onMounted, ref } from 'vue';
 
 // 导入组件
 import matrix from '@/components/matrix.vue';
@@ -454,6 +472,8 @@ import QA from '@/components/QA.vue';
 // 导入图标
 import { MoveDown } from 'lucide-vue-next';
 import { BrainCircuit } from 'lucide-vue-next';
+import { Puzzle } from 'lucide-vue-next';
+import { Satellite } from 'lucide-vue-next';
 import { ChevronRight } from 'lucide-vue-next';
 import { SquareTerminal } from 'lucide-vue-next';
 
@@ -462,13 +482,20 @@ import Prism from 'prismjs'
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css'
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js'
 
+// 导入 Lottie 动画库
 import lottie from 'lottie-web'
 
+// 导入动画数据
 import Webdesign from '@/assets/Webdesign.json';
 import programmingLottie from '@/assets/programming.json';
 
-import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
+// 导入 GSAP 及其插件
+import { gsap } from "gsap"
+import { SplitText } from "gsap/SplitText";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// 导入动画服务
+import { Animation } from '@/services'
 
 const introPageRoot = ref<HTMLElement | null>(null);
 
@@ -485,12 +512,37 @@ const fish_smile = ref<HTMLImageElement | null>(null);
 const section3_main = ref<HTMLElement | null>(null);
 const section3_scrollContainer = ref<HTMLElement | null>(null);
 
+let animationSys: Animation | null = null;
+
+const section2_title_1 = ref<HTMLElement | null>(null);
+
+const section2_dynamicTitleIndex = ref(0)
+
+const section2_dynamicTitle_1 = ref<HTMLElement | null>(null);
+const section2_dynamicTitle_2 = ref<HTMLElement | null>(null);
+const section2_dynamicTitle_3 = ref<HTMLElement | null>(null);
+const section2_dynamicTitleArray = [
+    section2_dynamicTitle_1,
+    section2_dynamicTitle_2,
+    section2_dynamicTitle_3
+];
+
+// const section2_dynamicTitle: { text: string; icon: any; ref: HTMLElement | null }[] = [
+//     { text: 'DEVELOPER', icon: BrainCircuit, ref: null },
+//     { text: 'ARCHITECT', icon: Puzzle, ref: null },
+//     { text: 'EXPLORER', icon: Satellite, ref: null }
+// ]
+
+
 onMounted(() => {
+    // 矩阵背景初始化
     if (section1.value) {
         setion1_width.value = section1.value.clientWidth + 100;
         setion1_height.value = section1.value.clientHeight + 500;
     }
+    // 代码高亮
     Prism.highlightAll();
+    // 设置 Lottie 动画
     lottie.loadAnimation({
         container: lottieContainerA.value!,
         renderer: 'svg',
@@ -505,21 +557,32 @@ onMounted(() => {
         autoplay: true,
         animationData: programmingLottie,
     })
-    const smoother = ScrollSmoother.get()
-    if (smoother) {
-        smoother.effects(lottieContainerA.value, {
-            speed: '1.2',
-        })
-        smoother.effects(lottieContainerB.value, {
-            speed: '1.2',
-        })
-        smoother.effects(cat_smile.value, {
-            speed: '1.2',
-        })
-        smoother.effects(fish_smile.value, {
-            speed: '1.2',
-        })
-    }
+    // 滚动视差效果
+    animationSys = new Animation()
+    animationSys.smootherEffects(
+        [lottieContainerA, lottieContainerB, cat_smile, fish_smile],
+        { speed: 1.2 }
+    )
+    // 初始化 GSAP 动画
+    initAnimate()
+})
+
+const code = ref(`/**
+ * 逐字符输出指定文本到终端
+ * Powered by GDMU-NA & GDMU-ACM
+ * @param {string} text - 要输出的文本内容
+ * @returns {void} 无返回值
+ * @example helloGDMU('Hello GDMU!');
+ */
+function helloGDMU(text) {
+  for (let i = 0; i < text.length; i++) {
+    process.stdout.write(text[i]);
+  }
+}
+
+helloGDMU('Hello GDMU!');`)
+
+function initAnimate() {
     // 横向滚动动画
     if (section3_scrollContainer.value) {
         const scrollContainer = section3_scrollContainer.value;
@@ -541,23 +604,61 @@ onMounted(() => {
             });
         }
     }
-})
-
-const code = ref(`/**
- * 逐字符输出指定文本到终端
- * Powered by GDMU-NA & GDMU-ACM
- * @param {string} text - 要输出的文本内容
- * @returns {void} 无返回值
- * @example helloGDMU('Hello GDMU!');
- */
-function helloGDMU(text) {
-  for (let i = 0; i < text.length; i++) {
-    process.stdout.write(text[i]);
-  }
+    // 轮换 title 初始化样式
+    gsap.set(
+        section2_dynamicTitleArray.map(item => item.value),
+        {
+            opacity: 0,
+            y: '100%'
+        }
+    )
+    // 调用轮换 title 动画
+    if (section2_title_1.value) {
+        ScrollTrigger.create({
+            trigger: section2_title_1.value,
+            start: "bottom bottom",
+            once: true,
+            onEnter: () => section2_dynamicTitleAnimation(section2_dynamicTitleIndex.value)
+        });
+    }
+    
 }
 
-helloGDMU('Hello GDMU!');`)
-
+// 轮换 title 动画
+function section2_dynamicTitleAnimation(index: number) {
+    const el = section2_dynamicTitleArray[index].value;
+    const tl = gsap.timeline()
+    tl.fromTo(
+        el,
+        {
+            opacity: 0,
+            y: '100%',
+            filter: "blur(4px)",
+        },
+        {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 0.3,
+            ease: "power1.out"
+        }
+    )
+    tl.to(
+        el,
+        {
+            opacity: 0,
+            y: '-100%',
+            duration: 0.3,
+            filter: "blur(4px)",
+            ease: "power1.in",
+            delay: 2,
+            onComplete: () => {
+                section2_dynamicTitleIndex.value = (section2_dynamicTitleIndex.value + 1) % section2_dynamicTitleArray.length;
+                section2_dynamicTitleAnimation(section2_dynamicTitleIndex.value);
+            }
+        }
+    )
+}
 
 </script>
 

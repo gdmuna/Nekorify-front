@@ -23,11 +23,11 @@
     background: linear-gradient(270.00deg, rgba(247, 189, 248, 1), rgba(255, 135, 9, 1) 100%);
 }
 
-.section-3-title-1 {
+.section-3-title-1-block {
     background: linear-gradient(175.00deg, rgba(102, 102, 102, 1), rgba(102, 102, 102, 0) 100%);
 }
 
-.section-3-title-2 {
+.section-3-title-2-block {
     background: linear-gradient(125.94deg, rgba(247, 189, 248, 1), rgba(47, 60, 192, 1) 100%);
 }
 
@@ -114,4 +114,8 @@
 
 .error-address {
     text-shadow: 0 0 5px rgba(245, 199, 248, 0.5);
+}
+
+.split-text-char {
+    display: inline-block;
 }
