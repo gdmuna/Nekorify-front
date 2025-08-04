@@ -23,6 +23,8 @@ import { onMounted, onBeforeMount, ref } from 'vue'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
+import { useRouter } from 'vue-router'
+
 // 动态设置根元素字体大小
 function setRootFontSize() {
     const html = document.documentElement;
@@ -38,14 +40,20 @@ onBeforeMount(() => {
     setRootFontSize();
 })
 
+const router = useRouter()
+
 onMounted(() => {
     // 初始化 GSAP ScrollSmoother
-    ScrollSmoother.create({
+    const smoother = ScrollSmoother.create({
         wrapper: '#app',
         content: '#content',
         smooth: 0.75
     })
-    
+    // 路由跳转后重置滚动进度
+    router.beforeEach(() => {
+        // 立即滚动到顶部
+        smoother.scrollTo(0, false)
+    })
 })
 
 

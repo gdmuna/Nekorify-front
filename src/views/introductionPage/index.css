@@ -31,7 +31,7 @@
     background: linear-gradient(125.94deg, rgba(247, 189, 248, 1), rgba(47, 60, 192, 1) 100%);
 }
 
-.section-3-title-3 {
+.section-3-title-3-block {
     background: linear-gradient(90.00deg, rgba(10, 228, 72, 1), rgba(171, 255, 132, 1) 100%);
 }
 
@@ -116,6 +116,7 @@
     text-shadow: 0 0 5px rgba(245, 199, 248, 0.5);
 }
 
-.split-text-char {
-    display: inline-block;
+.section3-progressBlock {
+    background: linear-gradient(88.77deg, rgba(117, 168, 237, 1), rgba(146, 219, 242, 1) 50%, rgba(210, 210, 247, 1) 100%);
+    clip-path: inset(0 100% 0 0);
 }

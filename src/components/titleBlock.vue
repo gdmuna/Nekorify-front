@@ -1,9 +1,9 @@
 <template>
-    <div ref="container" class="text-[#0E100F] text-4xl font-extrabold flex flex-col items-start">
-        <p ref="titleA_block" class="title px-8 py-3 rounded-lg z-10" :style="{ backgroundColor: titleA_color }">
+    <div ref="container" class="text-[#0E100F] text-4xl font-extrabold flex flex-col items-start will-change-transform">
+        <p ref="titleA_block" class="title px-8 py-3 rounded-lg z-10 whitespace-nowrap" :style="{ backgroundColor: titleA_color }">
             {{ titleA }}
         </p>
-        <p ref="titleB_block" class="px-8 py-3 rounded-lg ml-8 -translate-y-1.5"
+        <p ref="titleB_block" class="px-8 py-3 rounded-lg ml-8 -translate-y-1.5 whitespace-nowrap"
             :style="{ backgroundColor: titleB_color }">
             {{ titleB }}
         </p>

@@ -18,7 +18,8 @@
             <div class="z-10 w-full min-h-[calc(100dvh-4rem)] flex flex-col lg:flex-row
             items-center justify-evenly pointer-events-none *:pointer-events-auto">
                 <!-- 左侧内容 -->
-                <div class="relative text-7xl font-bold tracking-[0.2em] !pointer-events-none mb-20">
+                <div
+                    class="relative text-7xl font-bold tracking-[0.2em] !pointer-events-none mb-20 will-change-transform">
                     <div class="relative z-30 leading-[1.4em]">
                         <h1 class="text-[#9C95F8]">TECH</h1>
                         <h1 class="text-[#9C95F8] ml-[4.5rem]">OTAKUS</h1>
@@ -156,10 +157,10 @@
                             <div class="flex-1 flex items-center w-full h-full text-xl">
                                 <div class="flex-1 ml-2 split-text">
                                     <span
-                                        class="card-3-1 text-[#0E100F] text-center rounded inline-block px-2 font-extrabold">
+                                        class="no-split card-3-1 text-[#0E100F] text-center rounded inline-block px-2 font-extrabold">
                                         二者分工协作
                                     </span>
-                                    <span>
+                                    <span class="!inline">
                                         网络协会锻造​​工程实现能力​​，ACM协会锤炼​​算法与模型研发能力​​，共同构建覆盖“​​系统开发-核心算法-AI应用​​”的全链条技术生态，赋能成员向全栈工程师、算法研究员等高阶方向发展。
                                     </span>
                                 </div>
@@ -172,26 +173,45 @@
         </section>
         <!-- Section 3 -->
         <section class="bg-gray-100 dark:bg-[#0E100F]">
-            <div class="pt-36">
-                <!-- section 主内容 -->
-                <div ref="section3_main" class="w-full h-[100dvh] pt-14 flex flex-col">
+            <!-- section 主内容 -->
+            <div ref="section3_main" class="pt-36">
+                <!-- section 横向滚动主内容 -->
+                <div ref="section3_scrollMain" class="relative w-full h-[100dvh] pt-14 flex flex-col">
                     <!-- section title -->
-                    <titleBlock class="ml-8 mt-8" titleA="WHAT SKILLS" titleA_color="#9C95F8" titleB="CAN YOU MASTER"
-                        titleB_color="#53B7DE" />
+                    <div class="flex items-center justify-between">
+                        <titleBlock class="ml-8 mt-8" titleA="WHAT SKILLS" titleA_color="#9C95F8"
+                            titleB="CAN YOU MASTER" titleB_color="#53B7DE" />
+                        <div ref="section3_progressDivs" class="will-change-transform font-bold mr-8 flex flex-col">
+                            <div class="text-2xl flex justify-between">
+                                <p>{{ section3_progressText }}</p>
+                                <p>{{ section3_scrollProgressPercent }}</p>
+                            </div>
+                            <div class="relative overflow-hidden truncate break-all">
+                                <span v-for="(_, index) in Array.from({ length: 10 })" :key="index">░░░</span>
+                                <div ref="section3_progressBlock"
+                                    class="absolute top-0 w-full h-full section3-progressBlock">
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p>{{ section3_scrollLengthProgressPx }}</p>
+                                <p>Speed: {{ section3_scrollVelocity }}px / s</p>
+                            </div>
+                        </div>
+                    </div>
                     <!-- 横向滚动容器 -->
                     <div ref="section3_scrollContainer" class="w-full h-full flex items-center">
                         <!-- 横向滚动内容 - title -->
                         <div
                             class="h-full w-fit flex flex-col items-start justify-evenly space-y-8 text-7xl font-bold ml-32 whitespace-nowrap">
-                            <h1 ref="section-3-title-1">
+                            <h1 class="will-change-transform">
                                 <span class="mr-8">NOT A</span>
                                 <span
-                                    class="section-3-title-1-block rounded-lg text-[#0E100F] inline-block px-8 py-2">FACTORY</span>
+                                    class="section-3-title-1-block title-block rounded-lg text-[#0E100F] inline-block px-8 py-2">FACTORY</span>
                             </h1>
-                            <h1 ref="section-3-title-2" class="ml-24">
+                            <h1 class="ml-24 will-change-transform">
                                 <span class="mr-8">BUT A</span>
                                 <span
-                                    class="section-3-title-2-block rounded-lg text-[#0E100F] inline-block px-8 py-2">FOUNDRY</span>
+                                    class="section-3-title-2-block title-block rounded-lg text-[#0E100F] inline-block px-8 py-2">FOUNDRY</span>
                             </h1>
                         </div>
                         <!-- 横向滚动内容 - card -->
@@ -352,21 +372,28 @@
                             </macWindow>
                         </div>
                         <!-- card 后的文字 -->
-                        <div ref="section-3-title-3"
-                            class="flex-1 flex flex-col items-start justify-center text-7xl font-bold whitespace-nowrap mx-28">
-                            <h1>NEXT</h1>
-                            <h1>
-                                <span class="mr-8">YOUR TURN TO</span>
-                                <span
-                                    class="section-3-title-3-block text-[#0E100F] inline-block px-8 py-2 rounded-lg">FORGE</span>
-                            </h1>
-                        </div>
+                        <p ref="section3_PTag"
+                            class="flex-1 flex items-center text-7xl font-bold whitespace-nowrap px-28 will-change-transform">
+                            AND MORE...
+                        </p>
+                    </div>
+                </div>
+                <div ref="section_3_title_3"
+                    class="w-full flex flex-col items-center justify-center text-7xl pt-16 font-bold whitespace-nowrap will-change-transform">
+                    <div>
+                        <h1>NEXT</h1>
+                        <h1>
+                            <span class="mr-8">YOUR TURN TO</span>
+                            <span
+                                class="section-3-title-3-block title-block text-[#0E100F] inline-block px-8 py-2 rounded-lg">FORGE</span>
+                        </h1>
                     </div>
                 </div>
             </div>
         </section>
         <!-- Section 4 -->
         <section class="bg-gray-200 dark:bg-[#0E100F]">
+            <!-- section 主内容 -->
             <div class="pt-36">
                 <!-- section title -->
                 <titleBlock class="ml-8" titleA="QUESTION" titleA_color="#27AFA5" titleB="AND ANSWER"
@@ -461,7 +488,7 @@
 </template>
 <script setup lang="ts">
 
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref, onUnmounted } from 'vue';
 
 // 导入组件
 import matrix from '@/components/matrix.vue';
@@ -509,14 +536,14 @@ const lottieContainerB = ref<HTMLElement | null>(null);
 const cat_smile = ref<HTMLImageElement | null>(null);
 const fish_smile = ref<HTMLImageElement | null>(null);
 
-const section3_main = ref<HTMLElement | null>(null);
+const section3_scrollMain = ref<HTMLElement | null>(null);
 const section3_scrollContainer = ref<HTMLElement | null>(null);
 
 let animationSys: Animation | null = null;
 
 const section2_title_1 = ref<HTMLElement | null>(null);
 
-const section2_dynamicTitleIndex = ref(0)
+const section2_dynamicTitleIndex = ref<number>(0)
 
 const section2_dynamicTitle_1 = ref<HTMLElement | null>(null);
 const section2_dynamicTitle_2 = ref<HTMLElement | null>(null);
@@ -527,12 +554,15 @@ const section2_dynamicTitleArray = [
     section2_dynamicTitle_3
 ];
 
-// const section2_dynamicTitle: { text: string; icon: any; ref: HTMLElement | null }[] = [
-//     { text: 'DEVELOPER', icon: BrainCircuit, ref: null },
-//     { text: 'ARCHITECT', icon: Puzzle, ref: null },
-//     { text: 'EXPLORER', icon: Satellite, ref: null }
-// ]
+const section3_main = ref<HTMLElement | null>(null);
 
+const section3_scrollProgress = ref<number>(0)
+const section3_scrollLength = ref<number>(0);
+const section3_scrollVelocity = ref<number>(0);
+
+const section3_PTag = ref<HTMLElement | null>(null)
+const section3_progressBlock = ref<HTMLElement | null>(null);
+const section3_progressDivs = ref<HTMLElement | null>(null);
 
 onMounted(() => {
     // 矩阵背景初始化
@@ -567,6 +597,23 @@ onMounted(() => {
     initAnimate()
 })
 
+const section3_scrollLengthProgressPx = computed(() => {
+    return `[${(section3_scrollLength.value * section3_scrollProgress.value).toFixed(2)}px / ${section3_scrollLength.value}.00px]`
+})
+
+const section3_scrollProgressPercent = computed(() => {
+    return `${(section3_scrollProgress.value * 100).toFixed(2)}%`
+})
+
+const section3_progressText = computed(() => {
+    const progress = section3_scrollProgress.value;
+    if (progress < 1) {
+        return 'STACK INITIALIZING...'
+    } else {
+        return 'Complete!'
+    }
+});
+
 const code = ref(`/**
  * 逐字符输出指定文本到终端
  * Powered by GDMU-NA & GDMU-ACM
@@ -584,26 +631,22 @@ helloGDMU('Hello GDMU!');`)
 
 function initAnimate() {
     // 横向滚动动画
-    if (section3_scrollContainer.value) {
-        const scrollContainer = section3_scrollContainer.value;
-        if (scrollContainer) {
-            const totalWidth = scrollContainer.scrollWidth;
-            const containerWidth = scrollContainer.clientWidth;
-            const scrollLength = totalWidth - containerWidth;
-            gsap.to(scrollContainer, {
-                x: -scrollLength,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: section3_main.value,
-                    start: "top top",
-                    end: () => `+=${scrollLength}`,
-                    pin: true,
-                    scrub: true,
-                    anticipatePin: 1
-                }
-            });
+    const scrollContainer = section3_scrollContainer.value;
+    const totalWidth = scrollContainer!.scrollWidth;
+    const clientWidth = scrollContainer!.clientWidth;
+    section3_scrollLength.value = totalWidth - clientWidth;
+    gsap.to(scrollContainer, {
+        x: -section3_scrollLength.value,
+        ease: "none",
+        scrollTrigger: {
+            trigger: section3_scrollMain.value,
+            start: "top top",
+            end: () => `+=${section3_scrollLength.value}`,
+            pin: true,
+            scrub: true,
+            anticipatePin: 1
         }
-    }
+    });
     // 轮换 title 初始化样式
     gsap.set(
         section2_dynamicTitleArray.map(item => item.value),
@@ -621,7 +664,60 @@ function initAnimate() {
             onEnter: () => section2_dynamicTitleAnimation(section2_dynamicTitleIndex.value)
         });
     }
-    
+    const section3_blocks = section3_main.value!.querySelectorAll(".title-block")
+    gsap.set(section3_blocks, {
+        opacity: 0,
+        y: '50%',
+        filter: "blur(4px)"
+    })
+    section3_titleAnimation(section3_blocks as any);
+    gsap.set(section3_progressDivs.value, {
+        y: '-100%',
+        opacity: 0
+    })
+    const section3_scrollListenLength = section3_scrollLength.value - section3_PTag.value!.clientWidth
+    ScrollTrigger.create({
+        trigger: section3_scrollMain.value,
+        start: "top top",
+        end: () => `+=${section3_scrollListenLength}`,
+        onUpdate: (self) => {
+            const velocity = self.getVelocity();
+            section3_scrollProgress.value = self.progress;
+            section3_progressBlock.value!.style.clipPath = `inset(0 ${100 - self.progress * 100}% 0 0)`;
+            if (velocity > 2 || velocity < -2) {
+                section3_scrollVelocity.value = Math.abs(Number(velocity.toFixed(2)));
+            } else {
+                section3_scrollVelocity.value = 0;
+            }
+        },
+        onLeave: () => {
+            console.log('111');
+            section3_scrollVelocity.value = 0
+        },
+        onLeaveBack: () => {
+            console.log('222');
+            section3_scrollVelocity.value = 0
+            gsap.to(section3_progressDivs.value, {
+                y: '-100%',
+                opacity: 0,
+                duration: 0.5,
+                ease: "power3.out",
+            })
+        },
+        onEnter: () => {
+            console.log('333');
+            gsap.to(section3_progressDivs.value, {
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                ease: "power3.out"
+            })
+        },
+        onEnterBack: () => {
+            console.log('444');
+        }
+    })
+
 }
 
 // 轮换 title 动画
@@ -659,6 +755,40 @@ function section2_dynamicTitleAnimation(index: number) {
         }
     )
 }
+
+function section3_titleAnimation(els: NodeListOf<HTMLElement>) {
+    els.forEach((el) => {
+        ScrollTrigger.create({
+            trigger: el,
+            start: "bottom bottom",
+            once: true,
+            onEnter: () => {
+                gsap.to(el, {
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    y: 0,
+                    ease: "power3.out",
+                    duration: 0.5
+                })
+            }
+        })
+    })
+}
+
+onUnmounted(() => {
+    // 彻底清理所有 ScrollTrigger（保险起见）
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    // 清理 transform 和 pin 样式（如有需要）
+    if (section3_scrollContainer.value) {
+        section3_scrollContainer.value.style.transform = "";
+        section3_scrollContainer.value.style.willChange = "";
+    }
+    if (section3_scrollMain.value) {
+        section3_scrollMain.value.style.transform = "";
+        section3_scrollMain.value.style.willChange = "";
+    }
+});
+
 
 </script>
 

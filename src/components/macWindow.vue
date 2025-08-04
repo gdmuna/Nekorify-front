@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="relative h-fit w-fit">
+    <div ref="root" class="relative h-fit w-fit will-change-transform">
         <div ref="container"
             class="relative w-full h-full border-0 rounded-lg shadow-lg dark:bg-[#040711] p-4 pt-0 flex flex-col items-between z-10">
             <!-- 窗口顶部内容 -->
@@ -41,7 +41,6 @@ const { border = false, enterAnimate = false, enableSplitText = false } = define
 const root = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)
 
-
 onMounted(() => {
     if (enterAnimate) {
         // 先设置初始状态
@@ -52,13 +51,11 @@ onMounted(() => {
             scrollTrigger: {
                 trigger: root.value!,
                 start: "top bottom",
-                end: "bottom top",
                 once: true,
             }
         })
-        tl.fromTo(
+        tl.to(
             root.value,
-            { opacity: 0, y: '25%' },
             { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" }
         )
         tl.to(
@@ -77,7 +74,7 @@ onMounted(() => {
     const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize)
     const offset = enterAnimate ? rootHeight * 0.25 + remInPx : 0
         root.value!.querySelectorAll('.split-text').forEach(el => {
-            const split = new SplitText(el, { type: "chars" })
+            const split = new SplitText(el, { type: "chars", ignore: ".no-split", tag: "span" });
             ScrollTrigger.create({
                 trigger: el,
                 start: `top-=${offset} bottom`,
@@ -88,7 +85,7 @@ onMounted(() => {
                         split.chars,
                         {
                             opacity: 0,
-                            y: '100%',
+                            y: '50%',
                             filter: "blur(4px)",
                         },
                         {
@@ -97,7 +94,9 @@ onMounted(() => {
                             filter: "blur(0px)",
                             duration: 0.25,
                             ease: "power1.out",
-                            stagger: 0.01
+                            stagger: {
+                                amount: 0.5
+                            }
                         }
                     )
                 }
@@ -108,4 +107,5 @@ onMounted(() => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

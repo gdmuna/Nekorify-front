@@ -2,18 +2,19 @@
     <div>
         <Accordion type="single" collapsible>
             <AccordionItem v-for="(item, index) in QA" :key="index" :value="item.value">
-                <AccordionTrigger class="text-2xl border-t-2 border-[#bbb89c] cursor-pointer">
-                    <div class="flex-1 flex items-center justify-start space-x-4">
-                        <p class="text-6xl text-transparent text-stroke">Q{{ index + 1 }}</p>
-                        <div class="flex-1 flex items-center justify-start">
+                <AccordionTrigger
+                    class="accordion-trigger relative text-2xl border-t-2 border-[#bbb89c] cursor-pointer will-change-transform">
+                    <div class="flex-1 flex items-center justify-start space-x-4 z-10 px-4">
+                        <p class="text-6xl text-transparent text-stroke duration-300">Q{{ index + 1 }}</p>
+                        <div class="flex-1 flex items-center justify-start duration-300">
                             {{ item.question }}
                         </div>
                         <ChevronDown
-                            class="chevron-icon ml-auto text-muted-foreground pointer-events-none size-10 shrink-0 transition-transform duration-200" />
+                            class="chevron-icon ml-auto pointer-events-none size-10 shrink-0 transition-transform" />
                     </div>
                 </AccordionTrigger>
                 <AccordionContent class="text-2xl">
-                    <div class="flex items-center justify-start space-x-4 select-none">
+                    <div class="flex items-center justify-start space-x-4 select-none py-8 px-4">
                         <p class="text-6xl text-transparent text-stroke">A{{ index + 1 }}</p>
                         <div class="flex-1 flex items-center justify-start">
                             {{ item.answer }}
@@ -50,7 +51,43 @@ const QA = [
     -webkit-text-stroke: 1px #FEFCE4;
 }
 
+.chevron-icon {
+    color: #bbb89c;
+    transition: all 0.2s;
+}
+
 [data-state="open"] .chevron-icon {
     transform: rotate(180deg);
+}
+
+:deep(.accordion-trigger::before) {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 0;
+    background: #bbb89c;
+    transform: translateY(-50%);
+    transition: height 0.35s cubic-bezier(0.1, 0.7, 0.9, 1);
+    z-index: 0;
+    pointer-events: none;
+    will-change: auto;
+}
+
+:deep(.accordion-trigger:hover::before) {
+    height: 100%;
+}
+
+:deep(.accordion-trigger:hover) > * {
+    color: #0E100F;
+
+    .text-stroke {
+        -webkit-text-stroke: 1px #0E100F;
+    }
+
+    .chevron-icon {
+        color: #0E100F
+    }
 }
 </style>
