@@ -108,7 +108,6 @@ onMounted((): void => {
 
 function routerGoTo(path: string): void {
     router.push(path)
-    console.log(`跳转到${path}`);
 }
 
 

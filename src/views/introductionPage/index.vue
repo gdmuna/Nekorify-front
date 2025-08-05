@@ -1,6 +1,6 @@
 <template>
     <div ref="introPageRoot" class="w-full dark:text-[#FEFCE4] *:px-8">
-        <Teleport to="body">
+        <teleport to="body">
             <div class="fixed bottom-0 right-0 z-50 mr-5 flex flex-col items-end dark:text-[#FEFCE4]">
                 <p class="rotate-90 origin-right tracking-widest">SCROLL</p>
                 <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -8,7 +8,7 @@
                         stroke-dashoffset="0" class="animate-dash" />
                 </svg>
             </div>
-        </Teleport>
+        </teleport>
         <!-- Section 1 -->
         <section ref="section1" class="relative min-h-[calc(100dvh-3.5rem)] flex items-center justify-center
         bg-gray-100 dark:bg-[#0E100F]">
@@ -16,63 +16,18 @@
                 v-if="setion1_width > 0 && setion1_height > 0" />
             <!-- section 主内容 -->
             <div class="z-10 w-full min-h-[calc(100dvh-4rem)] flex flex-col lg:flex-row
-            items-center justify-evenly pointer-events-none *:pointer-events-auto">
+            items-center justify-between pointer-events-none *:pointer-events-auto">
                 <!-- 左侧内容 -->
-                <div
-                    class="relative text-7xl font-bold tracking-[0.2em] !pointer-events-none mb-20 will-change-transform">
-                    <div class="relative z-30 leading-[1.4em]">
-                        <h1 class="text-[#9C95F8]">TECH</h1>
-                        <h1 class="text-[#9C95F8] ml-[4.5rem]">OTAKUS</h1>
-                        <h1 class="text-[#F5C7F8] ml-[9rem]">SAVE</h1>
-                        <h1 class="text-[#53B7DE] ml-[4.5rem]">THE</h1>
-                        <h1 class="text-[#53B7DE]">WORLD</h1>
-                    </div>
-                    <div class="absolute top-0 left-0 translate-x-[1.5%] translate-y-[1.5%]
-                        text-7xl font-bold text-[#0E100F] z-20 leading-[1.4em]">
-                        <h1>TECH</h1>
-                        <h1 class="ml-[4.5rem]">OTAKUS</h1>
-                        <h1 class="ml-[9rem]">SAVE</h1>
-                        <h1 class="ml-[4.5rem]">THE</h1>
-                        <h1>WORLD</h1>
-                    </div>
-                    <div class="absolute top-0 left-0 translate-x-[2%] translate-y-[2%]
-                    text-7xl font-bold z-10 leading-[1.4em]">
-                        <h1 class="text-[#9C95F8]">TECH</h1>
-                        <h1 class="text-[#9C95F8] ml-[4.5rem]">OTAKUS</h1>
-                        <h1 class="text-[#F5C7F8] ml-[9rem]">SAVE</h1>
-                        <h1 class="text-[#53B7DE] ml-[4.5rem]">THE</h1>
-                        <h1 class="text-[#53B7DE]">WORLD</h1>
-                    </div>
-                </div>
+                <section1Left />
                 <!-- 右侧内容 -->
-                <macWindow class="mb-20">
-                    <template #TR>
-                        <img src="@/assets/icons8-javascript.svg" alt="JavaScript" class="size-6">
-                        <span class="text-lg code-JS">Javascript</span>
-                    </template>
-                    <template #main>
-                        <!-- 代码块 -->
-                        <div class="flex flex-1 items-start justify-start space-x-4 mb-2">
-                            <pre class="line-numbers !leading-2 !bg-transparent !m-0 !pt-0" tabindex="-1">
-<code ref="codeBlock" class="!text-sm language-javascript">{{ code }}</code>
-</pre>
-                        </div>
-                        <!-- 底部输出 -->
-                        <div class="flex items-center w-full pt-2 border-t-[#595959] border-t-1">
-                            <ChevronRight class="size-8 text-[#75777D]" />
-                            <span class="text-2xl">Hello GDMU!</span>
-                        </div>
-                    </template>
-                </macWindow>
+                <section1Right class="mr-32"/>
             </div>
             <div class="absolute bottom-0 left-1/2 flex items-center justify-between -translate-x-1/2
             mb-2 space-x-2 z-10 pointer-events-none">
-                <MoveDown class="size-8" />
                 <div class="flex flex-col items-center justify-between font-extrabold">
                     <p>GENTLE SWIPE. SILKY SMOOTH.</p>
-                    <p class="tracking-[0.4em]">小·心·地·滑</p>
+                    <p class="tracking-[0.4em]">你·好·世·界</p>
                 </div>
-                <MoveDown class="size-8" />
             </div>
         </section>
         <!-- Section 2 -->
@@ -110,6 +65,7 @@
                     <div ref="lottieContainerA" class="size-[42rem] absolute top-0 left-0"></div>
                     <macWindow border enterAnimate enableSplitText class="!w-128 ml-auto mr-20">
                         <template #TR>
+                            <div class="flex-1"></div>
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                             <span class="text-lg Association">GDMU-NA</span>
                         </template>
@@ -128,6 +84,7 @@
                 <div class="relative mt-100">
                     <macWindow border enterAnimate enableSplitText class="!w-128 ml-20">
                         <template #TR>
+                            <div class="flex-1"></div>
                             <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                             <span class="text-lg Association">GDMU-ACM</span>
                         </template>
@@ -149,6 +106,7 @@
                     <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64">
                     <macWindow border enterAnimate enableSplitText class="!w-128">
                         <template #TR>
+                            <div class="flex-1"></div>
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                             <div class="bg-[#595959] w-[1px] self-stretch" />
                             <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-7">
@@ -220,6 +178,7 @@
                         <div class="ml-32 flex space-x-32">
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
+                                    <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
@@ -239,6 +198,7 @@
                             </macWindow>
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
+                                    <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
@@ -258,6 +218,7 @@
                             </macWindow>
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
+                                    <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
@@ -277,6 +238,7 @@
                             </macWindow>
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
+                                    <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
@@ -296,6 +258,7 @@
                             </macWindow>
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
+                                    <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
@@ -315,6 +278,7 @@
                             </macWindow>
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
+                                    <div class="flex-1"></div>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-ACM</span>
                                 </template>
@@ -334,6 +298,7 @@
                             </macWindow>
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
+                                    <div class="flex-1"></div>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-ACM</span>
                                 </template>
@@ -353,6 +318,7 @@
                             </macWindow>
                             <macWindow border class="!w-110 !h-90">
                                 <template #TR>
+                                    <div class="flex-1"></div>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
                                     <span class="text-lg Association">GDMU-ACM</span>
                                 </template>
@@ -400,29 +366,11 @@
                     titleB_color="#119DEC" />
                 <QA class="mt-32 mx-4" />
                 <h1
-                    class="text-center section-4-title-1 flex flex-col justify-center text-7xl font-bold m-32 mb-16 space-y-8">
-                    <p class="self-start">WHERE CURIOSITY</p>
-                    <p class="self-end">BECOMES ENGINEERING</p>
+                    class="text-center section-4-title-1 flex flex-col justify-center text-7xl font-bold m-32 mb-16 space-y-8 whitespace-nowrap">
+                    <p class="self-start">WHERE FANTASY</p>
+                    <p class="self-end">BECOMES REALITY</p>
                 </h1>
-                <macWindow border enterAnimate class="mx-auto">
-                    <template #TR>
-                        <SquareTerminal class="text-[#595F66]" />
-                        <span class="text-[#595F66]">Terminal</span>
-                    </template>
-                    <template #main>
-                        <div class="flex-1 flex-col items-start justify-start w-full h-full space-y-4 m-2 mr-32">
-                            <p class="text-[#53B7DE]">> RESOURCE_MONITOR --community=NA_ACM</p>
-                            <p class="critical-shadow text-[#FF5F56] font-bold">[CRITICAL] ENGINEER_DEFICIT @ <span
-                                    class="text-[#F5C7F8] error-address">0xFE</span></p>
-                            <p class="critical-shadow text-[#FF5F56] font-bold text-lg mt-16">FATAL: FULL-STACK NODES
-                                REQUIRED</p>
-                            <p class="text-[#FFBD2E] font-bold mt-8 mb-4">> ACTION REQUIRED:</p>
-                            <p
-                                class="section-4-block-1 inline-block px-4 py-2 text-[#0E100F] rounded-md font-bold cursor-pointer mb-2 duration-300 hover:-translate-y-0.5 select-none">
-                                CLICK TO DEPLOY NEW NODE</p>
-                        </div>
-                    </template>
-                </macWindow>
+                <section4Terminal />
             </div>
         </section>
         <!-- Section 5 -->
@@ -495,19 +443,17 @@ import matrix from '@/components/matrix.vue';
 import macWindow from '@/components/macWindow.vue';
 import titleBlock from '@/components/titleBlock.vue';
 import QA from '@/components/QA.vue';
+import section4Terminal from '@/components/introductionPage/section4Terminal.vue';
+import section1Left from '@/components/introductionPage/section1Left.vue';
+import section1Right from '@/components/introductionPage/section1Right.vue';
 
 // 导入图标
-import { MoveDown } from 'lucide-vue-next';
 import { BrainCircuit } from 'lucide-vue-next';
 import { Puzzle } from 'lucide-vue-next';
 import { Satellite } from 'lucide-vue-next';
 import { ChevronRight } from 'lucide-vue-next';
-import { SquareTerminal } from 'lucide-vue-next';
 
-// @ts-ignore
-import Prism from 'prismjs'
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css'
-import 'prismjs/plugins/line-numbers/prism-line-numbers.js'
+
 
 // 导入 Lottie 动画库
 import lottie from 'lottie-web'
@@ -570,8 +516,6 @@ onMounted(() => {
         setion1_width.value = section1.value.clientWidth + 100;
         setion1_height.value = section1.value.clientHeight + 500;
     }
-    // 代码高亮
-    Prism.highlightAll();
     // 设置 Lottie 动画
     lottie.loadAnimation({
         container: lottieContainerA.value!,
@@ -614,21 +558,6 @@ const section3_progressText = computed(() => {
     }
 });
 
-const code = ref(`/**
- * 逐字符输出指定文本到终端
- * Powered by GDMU-NA & GDMU-ACM
- * @param {string} text - 要输出的文本内容
- * @returns {void} 无返回值
- * @example helloGDMU('Hello GDMU!');
- */
-function helloGDMU(text) {
-  for (let i = 0; i < text.length; i++) {
-    process.stdout.write(text[i]);
-  }
-}
-
-helloGDMU('Hello GDMU!');`)
-
 function initAnimate() {
     // 横向滚动动画
     const scrollContainer = section3_scrollContainer.value;
@@ -666,14 +595,14 @@ function initAnimate() {
     }
     const section3_blocks = section3_main.value!.querySelectorAll(".title-block")
     gsap.set(section3_blocks, {
-        opacity: 0,
+        autoAlpha: 0,
         y: '50%',
         filter: "blur(4px)"
     })
     section3_titleAnimation(section3_blocks as any);
     gsap.set(section3_progressDivs.value, {
         y: '-100%',
-        opacity: 0
+        autoAlpha: 0
     })
     const section3_scrollListenLength = section3_scrollLength.value - section3_PTag.value!.clientWidth
     ScrollTrigger.create({
@@ -699,7 +628,7 @@ function initAnimate() {
             section3_scrollVelocity.value = 0
             gsap.to(section3_progressDivs.value, {
                 y: '-100%',
-                opacity: 0,
+                autoAlpha: 0,
                 duration: 0.5,
                 ease: "power3.out",
             })
@@ -708,7 +637,7 @@ function initAnimate() {
             console.log('333');
             gsap.to(section3_progressDivs.value, {
                 y: 0,
-                opacity: 1,
+                autoAlpha: 1,
                 duration: 0.5,
                 ease: "power3.out"
             })
@@ -764,7 +693,7 @@ function section3_titleAnimation(els: NodeListOf<HTMLElement>) {
             once: true,
             onEnter: () => {
                 gsap.to(el, {
-                    opacity: 1,
+                    autoAlpha: 1,
                     filter: "blur(0px)",
                     y: 0,
                     ease: "power3.out",
@@ -776,17 +705,7 @@ function section3_titleAnimation(els: NodeListOf<HTMLElement>) {
 }
 
 onUnmounted(() => {
-    // 彻底清理所有 ScrollTrigger（保险起见）
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    // 清理 transform 和 pin 样式（如有需要）
-    if (section3_scrollContainer.value) {
-        section3_scrollContainer.value.style.transform = "";
-        section3_scrollContainer.value.style.willChange = "";
-    }
-    if (section3_scrollMain.value) {
-        section3_scrollMain.value.style.transform = "";
-        section3_scrollMain.value.style.willChange = "";
-    }
 });
 
 

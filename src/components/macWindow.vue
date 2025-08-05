@@ -9,7 +9,7 @@
                     <div class="size-4 bg-[#FFBD2E] rounded-full"></div>
                     <div class="size-4 bg-[#27C93F] rounded-full"></div>
                 </div>
-                <div class="flex items-center justify-between space-x-2">
+                <div class="flex flex-1 items-center space-x-2">
                     <slot name="TR" />
                 </div>
             </div>
@@ -26,22 +26,27 @@
 
 <script setup lang="ts">
 
-import { ref, defineProps, onMounted } from 'vue'
+import { ref, defineProps, onMounted, onUnmounted } from 'vue'
+
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 
 
-const { border = false, enterAnimate = false, enableSplitText = false } = defineProps<{
+const { border = false, enterAnimate = false, enableSplitText = false, customFn = null } = defineProps<{
     border?: boolean
     enterAnimate?: boolean
     enableSplitText?: boolean
+    customFn?: Function
 }>()
 
 const root = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)
 
 onMounted(() => {
+    const rootHeight = root.value!.offsetHeight
+    const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize)
+    const offset = enterAnimate ? rootHeight * 0.25 + remInPx : 0
     if (enterAnimate) {
         // 先设置初始状态
         if (root.value) {
@@ -70,9 +75,6 @@ onMounted(() => {
         )
     }
     if (enableSplitText) {
-    const rootHeight = root.value!.offsetHeight
-    const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize)
-    const offset = enterAnimate ? rootHeight * 0.25 + remInPx : 0
         root.value!.querySelectorAll('.split-text').forEach(el => {
             const split = new SplitText(el, { type: "chars", ignore: ".no-split", tag: "span" });
             ScrollTrigger.create({
@@ -103,9 +105,21 @@ onMounted(() => {
             })
         })
     }
+    if (customFn) {
+        ScrollTrigger.create({
+            trigger: root.value!,
+            start: `top bottom`,
+            end: "bottom top",
+            once: true,
+            onEnter: () => customFn()
+        })
+    }
+})
+
+onUnmounted(() => {
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 })
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

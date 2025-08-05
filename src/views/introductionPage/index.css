@@ -117,6 +117,6 @@
 }
 
 .section3-progressBlock {
-    background: linear-gradient(88.77deg, rgba(117, 168, 237, 1), rgba(146, 219, 242, 1) 50%, rgba(210, 210, 247, 1) 100%);
+    background: linear-gradient(90deg, #9C95F8, #F5C7F8);
     clip-path: inset(0 100% 0 0);
 }
