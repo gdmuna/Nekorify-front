@@ -1,6 +1,6 @@
 <template>
     <svg ref="matrix" :width="width" :height="height" :viewBox="`0 0 ${viewBoxWidth} ${viewBoxHeight}`"
-        shape-rendering="crispEdges" preserveAspectRatio="none">
+        shape-rendering="crispEdges" preserveAspectRatio="none" class="overflow-hidden">
         <!-- 循环渲染行 -->
         <g v-for="(_, i) in rowCount" :key="i">
             <!-- 循环渲染列 -->

@@ -25,7 +25,7 @@
             <div class="absolute bottom-0 left-1/2 flex items-center justify-between -translate-x-1/2
             mb-2 space-x-2 z-10 pointer-events-none">
                 <div class="flex flex-col items-center justify-between font-extrabold">
-                    <p>GENTLE SWIPE. SILKY SMOOTH.</p>
+                    <p>Nice to cross paths with you</p>
                     <p class="tracking-[0.4em]">你·好·世·界</p>
                 </div>
             </div>
@@ -620,11 +620,9 @@ function initAnimate() {
             }
         },
         onLeave: () => {
-            console.log('111');
             section3_scrollVelocity.value = 0
         },
         onLeaveBack: () => {
-            console.log('222');
             section3_scrollVelocity.value = 0
             gsap.to(section3_progressDivs.value, {
                 y: '-100%',
@@ -634,7 +632,6 @@ function initAnimate() {
             })
         },
         onEnter: () => {
-            console.log('333');
             gsap.to(section3_progressDivs.value, {
                 y: 0,
                 autoAlpha: 1,
@@ -643,7 +640,7 @@ function initAnimate() {
             })
         },
         onEnterBack: () => {
-            console.log('444');
+
         }
     })
 
