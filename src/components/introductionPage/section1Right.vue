@@ -28,7 +28,7 @@
             <template #main>
                 <!-- 代码块 -->
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre class="line-numbers !bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0"
+                    <pre :class="['!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0', !isMobile ? 'line-numbers' : '']"
                         tabindex="-1">
 <code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.725rem]', codeClass[codesIndex]]" ></code><span ref="cursor" class="cursor">▌</span>
 </pre>
@@ -55,7 +55,7 @@
                 <template #main>
                     <!-- 代码块 -->
                     <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                        <pre class="line-numbers !bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0 pointer-events-none"
+                        <pre :class="['!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0 pointer-events-none', !isMobile ? 'line-numbers' : '']"
                             tabindex="-1">
 <code :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.725rem]', codeClass[codesIndex]]" >{{ codes[codesIndex] }}</code>
 </pre>
@@ -85,6 +85,12 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.js'
 
 import { gsap } from "gsap"
 import { SplitText } from "gsap/SplitText";
+
+import { useSystemStore } from '@/stores/system'
+import { storeToRefs } from 'pinia'
+
+const systemStore = useSystemStore()
+const { isMobile } = storeToRefs(systemStore)
 
 
 const codeBlock = ref<HTMLElement | null>(null)
