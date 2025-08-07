@@ -1,6 +1,6 @@
 <template>
     <div ref="root" class="relative mb-20">
-        <macWindow ref="visibleMacWindow" class="!w-128 z-1">
+        <macWindow ref="visibleMacWindow" class="lg:!w-120 md:!w-108 !w-96 z-1">
             <template #TR>
                 <div class="relative flex-1 overflow-hidden">
                     <div ref="logo_cpp" class="flex items-center space-x-2 justify-end">
@@ -28,8 +28,8 @@
             <template #main>
                 <!-- 代码块 -->
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre class="line-numbers !leading-2 !bg-transparent !m-0 !pt-0" tabindex="-1">
-<code ref="codeBlock" :class="['!text-sm', codeClass[codesIndex]]" ></code><span ref="cursor" class="cursor">▌</span>
+                    <pre class="line-numbers !bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0" tabindex="-1">
+<code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.725rem]', codeClass[codesIndex]]" ></code><span ref="cursor" class="cursor">▌</span>
 </pre>
                 </div>
                 <!-- 底部输出 -->
@@ -40,7 +40,7 @@
             </template>
         </macWindow>
         <!-- 用于为可视窗口赋值高度 -->
-        <macWindow ref="hiddenMacWindow" class="!w-128 !absolute top-0 left-0 z-0 pointer-events-none opacity-0">
+        <macWindow ref="hiddenMacWindow" class="lg:!w-120 md:!w-108 !absolute top-0 left-0 z-0 pointer-events-none opacity-0">
             <template #TR>
                 <div class="relative flex-1 overflow-hidden">
                     <div class="flex items-center space-x-2 justify-end">
@@ -52,8 +52,8 @@
             <template #main>
                 <!-- 代码块 -->
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre class="line-numbers !leading-2 !bg-transparent !m-0 !pt-0 pointer-events-none" tabindex="-1">
-<code :class="['!text-sm', codeClass[codesIndex]]" >{{ codes[codesIndex] }}</code>
+                    <pre class="line-numbers !bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0 pointer-events-none" tabindex="-1">
+<code :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.725rem]', codeClass[codesIndex]]" >{{ codes[codesIndex] }}</code>
 </pre>
                 </div>
                 <!-- 底部输出 -->
@@ -71,7 +71,7 @@ import { ref, onMounted, nextTick, onUnmounted } from 'vue'
 
 import { ChevronRight } from 'lucide-vue-next'
 
-import macWindow from '@/components/macWindow.vue'
+import macWindow from '@/components/introductionPage/macWindow.vue'
 
 // @ts-ignore
 import Prism from 'prismjs'
@@ -107,6 +107,8 @@ const cursor = ref<HTMLElement | null>(null)
 
 const root = ref<HTMLElement | null>(null)
 
+let codeTimer: number | null = null
+
 onMounted(() => {
     Prism.highlightAll()
     gsap.set(logos.map(el => el.value), {
@@ -124,6 +126,10 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+    if (codeTimer) {
+        clearTimeout(codeTimer)
+        codeTimer = null
+    }
     helloGDMU.splitGDMU?.revert()
     helloGDMU.splitGDMU = null
     if (helloGDMU.tl) {
@@ -305,42 +311,48 @@ function splitCode() {
     const text = codes[codesIndex.value]
     if (text) {
         let index = 0
-        const timeout = () => setTimeout(() => {
-            codeBlock.value!.textContent += text[index++]
-            Prism.highlightAllUnder(root.value)
-            if (index < text.length) {
-                timeout()
-            } else {
-                helloGDMU.restart()
-                cursor.value!.classList.add('animate')
-            }
-        }, 16)
+        const timeout = () => {
+            codeTimer = setTimeout(() => {
+                if (!codeBlock.value) return // 组件已卸载，直接返回
+                codeBlock.value.textContent += text[index++]
+                Prism.highlightAllUnder(root.value)
+                if (index < text.length) {
+                    timeout()
+                } else {
+                    helloGDMU.restart()
+                    cursor.value!.classList.add('animate')
+                }
+            }, 16)
+        }
         timeout()
     }
 }
 
 function eraseCode() {
-    const text = codeBlock.value!.textContent
-    let index = text!.length
+    const text = codeBlock.value?.textContent ?? ""
+    let index = text.length
     if (text) {
-        const timeout = () => setTimeout(() => {
-            if (index > 0) {
-                codeBlock.value!.textContent = text.slice(0, --index)
-                Prism.highlightAllUnder(root.value)
-                timeout()
-            } else {
-                codesIndex.value = (codesIndex.value + 1) % codes.length
-                nextTick(() => {
-                    const height = (hiddenMacWindow.value as any)!.$el.offsetHeight
-                    gsap.to((visibleMacWindow.value as any)!.$el, {
-                        height: height,
-                        ease: "power3.out",
-                        duration: 1.5
+        const timeout = () => {
+            codeTimer = setTimeout(() => {
+                if (!codeBlock.value) return // 组件已卸载，直接返回
+                if (index > 0) {
+                    codeBlock.value.textContent = text.slice(0, --index)
+                    Prism.highlightAllUnder(root.value)
+                    timeout()
+                } else {
+                    codesIndex.value = (codesIndex.value + 1) % codes.length
+                    nextTick(() => {
+                        const height = (hiddenMacWindow.value as any)!.$el.offsetHeight
+                        gsap.to((visibleMacWindow.value as any)!.$el, {
+                            height: height,
+                            ease: "power3.out",
+                            duration: 1.5
+                        })
+                        enterAnimate()
                     })
-                    enterAnimate()
-                })
-            }
-        }, 4)
+                }
+            }, 4)
+        }
         timeout()
     }
 }
@@ -393,12 +405,10 @@ function eraseCode() {
 }
 
 @keyframes blink {
-
     0%,
     100% {
         opacity: 1;
     }
-
     50% {
         opacity: 0;
     }

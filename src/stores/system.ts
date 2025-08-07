@@ -3,19 +3,21 @@ import { h, ref, computed } from 'vue'
 import { toast } from 'vue-sonner'
 
 export const useSystemStore = defineStore('system', () => {
-    const isDark = ref<boolean>(false)
+    const isDark = ref<boolean>(true)
     function initTheme(): void {
         if (localStorage.getItem('isDark') === 'true') {
+            console.log('111');
             document.documentElement.classList.add('dark')
             isDark.value = true
         } else if (localStorage.getItem('isDark') === 'false') {
+            console.log('222');
             document.documentElement.classList.remove('dark')
             isDark.value = false
         } else {
-            // 默认主题为浅色
-            document.documentElement.classList.remove('dark')
-            isDark.value = false
-            localStorage.setItem('isDark', 'light')
+            // 默认主题为深色
+            document.documentElement.classList.add('dark')
+            isDark.value = true
+            localStorage.setItem('isDark', 'true')
         }
     }
     // 切换主题
@@ -30,10 +32,28 @@ export const useSystemStore = defineStore('system', () => {
             localStorage.setItem('isDark', 'false')
         }
     }
+    // 强制切换主题
+    function forceToggleTheme(theme: string): void {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark')
+            isDark.value = true
+        } else {
+            document.documentElement.classList.remove('dark')
+            isDark.value = false
+        }
+    }
+
+    const isMobile = computed(() => window.innerWidth <= 767)
+    const isTablet = computed(() => window.innerWidth > 767 && window.innerWidth <= 1024)
+    const isDesktop = computed(() => window.innerWidth > 1024)
 
     return {
-        isDark: computed(() => isDark.value),
+        isDark,
+        isMobile,
+        isTablet,
+        isDesktop,
         initTheme,
         toggleTheme,
+        forceToggleTheme
     }
 })

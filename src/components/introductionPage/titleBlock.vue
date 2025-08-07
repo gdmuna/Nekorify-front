@@ -1,9 +1,10 @@
 <template>
-    <div ref="container" class="text-[#0E100F] text-4xl font-extrabold flex flex-col items-start will-change-transform">
-        <p ref="titleA_block" class="title px-8 py-3 rounded-lg z-10 whitespace-nowrap" :style="{ backgroundColor: titleA_color }">
+    <div ref="container" class="text-[#0E100F] lg:text-4xl text-xl font-extrabold flex flex-col
+    items-start will-change-transform lg:*:px-8 lg:*:py-3 *:px-3 *:py-0.5">
+        <p ref="titleA_block" class="title rounded-lg z-10 whitespace-nowrap" :style="{ backgroundColor: titleA_color }">
             {{ titleA }}
         </p>
-        <p ref="titleB_block" class="px-8 py-3 rounded-lg ml-8 -translate-y-1.5 whitespace-nowrap"
+        <p ref="titleB_block" class="rounded-lg md:ml-8 ml-4 -translate-y-1.5 whitespace-nowrap"
             :style="{ backgroundColor: titleB_color }">
             {{ titleB }}
         </p>

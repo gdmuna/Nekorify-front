@@ -44,10 +44,10 @@
 
 <script setup lang="ts">
 
-import macWindow from '@/components/macWindow.vue';
+import macWindow from '@/components/introductionPage/macWindow.vue';
 import { SquareTerminal } from 'lucide-vue-next';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 import { gsap } from "gsap"
 import { SplitText } from "gsap/SplitText";
@@ -58,6 +58,11 @@ const pTag2 = ref<HTMLElement | null>(null)
 const pTag3 = ref<HTMLElement | null>(null)
 const pTag4 = ref<HTMLElement | null>(null)
 const Button = ref<HTMLElement | null>(null)
+
+let buttonTextEnter = false
+let mouseEnterHandler: (() => void) | null = null
+let autoEnterTimer: number | null = null
+let codeTimer: number | null = null
 
 onMounted(() => {
     gsap.set([
@@ -78,10 +83,25 @@ onMounted(() => {
     })
 })
 
+onUnmounted(() => {
+    // 清理事件监听
+    if (Button.value && mouseEnterHandler) {
+        Button.value.removeEventListener('mouseenter', mouseEnterHandler)
+    }
+    mouseEnterHandler = null
+    // 清理定时器
+    if (autoEnterTimer) {
+        clearTimeout(autoEnterTimer)
+        autoEnterTimer = null
+    }
+    if (codeTimer) {
+        clearTimeout(codeTimer)
+        codeTimer = null
+    }
+})
+
 function animate() {
-    const tl = gsap.timeline({
-        paused: true,
-    })
+    const tl = gsap.timeline({ paused: true })
     const pTag2_log = pTag2.value!.querySelector('.log-level') as HTMLElement
     tl.to(pTag2_log, {
         autoAlpha: 1,
@@ -125,11 +145,12 @@ function animate() {
         duration: 0
     })
     const buttonText2 = Button.value!.querySelector('.button-text2') as HTMLElement
-    let buttonTextEnter = false
-    const callBack = () => {
+    buttonTextEnter = false
+    mouseEnterHandler = () => {
         if (buttonTextEnter) return
         buttonTextEnter = true
-        const buttonText1 = Button.value!.querySelector('.button-text1') as HTMLElement
+        const buttonText1 = Button.value?.querySelector('.button-text1') as HTMLElement
+        if (!buttonText1 || !buttonText2) return
         tl.to(buttonText1, {
             autoAlpha: 0,
             y: '-50%',
@@ -150,8 +171,10 @@ function animate() {
         delay: 1,
         duration: 0.5,
         onStart: () => {
-            Button.value?.addEventListener('mouseenter', callBack)
-            setTimeout(callBack, 1500)
+            Button.value?.addEventListener('mouseenter', mouseEnterHandler!)
+            autoEnterTimer = setTimeout(() => {
+                mouseEnterHandler && mouseEnterHandler()
+            }, 1500)
         }
     })
     splitCommand(pTag1.value!.querySelector('.text') as HTMLElement, () => tl.play());
@@ -162,15 +185,17 @@ function splitCommand(el: HTMLElement, callBack: Function) {
     el.textContent = ''
     if (text) {
         let index = 0
-        const timeout = () => setTimeout(() => {
-            el.textContent += text[index++]
-            if (index < text.length) {
-                timeout()
-            } else {
-                pTag1.value!.querySelector('.cursor')!.classList.add('animate')
-                callBack()
-            }
-        }, 32)
+        const timeout = () => {
+            codeTimer = setTimeout(() => {
+                el.textContent += text[index++]
+                if (index < text.length) {
+                    timeout()
+                } else {
+                    pTag1.value!.querySelector('.cursor')!.classList.add('animate')
+                    callBack()
+                }
+            }, 32)
+        }
         timeout()
     }
 }
@@ -199,6 +224,7 @@ button:hover {
 
 .cursor {
     margin-left: 0.25rem;
+    color: #FEFCE4;
 }
 
 .cursor :deep.animate {
@@ -206,12 +232,10 @@ button:hover {
 }
 
 @keyframes blink {
-
     0%,
     100% {
         opacity: 1;
     }
-
     50% {
         opacity: 0;
     }

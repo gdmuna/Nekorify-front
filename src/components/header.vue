@@ -36,7 +36,7 @@
             <!-- 页眉右侧内容 -->
             <div class="flex items-center">
                 <div class="flex items-center space-x-4">
-                    <toggleThemeButton :model-value="isDark" @update:model-value="toggleTheme" class="cursor-pointer dark:bg-[#FEFCE4]">
+                    <toggleThemeButton :disabled="disableSwitchTheme" :model-value="isDark" @update:model-value="toggleTheme" class="cursor-pointer dark:bg-[#FEFCE4]">
                         <template #thumb>
                             <Moon v-if="isDark" class="size-5" />
                             <Sun v-else class="size-5" />
@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 // 导入 Vue 相关库和组件
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 // 导入 Pinia 相关库
@@ -98,13 +98,15 @@ const router = useRouter()
 const systemStore = useSystemStore()
 
 const { isDark } = storeToRefs(systemStore)
-const { toggleTheme, initTheme } = systemStore
+const { toggleTheme } = systemStore
 
 onMounted((): void => {
-    initTheme()
-    console.log(`isDark: ${isDark.value}`);
+    
 })
 
+const disableSwitchTheme = computed(() => {
+    return router.currentRoute.value.path === '/'
+})
 
 function routerGoTo(path: string): void {
     router.push(path)

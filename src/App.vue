@@ -1,5 +1,5 @@
 <template>
-    <div id="appContainer" class="w-full flex flex-col dark:text-[#FEFCE4]">
+    <div id="appContainer" class="w-full flex flex-col dark:text-[#FEFCE4] overflow-hidden">
         <!-- 页眉 -->
         <Header />
         <!-- 消息弹窗挂载点 -->
@@ -20,13 +20,22 @@ import { Toaster } from 'vue-sonner'
 // 导入组件
 import Header from '@/components/header.vue'
 
-import { onMounted, onBeforeMount, ref } from 'vue'
+import { onMounted, onBeforeMount, ref, computed } from 'vue'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 import { useRouter } from 'vue-router'
 
+import { useSystemStore } from '@/stores/system'
+import { storeToRefs } from 'pinia'
+
 const scroll_progress = ref<HTMLElement | null>(null)
+
+const systemStore = useSystemStore()
+const { initTheme, forceToggleTheme } = systemStore
+const { isDark } = storeToRefs(systemStore)
+
+const previousIsDark = ref(isDark.value)
 
 // 动态设置根元素字体大小
 function setRootFontSize() {
@@ -41,6 +50,12 @@ window.addEventListener('resize', setRootFontSize);
 onBeforeMount(() => {
     // 初始化根字体大小
     setRootFontSize();
+    initTheme();
+    if (localStorage.getItem('isDark') === 'true') {
+        previousIsDark.value = true
+    } else {
+        previousIsDark.value = false
+    }
 })
 
 const router = useRouter()
@@ -51,15 +66,24 @@ onMounted(() => {
         wrapper: '#app',
         content: '#content',
         smooth: 0.75,
+        normalizeScroll: true,
+        smoothTouch: 0,
         onUpdate: (self) => {
             const progress = self.progress
             scroll_progress.value!.style.clipPath = `inset(0 0 ${100 - progress * 100}% 0)`;
         },
     })
     // 路由跳转后重置滚动进度
-    router.beforeEach(() => {
+    router.beforeEach((from) => {
         // 立即滚动到顶部
         smoother.scrollTo(0, false)
+        if (from.path !== '/') {
+            previousIsDark.value = isDark.value
+        }
+        if (from.path === '/' && previousIsDark.value === false) {
+            forceToggleTheme(`${previousIsDark.value}`)
+        }
+        return true
     })
 })
 

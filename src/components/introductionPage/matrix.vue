@@ -15,6 +15,13 @@
 <script setup lang="ts">
 import { defineProps, ref, computed } from 'vue'
 
+import { useSystemStore } from '@/stores/system'
+import { storeToRefs } from 'pinia'
+
+const systemStore = useSystemStore()
+const { isMobile } = storeToRefs(systemStore)
+
+
 const props = defineProps<{
     width?: number
     height?: number
@@ -24,10 +31,19 @@ const props = defineProps<{
 const width = props.width ?? 800
 const height = props.height ?? 600
 
+const a = computed(() => {
+    if (isMobile.value) {
+        return 0.45
+    } else {
+        return 0.5
+    }
+})
+
+
 // 常量定义
-const a = 0.5       // 六边形外接圆半径
-const dx = a * Math.sqrt(3)  // 列间距（水平方向中心点距离）
-const dy = a * 1.5  // 行间距（垂直方向中心点距离）
+// const a = 0.5       // 六边形外接圆半径
+const dx = a.value * Math.sqrt(3)  // 列间距（水平方向中心点距离）
+const dy = a.value * 1.5  // 行间距（垂直方向中心点距离）
 
 const matrix = ref<SVGSVGElement | null>(null)
 
@@ -37,7 +53,7 @@ const rowCount = computed(() => Math.ceil(height / (dy * 100)))
 const viewBoxWidth = computed(() => dx * (colCount.value + 0.5))
 const viewBoxHeight = computed(() => {
     // 基础高度 = 顶部间距 + 行数×行高 + 底部间距
-    return a + (rowCount.value * dy) + a
+    return a.value + (rowCount.value * dy) + a.value
 })
 
 function onEnter(id: string) {
@@ -62,12 +78,12 @@ function onLeave(id: string) {
 const hexPoints = (i: number, j: number) => {
     const offsetX = (i % 2) * dx / 2
     const centerX = j * dx + dx / 2 + offsetX
-    const centerY = a + i * dy
+    const centerY = a.value + i * dy
 
     return Array.from({ length: 6 }).map((_, k) => {
         const angle = Math.PI / 6 + k * Math.PI / 3
-        const x = centerX + a * Math.cos(angle)
-        const y = centerY + a * Math.sin(angle)
+        const x = centerX + a.value * Math.cos(angle)
+        const y = centerY + a.value * Math.sin(angle)
         return `${x},${y}`
     }).join(' ')
 }

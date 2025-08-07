@@ -1,5 +1,5 @@
 <template>
-    <div ref="introPageRoot" class="w-full dark:text-[#FEFCE4] *:px-8">
+    <div ref="introPageRoot" class="w-full *:w-full dark:text-[#FEFCE4] dark:bg-[#0E100F]">
         <teleport to="body">
             <div class="fixed bottom-0 right-0 z-50 mr-5 flex flex-col items-end dark:text-[#FEFCE4]">
                 <p class="rotate-90 origin-right tracking-widest">SCROLL</p>
@@ -10,21 +10,21 @@
             </div>
         </teleport>
         <!-- Section 1 -->
-        <section ref="section1" class="relative min-h-[calc(100dvh-3.5rem)] flex items-center justify-center
-        bg-gray-100 dark:bg-[#0E100F]">
+        <section ref="section1" class="relative h-[calc(100dvh-3.5rem)] flex items-center justify-center
+        bg-gray-100">
             <matrix class="absolute z-1 select-none" :width="setion1_width" :height="setion1_height"
                 v-if="setion1_width > 0 && setion1_height > 0" />
             <!-- section 主内容 -->
-            <div class="z-10 w-full min-h-[calc(100dvh-4rem)] flex flex-col lg:flex-row
-            items-center justify-between pointer-events-none *:pointer-events-auto">
+            <div class="z-10 w-full min-h-[calc(100dvh-4rem)] flex flex-col md:flex-row
+            items-center justify-evenly pointer-events-none *:pointer-events-auto">
                 <!-- 左侧内容 -->
-                <section1Left />
+                <section1Left class="xl:mb-20 xl:ml-32 lg:ml-16 md:ml-4 mx-1" />
                 <!-- 右侧内容 -->
-                <section1Right class="mr-32"/>
+                <section1Right class="xl:mr-32 lg:mr-24 md:mr-4 lg:ml-8 md:ml-4 mx-1" />
             </div>
             <div class="absolute bottom-0 left-1/2 flex items-center justify-between -translate-x-1/2
             mb-2 space-x-2 z-10 pointer-events-none">
-                <div class="flex flex-col items-center justify-between font-extrabold">
+                <div class="flex flex-col items-center justify-between font-extrabold whitespace-nowrap">
                     <p>Nice to cross paths with you</p>
                     <p class="tracking-[0.4em]">你·好·世·界</p>
                 </div>
@@ -33,36 +33,37 @@
         <!-- Section 2 -->
         <section class="relative bg-gray-200 dark:bg-[#0E100F]">
             <!-- 背景过渡 -->
-            <div class="absolute top-0 left-0 w-full h-72 z-10 pointer-events-none gradientBg" />
+            <div class="absolute top-0 left-0 w-screen lg:h-72 h-64 z-10 pointer-events-none gradientBg" />
             <!-- section 主内容 -->
-            <div class="pt-72">
+            <div class="lg:pt-72 pt-64">
                 <!-- section title -->
-                <titleBlock class="ml-8" titleA="WHO" titleA_color="#F5C7F8" titleB="WE ARE" titleB_color="#EF8D36" />
-                <div class="flex flex-col items-center font-bold my-32">
-                    <h1 class="text-9xl">
+                <titleBlock class="md:ml-8 ml-4" titleA="WHO" titleA_color="#F5C7F8" titleB="WE ARE" titleB_color="#EF8D36" />
+                <div class="flex flex-col items-center font-bold lg:my-32 md:my-16 my-8">
+                    <h1 class="lg:text-9xl md:text-[5rem] text-5xl whitespace-nowrap">
                         WE ARE THE
                     </h1>
-                    <div ref="section2_title_1" class="relative w-full h-[3.75rem] mt-4 overflow-hidden">
+                    <div ref="section2_title_1" class="relative w-full lg:h-[4.5rem] md:h-[3rem] h-[1.875rem] mt-4 overflow-hidden
+                    *:whitespace-nowrap lg:*:text-7xl md:*:text-5xl text-3xl lg:*:space-x-6 md:*:space-x-4 *:space-x-2">
                         <h2 ref="section2_dynamicTitle_1"
-                            class="text-6xl flex items-center space-x-6 absolute left-1/2 -translate-x-1/2">
+                            class="flex items-center absolute left-1/2 -translate-x-1/2">
                             <span class="block">DEVELOPER</span>
-                            <BrainCircuit class="size-12" />
+                            <BrainCircuit class="lg:size-12 md:size-10 size-6" />
                         </h2>
                         <h2 ref="section2_dynamicTitle_2"
-                            class="text-6xl flex items-center space-x-6 absolute left-1/2 -translate-x-1/2">
+                            class="flex items-center absolute left-1/2 -translate-x-1/2">
                             <span class="block">ARCHITECT</span>
-                            <Puzzle class="size-12" />
+                            <Puzzle class="lg:size-12 md:size-10 size-6" />
                         </h2>
                         <h2 ref="section2_dynamicTitle_3"
-                            class="text-6xl flex items-center space-x-6 absolute left-1/2 -translate-x-1/2">
+                            class="flex items-center absolute left-1/2 -translate-x-1/2">
                             <span class="block">EXPLORER</span>
-                            <Satellite class="size-12" />
+                            <Satellite class="lg:size-12 md:size-10 size-6" />
                         </h2>
                     </div>
                 </div>
                 <!-- card-1 -->
-                <div class="relative mt-40">
-                    <div ref="lottieContainerA" class="size-[42rem] absolute top-0 left-0"></div>
+                <div class="relative lg:mt-40 md:mt-24 mt-16">
+                    <div ref="lottieContainerA" v-if="isDesktop" class="size-[42rem] absolute top-0 left-0"></div>
                     <macWindow border enterAnimate enableSplitText class="!w-128 ml-auto mr-20">
                         <template #TR>
                             <div class="flex-1"></div>
@@ -98,12 +99,13 @@
                             </div>
                         </template>
                     </macWindow>
-                    <div ref="lottieContainerB" class="size-[42rem] absolute top-0 right-0 -translate-y-1/2">
+                    <div ref="lottieContainerB" v-if="isDesktop"
+                        class="size-[42rem] absolute top-0 right-0 -translate-y-1/2">
                     </div>
                 </div>
                 <!-- card-3 -->
                 <div class="flex items-center justify-evenly mt-48">
-                    <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64">
+                    <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64" v-if="isDesktop">
                     <macWindow border enterAnimate enableSplitText class="!w-128">
                         <template #TR>
                             <div class="flex-1"></div>
@@ -125,7 +127,7 @@
                             </div>
                         </template>
                     </macWindow>
-                    <img ref="fish_smile" src="/src/assets/鱼-笑.webp" alt="" class="size-64">
+                    <img ref="fish_smile" src="/src/assets/鱼-笑.webp" alt="" class="size-64" v-if="isDesktop">
                 </div>
             </div>
         </section>
@@ -364,7 +366,7 @@
                 <!-- section title -->
                 <titleBlock class="ml-8" titleA="QUESTION" titleA_color="#27AFA5" titleB="AND ANSWER"
                     titleB_color="#119DEC" />
-                <QA class="mt-32 mx-4" />
+                <QA class="mt-32 mx-8" />
                 <h1
                     class="text-center section-4-title-1 flex flex-col justify-center text-7xl font-bold m-32 mb-16 space-y-8 whitespace-nowrap">
                     <p class="self-start">WHERE FANTASY</p>
@@ -436,13 +438,13 @@
 </template>
 <script setup lang="ts">
 
-import { computed, onMounted, ref, onUnmounted } from 'vue';
+import { computed, onMounted, ref, onUnmounted, onBeforeMount } from 'vue';
 
 // 导入组件
-import matrix from '@/components/matrix.vue';
-import macWindow from '@/components/macWindow.vue';
-import titleBlock from '@/components/titleBlock.vue';
-import QA from '@/components/QA.vue';
+import matrix from '@/components/introductionPage/matrix.vue';
+import macWindow from '@/components/introductionPage/macWindow.vue';
+import titleBlock from '@/components/introductionPage/titleBlock.vue';
+import QA from '@/components/introductionPage/QA.vue';
 import section4Terminal from '@/components/introductionPage/section4Terminal.vue';
 import section1Left from '@/components/introductionPage/section1Left.vue';
 import section1Right from '@/components/introductionPage/section1Right.vue';
@@ -451,9 +453,6 @@ import section1Right from '@/components/introductionPage/section1Right.vue';
 import { BrainCircuit } from 'lucide-vue-next';
 import { Puzzle } from 'lucide-vue-next';
 import { Satellite } from 'lucide-vue-next';
-import { ChevronRight } from 'lucide-vue-next';
-
-
 
 // 导入 Lottie 动画库
 import lottie from 'lottie-web'
@@ -464,11 +463,17 @@ import programmingLottie from '@/assets/programming.json';
 
 // 导入 GSAP 及其插件
 import { gsap } from "gsap"
-import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // 导入动画服务
 import { Animation } from '@/services'
+
+import { useSystemStore } from '@/stores/system';
+import { storeToRefs } from 'pinia';
+
+const systemStore = useSystemStore();
+const { forceToggleTheme } = systemStore;
+const { isDesktop } = storeToRefs(systemStore);
 
 const introPageRoot = ref<HTMLElement | null>(null);
 
@@ -516,21 +521,23 @@ onMounted(() => {
         setion1_width.value = section1.value.clientWidth + 100;
         setion1_height.value = section1.value.clientHeight + 500;
     }
-    // 设置 Lottie 动画
-    lottie.loadAnimation({
-        container: lottieContainerA.value!,
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        animationData: Webdesign,
-    })
-    lottie.loadAnimation({
-        container: lottieContainerB.value!,
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        animationData: programmingLottie,
-    })
+    if (isDesktop.value) {
+        // 设置 Lottie 动画
+        lottie.loadAnimation({
+            container: lottieContainerA.value!,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: Webdesign,
+        })
+        lottie.loadAnimation({
+            container: lottieContainerB.value!,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: programmingLottie,
+        })
+    }
     // 滚动视差效果
     animationSys = new Animation()
     animationSys.smootherEffects(
@@ -539,6 +546,10 @@ onMounted(() => {
     )
     // 初始化 GSAP 动画
     initAnimate()
+})
+
+onBeforeMount(() => {
+    forceToggleTheme('dark')
 })
 
 const section3_scrollLengthProgressPx = computed(() => {
@@ -703,6 +714,8 @@ function section3_titleAnimation(els: NodeListOf<HTMLElement>) {
 
 onUnmounted(() => {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    gsap.killTweensOf("*"); // 终止所有补间动画
+    gsap.globalTimeline.clear(); // 清空全局时间线
 });
 
 
