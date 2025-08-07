@@ -13,7 +13,7 @@
                             class="chevron-icon ml-auto pointer-events-none size-10 shrink-0 transition-transform" />
                     </div>
                 </AccordionTrigger>
-                <AccordionContent class="text-2xl">
+                <AccordionContent class="md:text-2xl text-lg">
                     <div class="flex items-center justify-start space-x-4 select-none py-8 px-4">
                         <p class="text-6xl text-transparent text-stroke">A{{ index + 1 }}</p>
                         <div class="flex-1 flex items-center justify-start">

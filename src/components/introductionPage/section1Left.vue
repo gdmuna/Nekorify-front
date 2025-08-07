@@ -12,7 +12,7 @@
                 <h1 ref="world1" class="text-[#53B7DE] md:ml-0 ml-4">WORLD</h1>
             </div>
         </div>
-        <div class="absolute top-0 left-0 translate-x-[1.5%] translate-y-[1.5%] flex flex-col
+        <div class="absolute top-0 left-0 translate-x-[1%] translate-y-[1%] flex flex-col
         font-bold text-[#0E100F] z-20 *:overflow-hidden">
             <div class="flex flex-row md:flex-col md:self-start self-end">
                 <h1 ref="tech2">TECH</h1>
@@ -24,7 +24,7 @@
                 <h1 ref="world2" class="md:ml-0 ml-4">WORLD</h1>
             </div>
         </div>
-        <div class="absolute top-0 left-0 translate-x-[2%] translate-y-[2%] flex flex-col
+        <div class="absolute top-0 left-0 translate-x-[1.5%] translate-y-[1.5%] flex flex-col
         font-bold z-10 *:overflow-hidden">
             <div class="flex flex-row md:flex-col md:self-start self-end">
                 <h1 ref="tech3" class="text-[#9C95F8]">TECH</h1>

@@ -1,13 +1,13 @@
 <template>
-    <macWindow border enterAnimate :customFn="animate" class="mx-auto !w-140">
+    <macWindow border enterAnimate :customFn="animate" class="mx-auto md:!w-140">
         <template #TR>
             <div class="flex-1"></div>
             <SquareTerminal class="text-[#595F66]" />
             <span class="text-[#595F66]">Terminal</span>
         </template>
         <template #main>
-            <div class="flex-1 flex-col items-start justify-start w-full h-full space-y-4 m-2">
-                <p ref="pTag1" class="text-[#53B7DE] command">
+            <div class="flex-1 flex-col items-start justify-start w-full h-full space-y-4 m-2 text-sm md:text-[1rem]">
+                <p ref="pTag1" class="text-[#53B7DE] command md:text-[1rem] text-xs">
                     <span class="prompt">> </span>
                     <span class="text">RESOURCE_MONITOR --community=NA_ACM</span>
                     <span class="cursor">▌</span>
@@ -21,7 +21,7 @@
                         <span class="text-[#F5C7F8] error-address">0xFE</span>
                     </span>
                 </p>
-                <p ref="pTag3" class="critical-shadow text-[#FF5F56] font-bold text-lg mt-16">
+                <p ref="pTag3" class="critical-shadow text-[#FF5F56] font-bold md:text-lg mt-16">
                     <span class="log-level">
                         FATAL:
                     </span>

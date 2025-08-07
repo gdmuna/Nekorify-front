@@ -66,8 +66,8 @@ onMounted(() => {
         wrapper: '#app',
         content: '#content',
         smooth: 0.75,
-        normalizeScroll: true,
-        smoothTouch: 0,
+        // normalizeScroll: true,
+        // smoothTouch: 0,
         onUpdate: (self) => {
             const progress = self.progress
             scroll_progress.value!.style.clipPath = `inset(0 0 ${100 - progress * 100}% 0)`;

@@ -1,6 +1,6 @@
 <template>
     <div ref="root" class="relative mb-20">
-        <macWindow ref="visibleMacWindow" class="lg:!w-120 md:!w-108 !w-96 z-1">
+        <macWindow ref="visibleMacWindow" class="lg:!w-120 md:!w-108 md:h-100 h-80 !w-96 z-1">
             <template #TR>
                 <div class="relative flex-1 overflow-hidden">
                     <div ref="logo_cpp" class="flex items-center space-x-2 justify-end">
@@ -28,7 +28,8 @@
             <template #main>
                 <!-- 代码块 -->
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre class="line-numbers !bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0" tabindex="-1">
+                    <pre class="line-numbers !bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0"
+                        tabindex="-1">
 <code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.725rem]', codeClass[codesIndex]]" ></code><span ref="cursor" class="cursor">▌</span>
 </pre>
                 </div>
@@ -40,29 +41,33 @@
             </template>
         </macWindow>
         <!-- 用于为可视窗口赋值高度 -->
-        <macWindow ref="hiddenMacWindow" class="lg:!w-120 md:!w-108 !absolute top-0 left-0 z-0 pointer-events-none opacity-0">
-            <template #TR>
-                <div class="relative flex-1 overflow-hidden">
-                    <div class="flex items-center space-x-2 justify-end">
-                        <img src="@/assets/C++-LOGO.svg" class="size-8">
-                        <span class="text-lg code-cpp">C++</span>
+        <teleport to='body'>
+            <macWindow ref="hiddenMacWindow"
+                class="lg:!w-120 md:!w-108 !absolute top-0 left-0 z-[-100] pointer-events-none">
+                <template #TR>
+                    <div class="relative flex-1 overflow-hidden">
+                        <div class="flex items-center space-x-2 justify-end">
+                            <img src="@/assets/C++-LOGO.svg" class="size-8">
+                            <span class="text-lg code-cpp">C++</span>
+                        </div>
                     </div>
-                </div>
-            </template>
-            <template #main>
-                <!-- 代码块 -->
-                <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre class="line-numbers !bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0 pointer-events-none" tabindex="-1">
+                </template>
+                <template #main>
+                    <!-- 代码块 -->
+                    <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
+                        <pre class="line-numbers !bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 lg:!leading-5 !leading-0 pointer-events-none"
+                            tabindex="-1">
 <code :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.725rem]', codeClass[codesIndex]]" >{{ codes[codesIndex] }}</code>
 </pre>
-                </div>
-                <!-- 底部输出 -->
-                <div class="flex items-center w-full pt-2 border-t-[#595959] border-t-1">
-                    <ChevronRight class="size-8 text-[#75777D]" />
-                    <span class="text-2xl">Hello GDMU!</span>
-                </div>
-            </template>
-        </macWindow>
+                    </div>
+                    <!-- 底部输出 -->
+                    <div class="flex items-center w-full pt-2 border-t-[#595959] border-t-1">
+                        <ChevronRight class="size-8 text-[#75777D]" />
+                        <span class="text-2xl">Hello GDMU!</span>
+                    </div>
+                </template>
+            </macWindow>
+        </teleport>
     </div>
 </template>
 
@@ -119,7 +124,8 @@ onMounted(() => {
     gsap.to((visibleMacWindow.value as any)!.$el, {
         height: height,
         ease: "power3.out",
-        duration: 1.5
+        duration: 1.5,
+        transformOrigin: "bottom center"
     })
     helloGDMU.init()
     enterAnimate()
@@ -191,7 +197,7 @@ const helloGDMU = {
                     amount: 0.5
                 },
                 onComplete: () => {
-                    
+
                 }
             }
         )
@@ -346,7 +352,8 @@ function eraseCode() {
                         gsap.to((visibleMacWindow.value as any)!.$el, {
                             height: height,
                             ease: "power3.out",
-                            duration: 1.5
+                            duration: 1.5,
+                            transformOrigin: "bottom center"
                         })
                         enterAnimate()
                     })
@@ -405,10 +412,12 @@ function eraseCode() {
 }
 
 @keyframes blink {
+
     0%,
     100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0;
     }
