@@ -3,7 +3,7 @@
         <div ref="container"
             class="relative w-full h-full border-0 rounded-lg shadow-lg dark:bg-[#040711] p-4 pt-0 flex flex-col items-between z-10">
             <!-- 窗口顶部内容 -->
-            <div class="flex items-center justify-between my-2">
+            <div class="flex items-center justify-between md:my-2">
                 <div class="flex items-center justify-between space-x-4">
                     <div class="size-4 bg-[#FF5F56] rounded-full"></div>
                     <div class="size-4 bg-[#FFBD2E] rounded-full"></div>
@@ -76,7 +76,7 @@ onMounted(() => {
     }
     if (enableSplitText) {
         root.value!.querySelectorAll('.split-text').forEach(el => {
-            const split = new SplitText(el, { type: "chars", ignore: ".no-split", tag: "span" });
+            const split = new SplitText(el, { type: "chars", ignore: ".no-split" });
             ScrollTrigger.create({
                 trigger: el,
                 start: `top-=${offset} bottom`,

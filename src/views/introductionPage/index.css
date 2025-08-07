@@ -1,11 +1,11 @@
+.animate-dash {
+    animation: dash-move 2s linear infinite;
+}
+
 @keyframes dash-move {
     to {
         stroke-dashoffset: -16;
     }
-}
-
-.animate-dash {
-    animation: dash-move 2s linear infinite;
 }
 
 .gradientBg {

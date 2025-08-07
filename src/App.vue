@@ -3,7 +3,7 @@
         <!-- 页眉 -->
         <Header />
         <!-- 消息弹窗挂载点 -->
-        <Toaster />
+        <Toaster :expand="false"/>
         <div ref="scroll_progress" class="fixed z-40 top-14 left-0 w-2 h-[calc(100%-3.5rem)] page-scroll-progress" />
         <!-- 主内容区 -->
         <main id="content">
