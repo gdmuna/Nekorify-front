@@ -349,7 +349,7 @@
                                 AND MORE...
                             </p>
                         </div>
-                        <div v-if="isMobile" ref="section3_cards_toggle" class="mt-8 relative overflow-hidden text-xl text-[#0E100F] font-bold py-2 pl-3 pr-1 bg-[#23d1dd] rounded-lg" @click="section3CardsManager.toggleStatus">
+                        <div v-if="isMobile" ref="section3_cards_toggle" class="mt-8 relative overflow-hidden text-xl text-[#0E100F] font-bold py-2 pl-4 pr-2 bg-[#23d1dd] rounded-lg" @click="section3CardsManager.toggleStatus">
                             <div class="flex items-center justify-center">
                                 <span>展开</span><ChevronsDown class="size-6" />
                             </div>
