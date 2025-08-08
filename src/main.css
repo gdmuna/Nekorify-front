@@ -1,0 +1,18 @@
+html {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+}
+
+body::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari/Webkit */
+}
