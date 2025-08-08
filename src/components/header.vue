@@ -1,5 +1,5 @@
 <template>
-    <div class="sticky top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow z-50 px-4">
+    <div class="fixed top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow z-50 px-4">
         <header
             class="flex items-center justify-between">
             <!-- 页眉左侧内容 -->

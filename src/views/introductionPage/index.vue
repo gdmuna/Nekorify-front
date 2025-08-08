@@ -185,7 +185,7 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
                                 <template #main>
@@ -205,7 +205,7 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
                                 <template #main>
@@ -225,7 +225,7 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
                                 <template #main>
@@ -245,7 +245,7 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
                                 <template #main>
@@ -265,7 +265,7 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association">GDMU-NA</span>
                                 </template>
                                 <template #main>
@@ -285,7 +285,7 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
+                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
                                     <span class="text-lg Association">GDMU-ACM</span>
                                 </template>
                                 <template #main>
@@ -305,7 +305,7 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
+                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
                                     <span class="text-lg Association">GDMU-ACM</span>
                                 </template>
                                 <template #main>
@@ -325,7 +325,7 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
+                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
                                     <span class="text-lg Association">GDMU-ACM</span>
                                 </template>
                                 <template #main>

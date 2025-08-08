@@ -2,7 +2,7 @@
     <macWindow border enterAnimate :customFn="animate" class="mx-auto md:!w-140">
         <template #TR>
             <div class="flex-1"></div>
-            <SquareTerminal class="text-[#595F66]" />
+            <SquareTerminal class="text-[#595F66] md:size-6 size-4" />
             <span class="text-[#595F66]">Terminal</span>
         </template>
         <template #main>

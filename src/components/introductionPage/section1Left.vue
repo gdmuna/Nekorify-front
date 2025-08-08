@@ -132,13 +132,28 @@ const groupDelay = [
 
 let timer: number | null = null
 
+let isPageVisible = true
+let currentAnimationPhase = 'en' // 'en' | 'cn'
+
 onMounted(() => {
+    // 监听页面可见性变化
+    document.addEventListener('visibilitychange', handleVisibilityChange)
     enAnimate.init()
     enAnimate.firstEnterAnimate()
     cnAnimate.init()
 })
 
+// 页面可见性监听
+const handleVisibilityChange = () => {
+    isPageVisible = !document.hidden
+    if (isPageVisible) {
+        enAnimate.firstEnterAnimate()
+    }
+}
+
 onUnmounted(() => {
+    // 清理监听器
+    document.removeEventListener('visibilitychange', handleVisibilityChange)
     if (timer) {
         clearTimeout(timer)
         timer = null
@@ -170,12 +185,15 @@ function divideGroup(groups: Array<Array<any>>) {
 const enAnimate = {
     linesGroups: [] as Array<Array<any>>,
     charsGroups: [] as Array<Array<any>>,
+    isAnimating: false,
     init() {
         const { linesGroups, charsGroups } = divideGroup(all)
         this.linesGroups = linesGroups
         this.charsGroups = charsGroups
     },
     firstEnterAnimate() {
+        this.isAnimating = true
+        currentAnimationPhase = 'en'
         this.linesGroups.forEach((group, index) => {
             const main = group[0]
             const shadow1 = group[1]
@@ -200,11 +218,14 @@ const enAnimate = {
             })
         })
         timer = setTimeout(() => {
-            this.backAnimate()
-            cnAnimate.enterAnimate()
+            if (isPageVisible && this.isAnimating) { // 检查页面可见性
+                this.backAnimate()
+                cnAnimate.enterAnimate()
+            }
         }, 4000)
     },
     enterAnimate() {
+        if (!isPageVisible) return // 页面不可见时不执行动画
         this.charsGroups.forEach(group => {
             // group 是一组字母 [ [主层T,遮罩T1,遮罩T2], [主层E,...], ... ]
             const len = group.length
@@ -233,6 +254,7 @@ const enAnimate = {
         }, 8000)
     },
     backAnimate() {
+        if (!isPageVisible) return
         this.charsGroups.forEach(group => {
             // group 是一组字母 [ [主层T,遮罩T1,遮罩T2], [主层E,...], ... ]
             const len = group.length
@@ -256,6 +278,7 @@ const enAnimate = {
                 )
             })
         })
+        this.isAnimating = false
     }
 }
 
@@ -264,6 +287,7 @@ const cnAnimate = {
     linesGroups: [] as Array<Array<any>>,
     charsGroups: [] as Array<Array<any>>,
     isHide: null as boolean | null,
+    isAnimating: false,
     init() {
         const { linesGroups, charsGroups } = divideGroup(cn_all)
         this.linesGroups = linesGroups
@@ -271,6 +295,9 @@ const cnAnimate = {
         this.hideEle()
     },
     enterAnimate() {
+        if (!isPageVisible) return
+        this.isAnimating = true
+        currentAnimationPhase = 'cn'
         if (this.isHide) {
             this.visibelEle()
         }
@@ -297,11 +324,14 @@ const cnAnimate = {
             })
         })
         setTimeout(() => {
-            this.backAnimate()
-            enAnimate.enterAnimate()
+            if (isPageVisible && this.isAnimating) {
+                this.backAnimate()
+                enAnimate.enterAnimate()
+            }
         }, 8000)
     },
     backAnimate() {
+        if (!isPageVisible) return
         this.charsGroups.forEach(group => {
             // group 是一组字母 [ [主层T,遮罩T1,遮罩T2], [主层E,...], ... ]
             const len = group.length
@@ -324,6 +354,7 @@ const cnAnimate = {
                 )
             })
         })
+        this.isAnimating = false
     },
     hideEle() {
         this.linesGroups.forEach((group) => {
