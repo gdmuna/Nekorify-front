@@ -120,7 +120,6 @@ const cn_world = [cn_world1, cn_world2, cn_world3]
 
 const cn_all = [cn_techOtakus, cn_save, cn_world]
 
-
 // 每组动画延迟
 const groupDelay = [
     0, // tech
@@ -130,34 +129,18 @@ const groupDelay = [
     1.4  // world
 ]
 
-let timer: number | null = null
-
 let isPageVisible = true
-let currentAnimationPhase = 'en' // 'en' | 'cn'
+let currentAnimationPhase = 'en'
 
 onMounted(() => {
-    // 监听页面可见性变化
-    document.addEventListener('visibilitychange', handleVisibilityChange)
     enAnimate.init()
     enAnimate.firstEnterAnimate()
     cnAnimate.init()
 })
 
-// 页面可见性监听
-const handleVisibilityChange = () => {
-    isPageVisible = !document.hidden
-    if (isPageVisible) {
-        enAnimate.firstEnterAnimate()
-    }
-}
-
 onUnmounted(() => {
-    // 清理监听器
-    document.removeEventListener('visibilitychange', handleVisibilityChange)
-    if (timer) {
-        clearTimeout(timer)
-        timer = null
-    }
+    gsap.killTweensOf([].concat(...enAnimate.charsGroups.flat(), ...enAnimate.linesGroups.flat()));
+    gsap.killTweensOf([].concat(...cnAnimate.charsGroups.flat(), ...cnAnimate.linesGroups.flat()));
 })
 
 // 划分组别，生成linesGroups和charsGroups
@@ -168,9 +151,9 @@ function divideGroup(groups: Array<Array<any>>) {
         const main = group[0].value!
         const shadow1 = group[1].value!
         const shadow2 = group[2].value!
-        const mainSplit = new SplitText(main, { type: "chars,lines", mask: 'chars' })
-        const shadowSplit1 = new SplitText(shadow1, { type: "chars,lines", mask: 'chars' })
-        const shadowSplit2 = new SplitText(shadow2, { type: "chars,lines", mask: 'chars' })
+        const mainSplit = new SplitText(main, { type: "chars,lines", mask: 'chars', linesClass: 'line', charsClass: 'char' })
+        const shadowSplit1 = new SplitText(shadow1, { type: "chars,lines", mask: 'chars', linesClass: 'line', charsClass: 'char' })
+        const shadowSplit2 = new SplitText(shadow2, { type: "chars,lines", mask: 'chars', linesClass: 'line', charsClass: 'char' })
         linesGroups.push([mainSplit, shadowSplit1, shadowSplit2])
         charsGroups.push(mainSplit.chars.map((char, index) => [
             char,
@@ -181,104 +164,165 @@ function divideGroup(groups: Array<Array<any>>) {
     return { linesGroups, charsGroups }
 }
 
+const main = {
+    timeline: gsap.timeline({
+        repeat: -1
+    }),
+    init() {
+        this.timeline = gsap.timeline({
+            repeat: -1
+        })
+        this.timeline.add(function() {
+            enAnimate.backAnimate()
+        })
+        this.timeline.add(function() {
+            cnAnimate.enterAnimate()
+        })
+        this.timeline.to({}, { duration: 8 })
+        this.timeline.add(function() {
+            cnAnimate.backAnimate()
+        })
+        this.timeline.add(function() {
+            enAnimate.enterAnimate()
+        })
+        this.timeline.to({}, { duration: 8 })
+    }
+}
+
 // 英文动画
 const enAnimate = {
     linesGroups: [] as Array<Array<any>>,
     charsGroups: [] as Array<Array<any>>,
     isAnimating: false,
+    timeline: null as any,
     init() {
         const { linesGroups, charsGroups } = divideGroup(all)
         this.linesGroups = linesGroups
         this.charsGroups = charsGroups
     },
     firstEnterAnimate() {
-        this.isAnimating = true
-        currentAnimationPhase = 'en'
+        // 创建新的时间线
+        const firstEnterTimeline = gsap.timeline();
+        this.isAnimating = true;
+        currentAnimationPhase = 'en';
+        // 添加所有行的动画
         this.linesGroups.forEach((group, index) => {
-            const main = group[0]
-            const shadow1 = group[1]
-            const shadow2 = group[2]
-            gsap.from(main.lines, {
-                y: '100%',
-                ease: "power2.out",
-                delay: groupDelay[index],
-                duration: 0.5
-            })
-            gsap.from(shadow1.lines, {
-                y: '100%',
-                ease: "power2.out",
-                delay: groupDelay[index],
-                duration: 0.5
-            })
-            gsap.from(shadow2.lines, {
-                y: '100%',
-                ease: "power2.out",
-                delay: groupDelay[index],
-                duration: 0.5
-            })
-        })
-        timer = setTimeout(() => {
-            if (isPageVisible && this.isAnimating) { // 检查页面可见性
-                this.backAnimate()
-                cnAnimate.enterAnimate()
+            const main = group[0];
+            const shadow1 = group[1];
+            const shadow2 = group[2];
+            // 为每一行添加动画
+            firstEnterTimeline.fromTo(
+                main.lines,
+                { y: '100%' },
+                {
+                    y: 0,
+                    ease: "power2.out",
+                    duration: 0.5
+                },
+                groupDelay[index] // 使用延迟作为位置参数
+            );
+            firstEnterTimeline.fromTo(
+                shadow1.lines,
+                { y: '100%' },
+                {
+                    y: 0,
+                    ease: "power2.out",
+                    duration: 0.5
+                },
+                groupDelay[index] // 同步动画
+            );
+            firstEnterTimeline.fromTo(
+                shadow2.lines,
+                { y: '100%' },
+                {
+                    y: 0,
+                    ease: "power2.out",
+                    duration: 0.5
+                },
+                groupDelay[index] // 同步动画
+            );
+        });
+        firstEnterTimeline.to({},
+            {
+                duration: 4,
+                onComplete: () => {
+                    main.init()
+                }
             }
-        }, 4000)
+        )
+        return firstEnterTimeline; // 返回时间线便于链式调用
     },
     enterAnimate() {
-        if (!isPageVisible) return // 页面不可见时不执行动画
+        if (!isPageVisible) return null;
+        // 创建新的时间线
+        this.timeline = gsap.timeline();
+        this.isAnimating = true;
+        currentAnimationPhase = 'en';
+        // 为每个字符组添加动画
         this.charsGroups.forEach(group => {
-            // group 是一组字母 [ [主层T,遮罩T1,遮罩T2], [主层E,...], ... ]
-            const len = group.length
-            // 随机起点
-            const start = Math.floor(Math.random() * len)
-            // 生成顺序数组 [start, start+1, ..., len-1, 0, ..., start-1]
-            const order = Array.from({ length: len }, (_, i) => (start + i) % len)
+            const len = group.length;
+            const start = Math.floor(Math.random() * len);
+            const order = Array.from({ length: len }, (_, i) => (start + i) % len);
             order.forEach((charIdx, i) => {
-                const chars = group[charIdx]
-                const { props1, props2 } = getProps()
-                gsap.fromTo(chars,
+                const chars = group[charIdx];
+                const { props1, props2 } = getProps();
+                // 添加到时间线
+                this.timeline.fromTo(
+                    chars,
+                    { ...props1 },
                     {
-                        ...props1
-                    }, {
-                    ...props2,
-                    ease: "power2.out",
-                    delay: 0.5 + i * (0.1 + Math.random() * 0.2),
-                    duration: 0.5
-                }
-                )
-            })
-        })
-        timer = setTimeout(() => {
-            this.backAnimate()
-            cnAnimate.enterAnimate()
-        }, 8000)
+                        ...props2,
+                        ease: "power2.out",
+                        duration: 0.5
+                    },
+                    0.5 + i * (0.1 + Math.random() * 0.2) // 使用延迟作为位置参数
+                );
+            });
+        });
+        return this.timeline; // 返回时间线便于链式调用
     },
     backAnimate() {
-        if (!isPageVisible) return
+        if (!isPageVisible) return null;
+        // 创建新的时间线
+        const backTimeline = gsap.timeline();
         this.charsGroups.forEach(group => {
-            // group 是一组字母 [ [主层T,遮罩T1,遮罩T2], [主层E,...], ... ]
-            const len = group.length
-            // 随机起点
-            const start = Math.floor(Math.random() * len)
-            // 生成顺序数组 [start, start+1, ..., len-1, 0, ..., start-1]
-            const order = Array.from({ length: len }, (_, i) => (start + i) % len)
+            const len = group.length;
+            const start = Math.floor(Math.random() * len);
+            const order = Array.from({ length: len }, (_, i) => (start + i) % len);
             order.forEach((charIdx, i) => {
-                const chars = group[charIdx]
-                const { props1, props2 } = getProps()
-                gsap.fromTo(chars,
-                    {
-                        ...props2
-                    },
+                const chars = group[charIdx];
+                const { props1, props2 } = getProps();
+                // 添加到时间线
+                backTimeline.fromTo(
+                    chars,
+                    { ...props2 },
                     {
                         ...props1,
                         ease: "power2.in",
-                        delay: i * (0.1 + Math.random() * 0.2),
                         duration: 0.5
-                    }
-                )
+                    },
+                    i * (0.1 + Math.random() * 0.2) // 使用延迟作为位置参数
+                );
+            });
+        });
+        this.isAnimating = false;
+        return backTimeline; // 返回时间线便于链式调用
+    },
+    resetEleStyle() {
+        this.charsGroups.forEach((group) => {
+            group.forEach((chars) => {
+                gsap.set(chars, { clearProps: "all" })
             })
         })
-        this.isAnimating = false
+        this.linesGroups.forEach((group) => {
+            const main = group[0]
+            const shadow1 = group[1]
+            const shadow2 = group[2]
+            gsap.set(main.lines, { clearProps: "all" })
+            gsap.set(shadow1.lines, { clearProps: "all" })
+            gsap.set(shadow2.lines, { clearProps: "all" })
+        })
+        gsap.killTweensOf([].concat(...this.charsGroups.flat(), ...this.linesGroups.flat()));
     }
 }
 
@@ -288,6 +332,7 @@ const cnAnimate = {
     charsGroups: [] as Array<Array<any>>,
     isHide: null as boolean | null,
     isAnimating: false,
+    timeline: null as gsap.core.Timeline | null,
     init() {
         const { linesGroups, charsGroups } = divideGroup(cn_all)
         this.linesGroups = linesGroups
@@ -295,91 +340,83 @@ const cnAnimate = {
         this.hideEle()
     },
     enterAnimate() {
-        if (!isPageVisible) return
-        this.isAnimating = true
-        currentAnimationPhase = 'cn'
+        if (!isPageVisible) return null;
+        // 创建新的时间线
+        this.timeline = gsap.timeline();
+        this.isAnimating = true;
+        currentAnimationPhase = 'cn';
+        // 如果隐藏中，先显示
         if (this.isHide) {
-            this.visibelEle()
+            this.visibleEle();
         }
+        // 为每个字符组添加动画
         this.charsGroups.forEach(group => {
-            // group 是一组字母 [ [主层T,遮罩T1,遮罩T2], [主层E,...], ... ]
-            const len = group.length
-            // 随机起点
-            const start = Math.floor(Math.random() * len)
-            // 生成顺序数组 [start, start+1, ..., len-1, 0, ..., start-1]
-            const order = Array.from({ length: len }, (_, i) => (start + i) % len)
+            const len = group.length;
+            const start = Math.floor(Math.random() * len);
+            const order = Array.from({ length: len }, (_, i) => (start + i) % len);
             order.forEach((charIdx, i) => {
-                const chars = group[charIdx]
-                const { props1, props2 } = getProps()
-                gsap.fromTo(chars,
+                const chars = group[charIdx];
+                const { props1, props2 } = getProps();
+                // 添加到时间线
+                this.timeline!.fromTo(
+                    chars,
+                    { ...props1 },
                     {
-                        ...props1
-                    }, {
-                    ...props2,
-                    ease: "power2.out",
-                    delay: 0.75 + i * (0.2 + Math.random() * 0.2),
-                    duration: 0.5
-                }
-                )
-            })
-        })
-        setTimeout(() => {
-            if (isPageVisible && this.isAnimating) {
-                this.backAnimate()
-                enAnimate.enterAnimate()
-            }
-        }, 8000)
+                        ...props2,
+                        ease: "power2.out",
+                        duration: 0.5
+                    },
+                    0.75 + i * (0.2 + Math.random() * 0.2) // 使用延迟作为位置参数
+                );
+            });
+        });
+        return this.timeline; // 返回时间线便于链式调用
     },
     backAnimate() {
-        if (!isPageVisible) return
+        if (!isPageVisible) return null;
+        // 创建新的时间线
+        const backTimeline = gsap.timeline();
         this.charsGroups.forEach(group => {
-            // group 是一组字母 [ [主层T,遮罩T1,遮罩T2], [主层E,...], ... ]
-            const len = group.length
-            // 随机起点
-            const start = Math.floor(Math.random() * len)
-            // 生成顺序数组 [start, start+1, ..., len-1, 0, ..., start-1]
-            const order = Array.from({ length: len }, (_, i) => (start + i) % len)
+            const len = group.length;
+            const start = Math.floor(Math.random() * len);
+            const order = Array.from({ length: len }, (_, i) => (start + i) % len);
             order.forEach((charIdx, i) => {
-                const chars = group[charIdx]
-                const { props1, props2 } = getProps()
-                gsap.fromTo(chars,
+                const chars = group[charIdx];
+                const { props1, props2 } = getProps();
+                // 添加到时间线
+                backTimeline.fromTo(
+                    chars,
+                    { ...props2 },
                     {
-                        ...props2
-                    }, {
-                    ...props1,
-                    ease: "power2.in",
-                    delay: i * (0.2 + Math.random() * 0.2),
-                    duration: 0.5
-                }
-                )
-            })
-        })
-        this.isAnimating = false
+                        ...props1,
+                        ease: "power2.in",
+                        duration: 0.5
+                    },
+                    i * (0.2 + Math.random() * 0.2) // 使用延迟作为位置参数
+                );
+            });
+        });
+        this.isAnimating = false;
+        return backTimeline; // 返回时间线便于链式调用
     },
+    // 其他方法保持不变
     hideEle() {
-        this.linesGroups.forEach((group) => {
-            const main = group[0]
-            const shadow1 = group[1]
-            const shadow2 = group[2]
-            gsap.set(main.lines, { autoAlpha: 0 })
-            gsap.set(shadow1.lines, { autoAlpha: 0 })
-            gsap.set(shadow2.lines, { autoAlpha: 0 })
+        this.charsGroups.forEach((group) => {
+            group.forEach((chars) => {
+                gsap.set(chars, { autoAlpha: 0 })
+            })
         })
         this.isHide = true
     },
-    visibelEle() {
-        this.linesGroups.forEach((group) => {
-            const main = group[0]
-            const shadow1 = group[1]
-            const shadow2 = group[2]
-            gsap.set(main.lines, { autoAlpha: 1 })
-            gsap.set(shadow1.lines, { autoAlpha: 1 })
-            gsap.set(shadow2.lines, { autoAlpha: 1 })
+    visibleEle() {
+        this.charsGroups.forEach((group) => {
+            group.forEach((chars) => {
+                gsap.set(chars, { autoAlpha: 1 })
+            })
         })
         this.isHide = false
     }
 }
-
 
 function getProps() {
     const random = Math.random()
@@ -387,7 +424,7 @@ function getProps() {
     let props2
     if (random < 0.25) {
         props1 = {
-            y: '-100%',
+            y: '-110%',
             x: 0
         }
         props2 = {
@@ -396,13 +433,13 @@ function getProps() {
         }
     } else if (random < 0.5) {
         props1 = {
-            x: '100%',
+            x: '110%',
             y: 0
         }
         props2 = { x: 0 }
     } else if (random < 0.75) {
         props1 = {
-            y: '100%',
+            y: '110%',
             x: 0
         }
         props2 = {
@@ -411,7 +448,7 @@ function getProps() {
         }
     } else {
         props1 = {
-            x: '-100%',
+            x: '-110%',
             y: 0
         }
         props2 = {
@@ -424,4 +461,12 @@ function getProps() {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+:deep(.line) {
+    will-change: transform;
+}
+
+:deep(.char) {
+    will-change: transform;
+}
+</style>

@@ -180,8 +180,9 @@
                         <!-- 横向滚动内容 - card -->
                         <!-- 为什么不使用 v-for ? -->
                         <!-- 每张卡片main区域上部的logo中空白区域所占比例都不同，为了视觉一致性，需要微调，故不使用 v-for -->
-                        <div class="xl:ml-32 xl:flex xl:flex-row grid grid-cols-1 md:grid-cols-2 gap-10 xl:space-x-16 space-y-2
-                        xl:mx-0 xl:px-0 pl-4 pr-8 *:break-all xl:*:!w-110 xl:*:!h-90 md:*:!h-80">
+                        <div ref="section3_cards"
+                            class="xl:ml-32 xl:flex xl:flex-row grid grid-cols-1 md:grid-cols-2 gap-10 xl:space-x-16 space-y-2
+                        xl:mx-0 xl:pl-0 pl-4 pr-8 *:break-all xl:*:!w-110 xl:*:!h-90 md:*:!h-80 lg:overflow-visible overflow-hidden md:pb-0 pb-2">
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
@@ -342,16 +343,24 @@
                                     </div>
                                 </template>
                             </macWindow>
+                            <!-- card 后的文字 -->
+                            <p ref="section3_PTag" class="flex items-center justify-center xl:text-7xl md:text-5xl text-3xl font-bold
+                        whitespace-nowrap will-change-transform md:col-span-2">
+                                AND MORE...
+                            </p>
                         </div>
-                        <!-- card 后的文字 -->
-                        <p ref="section3_PTag" class="flex-1 flex items-center xl:text-7xl md:text-5xl text-3xl font-bold
-                        whitespace-nowrap px-28 will-change-transform xl:mt-0 mt-16">
-                            AND MORE...
-                        </p>
+                        <div v-if="isMobile" ref="section3_cards_toggle" class="mt-8 relative overflow-hidden text-xl text-[#0E100F] font-bold py-2 px-4 bg-[#53B7DE] rounded-lg" @click="section3CardsManager.toggleStatus">
+                            <div class="flex items-center justify-center">
+                                <span>展开</span><ChevronsDown class="size-6" />
+                            </div>
+                            <div class="flex items-center justify-center absolute top-1/2 -translate-y-1/2">
+                                <span>收起</span><ChevronsUp class="size-6" />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div ref="section_3_title_3"
-                    class="w-full flex flex-col items-center justify-center xl:text-7xl md:text-5xl text-2xl pt-16 font-bold whitespace-nowrap will-change-transform">
+                    class="w-full flex flex-col items-center justify-center xl:text-7xl md:text-5xl text-2xl xl:pt-16 md:pt-0 pt-16 font-bold whitespace-nowrap will-change-transform">
                     <div>
                         <h1>NEXT</h1>
                         <h1>
@@ -387,7 +396,8 @@
                 <!-- section 主内容 -->
                 <h1 class="md:text-8xl text-6xl text-center font-bold">贡献者</h1>
                 <!-- 贡献者名单 -->
-                <div class="w-full grid xl:grid-cols-3 grid-cols-1 md:gap-20 gap-10 justify-items-center mt-24 px-4 pr-8">
+                <div
+                    class="w-full grid xl:grid-cols-3 grid-cols-1 md:gap-20 gap-10 justify-items-center mt-24 px-4 pr-8">
                     <macWindow border class="md:!h-78 h-64">
                         <template #main>
                             <div class="flex-1 flex items-center">
@@ -397,7 +407,8 @@
                                     <p class="md:text-2xl text-lg">xl-xlxl</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                    </p>
                                 </div>
                             </div>
                         </template>
@@ -411,7 +422,8 @@
                                     <p class="md:text-2xl text-lg">Almighty</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                    </p>
                                 </div>
                             </div>
                         </template>
@@ -425,7 +437,8 @@
                                     <p class="md:text-2xl text-lg">FOV-RGT</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。</p>
+                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                    </p>
                                 </div>
                             </div>
                         </template>
@@ -459,6 +472,8 @@ import section1Right from '@/components/introductionPage/section1Right.vue';
 import { BrainCircuit } from 'lucide-vue-next';
 import { Puzzle } from 'lucide-vue-next';
 import { Satellite } from 'lucide-vue-next';
+import { ChevronsUp } from 'lucide-vue-next';
+import { ChevronsDown } from 'lucide-vue-next';
 
 // 导入 Lottie 动画库
 import lottie from 'lottie-web'
@@ -479,7 +494,7 @@ import { storeToRefs } from 'pinia';
 
 const systemStore = useSystemStore();
 const { forceToggleTheme } = systemStore;
-const { isDesktop } = storeToRefs(systemStore);
+const { isDesktop, isMobile } = storeToRefs(systemStore);
 
 const introPageRoot = ref<HTMLElement | null>(null);
 
@@ -521,6 +536,9 @@ const section3_PTag = ref<HTMLElement | null>(null)
 const section3_progressBlock = ref<HTMLElement | null>(null);
 const section3_progressDivs = ref<HTMLElement | null>(null);
 
+const section3_cards = ref<HTMLElement | null>(null);
+const section3_cards_toggle = ref<HTMLElement | null>(null);
+
 onMounted(() => {
     // 矩阵背景初始化
     if (section1.value) {
@@ -552,6 +570,9 @@ onMounted(() => {
     )
     // 初始化 GSAP 动画
     initAnimate()
+    if (isMobile.value) {
+        section3CardsManager.init()
+    }
 })
 
 onBeforeMount(() => {
@@ -721,10 +742,112 @@ function section3_titleAnimation(els: NodeListOf<HTMLElement>) {
     })
 }
 
+const section3CardsManager = {
+    height: 0,
+    isPackUp: ref(true),
+    isExpand: ref(false),
+    init() {
+        const top = section3_cards.value!.getBoundingClientRect().top
+        const thirdChild = section3_cards.value!.children[2]
+        const bottom = thirdChild?.getBoundingClientRect().bottom
+        this.height = bottom - top + 16
+        gsap.set(section3_cards.value, {
+            height: this.height
+        })
+        gsap.set(section3_cards_toggle.value!.children[1], {
+            autoAlpha: 0
+        })
+    },
+    expandCards() {
+        gsap.to(section3_cards.value, {
+            height: 'auto',
+            ease: "power2.inOut",
+            duration: 1
+        })
+        gsap.fromTo(
+            section3_cards_toggle.value!.children[0],
+            {
+                autoAlpha: 1,
+                y: 0
+            },
+            {
+                autoAlpha: 0,
+                y: '150%',
+                duration: 0.5,
+                ease: "power2.inOut"
+            }
+        )
+        gsap.fromTo(
+            section3_cards_toggle.value!.children[1],
+            {
+                autoAlpha: 0,
+                y: '-150%'
+            },
+            {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power2.inOut"
+            }
+        )
+    },
+    packUpCards() {
+        gsap.to(section3_cards.value, {
+            height: this.height,
+            ease: "power2.inOut",
+            duration: 1
+        })
+        gsap.fromTo(
+            section3_cards_toggle.value!.children[1],
+            {
+                autoAlpha: 1,
+                y: 0
+            },
+            {
+                autoAlpha: 1,
+                y: '-150%',
+                duration: 0.5,
+                ease: "power2.inOut"
+            }
+        )
+        gsap.fromTo(
+            section3_cards_toggle.value!.children[0],
+            {
+                autoAlpha: 0,
+                y: '150%'
+            },
+            {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power2.inOut"
+            }
+        )
+        gsap.to(window, {
+            duration: 1,
+            ease: "power2.inOut",
+            scrollTo: {
+                y: section3_cards.value!,
+                offsetY: 56,
+                autoKill: true
+            }
+        })
+    },
+    toggleStatus() {
+        if (this.isPackUp.value) {
+            this.expandCards()
+            this.isPackUp.value = false
+            this.isExpand.value = true
+        } else {
+            this.packUpCards()
+            this.isPackUp.value = true
+            this.isExpand.value = false
+        }
+    }
+}
+
 onUnmounted(() => {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    gsap.killTweensOf("*"); // 终止所有补间动画
-    gsap.globalTimeline.clear(); // 清空全局时间线
 });
 
 
