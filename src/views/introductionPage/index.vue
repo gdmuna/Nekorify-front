@@ -791,7 +791,7 @@ const section3CardsManager = {
             }
         )
     },
-    packUpCards() {
+    collapseCards() {
         gsap.to(section3_cards.value, {
             height: this.height,
             ease: "power2.inOut",
@@ -839,7 +839,7 @@ const section3CardsManager = {
             this.isPackUp.value = false
             this.isExpand.value = true
         } else {
-            this.packUpCards()
+            this.collapseCards()
             this.isPackUp.value = true
             this.isExpand.value = false
         }

@@ -33,9 +33,10 @@
                 <button ref="Button" class="px-4 py-2 text-[#0E100F] rounded-md font-bold
                 cursor-pointer mb-2 will-change-transform relative">
                     <p class="button-text1 pointer-events-none whitespace-nowrap">CLICK TO DEPLOY NEW NODE</p>
-                    <p
-                        class="button-text2 absolute top-1/2 left-1/2 text-xl -translate-1/2 pointer-events-none whitespace-nowrap">
-                        加入我们</p>
+                    <p class="button-text2 absolute top-1/2 left-1/2 text-xl -translate-1/2 pointer-events-none whitespace-nowrap flex items-center space-x-2">
+                        <Smile />
+                        <span>加入我们</span>
+                    </p>
                 </button>
             </div>
         </template>
@@ -51,6 +52,8 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 import { gsap } from "gsap"
 import { SplitText } from "gsap/SplitText";
+
+import { Smile } from 'lucide-vue-next';
 
 
 const pTag1 = ref<HTMLElement | null>(null)
@@ -214,12 +217,12 @@ function splitCommand(el: HTMLElement, callBack: Function) {
 
 button {
     background: linear-gradient(90deg, #27C93F, #53B7DE);
-    box-shadow: 0 5px 15px rgba(39, 201, 63, 0.3);
+    box-shadow: 0em 0.3em 1.2em rgba(39, 201, 63, 0.3);
     transition: box-shadow 0.2s ease;
 }
 
 button:hover {
-    box-shadow: 0 8px 20px rgba(39, 201, 63, 0.4);
+    box-shadow: 0em 0.4em 1.5em rgba(39, 201, 63, 0.4);
 }
 
 .cursor {
