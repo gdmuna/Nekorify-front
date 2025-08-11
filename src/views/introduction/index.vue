@@ -1,5 +1,5 @@
 <template>
-    <div ref="introPageRoot" class="w-full *:w-full dark:text-[#FEFCE4] dark:bg-[#0E100F]">
+    <div ref="introPageRoot" class="dark:bg-[#0E100F]">
         <teleport to="body">
             <div v-if="isDesktop" class="fixed bottom-0 right-0 z-50 mr-5 flex flex-col items-end dark:text-[#FEFCE4]">
                 <p class="rotate-90 origin-right tracking-widest">SCROLL</p>
@@ -15,7 +15,7 @@
             <matrix class="absolute z-1 select-none" :width="setion1_width" :height="setion1_height"
                 v-if="setion1_width > 0 && setion1_height > 0" />
             <!-- section 主内容 -->
-            <div class="z-10 w-full min-h-[calc(100dvh-4rem)] flex flex-col md:flex-row
+            <div class="z-10 w-full flex flex-col md:flex-row
             items-center justify-evenly pointer-events-none *:pointer-events-auto">
                 <!-- 左侧内容 -->
                 <section1Left class="xl:mb-20 xl:ml-32 lg:ml-16 md:ml-4 mx-1" />
@@ -25,8 +25,8 @@
             <div class="absolute bottom-0 left-1/2 flex items-center justify-between -translate-x-1/2
             mb-2 space-x-2 z-10 pointer-events-none">
                 <div class="flex flex-col items-center justify-between font-extrabold whitespace-nowrap">
-                    <p>Nice to cross paths with you</p>
-                    <p class="tracking-[0.4em]">你·好·世·界</p>
+                    <p class="text-sm md:text-lg">Where we're going, we don't need roads</p>
+                    <p class="tracking-[0.4em] md:text-lg">你·好·世·界</p>
                 </div>
             </div>
         </section>
@@ -460,13 +460,13 @@
 import { computed, onMounted, ref, onUnmounted, onBeforeMount } from 'vue';
 
 // 导入组件
-import matrix from '@/components/introductionPage/matrix.vue';
-import macWindow from '@/components/introductionPage/macWindow.vue';
-import titleBlock from '@/components/introductionPage/titleBlock.vue';
-import QA from '@/components/introductionPage/QA.vue';
-import section4Terminal from '@/components/introductionPage/section4Terminal.vue';
-import section1Left from '@/components/introductionPage/section1Left.vue';
-import section1Right from '@/components/introductionPage/section1Right.vue';
+import matrix from '@/components/introduction/matrix.vue';
+import macWindow from '@/components/introduction/macWindow.vue';
+import titleBlock from '@/components/introduction/titleBlock.vue';
+import QA from '@/components/introduction/QA.vue';
+import section4Terminal from '@/components/introduction/section4Terminal.vue';
+import section1Left from '@/components/introduction/section1Left.vue';
+import section1Right from '@/components/introduction/section1Right.vue';
 
 // 导入图标
 import { BrainCircuit } from 'lucide-vue-next';

@@ -74,7 +74,7 @@ import { ref, onMounted, nextTick, onUnmounted } from 'vue'
 
 import { ChevronRight } from 'lucide-vue-next'
 
-import macWindow from '@/components/introductionPage/macWindow.vue'
+import macWindow from '@/components/introduction/macWindow.vue'
 
 import { toast } from 'vue-sonner'
 

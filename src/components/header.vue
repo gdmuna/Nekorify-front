@@ -5,53 +5,61 @@
             <div class="flex h-full items-center">
                 <!-- LOGO -->
                 <div class="relative overflow-hidden cursor-pointer shrink-0" @click="routerGoTo('/')">
-                    <img ref="logo1" src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-10 will-change-transform">
-                    <img ref="logo2" src="/src/assets/ACM-LOGO 1.svg" alt="" class="absolute top-0 size-10 will-change-transform">
+                    <img ref="logo1" src="/src/assets/gdmuna-logo_gradient.svg" alt=""
+                        class="size-10 will-change-transform">
+                    <img ref="logo2" src="/src/assets/ACM-LOGO 1.svg" alt=""
+                        class="absolute top-0 size-10 will-change-transform">
                 </div>
                 <!-- 导航菜单 -->
-                <nav class="flex items-center ml-6 md:space-x-4 space-x-1 text-lg whitespace-nowrap">
-                    <Button variant="link" class="cursor-pointer p-2 text-lg" @click="routerGoTo('/home')">首页</Button>
+                <nav class="flex items-center ml-6 md:space-x-4 space-x-1 whitespace-nowrap">
+                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]" @click="routerGoTo('/home')">首页</Button>
                     <img :src="boundary" alt="">
-                    <Button variant="link" class="cursor-pointer p-2 text-lg"
+                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
                         @click="routerGoTo('/announcements')">公告</Button>
                     <img :src="boundary" alt="">
-                    <Button variant="link" class="cursor-pointer p-2 text-lg"
+                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
                         @click="routerGoTo('/articles')">文章</Button>
                     <img :src="boundary" alt="">
-                    <Button variant="link" class="cursor-pointer p-2 text-lg"
+                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
                         @click="routerGoTo('/replay')">课程回放</Button>
                     <img :src="boundary" alt="">
-                    <Button variant="link" class="cursor-pointer p-2 text-lg"
+                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
                         @click="routerGoTo('/resourcesHub')">资源站</Button>
                 </nav>
             </div>
             <!-- 页眉右侧内容 -->
-            <div class="flex items-center space-x-4 md:ml-6 ml-2">
-                <!-- <toggleThemeButton :disabled="disableSwitchTheme" :model-value="isDark"
+            <div class="md:ml-6 ml-2 flex items-center">
+                <div class="flex items-center space-x-2">
+                    <!-- <toggleThemeButton :disabled="disableSwitchTheme" :model-value="isDark"
                         @update:model-value="toggleTheme" class="cursor-pointer dark:bg-[#FEFCE4]">
                         <template #thumb>
                             <Moon v-if="isDark" class="size-5" />
                             <Sun v-else class="size-5" />
                         </template>
-</toggleThemeButton> -->
-                <Button variant="ghost" class="rounded-full size-10" as="a" href="https://github.com/gdmuna"
-                    target="_blank" rel="noopener noreferer">
-                    <Github />
-                </Button>
-                <Button variant="ghost" class="rounded-full size-10 cursor-pointer">
-                    <Mail />
-                </Button>
-                <Button variant="ghost" class="rounded-full size-10 cursor-pointer">
-                    <CalendarFold />
-                </Button>
-                <Button class="join-us-button cursor-pointer font-bold">
-                    <Smile />
-                    加入我们
-                </Button>
-                <Button variant="outline" class="cursor-pointer border-2 dark:border-[#FEFCE4]">
-                    <LogIn />
-                    登录
-                </Button>
+                    </toggleThemeButton> -->
+                    <Button variant="ghost" class="rounded-full size-10" as="a" href="https://github.com/gdmuna"
+                        target="_blank" rel="noopener noreferer">
+                        <Github class="size-6" />
+                    </Button>
+                    <Button variant="ghost" class="rounded-full size-10 cursor-pointer">
+                        <Mail class="size-6" />
+                    </Button>
+                    <Button variant="ghost" class="rounded-full size-10 cursor-pointer">
+                        <CalendarFold class="size-6" />
+                    </Button>
+                </div>
+                <img :src="boundary" alt="" class="ml-2 mr-4">
+                <div class="flex items-center space-x-4">
+                    <Button class="join-us-button cursor-pointer font-bold">
+                        <Smile class="size-6" />
+                        加入我们
+                    </Button>
+                    <img :src="boundary" alt="">
+                    <Button class="cursor-pointer border-2 dark:border-[#FEFCE4] dark:bg-[#0E100F] dark:text-[#FEFCE4]">
+                        <LogIn class="size-6" />
+                        登录
+                    </Button>
+                </div>
             </div>
         </header>
     </div>
@@ -117,7 +125,7 @@ const logoAnimate = {
                 y: 0
             },
             {
-                y: '-100%',
+                y: '-120%',
                 duration: 0.75,
                 ease: 'power2.in',
                 delay: 2
@@ -126,7 +134,7 @@ const logoAnimate = {
         this.tl.fromTo(
             logo2.value,
             {
-                y: '100%'
+                y: '120%'
             },
             {
                 y: 0,
@@ -141,7 +149,7 @@ const logoAnimate = {
                 y: 0
             },
             {
-                y: '-100%',
+                y: '-120%',
                 duration: 0.75,
                 ease: 'power2.in',
                 delay: 2
@@ -150,7 +158,7 @@ const logoAnimate = {
         this.tl.fromTo(
             logo1.value,
             {
-                y: '100%'
+                y: '120%'
             },
             {
                 y: 0,

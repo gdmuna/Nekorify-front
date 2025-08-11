@@ -77,12 +77,12 @@ onMounted(() => {
     router.beforeEach((from) => {
         // 立即滚动到顶部
         smoother.scrollTo(0, false)
-        if (from.path !== '/') {
-            previousIsDark.value = isDark.value
-        }
-        if (from.path === '/' && previousIsDark.value === false) {
-            forceToggleTheme(`${previousIsDark.value}`)
-        }
+        // if (from.path !== '/') {
+        //     previousIsDark.value = isDark.value
+        // }
+        // if (from.path === '/' && previousIsDark.value === false) {
+        //     forceToggleTheme(`${previousIsDark.value}`)
+        // }
         return true
     })
 })

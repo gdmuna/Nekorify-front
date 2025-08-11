@@ -5,20 +5,21 @@ import { toast } from 'vue-sonner'
 export const useSystemStore = defineStore('system', () => {
     const isDark = ref<boolean>(true)
     function initTheme(): void {
-        if (localStorage.getItem('isDark') === 'true') {
-            console.log('111');
-            document.documentElement.classList.add('dark')
-            isDark.value = true
-        } else if (localStorage.getItem('isDark') === 'false') {
-            console.log('222');
-            document.documentElement.classList.remove('dark')
-            isDark.value = false
-        } else {
-            // 默认主题为深色
-            document.documentElement.classList.add('dark')
-            isDark.value = true
-            localStorage.setItem('isDark', 'true')
-        }
+        // if (localStorage.getItem('isDark') === 'true') {
+        //     document.documentElement.classList.add('dark')
+        //     isDark.value = true
+        // } else if (localStorage.getItem('isDark') === 'false') {
+        //     document.documentElement.classList.remove('dark')
+        //     isDark.value = false
+        // } else {
+        //     // 默认主题为深色
+        //     document.documentElement.classList.add('dark')
+        //     isDark.value = true
+        //     localStorage.setItem('isDark', 'true')
+        // }
+        document.documentElement.classList.add('dark')
+        isDark.value = true
+        localStorage.setItem('isDark', 'true')
     }
     // 切换主题
     function toggleTheme(): void {

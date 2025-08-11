@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 
-import macWindow from '@/components/introductionPage/macWindow.vue';
+import macWindow from '@/components/introduction/macWindow.vue';
 import { SquareTerminal } from 'lucide-vue-next';
 
 import { ref, onMounted, onUnmounted } from 'vue';
