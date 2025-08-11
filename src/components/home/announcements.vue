@@ -1,25 +1,31 @@
 <template>
-    <div class="mx-10 mt-5 mb-10">
-        <div v-for="(item, index) in items" :key="index" class="li-item flex relative items-center justify-between cursor-pointer
-        py-8 px-4 *:z-10 border-t-2 border-[#bbb89c] *:duration-300">
+    <div ref="root" class="mx-10 mt-5 mb-10">
+        <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
+        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300">
             <div>
-                <p class="text-4xl">{{ item.title }}</p>
-                <p class="text-2xl">{{ item.subtitle }}</p>
+                <div class="overflow-hidden">
+                    <p class="text-4xl title">{{ item.title }}</p>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-2xl subtitle">{{ item.subtitle }}</p>
+                </div>
             </div>
-            <p>{{ item.date }}</p>
+            <p class="date">{{ item.date }}</p>
         </div>
-        <hr class="w-full border-t-2 border-[#bbb89c]" />
         <p class="text-2xl mt-5 cursor-pointer flex items-center space-x-1 w-fit">
             <span>查看更多</span>
-            <ArrowRight class="size-6"/>
+            <ArrowRight class="size-6" />
         </p>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onUnmounted } from 'vue';
 
 import { ArrowRight } from 'lucide-vue-next';
+
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const items = ref([
     { title: '关于新生办理校园网的相关流程', subtitle: '[ 网络协会 ]', date: '2025.7.25' },
@@ -27,6 +33,110 @@ const items = ref([
     { title: '关于ACM程序竞赛的报名事项', subtitle: '[ ACM协会 ]', date: '2025.7.27' }
 ])
 
+const root = ref<HTMLElement | null>(null);
+const itemsRef = ref<Array<HTMLElement>>([]);
+
+onMounted(() => {
+    animate.init()
+})
+
+onUnmounted(() => {
+    animate.tls.forEach((tl) => {
+        tl.kill();
+    })
+})
+
+const animate = {
+    tls: [] as Array<gsap.core.Timeline>,
+    init() {
+        itemsRef.value.forEach((el) => {
+            gsap.set(el, { autoAlpha: 0 })
+            ScrollTrigger.create({
+                trigger: el,
+                start: 'top bottom',
+                end: 'bottom top+=56',
+                onEnter: () => {
+                    gsap.fromTo(el,
+                        {
+                            x: '-20%',
+                            autoAlpha: 0
+                        },
+                        {
+                            x: 0,
+                            autoAlpha: 1,
+                            duration: 0.5,
+                            ease: 'circ.out'
+                        }
+                    )
+                },
+                onLeave: () => {
+                    gsap.set(el, { autoAlpha: 0 })
+                },
+                onEnterBack: () => {
+                    gsap.fromTo(el,
+                        {
+                            x: '20%',
+                            autoAlpha: 0
+                        },
+                        {
+                            x: 0,
+                            autoAlpha: 1,
+                            duration: 0.5,
+                            ease: 'circ.out'
+                        }
+                    )
+                },
+                onLeaveBack: () => {
+                    gsap.set(el, { autoAlpha: 0 })
+                }
+            })
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top bottom',
+                    end: 'bottom top+=56',
+                    toggleActions: 'restart none restart none',
+                }
+            })
+            const title = el.querySelector('.title')
+            const subtitle = el.querySelector('.subtitle')
+            const date = el.querySelector('.date')
+            tl.fromTo(title,
+                {
+                    y: '100%'
+                },
+                {
+                    y: 0,
+                    duration: 0.6,
+                    ease: 'circ.out'
+                }
+            )
+            tl.fromTo(subtitle,
+                {
+                    y: '100%'
+                },
+                {
+                    y: 0,
+                    duration: 0.6,
+                    ease: 'circ.out'
+                },
+                '<'
+            )
+            tl.to(date,
+                {
+                    duration: 2,
+                    scrambleText: {
+                        text: '{original}',
+                        chars: 'NA&ACM',
+                        speed: 0.5
+                    }
+                },
+                '<'
+            )
+            this.tls.push(tl);
+        })
+    }
+}
 
 
 </script>
@@ -51,7 +161,7 @@ const items = ref([
     height: calc(100% + 2px);
 }
 
-:deep(.li-item:hover) > * {
+:deep(.li-item:hover)>* {
     color: #0E100F;
 
     .text-stroke {
@@ -62,5 +172,4 @@ const items = ref([
         color: #0E100F
     }
 }
-
 </style>

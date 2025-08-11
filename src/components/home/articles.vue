@@ -1,7 +1,7 @@
 <template>
     <div class="mx-10 mt-5 mb-10">
         <div class="grid grid-cols-2 md:grid-cols-3 gap-10">
-            <div v-for="(item, index) in items" :key="index" class="flex flex-col items-start justify-between space-y-4">
+            <div v-for="(item, index) in items" :key="index" :data-index="index" class="flex flex-col items-start justify-between space-y-4">
                 <div class="flex w-full h-80 items-center justify-center rounded-xl dark:bg-[#CAB8A4] cursor-pointer">img{{ index + 1 }}</div>
                 <p class="text-2xl cursor-pointer">{{ item.title }}</p>
                 <p>{{ item.date }}</p>

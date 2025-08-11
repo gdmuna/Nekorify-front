@@ -1,33 +1,35 @@
 <template>
-    <div ref="root" class="flex-1 flex items-center justify-center">
-        <canvas ref="canvas" class="cursor-pointer" />
+    <div class="flex-1 flex flex-col items-center justify-center">
+        <div ref="container" class="relative flex-1 w-full h-full flex">
+            <canvas ref="canvas" class="cursor-pointer" />
+            <div class="absolute bottom-0 left-0 w-full h-3 transition-bg" />
+        </div>
+        <div class="flex flex-col items-center overflow-hidden">
+            <p ref="title" class="text-4xl font-bold">猫与鱼</p>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from 'vue';
+import { onMounted, ref, nextTick } from 'vue';
 
 import { gsap } from 'gsap';
 
-import { throttle } from '@/lib/utils';
+import { toast } from 'vue-sonner'
 
 onMounted(() => {
     photobox.init();
+    nextTick(animate)
+    gsap.from(title.value, {
+        y: '-100%',
+        duration: 0.75,
+        ease: 'circ.out'
+    })
 })
 
 const canvas = ref<HTMLCanvasElement | null>(null);
-const root = ref<HTMLDivElement | null>(null);
-
-const offset = computed(() => {
-    if (root.value) {
-        // 获取 photobox 的实际 offsetTop
-        const rect = root.value.getBoundingClientRect();
-        // 滚动条偏移
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        return rect.top + scrollTop;
-    }
-    return 0;
-})
+const container = ref<HTMLDivElement | null>(null);
+const title = ref<HTMLParagraphElement | null>(null);
 
 const velocity = ref({
     vx: 1.5,
@@ -48,7 +50,7 @@ function animate() {
     const dt = (now - lastTime) / 1000; // 单位：秒
     lastTime = now;
     // 根据速度更新位置
-    position.value.x += velocity.value.vx * dt * 60; // 乘以60，为了和原来setInterval每16ms加1的节奏接近
+    position.value.x += velocity.value.vx * dt * 60;
     position.value.y += velocity.value.vy * dt * 60;
     const deltaX = position.value.x - lastX;
     const deltaY = position.value.y - lastY;
@@ -80,9 +82,11 @@ const photobox = {
     total_width: 0,
     total_height: 0,
     // 图片数据，用以储存每张图片的源以及xy坐标位置
-    img_data: [] as { img: HTMLImageElement, x: number, y: number }[],
+    img_data: [] as { img: HTMLImageElement, x: number, y: number, src: string }[],
     // 当前画布是否可以移动
     if_movable: false,
+    if_dragging: false,
+    _touchStart: null as { x: number, y: number } | null,
     // 初始化
     init() {
         this.canvas = canvas.value
@@ -93,13 +97,11 @@ const photobox = {
         this.resize();
         this.creat_events();
         this.creat_img_data();
-        // this.infiniteScroll()
-        animate()
     },
     resize() {
         // 修改canvas宽高以填充满页面
-        this.canvas!.width = root.value!.clientWidth;
-        this.canvas!.height = root.value!.clientHeight;
+        this.canvas!.width = container.value!.clientWidth;
+        this.canvas!.height = container.value!.clientHeight;
         // 修改canvas宽高之后，画布内容会被清除，故需要调用一次move_imgs函数，重新生成所有图片
         if (this.img_data) this.move_imgs(0, 0)
     },
@@ -108,7 +110,7 @@ const photobox = {
         this.img_data = [];
         for (let i = 0; i < this.img_total; i++) {
             let img = new Image();
-            img.src = `src/components/home/photos/photo (${i + 1}).png`;
+            img.src = `src/assets/photos/photo (${i + 1}).png`;
             // 当图片加载完成之后，创建对应图片数据并添加到img_data中
             img.onload = () => {
                 // 计算该序号图片处于第几行第几列
@@ -118,7 +120,7 @@ const photobox = {
                 let x = col_index * (this.img_width + this.img_margin);
                 let y = line_index * (this.img_height + this.img_margin);
                 // 将其添加到img_data中
-                this.img_data.push({ img, x, y });
+                this.img_data.push({ img, x, y, src: img.src });
                 // 创建完成之后就绘制一次，确保在进入页面的时候，图片会全部显示
                 this.content!.drawImage(img, x, y, this.img_width, this.img_height);
             };
@@ -132,37 +134,82 @@ const photobox = {
         // 当鼠标按下时，才可以移动所有图片
         this.canvas!.addEventListener("mousedown", () => {
             this.if_movable = true;
+            this.if_dragging = false;
         });
         // 当鼠标弹起时，图片无法被移动，并且调用check_img函数，获取当前鼠标所指向的图片
         this.canvas!.addEventListener("mouseup", (e) => {
             this.if_movable = false;
-            this.check_img(e.x, e.y);
+            // 当鼠标点击时，调用check_img函数，获取当前鼠标所指向的图片
+            if (!this.if_dragging) this.check_img(e);
+            this.if_dragging = false;
         });
         // 当鼠标离开选区时，图片无法被移动，
         this.canvas!.addEventListener("mouseleave", () => {
             this.if_movable = false;
+            this.if_dragging = false;
         });
         // 当鼠标移动时，调用move_imgs函数，移动所有图片
         this.canvas!.addEventListener("mousemove", (e) => {
             // if_movable为flase则不可以移动图片，即鼠标未按下时
             if (!this.if_movable) return 0;
+            this.if_dragging = true;
             gsap.to(velocity.value, {
                 inertia: {
                     vx: {
-                        velocity: e.movementX * 10,
+                        velocity: e.movementX * 8,
                         end: 1.5
                     },
                     vy: {
-                        velocity: e.movementY * 10,
+                        velocity: e.movementY * 8,
                         end: 0.5
                     },
                     duration: { min: 0.5, max: 3 }
                 },
-                overwrite: true,
-                onUpdate: () => {
-                }
+                overwrite: true
             });
         });
+        // 触摸按下
+        this.canvas!.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // 阻止滚动
+            this.if_movable = true;
+            this.if_dragging = false;
+            // 记录起始点（可选，便于拖动/点击区分）
+            this._touchStart = getTouchPos(e);
+        }, { passive: false });
+        // 触摸移动
+        this.canvas!.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (!this.if_movable) return;
+            this.if_dragging = true;
+            const curr = getTouchPos(e);
+            const prev = this._touchStart || curr;
+            const dx = curr.x - prev.x;
+            const dy = curr.y - prev.y;
+            // 触屏惯性与鼠标类似
+            gsap.to(velocity.value, {
+                inertia: {
+                    vx: {
+                        velocity: dx * 8,
+                        end: 1.5
+                    },
+                    vy: {
+                        velocity: dy * 8,
+                        end: 0.5
+                    },
+                    duration: { min: 0.5, max: 3 }
+                },
+                overwrite: true
+            });
+            this._touchStart = curr; // 记录上一次
+        }, { passive: false });
+        // 触摸抬起
+        this.canvas!.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.if_movable = false;
+            if (!this.if_dragging) this.check_img(getFakeMouseEvent(e) as MouseEvent);
+            this.if_dragging = false;
+            this._touchStart = null;
+        }, { passive: false });
     },
     // 移动所有图片
     move_imgs(x: number, y: number) {
@@ -190,19 +237,47 @@ const photobox = {
         });
     },
     // 获取当前鼠标点击位置下的对应图片数据
-    check_img(x: number, y: number) {
+    check_img(e: MouseEvent) {
+        const rect = canvas.value!.getBoundingClientRect();
+        const scaleX = canvas.value!.width / rect.width;
+        const scaleY = canvas.value!.height / rect.height;
+        let x = (e.clientX - rect.left) * scaleX;
+        let y = (e.clientY - rect.top) * scaleY;
         // 遍历所有图片，找出鼠标xy坐标处于图片内部的那张图片
-        if (offset.value) {
-            y -= offset.value; // 减去offset值，确保坐标正确
-        }
         let img = this.img_data.find(img =>
             x >= img.x && x < img.x + this.img_width &&
             y >= img.y && y < img.y + this.img_height
         );
-        // 如果存在，则输出
-        if (img) console.log(img, img.img);
+        if (img) toast(img.src);
     }
 };
+
+// 工具函数：获取触点坐标（相对于canvas左上角）
+function getTouchPos(e: TouchEvent) {
+    const touch = e.touches[0] || e.changedTouches[0];
+    const rect = canvas.value!.getBoundingClientRect();
+    const scaleX = canvas.value!.width / rect.width;
+    const scaleY = canvas.value!.height / rect.height;
+    return {
+        x: (touch.clientX - rect.left) * scaleX,
+        y: (touch.clientY - rect.top) * scaleY
+    };
+}
+
+// 工具函数：将 touch 事件转换为 MouseEvent 格式（用于check_img）
+function getFakeMouseEvent(e: TouchEvent) {
+    const pos = getTouchPos(e);
+    return {
+        clientX: pos.x,
+        clientY: pos.y,
+        // 其它属性可补充
+    };
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.transition-bg {
+    background: linear-gradient(0.00deg, rgba(14, 16, 15, 1), rgba(14, 16, 15, 0) 100%);
+    /* box-shadow: inset 5px 0px 0px 10px rgba(14, 16, 15, 0.5); */
+}
+</style>

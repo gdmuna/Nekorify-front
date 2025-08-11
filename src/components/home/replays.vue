@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, nextTick, onUnmounted } from 'vue';
 import { ArrowRight } from 'lucide-vue-next';
 
 import { gsap } from 'gsap';
@@ -51,11 +51,17 @@ const titles = ref<HTMLElement | null>(null);
 const indicator = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-    enterAnimate.start();
+    nextTick(() => enterAnimate.start());
+})
+
+onUnmounted(() => {
+    enterAnimate.tl.kill();
+    backAnimate.tl.kill();
 })
 
 const enterAnimate = {
     tl: gsap.timeline(),
+    isFirstEnter: true,
     start() {
         const el = titles.value!.querySelector(`[data-index="${currentIdx.value}"]`);
         const progressContainer = el!.querySelector('.progress-container');
@@ -63,6 +69,12 @@ const enterAnimate = {
         const parentRect = indicator.value!.parentElement!.getBoundingClientRect();
         const titleRect = el!.querySelector('.title')!.getBoundingClientRect();
         const centerY = titleRect.top + titleRect.height / 2 - parentRect.top - indicator.value!.offsetHeight / 2;
+        if (this.isFirstEnter) {
+            gsap.set(indicator.value, {
+                y: centerY
+            });
+            this.isFirstEnter = false;
+        }
         this.tl.to({}, { duration: 0.5 })
         this.tl.to(progressContainer,
             {
@@ -75,7 +87,7 @@ const enterAnimate = {
             {
                 y: centerY,
                 duration: 1,
-                ease: 'elastic.out(1.4,0.6)'
+                ease: 'elastic.out(1.2,0.6)'
             },
             '<'
         )

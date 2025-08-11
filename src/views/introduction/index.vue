@@ -691,6 +691,7 @@ function initAnimate() {
 function section2_dynamicTitleAnimation(index: number) {
     const el = section2_dynamicTitleArray[index].value;
     const tl = gsap.timeline()
+    if (!el) return;
     tl.fromTo(
         el,
         {
