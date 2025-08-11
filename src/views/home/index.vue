@@ -2,7 +2,7 @@
     <div class="w-full">
         <!-- Section 1 -->
         <section class="h-[calc(100dvh-3.5rem)] bg-gray-200 dark:bg-[#0E100F] flex flex-col">
-            <div class="flex-1 flex items-center justify-center">Home Section 1</div>
+            <photobox />
             <titleBlock titleA="公告" titleB="ANNOUNCEMENT" />
         </section>
         <!-- Section 2 -->
@@ -27,6 +27,7 @@ import { onMounted, ref } from 'vue';
 
 import { gsap } from 'gsap';
 
+import photobox from '@/components/home/photos.vue';
 import titleBlock from '@/components/home/titleBlock.vue';
 import announcement from '@/components/home/announcements.vue';
 import articles from '@/components/home/articles.vue';

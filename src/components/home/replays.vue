@@ -2,14 +2,13 @@
     <div class="mx-10 mt-5 mb-10 flex justify-center">
         <div class="flex flex-col">
             <div class="flex items-center space-x-4 space-y-4">
-                <div class="flex-1 w-180 h-80 rounded-xl dark:bg-[#CAB8A4] flex items-center justify-center">video{{
-                    currentIdx + 1 }}</div>
+                <div class="flex-1 w-180 h-80 rounded-xl dark:bg-[#CAB8A4] flex items-center justify-center shrink-1">video{{ currentIdx + 1 }}</div>
                 <div class="flex space-x-4">
-                    <div class="size-6 dark:bg-amber-100 rounded-full" />
+                    <div ref="indicator" class="size-4 dark:bg-amber-100 rounded-full" />
                     <div ref="titles" class="flex flex-col space-y-4">
                         <div v-for="(item, index) in items" :key="index" class="flex flex-col space-y-2 cursor-pointer"
                             :data-index="index">
-                            <p class="text-4xl">{{ item.title }}</p>
+                            <p class="text-4xl title">{{ item.title }}</p>
                             <p class="text-2xl">{{ item.date }}</p>
                             <div class="bg-[#595959] border opacity-0 progress-container">
                                 <div class="border-[#D5C8B0] border progress-bar w-0"></div>
@@ -24,7 +23,7 @@
                         {{ items[currentIdx].subtitle }}
                     </p>
                 </transition>
-                <p class="text-2xl mt-5 cursor-pointer flex items-center space-x-1 w-fit shrink-0">
+                <p class="text-2xl mt-5 cursor-pointer flex items-center space-x-1 w-fit">
                     <span>查看更多</span>
                     <ArrowRight class="size-6" />
                 </p>
@@ -49,6 +48,7 @@ const currentIdx = ref(0);
 const prevIdx = ref(0);
 
 const titles = ref<HTMLElement | null>(null);
+const indicator = ref<HTMLElement | null>(null);
 
 onMounted(() => {
     enterAnimate.start();
@@ -60,6 +60,9 @@ const enterAnimate = {
         const el = titles.value!.querySelector(`[data-index="${currentIdx.value}"]`);
         const progressContainer = el!.querySelector('.progress-container');
         const progressBar = el!.querySelector('.progress-bar');
+        const parentRect = indicator.value!.parentElement!.getBoundingClientRect();
+        const titleRect = el!.querySelector('.title')!.getBoundingClientRect();
+        const centerY = titleRect.top + titleRect.height / 2 - parentRect.top - indicator.value!.offsetHeight / 2;
         this.tl.to({}, { duration: 0.5 })
         this.tl.to(progressContainer,
             {
@@ -67,6 +70,14 @@ const enterAnimate = {
                 duration: 0.5,
                 ease: 'power1.out'
             }
+        )
+        this.tl.to(indicator.value,
+            {
+                y: centerY,
+                duration: 1,
+                ease: 'elastic.out(1.4,0.6)'
+            },
+            '<'
         )
         this.tl.to(progressBar,
             {
