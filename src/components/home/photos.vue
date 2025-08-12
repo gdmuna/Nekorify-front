@@ -6,12 +6,13 @@
         </div>
         <teleport to='body'>
             <transition name="bg">
-                <div v-if="imgOpened"
-                    class="fixed top-1/2 left-1/2 bg-[#0E100F]/50 -translate-1/2 z-50 size-full" @click="imgOpened = false">
+                <div v-if="imgOpened" class="fixed top-1/2 left-1/2 bg-[#0E100F]/50 -translate-1/2 z-50 size-full"
+                    @click="imgOpened = false">
                 </div>
             </transition>
             <transition name="picture">
-                <img v-if="imgOpened" :src="imgOpenedSrc" class="fixed top-1/2 left-1/2 -translate-1/2 z-50 max-h-[90%] max-w-[90%]" />
+                <img v-if="imgOpened" :src="imgOpenedSrc"
+                    class="fixed top-1/2 left-1/2 -translate-1/2 z-50 max-h-[90%] max-w-[90%] select-none" />
             </transition>
         </teleport>
     </div>
@@ -32,16 +33,10 @@ const imgOpenedSrc = ref('');
 onMounted(() => {
     photobox.init();
     nextTick(animate)
-    gsap.from(title.value, {
-        y: '-100%',
-        duration: 0.75,
-        ease: 'circ.out'
-    })
 })
 
 const canvas = ref<HTMLCanvasElement | null>(null);
 const container = ref<HTMLDivElement | null>(null);
-const title = ref<HTMLParagraphElement | null>(null);
 
 const velocity = ref({
     vx: 0,
@@ -86,11 +81,6 @@ const photobox = {
     row_max: 8,
     // 图片排列的总行数
     line_max: 4,
-    // 源图片的实际宽高，这里因为图片太大，会占据画布太多位置，故除以一个数让其缩小
-    img_width: Math.floor(1000 / 2),
-    img_height: Math.floor(700 / 2),
-    // 图片间的上下左右间距
-    img_margin: 100,
     // 所有图片纵横排列之后的总宽高，用作图片超出范围的界限判定
     total_width: 0,
     total_height: 0,
@@ -102,23 +92,53 @@ const photobox = {
     _touchStart: null as { x: number, y: number } | null,
     img_opened: ref(false),
     img_opened_src: ref(''),
-    // 初始化
+    // 添加基准宽度
+    baseWidth: 1000,
+    // 基准尺寸 - 以1380px屏幕宽度为基准
+    baseImgWidth: 500,  // 1000/2
+    baseImgHeight: 350, // 700/2
+    baseImgMargin: 100,
+    // 当前应用的尺寸
+    img_width: 0,
+    img_height: 0,
+    img_margin: 0,
+    // 初始化时添加计算
     init() {
-        this.canvas = canvas.value
+        this.canvas = canvas.value;
         this.content = this.canvas!.getContext("2d");
-        // 总宽度等于横向排列的所有图片的宽度和间隔相加，最后一张图片没有右间隔，故需要减去一个间隔，总高度同理
+        // 计算适应当前屏幕的尺寸
+        this.calculateResponsiveSizes();
+        // 计算总宽高
         this.total_width = this.row_max * (this.img_width + this.img_margin) - this.img_margin;
         this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
         this.resize();
         this.creat_events();
         this.creat_img_data();
     },
+    // 计算响应式尺寸的方法
+    calculateResponsiveSizes() {
+        // 获取当前容器宽度
+        const containerWidth = container.value!.clientWidth;
+        // 计算缩放比例
+        const scale = Math.max(0.6, Math.min(1, containerWidth / this.baseWidth));
+        // 应用缩放后的尺寸
+        this.img_width = Math.floor(this.baseImgWidth * scale);
+        this.img_height = Math.floor(this.baseImgHeight * scale);
+        this.img_margin = Math.floor(this.baseImgMargin * scale);
+        // 确保最小值
+        this.img_width = Math.max(200, this.img_width);
+        this.img_height = Math.max(140, this.img_height);
+        this.img_margin = Math.max(30, this.img_margin);
+    },
     resize() {
         // 修改canvas宽高以填充满页面
         this.canvas!.width = container.value!.clientWidth;
         this.canvas!.height = container.value!.clientHeight;
+        // 更新总宽高
+        this.total_width = this.row_max * (this.img_width + this.img_margin) - this.img_margin;
+        this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
         // 修改canvas宽高之后，画布内容会被清除，故需要调用一次move_imgs函数，重新生成所有图片
-        if (this.img_data) this.move_imgs(0, 0)
+        if (this.img_data.length > 0) this.move_imgs(0, 0);
     },
     // 创建图片数据即img_data
     creat_img_data() {

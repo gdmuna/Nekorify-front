@@ -1,13 +1,13 @@
 <template>
-    <div ref="root" class="mx-10 mt-5 mb-10">
+    <div ref="root" class="md:mx-10 mx-4 mt-5 mb-10">
         <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
-        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300">
+        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2">
             <div>
                 <div class="overflow-hidden">
-                    <p class="text-4xl title">{{ item.title }}</p>
+                    <p class="md:text-4xl text-xl title">{{ item.title }}</p>
                 </div>
                 <div class="overflow-hidden">
-                    <p class="text-2xl subtitle">{{ item.subtitle }}</p>
+                    <p class="md:text-2xl text-lg subtitle">{{ item.subtitle }}</p>
                 </div>
             </div>
             <p class="date">{{ item.date }}</p>
@@ -25,6 +25,11 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { getRemPx } from '@/lib/utils';
+
+import { useSystemStore } from '@/stores/system';
+import { storeToRefs } from 'pinia';
+const systemStore = useSystemStore();
+const { isMobile } = storeToRefs(systemStore);
 
 const items = ref([
     { title: '关于新生办理校园网的相关流程', subtitle: '[ 网络协会 ]', date: '2025.7.25' },
@@ -122,17 +127,19 @@ const animate = {
                 },
                 '<'
             )
-            tl.to(date,
-                {
-                    duration: 1,
-                    scrambleText: {
-                        text: '{original}',
-                        chars: '0123456789.',
-                        speed: 0.5
-                    }
-                },
-                '<'
-            )
+            if (!isMobile) {
+                tl.to(date,
+                    {
+                        duration: 1,
+                        scrambleText: {
+                            text: '{original}',
+                            chars: '0123456789.',
+                            speed: 0.5
+                        }
+                    },
+                    '<'
+                )
+            }
             this.tls.push(tl);
         })
     }

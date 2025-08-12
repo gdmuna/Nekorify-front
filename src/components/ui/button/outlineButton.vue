@@ -1,10 +1,10 @@
 <template>
     <div class="mt-5 w-fit flex flex-col cursor-pointer" @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')">
         <div>
-            <div ref="container" class="text-2xl flex items-center space-x-1 relative overflow-hidden">
+            <div ref="container" class="md:text-2xl flex items-center space-x-1 relative overflow-hidden">
                 <p ref="text">查看更多</p>
-                <ArrowRight ref="icon1" class="size-6 m-0" />
-                <ArrowRight ref="icon2" class="size-6 absolute left-0" />
+                <ArrowRight ref="icon1" class="md:size-6 size-4 m-0" />
+                <ArrowRight ref="icon2" class="md:size-6 size-4 absolute left-0" />
             </div>
             <div ref="bottomLine" class="w-full h-[1px] mt-1 bg-amber-100" />
         </div>

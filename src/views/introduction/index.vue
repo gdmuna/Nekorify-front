@@ -1,14 +1,6 @@
 <template>
     <div ref="introPageRoot" class="dark:bg-[#0E100F]">
-        <teleport to="body">
-            <div v-if="isDesktop" class="fixed bottom-0 right-0 z-50 mr-5 flex flex-col items-end dark:text-[#FEFCE4]">
-                <p class="rotate-90 origin-right tracking-widest">SCROLL</p>
-                <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="1" y1="0" x2="1" y2="80" stroke="#FEFCE4" stroke-width="2" stroke-dasharray="8 8"
-                        stroke-dashoffset="0" class="animate-dash" />
-                </svg>
-            </div>
-        </teleport>
+        <scrollHint />
         <!-- Section 1 -->
         <section ref="section1" class="relative h-[calc(100dvh-3.5rem)] flex items-center justify-center
         bg-gray-100">
@@ -467,6 +459,7 @@ import QA from '@/components/introduction/QA.vue';
 import section4Terminal from '@/components/introduction/section4Terminal.vue';
 import section1Left from '@/components/introduction/section1Left.vue';
 import section1Right from '@/components/introduction/section1Right.vue';
+import scrollHint from '@/components/scrollHint.vue';
 
 // 导入图标
 import { BrainCircuit } from 'lucide-vue-next';

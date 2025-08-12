@@ -1,15 +1,15 @@
 <template>
     <div class="mx-10 mt-5 mb-10 flex justify-center">
         <div class="flex flex-col">
-            <div class="flex items-center space-x-4 space-y-4">
-                <div class="flex-1 w-180 h-80 rounded-xl dark:bg-[#CAB8A4] flex items-center justify-center shrink-1">video{{ currentIdx + 1 }}</div>
-                <div class="flex space-x-4">
-                    <div ref="indicator" class="size-4 dark:bg-amber-100 rounded-full" />
+            <div class="flex md:flex-row flex-col md:space-x-4 space-y-4">
+                <div class="xl:w-180 md:w-120 w-78 md:h-80 h-40 rounded-xl dark:bg-[#CAB8A4] flex items-center justify-center shrink-1">video{{ currentIdx + 1 }}</div>
+                <div class="flex space-x-4 md:-translate-x-0 -translate-x-6">
+                    <div ref="indicator" class="md:size-4 size-3 dark:bg-amber-100 rounded-full" />
                     <div ref="titles" class="flex flex-col space-y-4">
                         <div v-for="(item, index) in items" :key="index" class="flex flex-col space-y-2"
                             :data-index="index">
-                            <p class="text-4xl title cursor-pointer" @click="toggle('custom', index)">{{ item.title }}</p>
-                            <p class="text-2xl">{{ item.date }}</p>
+                            <p class="xl:text-4xl md:text-3xl text-2xl title cursor-pointer" @click="toggle('custom', index)">{{ item.title }}</p>
+                            <p class="xl:text-2xl md:text-xl text-lg">{{ item.date }}</p>
                             <div class="bg-[#595959] border opacity-0 progress-container">
                                 <div class="border-[#D5C8B0] border progress-bar w-0"></div>
                             </div>
@@ -19,7 +19,7 @@
             </div>
             <div class="flex flex-col items-start overflow-hidden">
                 <transition name="subtitle-slide" mode="out-in">
-                    <p class="text-3xl" :key="currentIdx">
+                    <p class="text-3xl" :key="currentIdx" v-if="!isMobile">
                         {{ items[currentIdx].subtitle }}
                     </p>
                 </transition>
@@ -36,10 +36,15 @@ import { outlineButton } from '@/components/ui/button';
 
 import { gsap } from 'gsap';
 
+import { useSystemStore } from '@/stores/system';
+import { storeToRefs } from 'pinia';
+const systemStore = useSystemStore();
+const { isMobile } = storeToRefs(systemStore);
+
 const items = ref([
     { title: 'VSCode环境配置', subtitle: '[ 网络协会 · 学术部 ]', date: '2025.7.25' },
     { title: 'Vue核心语法课', subtitle: '[ 网络协会 · 学术部 ]', date: '2025.7.26' },
-    { title: 'Express.js入门课', subtitle: '[ ACM协会 · 学术部 ]', date: '2025.7.27' }
+    { title: 'Express入门课', subtitle: '[ ACM协会 · 学术部 ]', date: '2025.7.27' }
 ]);
 
 const currentIdx = ref(0);

@@ -1,7 +1,8 @@
 <template>
     <div class="w-full">
+        <scrollHint />
         <!-- Section 1 -->
-        <section class="h-[calc(100dvh-3.5rem)] bg-gray-200 dark:bg-[#0E100F] flex flex-col">
+        <section class="md:h-[calc(100dvh-3.5rem)] h-[calc(75dvh-3.5rem)] bg-gray-200 dark:bg-[#0E100F] flex flex-col">
             <photobox />
             <titleBlock titleA="公告" titleB="ANNOUNCEMENT" />
         </section>
@@ -27,6 +28,7 @@ import { onMounted, ref } from 'vue';
 
 import { gsap } from 'gsap';
 
+import scrollHint from '@/components/scrollHint.vue';
 import photobox from '@/components/home/photos.vue';
 import titleBlock from '@/components/home/titleBlock.vue';
 import announcement from '@/components/home/announcements.vue';

@@ -11,7 +11,7 @@
                         class="absolute top-0 size-10 will-change-transform">
                 </div>
                 <!-- 导航菜单 -->
-                <nav class="flex items-center ml-6 md:space-x-4 space-x-1 whitespace-nowrap">
+                <nav class="flex items-center md:ml-6 ml-2 md:space-x-4 space-x-1 whitespace-nowrap">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]" @click="routerGoTo('/home')">首页</Button>
                     <img :src="boundary" alt="">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
