@@ -145,7 +145,7 @@ const photobox = {
         this.img_data = [];
         for (let i = 0; i < this.img_total; i++) {
             let img = new Image();
-            img.src = `src/assets/picture/${i}.jpg`;
+            img.src = `/picture/${i}.jpg`;
             // 当图片加载完成之后，创建对应图片数据并添加到img_data中
             img.onload = () => {
                 // 计算该序号图片处于第几行第几列

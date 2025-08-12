@@ -74,7 +74,7 @@ onMounted(() => {
         },
     })
     // 路由跳转后重置滚动进度
-    router.beforeEach((from) => {
+    router.beforeEach(() => {
         // 立即滚动到顶部
         smoother.scrollTo(0, false)
         // if (from.path !== '/') {
