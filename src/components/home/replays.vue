@@ -6,9 +6,9 @@
                 <div class="flex space-x-4">
                     <div ref="indicator" class="size-4 dark:bg-amber-100 rounded-full" />
                     <div ref="titles" class="flex flex-col space-y-4">
-                        <div v-for="(item, index) in items" :key="index" class="flex flex-col space-y-2 cursor-pointer"
+                        <div v-for="(item, index) in items" :key="index" class="flex flex-col space-y-2"
                             :data-index="index">
-                            <p class="text-4xl title">{{ item.title }}</p>
+                            <p class="text-4xl title cursor-pointer" @click="toggle('custom', index)">{{ item.title }}</p>
                             <p class="text-2xl">{{ item.date }}</p>
                             <div class="bg-[#595959] border opacity-0 progress-container">
                                 <div class="border-[#D5C8B0] border progress-bar w-0"></div>
@@ -23,10 +23,7 @@
                         {{ items[currentIdx].subtitle }}
                     </p>
                 </transition>
-                <p class="text-2xl mt-5 cursor-pointer flex items-center space-x-1 w-fit">
-                    <span>查看更多</span>
-                    <ArrowRight class="size-6" />
-                </p>
+                <outlineButton />
             </div>
         </div>
     </div>
@@ -34,7 +31,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref, nextTick, onUnmounted } from 'vue';
-import { ArrowRight } from 'lucide-vue-next';
+
+import { outlineButton } from '@/components/ui/button';
 
 import { gsap } from 'gsap';
 
@@ -51,7 +49,7 @@ const titles = ref<HTMLElement | null>(null);
 const indicator = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-    nextTick(() => enterAnimate.start());
+    nextTick(() => enterAnimate.start('next'));
 })
 
 onUnmounted(() => {
@@ -62,7 +60,7 @@ onUnmounted(() => {
 const enterAnimate = {
     tl: gsap.timeline(),
     isFirstEnter: true,
-    start() {
+    start(type: string) {
         const el = titles.value!.querySelector(`[data-index="${currentIdx.value}"]`);
         const progressContainer = el!.querySelector('.progress-container');
         const progressBar = el!.querySelector('.progress-bar');
@@ -75,7 +73,7 @@ const enterAnimate = {
             });
             this.isFirstEnter = false;
         }
-        this.tl.to({}, { duration: 0.5 })
+        if (type === 'next') this.tl.to({}, { duration: 0.5 })
         this.tl.to(progressContainer,
             {
                 opacity: 1,
@@ -97,7 +95,7 @@ const enterAnimate = {
                 duration: 5,
                 ease: 'none',
                 onComplete: () => {
-                    next()
+                    toggle('next')
                 }
             },
             '<'
@@ -127,14 +125,43 @@ const backAnimate = {
             },
             '<'
         )
+    },
+    force() {
+        const el = titles.value!.querySelector(`[data-index="${prevIdx.value}"]`);
+        const progressContainer = el!.querySelector('.progress-container');
+        const progressBar = el!.querySelector('.progress-bar');
+        const tl = gsap.timeline();
+        tl.to(progressContainer,
+            {
+                opacity: 0,
+                duration: 0.5,
+                ease: 'power1.in'
+            }
+        )
+        tl.to(progressBar,
+            {
+                width: '0%',
+                duration: 0.5,
+                ease: 'power1.in'
+            },
+            '<'
+        )
     }
 }
 
-function next() {
+function toggle(type: string, idx?: number) {
     prevIdx.value = currentIdx.value
-    currentIdx.value = (currentIdx.value + 1) % items.value.length
-    backAnimate.start()
-    enterAnimate.start()
+    if (type === 'next') {
+        currentIdx.value = (currentIdx.value + 1) % items.value.length
+        enterAnimate.start('next')
+        backAnimate.start()
+    } else if (type === 'custom' && idx !== undefined) {
+        currentIdx.value = idx
+        enterAnimate.tl.clear()
+        backAnimate.tl.clear()
+        enterAnimate.start('custom')
+        backAnimate.force()
+    }
 }
 
 </script>

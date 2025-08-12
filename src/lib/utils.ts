@@ -102,3 +102,8 @@ export async function retry<T>(
         return retry(fn, retries - 1, delay);
     }
 }
+
+export function getRemPx(rem: number):number {
+    const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    return rem * fontSize;
+}

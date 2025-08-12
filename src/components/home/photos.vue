@@ -32,8 +32,8 @@ const container = ref<HTMLDivElement | null>(null);
 const title = ref<HTMLParagraphElement | null>(null);
 
 const velocity = ref({
-    vx: 1.5,
-    vy: 0.5
+    vx: 0,
+    vy: 0
 })
 
 const position = ref({
@@ -125,6 +125,22 @@ const photobox = {
                 this.content!.drawImage(img, x, y, this.img_width, this.img_height);
             };
         };
+        nextTick(() => {
+            gsap.to(velocity.value, {
+                inertia: {
+                    vx: {
+                        velocity: 0.5,
+                        end: 1.5
+                    },
+                    vy: {
+                        velocity: 0.3,
+                        end: 0.5
+                    },
+                    duration: { min: 0.5, max: 3 }
+                },
+                overwrite: true
+            });
+        })
     },
     // 绑定所有监听事件
     creat_events() {

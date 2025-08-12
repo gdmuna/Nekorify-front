@@ -22,6 +22,8 @@
 import { onMounted, ref, onUnmounted } from 'vue';
 import { gsap } from 'gsap';
 
+import { getRemPx } from '@/lib/utils';
+
 defineProps<{
     titleA?: string;
     titleB?: string;
@@ -38,11 +40,13 @@ onMounted(() => {
 const animate = {
     tl: null as gsap.core.Timeline | null,
     init() {
+        const offset = getRemPx(3.5);
         this.tl = gsap.timeline({
             scrollTrigger: {
                 trigger: root.value,
                 start: 'top bottom',
-                once: true,
+                end: `bottom top+=${offset}`,
+                toggleActions: 'restart none restart none',
             }
         })
         this.tl.fromTo(titleARef.value, {
@@ -51,7 +55,7 @@ const animate = {
         }, {
             y: 0,
             opacity: 1,
-            duration: 0.75,
+            duration: 0.5,
             ease: 'circ.out'
         })
         this.tl.fromTo(titleBRef.value, {
@@ -60,7 +64,7 @@ const animate = {
         }, {
             y: 0,
             opacity: 1,
-            duration: 0.75,
+            duration: 0.5,
             ease: 'circ.out'
         }, '<');
     }

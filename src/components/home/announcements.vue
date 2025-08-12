@@ -12,10 +12,7 @@
             </div>
             <p class="date">{{ item.date }}</p>
         </div>
-        <p class="text-2xl mt-5 cursor-pointer flex items-center space-x-1 w-fit">
-            <span>查看更多</span>
-            <ArrowRight class="size-6" />
-        </p>
+        <outlineButton />
     </div>
 </template>
 
@@ -24,8 +21,12 @@ import { onMounted, ref, onUnmounted } from 'vue';
 
 import { ArrowRight } from 'lucide-vue-next';
 
+import { outlineButton } from '@/components/ui/button'
+
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+import { getRemPx } from '@/lib/utils';
 
 const items = ref([
     { title: '关于新生办理校园网的相关流程', subtitle: '[ 网络协会 ]', date: '2025.7.25' },
@@ -49,12 +50,13 @@ onUnmounted(() => {
 const animate = {
     tls: [] as Array<gsap.core.Timeline>,
     init() {
+        const offset = getRemPx(3.5);
         itemsRef.value.forEach((el) => {
             gsap.set(el, { autoAlpha: 0 })
             ScrollTrigger.create({
                 trigger: el,
                 start: 'top bottom',
-                end: 'bottom top+=56',
+                end: `bottom top+=${offset}`,
                 onEnter: () => {
                     gsap.fromTo(el,
                         {
@@ -94,7 +96,7 @@ const animate = {
                 scrollTrigger: {
                     trigger: el,
                     start: 'top bottom',
-                    end: 'bottom top+=56',
+                    end: `bottom top+=${offset}`,
                     toggleActions: 'restart none restart none',
                 }
             })
@@ -124,10 +126,10 @@ const animate = {
             )
             tl.to(date,
                 {
-                    duration: 2,
+                    duration: 1,
                     scrambleText: {
                         text: '{original}',
-                        chars: 'NA&ACM',
+                        chars: '0123456789.',
                         speed: 0.5
                     }
                 },
