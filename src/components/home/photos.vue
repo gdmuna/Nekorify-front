@@ -4,9 +4,16 @@
             <canvas ref="canvas" class="cursor-pointer" />
             <div class="absolute bottom-0 left-0 w-full h-3 transition-bg" />
         </div>
-        <div class="flex flex-col items-center overflow-hidden">
-            <p ref="title" class="text-4xl font-bold">猫与鱼</p>
-        </div>
+        <teleport to='body'>
+            <transition name="bg">
+                <div v-if="imgOpened"
+                    class="fixed top-1/2 left-1/2 bg-[#0E100F]/50 -translate-1/2 z-50 size-full" @click="imgOpened = false">
+                </div>
+            </transition>
+            <transition name="picture">
+                <img v-if="imgOpened" :src="imgOpenedSrc" class="fixed top-1/2 left-1/2 -translate-1/2 z-50 max-h-[90%] max-w-[90%]" />
+            </transition>
+        </teleport>
     </div>
 </template>
 
@@ -16,6 +23,11 @@ import { onMounted, ref, nextTick } from 'vue';
 import { gsap } from 'gsap';
 
 import { toast } from 'vue-sonner'
+
+
+const imgOpened = ref(false);
+const imgOpenedSrc = ref('');
+
 
 onMounted(() => {
     photobox.init();
@@ -62,20 +74,21 @@ function animate() {
 
 // 以下代码魔改自B站UP主@JIEJOE_轻敲代码
 // B站主页：https://space.bilibili.com/3546390319860710
+// 相关视频：https://www.bilibili.com/video/BV11D421T7AV
 const photobox = {
     // canvas对象容器
     canvas: null as HTMLCanvasElement | null,
     // canvas 2d上下文
     content: null as CanvasRenderingContext2D | null,
     // 图片的总数
-    img_total: 28,
+    img_total: 32,
     // 图片排列的总列数
-    row_max: 7,
+    row_max: 8,
     // 图片排列的总行数
     line_max: 4,
     // 源图片的实际宽高，这里因为图片太大，会占据画布太多位置，故除以一个数让其缩小
-    img_width: Math.floor(700 / 2),
-    img_height: Math.floor(1000 / 2),
+    img_width: Math.floor(1000 / 2),
+    img_height: Math.floor(700 / 2),
     // 图片间的上下左右间距
     img_margin: 100,
     // 所有图片纵横排列之后的总宽高，用作图片超出范围的界限判定
@@ -87,6 +100,8 @@ const photobox = {
     if_movable: false,
     if_dragging: false,
     _touchStart: null as { x: number, y: number } | null,
+    img_opened: ref(false),
+    img_opened_src: ref(''),
     // 初始化
     init() {
         this.canvas = canvas.value
@@ -110,7 +125,7 @@ const photobox = {
         this.img_data = [];
         for (let i = 0; i < this.img_total; i++) {
             let img = new Image();
-            img.src = `src/assets/photos/photo (${i + 1}).png`;
+            img.src = `src/assets/picture/${i}.jpg`;
             // 当图片加载完成之后，创建对应图片数据并添加到img_data中
             img.onload = () => {
                 // 计算该序号图片处于第几行第几列
@@ -264,7 +279,11 @@ const photobox = {
             x >= img.x && x < img.x + this.img_width &&
             y >= img.y && y < img.y + this.img_height
         );
-        if (img) toast(img.src);
+        if (img) {
+            // toast(img.src)
+            imgOpened.value = true
+            imgOpenedSrc.value = img.src;
+        };
     }
 };
 
@@ -286,7 +305,6 @@ function getFakeMouseEvent(e: TouchEvent) {
     return {
         clientX: pos.x,
         clientY: pos.y,
-        // 其它属性可补充
     };
 }
 </script>
@@ -295,5 +313,34 @@ function getFakeMouseEvent(e: TouchEvent) {
 .transition-bg {
     background: linear-gradient(0.00deg, rgba(14, 16, 15, 1), rgba(14, 16, 15, 0) 100%);
     /* box-shadow: inset 5px 0px 0px 10px rgba(14, 16, 15, 0.5); */
+}
+
+.bg-enter-active,
+.bg-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.bg-leave-active {
+    pointer-events: none;
+}
+
+.bg-enter-from,
+.bg-leave-to {
+    opacity: 0;
+}
+
+.picture-leave-active {
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+.picture-enter-active {
+    transition: all 0.3s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+
+.picture-enter-from,
+.picture-leave-to {
+    opacity: 0;
+    transform: scale(0.6);
 }
 </style>

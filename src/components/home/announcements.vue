@@ -19,8 +19,6 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from 'vue';
 
-import { ArrowRight } from 'lucide-vue-next';
-
 import { outlineButton } from '@/components/ui/button'
 
 import { gsap } from 'gsap';

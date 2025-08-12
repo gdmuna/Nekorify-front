@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow z-50 px-4 flex items-center">
+    <div class="fixed top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow z-50 px-4 flex items-center select-none">
         <header class="flex h-full flex-1 items-center justify-between overflow-auto *:shrink-0">
             <!-- 页眉左侧内容 -->
             <div class="flex h-full items-center">

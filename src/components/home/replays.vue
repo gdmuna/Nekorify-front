@@ -130,7 +130,11 @@ const backAnimate = {
         const el = titles.value!.querySelector(`[data-index="${prevIdx.value}"]`);
         const progressContainer = el!.querySelector('.progress-container');
         const progressBar = el!.querySelector('.progress-bar');
-        const tl = gsap.timeline();
+        const tl = gsap.timeline({
+            onComplete: () => {
+                tl.kill();
+            }
+        });
         tl.to(progressContainer,
             {
                 opacity: 0,
