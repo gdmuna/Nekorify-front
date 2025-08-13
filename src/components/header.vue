@@ -69,7 +69,6 @@
 // 导入 Vue 相关库和组件
 import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-const router = useRouter()
 
 // 导入 Pinia 相关库
 import { storeToRefs } from 'pinia'
