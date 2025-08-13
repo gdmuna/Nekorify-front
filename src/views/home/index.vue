@@ -1,33 +1,54 @@
 <template>
     <div class="w-full">
+        <scrollHint />
         <!-- Section 1 -->
-        <section class="min-h-[calc(100dvh-4rem)] flex items-center justify-center bg-gray-100">
-            <h1>Home Section 1</h1>
+        <section ref="section1" class="md:h-[calc(100dvh-11rem)] h-[75dvh] bg-gray-200 dark:bg-[#0E100F]
+        flex flex-col justify-between relative">
+            <photobox />
         </section>
         <!-- Section 2 -->
-        <section class="min-h-[100dvh] flex items-center justify-center bg-gray-200">
-            <h1>Home Section 2</h1>
+        <section>
+            <div class="bg-gray-200 dark:bg-[#0E100F] flex flex-col relative">
+                <div class="absolute top-[-0.7rem] left-0 w-full h-3 transition-bg" />
+                <titleBlock titleA="公告" titleB="ANNOUNCEMENT" />
+                <announcement />
+                <titleBlock titleA="文章" titleB="ARTICLE" />
+            </div>
         </section>
         <!-- Section 3 -->
-        <section class="min-h-[100dvh] flex items-center justify-center bg-gray-200">
-            <h1>Home Section 3</h1>
+        <section class="bg-gray-200 dark:bg-[#0E100F] flex flex-col">
+            <articles />
+            <titleBlock titleA="课程回放" titleB="COURSE REPLAY" />
         </section>
         <!-- Section 4 -->
-        <section class="min-h-[100dvh] flex items-center justify-center bg-gray-200">
-            <h1>Home Section 4</h1>
-        </section>
-        <!-- Section 5 -->
-        <section class="min-h-[100dvh] flex items-center justify-center bg-gray-200">
-            <h1>Home Section 5</h1>
-        </section>
-        <!-- Section 6 -->
-        <section class="min-h-[100dvh] flex items-center justify-center bg-gray-200">
-            <h1>Home Section 6</h1>
+        <section class="bg-gray-200 dark:bg-[#0E100F] flex flex-col">
+            <replays />
         </section>
     </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, onUnmounted, nextTick } from 'vue';
+
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+import scrollHint from '@/components/scrollHint.vue';
+import photobox from '@/components/home/photos.vue';
+import titleBlock from '@/components/home/titleBlock.vue';
+import announcement from '@/components/home/announcements.vue';
+import articles from '@/components/home/articles.vue';
+import replays from '@/components/home/replays.vue';
+
+
+onMounted(() => {
+    nextTick(() => {
+        ScrollTrigger.refresh()
+    })
+})
+
+onUnmounted(() => {
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+});
 
 </script>
 

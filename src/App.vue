@@ -20,9 +20,10 @@ import { Toaster } from 'vue-sonner'
 // 导入组件
 import Header from '@/components/header.vue'
 
-import { onMounted, onBeforeMount, ref, computed } from 'vue'
+import { onMounted, onBeforeMount, ref, nextTick } from 'vue'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useRouter } from 'vue-router'
 
@@ -74,16 +75,18 @@ onMounted(() => {
         },
     })
     // 路由跳转后重置滚动进度
-    router.beforeEach((from) => {
+    router.beforeEach(() => {
         // 立即滚动到顶部
         smoother.scrollTo(0, false)
-        if (from.path !== '/') {
-            previousIsDark.value = isDark.value
-        }
-        if (from.path === '/' && previousIsDark.value === false) {
-            forceToggleTheme(`${previousIsDark.value}`)
-        }
-        return true
+        // if (from.path !== '/') {
+        //     previousIsDark.value = isDark.value
+        // }
+        // if (from.path === '/' && previousIsDark.value === false) {
+        //     forceToggleTheme(`${previousIsDark.value}`)
+        // }
+        nextTick(() => {
+            return true
+        })
     })
 })
 

@@ -1,0 +1,4 @@
+.transition-bg {
+    background: linear-gradient(0.00deg, rgba(14, 16, 15, 1), rgba(14, 16, 15, 0) 100%);
+    /* box-shadow: inset 5px 0px 0px 10px rgba(14, 16, 15, 0.5); */
+}

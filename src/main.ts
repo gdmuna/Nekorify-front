@@ -14,6 +14,7 @@ import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import { Observer } from "gsap/Observer";
 import { Physics2DPlugin } from "gsap/Physics2DPlugin";
 import { PhysicsPropsPlugin } from "gsap/PhysicsPropsPlugin";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
@@ -36,6 +37,7 @@ gsap.registerPlugin(
     Observer,
     Physics2DPlugin,
     PhysicsPropsPlugin,
+    ScrambleTextPlugin,
     ScrollTrigger,
     ScrollToPlugin,
     ScrollSmoother,
