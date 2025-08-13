@@ -20,9 +20,10 @@ import { Toaster } from 'vue-sonner'
 // 导入组件
 import Header from '@/components/header.vue'
 
-import { onMounted, onBeforeMount, ref, computed } from 'vue'
+import { onMounted, onBeforeMount, ref, nextTick } from 'vue'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useRouter } from 'vue-router'
 
@@ -83,7 +84,10 @@ onMounted(() => {
         // if (from.path === '/' && previousIsDark.value === false) {
         //     forceToggleTheme(`${previousIsDark.value}`)
         // }
-        return true
+        ScrollTrigger.refresh()
+        nextTick(() => {
+            return true
+        })
     })
 })
 

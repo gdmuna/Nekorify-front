@@ -391,6 +391,9 @@
                 <div
                     class="w-full grid xl:grid-cols-3 grid-cols-1 md:gap-20 gap-10 justify-items-center mt-24 px-4 pr-8">
                     <macWindow border class="md:!h-78 h-64">
+                        <template #TR>
+                            <div class="size-7"></div>
+                        </template>
                         <template #main>
                             <div class="flex-1 flex items-center">
                                 <div
@@ -406,6 +409,9 @@
                         </template>
                     </macWindow>
                     <macWindow border class="md:!h-78 h-64">
+                        <template #TR>
+                            <div class="size-7"></div>
+                        </template>
                         <template #main>
                             <div class="flex-1 flex items-center">
                                 <div
@@ -421,6 +427,9 @@
                         </template>
                     </macWindow>
                     <macWindow border class="md:!h-78 h-64">
+                        <template #TR>
+                            <div class="size-7"></div>
+                        </template>
                         <template #main>
                             <div class="flex-1 flex items-center">
                                 <div

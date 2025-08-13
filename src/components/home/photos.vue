@@ -2,7 +2,7 @@
     <div class="flex-1 flex flex-col items-center justify-center">
         <div ref="container" class="relative flex-1 w-full h-full flex">
             <canvas ref="canvas" class="cursor-pointer" />
-            <div class="absolute bottom-0 left-0 w-full h-3 transition-bg" />
+            <div class="absolute bottom-[-1px] left-0 w-full h-3 transition-bg" />
         </div>
         <teleport to='body'>
             <transition name="bg">

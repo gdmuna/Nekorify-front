@@ -2,7 +2,7 @@
     <div class="w-full">
         <scrollHint />
         <!-- Section 1 -->
-        <section class="md:h-[calc(100dvh-3.5rem)] h-[calc(75dvh-3.5rem)] bg-gray-200 dark:bg-[#0E100F] flex flex-col">
+        <section class="md:h-[calc(100vh-3.5rem)] h-[calc(75vh)] bg-gray-200 dark:bg-[#0E100F] flex flex-col">
             <photobox />
             <titleBlock titleA="公告" titleB="ANNOUNCEMENT" />
         </section>
@@ -24,9 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onUnmounted } from 'vue';
 
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import scrollHint from '@/components/scrollHint.vue';
 import photobox from '@/components/home/photos.vue';
@@ -36,6 +37,10 @@ import articles from '@/components/home/articles.vue';
 import replays from '@/components/home/replays.vue';
 
 
+
+onUnmounted(() => {
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+});
 
 </script>
 

@@ -48,6 +48,7 @@ onUnmounted(() => {
     animate.tls.forEach((tl) => {
         tl.kill();
     })
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 })
 
 const animate = {
@@ -103,31 +104,31 @@ const animate = {
                     toggleActions: 'restart none restart none',
                 }
             })
-            const title = el.querySelector('.title')
-            const subtitle = el.querySelector('.subtitle')
+            // const title = el.querySelector('.title')
+            // const subtitle = el.querySelector('.subtitle')
             const date = el.querySelector('.date')
-            tl.fromTo(title,
-                {
-                    y: '100%'
-                },
-                {
-                    y: 0,
-                    duration: 0.6,
-                    ease: 'circ.out'
-                }
-            )
-            tl.fromTo(subtitle,
-                {
-                    y: '100%'
-                },
-                {
-                    y: 0,
-                    duration: 0.6,
-                    ease: 'circ.out'
-                },
-                '<'
-            )
-            if (!isMobile) {
+            // tl.fromTo(title,
+            //     {
+            //         y: '100%'
+            //     },
+            //     {
+            //         y: 0,
+            //         duration: 0.6,
+            //         ease: 'circ.out'
+            //     }
+            // )
+            // tl.fromTo(subtitle,
+            //     {
+            //         y: '100%'
+            //     },
+            //     {
+            //         y: 0,
+            //         duration: 0.6,
+            //         ease: 'circ.out'
+            //     },
+            //     '<'
+            // )
+            if (!isMobile.value) {
                 tl.to(date,
                     {
                         duration: 1,

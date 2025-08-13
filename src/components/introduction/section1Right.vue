@@ -141,7 +141,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     if (codeTimer) {
-        clearTimeout(codeTimer)
+        cancelAnimationFrame(codeTimer)
         codeTimer = null
     }
     helloGDMU.splitGDMU?.revert()
@@ -325,20 +325,18 @@ function splitCode() {
     const text = codes[codesIndex.value]
     if (text) {
         let index = 0
-        const timeout = () => {
-            codeTimer = setTimeout(() => {
-                if (!codeBlock.value) return // 组件已卸载，直接返回
-                codeBlock.value.textContent += text[index++]
-                Prism.highlightAllUnder(root.value)
-                if (index < text.length) {
-                    timeout()
-                } else {
-                    helloGDMU.restart()
-                    cursor.value!.classList.add('animate')
-                }
-            }, 16)
+        function frame() {
+            if (!codeBlock.value) return // 组件已卸载
+            codeBlock.value.textContent += text[index++]
+            Prism.highlightAllUnder(root.value)
+            if (index < text.length) {
+                codeTimer = requestAnimationFrame(frame)
+            } else {
+                helloGDMU.restart()
+                cursor.value!.classList.add('animate')
+            }
         }
-        timeout()
+        frame()
     }
 }
 
@@ -346,29 +344,27 @@ function eraseCode() {
     const text = codeBlock.value?.textContent ?? ""
     let index = text.length
     if (text) {
-        const timeout = () => {
-            codeTimer = setTimeout(() => {
-                if (!codeBlock.value) return // 组件已卸载，直接返回
-                if (index > 0) {
-                    codeBlock.value.textContent = text.slice(0, --index)
-                    Prism.highlightAllUnder(root.value)
-                    timeout()
-                } else {
-                    codesIndex.value = (codesIndex.value + 1) % codes.length
-                    nextTick(() => {
-                        const height = (hiddenMacWindow.value as any)!.$el.offsetHeight
-                        gsap.to((visibleMacWindow.value as any)!.$el, {
-                            height: height,
-                            ease: "power3.out",
-                            duration: 1.5,
-                            transformOrigin: "bottom 50%"
-                        })
-                        enterAnimate()
+        function frame() {
+            if (!codeBlock.value) return
+            if (index > 0) {
+                codeBlock.value.textContent = text.slice(0, --index)
+                Prism.highlightAllUnder(root.value)
+                codeTimer = requestAnimationFrame(frame)
+            } else {
+                codesIndex.value = (codesIndex.value + 1) % codes.length
+                nextTick(() => {
+                    const height = (hiddenMacWindow.value as any)!.$el.offsetHeight
+                    gsap.to((visibleMacWindow.value as any)!.$el, {
+                        height: height,
+                        ease: "power3.out",
+                        duration: 1.5,
+                        transformOrigin: "bottom 50%"
                     })
-                }
-            }, 4)
+                    enterAnimate()
+                })
+            }
         }
-        timeout()
+        frame()
     }
 }
 

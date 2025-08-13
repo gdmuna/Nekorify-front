@@ -72,6 +72,7 @@ const animate = {
 
 onUnmounted(() => {
     if (animate.tl) animate.tl.kill()
+    
 })
 
 
