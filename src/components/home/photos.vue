@@ -129,8 +129,6 @@ const photobox = {
         this.resize();
         this.creat_events();
         this.creat_img_data();
-        const dpr = window.devicePixelRatio || 1;
-        toast(`${dpr}`);
     },
     // 计算响应式尺寸的方法
     calculateResponsiveSizes() {
@@ -163,24 +161,28 @@ const photobox = {
     },
     // 创建图片数据即img_data
     creat_img_data() {
+        // 1. 先同步生成 img_data，x/y 坐标一次性确定
         this.img_data = [];
         for (let i = 0; i < this.img_total; i++) {
-            let img = new Image();
-            img.src = `/picture/${i}.jpg`;
-            // 当图片加载完成之后，创建对应图片数据并添加到img_data中
+            let col_index = i % this.row_max;
+            let line_index = Math.floor(i / this.row_max);
+            let x = col_index * (this.img_width + this.img_margin);
+            let y = line_index * (this.img_height + this.img_margin);
+            // 先放一个空 img 占位
+            this.img_data.push({ img: null as any, x, y, src: `/picture/${i}.jpg` });
+        }
+
+        // 2. 再批量加载图片，加载完成后只赋值 img，不再动 x/y
+        this.img_data.forEach((item) => {
+            const img = new Image();
+            img.src = item.src;
             img.onload = () => {
-                // 计算该序号图片处于第几行第几列
-                let col_index = i % this.row_max;
-                let line_index = Math.floor(i / this.row_max);
-                // 通过行列序号算出xy坐标
-                let x = col_index * (this.img_width + this.img_margin);
-                let y = line_index * (this.img_height + this.img_margin);
-                // 将其添加到img_data中
-                this.img_data.push({ img, x, y, src: img.src });
-                // 创建完成之后就绘制一次，确保在进入页面的时候，图片会全部显示
-                this.content!.drawImage(img, x, y, this.img_width, this.img_height);
+                item.img = img;
+                // 这里不再 push，不再算 x/y
+                // 只需要重绘一次
+                this.move_imgs(0, 0);
             };
-        };
+        });
         nextTick(() => {
             gsap.to(velocity.value, {
                 inertia: {
@@ -308,8 +310,9 @@ const photobox = {
                 img.y -= this.total_height + this.img_margin;
             if (img.y < -this.img_height)
                 img.y += this.total_height + this.img_margin;
-            // 绘制图片，更新画布
-            this.content!.drawImage(img.img, img.x, img.y, this.img_width, this.img_height);
+            if (img.img) { // 只绘制已加载的图片
+                this.content!.drawImage(img.img, img.x, img.y, this.img_width, this.img_height);
+            }
         });
     },
     // 获取当前鼠标点击位置下的对应图片数据

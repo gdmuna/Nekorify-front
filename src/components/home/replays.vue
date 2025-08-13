@@ -105,7 +105,6 @@ const enterAnimate = {
             },
             '<'
         )
-        
     }
 }
 
@@ -159,6 +158,7 @@ const backAnimate = {
 }
 
 function toggle(type: string, idx?: number) {
+    if (currentIdx.value === idx) return
     prevIdx.value = currentIdx.value
     if (type === 'next') {
         currentIdx.value = (currentIdx.value + 1) % items.value.length
