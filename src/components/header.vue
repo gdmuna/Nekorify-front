@@ -55,7 +55,7 @@
                         加入我们
                     </Button>
                     <img :src="boundary" alt="">
-                    <Button class="cursor-pointer border-2 dark:border-[#FEFCE4] dark:bg-[#0E100F] dark:text-[#FEFCE4]">
+                    <Button class="cursor-pointer border-2 dark:border-[#FEFCE4] dark:bg-[#0E100F] dark:text-[#FEFCE4]" @click="login">
                         <LogIn class="size-6" />
                         登录
                     </Button>
@@ -97,6 +97,11 @@ const systemStore = useSystemStore()
 
 const { isDark } = storeToRefs(systemStore)
 const { toggleTheme } = systemStore
+
+import { useAuthStore } from '@/stores'
+const authStore = useAuthStore()
+
+const { login } = authStore
 
 const logo1 = ref<HTMLImageElement | null>(null)
 const logo2 = ref<HTMLImageElement | null>(null)

@@ -1,7 +1,8 @@
 <template>
     <div ref="container" class="text-[#0E100F] md:text-4xl text-xl font-extrabold flex flex-col
     items-start will-change-transform md:*:px-8 md:*:py-3 *:px-4 *:py-1">
-        <p ref="titleA_block" class="title rounded-lg z-10 whitespace-nowrap" :style="{ backgroundColor: titleA_color }">
+        <p ref="titleA_block" class="title rounded-lg z-10 whitespace-nowrap"
+            :style="{ backgroundColor: titleA_color }">
             {{ titleA }}
         </p>
         <p ref="titleB_block" class="rounded-lg md:ml-8 ml-4 md:-translate-y-1.5 -translate-y-1 whitespace-nowrap"
@@ -13,7 +14,9 @@
 
 <script setup lang="ts">
 import { defineProps, onMounted, ref } from 'vue';
+
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 defineProps<{
     titleA?: string;
@@ -34,57 +37,46 @@ onMounted(() => {
     if (titleB_block.value) {
         gsap.set(titleB_block.value, { rotateX: 90, transformOrigin: "top center" });
     }
-    const tl = gsap.timeline();
-    tl.to(
-        container.value,
-        {
-            scrollTrigger: {
-                trigger: container.value,
-                start: "top 90%",
-                end: "bottom top",
-                anticipatePin: 1,
-                onEnter: () => {
-                    tl.add(gsap.to(container.value, {
-                        x: 0,
-                        duration: 0.75,
-                        ease: "power4.out"
-                    }));
-                }
+    const tl = gsap.timeline()
+    ScrollTrigger.create({
+        trigger: container.value,
+        start: "top 90%",
+        end: "bottom top",
+        once: true,
+        onEnter: () => {
+            if (container.value) {
+                tl.to(container.value, {
+                    x: 0,
+                    duration: 0.75,
+                    ease: "power3.out"
+                });
             }
         }
-    )
-    tl.to(
-        titleB_block.value,
-        {
-            scrollTrigger: {
-                trigger: titleB_block.value,
-                start: "top 80%",
-                end: "bottom top",
-                anticipatePin: 1,
-                once: true,
-                onEnter: () => {
-                    if (tl.progress() * 0.75 < 0.35) {
-                        tl.add(
-                            gsap.to(titleB_block.value, {
-                                rotateX: 0,
-                                duration: 3,
-                                ease: "elastic.out(1.25,0.35)"
-                            }),
-                            "-=0.4"
-                        );
-                    } else {
-                        tl.add(
-                            gsap.to(titleB_block.value, {
-                                rotateX: 0,
-                                duration: 3,
-                                ease: "elastic.out(1.25,0.35)"
-                            })
-                        );
-                    }
-                }
+    })
+    ScrollTrigger.create({
+        trigger: titleB_block.value,
+        start: "top 80%",
+        end: "bottom top",
+        once: true,
+        onEnter: () => {
+            if (tl.progress() * 0.75 < 0.35) {
+                tl.add(
+                    gsap.to(titleB_block.value, {
+                        rotateX: 0,
+                        duration: 3,
+                        ease: "elastic.out(1.25,0.35)"
+                    }),
+                    "-=0.4"
+                );
+            } else {
+                gsap.to(titleB_block.value, {
+                    rotateX: 0,
+                    duration: 3,
+                    ease: "elastic.out(1.25,0.35)"
+                })
             }
         }
-    );
+    })
 })
 
 </script>

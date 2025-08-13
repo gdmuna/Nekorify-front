@@ -3,7 +3,8 @@
         <!-- 页眉 -->
         <Header />
         <!-- 消息弹窗挂载点 -->
-        <Toaster :expand="false"/>
+        <Toaster theme="dark" :expand="!isMobile" position="bottom-right" richColors />
+        <!-- 滚动进度条 -->
         <div ref="scroll_progress" class="fixed z-40 top-14 left-0 w-2 h-[calc(100%-3.5rem)] page-scroll-progress" />
         <!-- 主内容区 -->
         <main id="content" class="pt-14">
@@ -33,7 +34,7 @@ const scroll_progress = ref<HTMLElement | null>(null)
 
 const systemStore = useSystemStore()
 const { initTheme, forceToggleTheme } = systemStore
-const { isDark } = storeToRefs(systemStore)
+const { isDark, isMobile } = storeToRefs(systemStore)
 
 const previousIsDark = ref(isDark.value)
 
@@ -95,7 +96,7 @@ onMounted(() => {
 
 <style scoped>
 .page-scroll-progress {
-    background: linear-gradient(0deg, #53B7DE, #0E100F);
+    background: linear-gradient(0deg, #D5C8B0, #0E100F);
     clip-path: inset(0 0 100% 0);
 }
 </style>

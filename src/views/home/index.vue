@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted, nextTick } from 'vue';
+import { onMounted, ref, onUnmounted } from 'vue';
 
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -41,14 +41,24 @@ import replays from '@/components/home/replays.vue';
 
 
 onMounted(() => {
-    nextTick(() => {
-        ScrollTrigger.refresh()
-    })
+    ScrollTrigger.addEventListener('refreshInit', scrollTriggerRefreshInitHandler);
+    ScrollTrigger.addEventListener('refresh', scrollTriggerRefreshHandler);
+    ScrollTrigger.refresh(true)
 })
 
 onUnmounted(() => {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    ScrollTrigger.removeEventListener('refreshInit', scrollTriggerRefreshInitHandler);
+    ScrollTrigger.removeEventListener('refresh', scrollTriggerRefreshHandler);
 });
+
+function scrollTriggerRefreshInitHandler() {
+    console.log('开始刷新ScrollTrigger')
+}
+
+function scrollTriggerRefreshHandler() {
+    console.log('ScrollTrigger刷新完成')
+}
 
 </script>
 

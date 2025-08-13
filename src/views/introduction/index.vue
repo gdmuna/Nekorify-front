@@ -458,7 +458,7 @@
 </template>
 <script setup lang="ts">
 
-import { computed, onMounted, ref, onUnmounted, onBeforeMount, nextTick } from 'vue';
+import { computed, onMounted, ref, onUnmounted, onBeforeMount } from 'vue';
 
 // 导入组件
 import matrix from '@/components/introduction/matrix.vue';
@@ -575,9 +575,7 @@ onMounted(() => {
     if (isMobile.value) {
         section3CardsManager.init()
     }
-    nextTick(() => {
-        ScrollTrigger.refresh()
-    })
+    ScrollTrigger.refresh(true)
 })
 
 onBeforeMount(() => {
