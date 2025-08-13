@@ -28,9 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted, nextTick } from 'vue';
 
-import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import scrollHint from '@/components/scrollHint.vue';
@@ -40,6 +39,12 @@ import announcement from '@/components/home/announcements.vue';
 import articles from '@/components/home/articles.vue';
 import replays from '@/components/home/replays.vue';
 
+
+onMounted(() => {
+    nextTick(() => {
+        ScrollTrigger.refresh()
+    })
+})
 
 onUnmounted(() => {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());

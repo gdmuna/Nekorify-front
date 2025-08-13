@@ -84,7 +84,6 @@ onMounted(() => {
         // if (from.path === '/' && previousIsDark.value === false) {
         //     forceToggleTheme(`${previousIsDark.value}`)
         // }
-        ScrollTrigger.refresh()
         nextTick(() => {
             return true
         })

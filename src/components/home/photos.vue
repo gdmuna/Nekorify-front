@@ -171,7 +171,6 @@ const photobox = {
             // 先放一个空 img 占位
             this.img_data.push({ img: null as any, x, y, src: `/picture/${i}.jpg` });
         }
-
         // 2. 再批量加载图片，加载完成后只赋值 img，不再动 x/y
         this.img_data.forEach((item) => {
             const img = new Image();

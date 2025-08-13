@@ -458,7 +458,7 @@
 </template>
 <script setup lang="ts">
 
-import { computed, onMounted, ref, onUnmounted, onBeforeMount } from 'vue';
+import { computed, onMounted, ref, onUnmounted, onBeforeMount, nextTick } from 'vue';
 
 // 导入组件
 import matrix from '@/components/introduction/matrix.vue';
@@ -471,7 +471,7 @@ import section1Right from '@/components/introduction/section1Right.vue';
 import scrollHint from '@/components/scrollHint.vue';
 
 // 导入图标
-import { BrainCircuit, Scroll } from 'lucide-vue-next';
+import { BrainCircuit } from 'lucide-vue-next';
 import { Puzzle } from 'lucide-vue-next';
 import { Satellite } from 'lucide-vue-next';
 import { ChevronsUp } from 'lucide-vue-next';
@@ -575,6 +575,9 @@ onMounted(() => {
     if (isMobile.value) {
         section3CardsManager.init()
     }
+    nextTick(() => {
+        ScrollTrigger.refresh()
+    })
 })
 
 onBeforeMount(() => {
