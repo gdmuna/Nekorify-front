@@ -70,6 +70,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+
 // 导入 Pinia 相关库
 import { storeToRefs } from 'pinia'
 
@@ -99,6 +100,8 @@ const { toggleTheme } = systemStore
 
 const logo1 = ref<HTMLImageElement | null>(null)
 const logo2 = ref<HTMLImageElement | null>(null)
+
+const router = useRouter()
 
 onMounted((): void => {
     logoAnimate.init()

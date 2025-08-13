@@ -23,7 +23,6 @@ import Header from '@/components/header.vue'
 import { onMounted, onBeforeMount, ref, nextTick } from 'vue'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useRouter } from 'vue-router'
 
