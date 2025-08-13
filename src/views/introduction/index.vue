@@ -17,7 +17,7 @@
             <div class="absolute bottom-0 left-1/2 flex items-center justify-between -translate-x-1/2
             mb-2 space-x-2 z-10 pointer-events-none">
                 <div class="flex flex-col items-center justify-between font-extrabold whitespace-nowrap">
-                    <p class="text-sm md:text-lg">Where we're going, we don't need roads</p>
+                    <p class="text-sm md:text-lg">Where we're going, we don't need roads.</p>
                     <p class="tracking-[0.4em] md:text-lg">你·好·世·界</p>
                 </div>
             </div>
@@ -471,7 +471,7 @@ import section1Right from '@/components/introduction/section1Right.vue';
 import scrollHint from '@/components/scrollHint.vue';
 
 // 导入图标
-import { BrainCircuit } from 'lucide-vue-next';
+import { BrainCircuit, Scroll } from 'lucide-vue-next';
 import { Puzzle } from 'lucide-vue-next';
 import { Satellite } from 'lucide-vue-next';
 import { ChevronsUp } from 'lucide-vue-next';

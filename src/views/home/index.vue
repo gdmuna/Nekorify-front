@@ -2,14 +2,18 @@
     <div class="w-full">
         <scrollHint />
         <!-- Section 1 -->
-        <section class="md:h-[calc(100vh-3.5rem)] h-[calc(75vh)] bg-gray-200 dark:bg-[#0E100F] flex flex-col">
+        <section ref="section1" class="md:h-[calc(100dvh-11rem)] h-[75dvh] bg-gray-200 dark:bg-[#0E100F]
+        flex flex-col justify-between relative">
             <photobox />
-            <titleBlock titleA="公告" titleB="ANNOUNCEMENT" />
         </section>
         <!-- Section 2 -->
-        <section class="bg-gray-200 dark:bg-[#0E100F] flex flex-col">
-            <announcement />
-            <titleBlock titleA="文章" titleB="ARTICLE" />
+        <section>
+            <div class="bg-gray-200 dark:bg-[#0E100F] flex flex-col relative">
+                <div class="absolute top-[-0.7rem] left-0 w-full h-3 transition-bg" />
+                <titleBlock titleA="公告" titleB="ANNOUNCEMENT" />
+                <announcement />
+                <titleBlock titleA="文章" titleB="ARTICLE" />
+            </div>
         </section>
         <!-- Section 3 -->
         <section class="bg-gray-200 dark:bg-[#0E100F] flex flex-col">
@@ -35,7 +39,6 @@ import titleBlock from '@/components/home/titleBlock.vue';
 import announcement from '@/components/home/announcements.vue';
 import articles from '@/components/home/articles.vue';
 import replays from '@/components/home/replays.vue';
-
 
 
 onUnmounted(() => {
