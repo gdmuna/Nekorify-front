@@ -2,47 +2,25 @@
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { CustomBounce } from "gsap/CustomBounce";
-import { CustomWiggle } from "gsap/CustomWiggle";
 import { SlowMo } from "gsap/EasePack";
-import { Draggable } from "gsap/Draggable";
-import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
-import { Flip } from "gsap/Flip";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
-import { MotionPathHelper } from "gsap/MotionPathHelper";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
-import { Observer } from "gsap/Observer";
-import { Physics2DPlugin } from "gsap/Physics2DPlugin";
-import { PhysicsPropsPlugin } from "gsap/PhysicsPropsPlugin";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { SplitText } from "gsap/SplitText";
-import { TextPlugin } from "gsap/TextPlugin";
 
 // 注册 GSAP 插件
 gsap.registerPlugin(
     CustomEase,
     CustomBounce,
-    CustomWiggle,
     SlowMo,
-    Draggable,
-    DrawSVGPlugin,
-    Flip,
     InertiaPlugin,
-    MotionPathHelper,
-    MotionPathPlugin,
-    MorphSVGPlugin,
-    Observer,
-    Physics2DPlugin,
-    PhysicsPropsPlugin,
     ScrambleTextPlugin,
     ScrollTrigger,
     ScrollToPlugin,
     ScrollSmoother,
     SplitText,
-    TextPlugin
 );
 
 // 导入 Vue 相关库和组件

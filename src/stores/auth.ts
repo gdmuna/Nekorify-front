@@ -76,7 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function refresh() {
         if (!refreshToken.value) {
-            return false;
+            return false
         }
         const { err, res } = await authApi.refresh(refreshToken.value)
         if (res) {

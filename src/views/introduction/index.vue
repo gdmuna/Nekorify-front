@@ -367,7 +367,7 @@
             </div>
         </section>
         <!-- Section 4 -->
-        <section class="bg-gray-200 dark:bg-[#0E100F]">
+        <section class="bg-gray-200 dark:bg-[#0E100F] pb-20">
             <!-- section 主内容 -->
             <div class="xl:pt-36 pt-18">
                 <!-- section title -->
@@ -383,12 +383,12 @@
             </div>
         </section>
         <!-- Section 5 -->
-        <section class="bg-gray-100 dark:bg-[#0E100F]">
-            <div class="xl:pt-36 md:pt-24 pt-16">
+        <!-- <section class="bg-gray-100 dark:bg-[#0E100F]">
+            <div class="xl:pt-36 md:pt-24 pt-16"> -->
                 <!-- section 主内容 -->
-                <h1 class="md:text-8xl text-6xl text-center font-bold">贡献者</h1>
+                <!-- <h1 class="md:text-8xl text-6xl text-center font-bold">贡献者</h1> -->
                 <!-- 贡献者名单 -->
-                <div
+                <!-- <div
                     class="w-full grid xl:grid-cols-3 grid-cols-1 md:gap-20 gap-10 justify-items-center mt-24 px-4 pr-8">
                     <macWindow border class="md:!h-78 h-64">
                         <template #TR>
@@ -446,14 +446,14 @@
                     </macWindow>
                 </div>
             </div>
-        </section>
+        </section> -->
         <!-- Section 6 -->
-        <section class="min-h-[100dvh] bg-gray-200 dark:bg-[#0E100F]">
-            <div class="xl:pt-36 md:pt-24 pt-16">
+        <!-- <section class="min-h-[100dvh] bg-gray-200 dark:bg-[#0E100F]">
+            <div class="xl:pt-36 md:pt-24 pt-16"> -->
                 <!-- section 主内容 -->
-                <h1 class="md:text-8xl text-6xl text-center font-bold">致谢名单</h1>
+                <!-- <h1 class="md:text-8xl text-6xl text-center font-bold">致谢名单</h1>
             </div>
-        </section>
+        </section> -->
     </div>
 </template>
 <script setup lang="ts">
@@ -541,12 +541,18 @@ const section3_progressDivs = ref<HTMLElement | null>(null);
 const section3_cards = ref<HTMLElement | null>(null);
 const section3_cards_toggle = ref<HTMLElement | null>(null);
 
+function handleResize() {
+    setion1_width.value = section1.value!.clientWidth + 100
+    setion1_height.value = section1.value!.clientHeight + 500;
+}
+
 onMounted(() => {
     // 矩阵背景初始化
     if (section1.value) {
         setion1_width.value = section1.value.clientWidth + 100;
         setion1_height.value = section1.value.clientHeight + 500;
     }
+    window.addEventListener('resize', handleResize)
     if (isDesktop.value) {
         // 设置 Lottie 动画
         lottie.loadAnimation({
@@ -852,6 +858,7 @@ const section3CardsManager = {
 
 onUnmounted(() => {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    window.removeEventListener('resize', handleResize)
 });
 
 

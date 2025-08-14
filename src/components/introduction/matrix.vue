@@ -28,8 +28,8 @@ const props = defineProps<{
 }>()
 
 // 设置默认宽高
-const width = props.width ?? 800
-const height = props.height ?? 600
+const width = computed(() => props.width ?? 800)
+const height = computed(() => props.height ?? 600)
 
 const a = computed(() => {
     if (isMobile.value) {
@@ -47,8 +47,8 @@ const dy = a.value * 1.5  // 行间距（垂直方向中心点距离）
 
 const matrix = ref<SVGSVGElement | null>(null)
 
-const colCount = computed(() => Math.ceil(width / (dx * 100)))
-const rowCount = computed(() => Math.ceil(height / (dy * 100)))
+const colCount = computed(() => Math.ceil(width.value / (dx * 100)))
+const rowCount = computed(() => Math.ceil(height.value / (dy * 100)))
 
 const viewBoxWidth = computed(() => dx * (colCount.value + 0.5))
 const viewBoxHeight = computed(() => {
