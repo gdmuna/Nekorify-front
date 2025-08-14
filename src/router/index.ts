@@ -10,12 +10,12 @@ import loginCallback from '../views/loginCallback/index.vue'
 
 const routes = [
   { path: '/', component: introduction },
-  // { path: '/home', component: home },
-  // { path: '/announcements', component: announcements },
-  // { path: '/articles', component: articles },
-  // { path: '/replay', component: replay },
-  // { path: '/resourcesHub', component: resourcesHub},
-  // { path: '/loginCallback', component: loginCallback },
+  { path: '/home', component: home },
+  { path: '/announcements', component: announcements },
+  { path: '/articles', component: articles },
+  { path: '/replay', component: replay },
+  { path: '/resourcesHub', component: resourcesHub},
+  { path: '/loginCallback', component: loginCallback },
 ]
 
 const router = createRouter({

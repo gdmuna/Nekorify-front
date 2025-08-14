@@ -1,7 +1,7 @@
 <template>
     <div id="appContainer" class="w-full flex flex-col dark:text-[#FEFCE4] overflow-hidden">
         <!-- 页眉 -->
-        <!-- <Header v-if="!isLoginCallback" /> -->
+        <Header v-if="!isLoginCallback" />
         <!-- 消息弹窗挂载点 -->
         <Toaster theme="dark" :expand="!isMobile" position="bottom-right" richColors />
         <!-- 滚动进度条 -->

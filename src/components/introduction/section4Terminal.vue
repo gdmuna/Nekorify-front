@@ -31,7 +31,7 @@
                 </p>
                 <p ref="pTag4" class="text-[#FFBD2E] font-bold mt-8 mb-4">> ACTION REQUIRED:</p>
                 <button ref="Button" class="px-4 py-2 text-[#0E100F] rounded-md font-bold
-                cursor-pointer mb-2 will-change-transform relative" @click="showImg = !showImg">
+                cursor-pointer mb-2 will-change-transform relative">
                     <p class="button-text1 pointer-events-none whitespace-nowrap">CLICK TO DEPLOY NEW NODE</p>
                     <p
                         class="button-text2 absolute top-1/2 left-1/2 text-xl -translate-1/2 pointer-events-none whitespace-nowrap flex items-center space-x-2">
@@ -42,18 +42,6 @@
             </div>
         </template>
     </macWindow>
-    <teleport to='body'>
-        <transition name="bg">
-            <div v-show="showImg" class="fixed top-0 left-0 bg-[#0E100F]/50 z-60 size-full"
-                @click="showImg = !showImg">
-            </div>
-        </transition>
-        <transition name="picture">
-            <img v-show="showImg" src="/src/assets/招新群活码.jpg" alt=""
-                class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-60 max-w-[90%] max-h-[90%] rounded-lg">
-        </transition>
-    </teleport>
-
 </template>
 
 <script setup lang="ts">
@@ -258,34 +246,5 @@ button:hover {
     50% {
         opacity: 0;
     }
-}
-
-.bg-enter-active,
-.bg-leave-active {
-    transition: opacity 0.2s ease;
-}
-
-.bg-leave-active {
-    pointer-events: none;
-}
-
-.bg-enter-from,
-.bg-leave-to {
-    opacity: 0;
-}
-
-.picture-leave-active {
-    transition: all 0.2s ease;
-    pointer-events: none;
-}
-
-.picture-enter-active {
-    transition: all 0.3s cubic-bezier(0.34, 1.8, 0.64, 1);
-}
-
-.picture-enter-from,
-.picture-leave-to {
-    opacity: 0;
-    transform: scale(0.6);
 }
 </style>

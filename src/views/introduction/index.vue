@@ -383,12 +383,12 @@
             </div>
         </section>
         <!-- Section 5 -->
-        <!-- <section class="bg-gray-100 dark:bg-[#0E100F]">
-            <div class="xl:pt-36 md:pt-24 pt-16"> -->
+        <section class="bg-gray-100 dark:bg-[#0E100F]">
+            <div class="xl:pt-36 md:pt-24 pt-16">
                 <!-- section 主内容 -->
-                <!-- <h1 class="md:text-8xl text-6xl text-center font-bold">贡献者</h1> -->
+                <h1 class="md:text-8xl text-6xl text-center font-bold">贡献者</h1>
                 <!-- 贡献者名单 -->
-                <!-- <div
+                <div
                     class="w-full grid xl:grid-cols-3 grid-cols-1 md:gap-20 gap-10 justify-items-center mt-24 px-4 pr-8">
                     <macWindow border class="md:!h-78 h-64">
                         <template #TR>
@@ -446,14 +446,14 @@
                     </macWindow>
                 </div>
             </div>
-        </section> -->
+        </section>
         <!-- Section 6 -->
-        <!-- <section class="min-h-[100dvh] bg-gray-200 dark:bg-[#0E100F]">
-            <div class="xl:pt-36 md:pt-24 pt-16"> -->
+        <section class="min-h-[100dvh] bg-gray-200 dark:bg-[#0E100F]">
+            <div class="xl:pt-36 md:pt-24 pt-16">
                 <!-- section 主内容 -->
-                <!-- <h1 class="md:text-8xl text-6xl text-center font-bold">致谢名单</h1>
+                <h1 class="md:text-8xl text-6xl text-center font-bold">致谢名单</h1>
             </div>
-        </section> -->
+        </section>
     </div>
 </template>
 <script setup lang="ts">
