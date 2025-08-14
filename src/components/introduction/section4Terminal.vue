@@ -34,8 +34,8 @@
                 cursor-pointer mb-2 will-change-transform relative">
                     <p class="button-text1 pointer-events-none whitespace-nowrap">CLICK TO DEPLOY NEW NODE</p>
                     <p class="button-text2 absolute top-1/2 left-1/2 text-xl -translate-1/2 pointer-events-none whitespace-nowrap flex items-center space-x-2">
-                        <Smile class="size-6"/>
                         <span>加入我们</span>
+                        <Smile class="size-6"/>
                     </p>
                 </button>
             </div>

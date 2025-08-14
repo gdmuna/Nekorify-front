@@ -1,8 +1,13 @@
 import { defineStore } from 'pinia'
+
 import { h, ref, computed } from 'vue'
+
 import { toast } from 'vue-sonner'
 
+import { useRouter } from 'vue-router'
+
 export const useSystemStore = defineStore('system', () => {
+    const router = useRouter()
     const isDark = ref<boolean>(true)
     function initTheme(): void {
         // if (localStorage.getItem('isDark') === 'true') {
@@ -44,9 +49,34 @@ export const useSystemStore = defineStore('system', () => {
         }
     }
 
+    const prevPath = ref<string | null>(null)
+
+    function routerGoto(path: string) {
+        const currentPath = router.currentRoute.value.path
+        setPrevPath(currentPath)
+        router.push(path)
+    }
+
+    function routerBack() {
+        const toPath = localStorage.getItem('prevPath') || prevPath.value || '/'
+        router.push(toPath)
+    }
+    
+    function setPrevPath(path: string | null) {
+        localStorage.setItem('prevPath', path || '/')
+        prevPath.value = path
+    }
+
     const isMobile = computed(() => window.innerWidth <= 767)
+
     const isTablet = computed(() => window.innerWidth > 767 && window.innerWidth <= 1024)
+
     const isDesktop = computed(() => window.innerWidth > 1024)
+
+    const isLoginCallback = computed(() => {
+        return router.currentRoute.value.path === '/loginCallback'
+    })
+
 
     return {
         isDark,
@@ -55,6 +85,11 @@ export const useSystemStore = defineStore('system', () => {
         isDesktop,
         initTheme,
         toggleTheme,
-        forceToggleTheme
+        forceToggleTheme,
+        isLoginCallback,
+        routerGoto,
+        routerBack,
+        prevPath,
+        setPrevPath
     }
 })

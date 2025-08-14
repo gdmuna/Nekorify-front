@@ -1,7 +1,7 @@
 <template>
     <div id="appContainer" class="w-full flex flex-col dark:text-[#FEFCE4] overflow-hidden">
         <!-- 页眉 -->
-        <Header />
+        <Header v-if="!isLoginCallback" />
         <!-- 消息弹窗挂载点 -->
         <Toaster theme="dark" :expand="!isMobile" position="bottom-right" richColors />
         <!-- 滚动进度条 -->
@@ -21,7 +21,7 @@ import { Toaster } from 'vue-sonner'
 // 导入组件
 import Header from '@/components/header.vue'
 
-import { onMounted, onBeforeMount, ref, nextTick } from 'vue'
+import { onMounted, onBeforeMount, ref, nextTick, computed } from 'vue'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
@@ -34,7 +34,7 @@ const scroll_progress = ref<HTMLElement | null>(null)
 
 const systemStore = useSystemStore()
 const { initTheme, forceToggleTheme } = systemStore
-const { isDark, isMobile } = storeToRefs(systemStore)
+const { isDark, isMobile, isLoginCallback } = storeToRefs(systemStore)
 
 const previousIsDark = ref(isDark.value)
 

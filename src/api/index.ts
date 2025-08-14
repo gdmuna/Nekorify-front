@@ -3,25 +3,34 @@ import adapterFetch from 'alova/fetch';
 
 import { toast } from 'vue-sonner';
 
+import { useAuthStore } from '@/stores';
+import { storeToRefs } from 'pinia';
+
 const alovaInst = createAlova({
     requestAdapter: adapterFetch(),
-    baseURL: import.meta.env.BASE_URL,
+    baseURL: import.meta.env.VITE_API_BASE_URL,
     timeout: 10000,
     beforeRequest(method) {
-        method.config.headers.token = 'token';
+        const authStore = useAuthStore();
+        const { accessToken } = storeToRefs(authStore);
+        if (!method.config.meta?.ignoreToken) {
+            if (accessToken.value) {
+                method.config.headers.Authorization = `Bearer ${accessToken.value}`
+            }
+        }
     },
     responded: {
         onSuccess: async (res) => {
-            console.log(res);
-            const data = await res.json().then(res => res.data);
+            // console.log(res);
+            const resJson = await res.json()
             if (res.status >= 400) {
-                throw new Error(data.message || '服务端错误');
+                return Promise.reject(resJson);
             }
-            return data
+            return resJson
         },
         onError: async (err) => {
-            console.log('111');
             toast.error(err.message || '请求失败，请稍后再试');
+            Promise.reject(err);
         }
     }
 });

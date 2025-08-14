@@ -5,6 +5,7 @@ import announcements from '../views/announcements/index.vue'
 import articles from '../views/articles/index.vue'
 import replay from '../views/replays/index.vue'
 import resourcesHub from '../views/resourcesHub/index.vue'
+import loginCallback from '../views/loginCallback/index.vue'
 
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
   { path: '/articles', component: articles },
   { path: '/replay', component: replay },
   { path: '/resourcesHub', component: resourcesHub},
+  { path: '/loginCallback', component: loginCallback },
 ]
 
 const router = createRouter({

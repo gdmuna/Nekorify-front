@@ -4,7 +4,7 @@
             <!-- 页眉左侧内容 -->
             <div class="flex h-full items-center">
                 <!-- LOGO -->
-                <div class="relative overflow-hidden cursor-pointer shrink-0" @click="routerGoTo('/')">
+                <div class="relative overflow-hidden cursor-pointer shrink-0" @click="routerGoto('/')">
                     <img ref="logo1" src="/src/assets/gdmuna-logo_gradient.svg" alt=""
                         class="size-10 will-change-transform">
                     <img ref="logo2" src="/src/assets/ACM-LOGO 1.svg" alt=""
@@ -12,19 +12,19 @@
                 </div>
                 <!-- 导航菜单 -->
                 <nav class="flex items-center md:ml-6 ml-2 md:space-x-4 space-x-1 whitespace-nowrap">
-                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]" @click="routerGoTo('/home')">首页</Button>
+                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]" @click="routerGoto('/home')">首页</Button>
                     <img :src="boundary" alt="">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
-                        @click="routerGoTo('/announcements')">公告</Button>
+                        @click="routerGoto('/announcements')">公告</Button>
                     <img :src="boundary" alt="">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
-                        @click="routerGoTo('/articles')">文章</Button>
+                        @click="routerGoto('/articles')">文章</Button>
                     <img :src="boundary" alt="">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
-                        @click="routerGoTo('/replay')">课程回放</Button>
+                        @click="routerGoto('/replay')">课程回放</Button>
                     <img :src="boundary" alt="">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
-                        @click="routerGoTo('/resourcesHub')">资源站</Button>
+                        @click="routerGoto('/resourcesHub')">资源站</Button>
                 </nav>
             </div>
             <!-- 页眉右侧内容 -->
@@ -51,14 +51,15 @@
                 <img :src="boundary" alt="" class="ml-2 mr-4">
                 <div class="flex items-center space-x-4">
                     <Button class="join-us-button cursor-pointer font-bold">
-                        <Smile class="size-6" />
                         加入我们
+                        <Smile class="size-6" />
                     </Button>
                     <img :src="boundary" alt="">
-                    <Button class="cursor-pointer border-2 dark:border-[#FEFCE4] dark:bg-[#0E100F] dark:text-[#FEFCE4]" @click="login">
-                        <LogIn class="size-6" />
+                    <Button v-if="!isAuthenticated" class="cursor-pointer border-2 dark:border-[#FEFCE4] dark:bg-[#0E100F] dark:text-[#FEFCE4]" @click="login">
                         登录
+                        <LogIn class="size-6" />
                     </Button>
+                    <DropdownMenu v-else />
                 </div>
             </div>
         </header>
@@ -88,6 +89,7 @@ import { Moon } from 'lucide-vue-next';
 import { CalendarFold } from 'lucide-vue-next';
 
 import boundary from '@/assets/boundary.svg'
+import DropdownMenu from '@/components/headerDropdownMenu.vue'
 
 import { gsap } from 'gsap'
 
@@ -96,11 +98,11 @@ import { useSystemStore } from '@/stores/system'
 const systemStore = useSystemStore()
 
 const { isDark } = storeToRefs(systemStore)
-const { toggleTheme } = systemStore
+const { toggleTheme, routerGoto } = systemStore
 
 import { useAuthStore } from '@/stores'
 const authStore = useAuthStore()
-
+const { isAuthenticated } = storeToRefs(authStore)
 const { login } = authStore
 
 const logo1 = ref<HTMLImageElement | null>(null)
@@ -115,10 +117,6 @@ onMounted((): void => {
 const disableSwitchTheme = computed(() => {
     return router.currentRoute.value.path === '/'
 })
-
-function routerGoTo(path: string): void {
-    router.push(path)
-}
 
 const logoAnimate = {
     tl: null as gsap.core.Timeline | null,

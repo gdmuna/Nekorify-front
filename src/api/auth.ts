@@ -1,28 +1,46 @@
 import api from './index';
 
+import { errTemplate, returnTemplate, to } from '@/lib/utils';
+
+const baseUrl = import.meta.env.VITE_API_BASE_URL
+
 export const authApi = {
     // 用户登录
-    login: async () => {
-        window.location.href = 'http://localhost:3000/api/auth/login';
+    login: () => {
+        window.location.href = `${baseUrl}/auth/login`;
     },
-    
-    // 用户注册
-    register: async () => {
-        return api.Post('/auth/register');
+
+    loginCallback: async () => {
+        const searchParams = new URLSearchParams(window.location.search);
+        const code = searchParams.get('code');
+        if (!code) return returnTemplate(errTemplate('缺少授权码', '请重试，或等待业务恢复'));
+        const inst = api.Post('/auth/callback', {}, {
+            params: {
+                code
+            },
+            meta: {
+                ignoreToken: true
+            }
+        })
+        return await to(inst)
     },
-    
+
     // 获取用户信息
     getUserInfo: async () => {
-        return api.Get('/auth/user');
+        const inst = api.Get('/auth/user-info')
+        return await to(inst)
     },
-    
+
     // 更新用户信息
     updateUserInfo: async () => {
-        return api.Put('/auth/user');
+        return api.Put('/auth/user')
     },
-    
-    // 用户登出
-    logout: async () => {
-        return api.Post('/auth/logout');
+
+    // 刷新令牌
+    refresh: async (refreshToken: string) => {
+        const inst = api.Post('auth/refresh-token', {
+            refreshToken
+        })
+        return await to(inst)
     }
 }

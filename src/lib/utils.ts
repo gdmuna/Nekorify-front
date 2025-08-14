@@ -1,6 +1,14 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+import type {
+    ErrTemplate,
+    ReturnTemplate,
+    err,
+    res
+} from '@/types/utils'
+
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
@@ -106,4 +114,31 @@ export async function retry<T>(
 export function getRemPx(rem: number):number {
     const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
     return rem * fontSize;
+}
+
+export function errTemplate(err: string ,detail?: string): ErrTemplate {
+    return {
+        success: false,
+        data: {
+            message: err,
+            detail: detail || ''
+        }
+    };
+}
+
+export function returnTemplate(err?: err, res?: res): ReturnTemplate {
+    return {
+        err: err || null,
+        res: res || null
+    };
+}
+
+export async function to(promise: Promise<any>): Promise<ReturnTemplate> {
+    try {
+        const res = await promise;
+        return returnTemplate(null, res);
+    } catch (e) {
+        const err = e || errTemplate('未知错误', '请稍后再试')
+        return returnTemplate(err, null);
+    }
 }

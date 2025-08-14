@@ -94,10 +94,11 @@ const enterAnimate = {
             },
             '<'
         )
+        const duration = (1 - (progressBar!.clientWidth / progressContainer!.clientWidth)) * 5
         this.tl.to(progressBar,
             {
                 width: '100%',
-                duration: 5,
+                duration,
                 ease: 'none',
                 onComplete: () => {
                     toggle('next')

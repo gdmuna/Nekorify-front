@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 25565,
+    port: 5173,
     proxy: {
       '/api': {
         target: 'http://localhost:3000', // Express服务器地址
