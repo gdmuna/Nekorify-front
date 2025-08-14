@@ -1,0 +1,75 @@
+<template>
+    <Button class="cursor-pointer rounded-[0] dark:bg-[#0E100F] dark:text-[#FEFCE4]" @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')">
+        <div ref="container" class="md:text-lg flex items-center space-x-3 relative overflow-hidden">
+            <p ref="textRef">{{ text }}</p>
+            <component :is="icon" ref="icon1" class="md:size-6 size-4 m-0" />
+            <component :is="icon" ref="icon2" class="md:size-6 size-4 absolute left-0" />
+        </div>
+    </Button>
+</template>
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import type { Component } from 'vue'
+
+import { gsap } from 'gsap';
+
+import { Button } from '@/components/ui/button'
+
+const container = ref<HTMLElement | null>(null);
+const textRef = ref<HTMLElement | null>(null);
+const icon1 = ref<HTMLElement | null>(null);
+const icon2 = ref<HTMLElement | null>(null);
+
+defineProps<{
+    text: string
+    icon: Component
+}>();
+
+onMounted(() => {
+    gsap.set(icon2.value, { x: '-110%' })
+})
+
+const animate = {
+    tl: gsap.timeline(),
+    play(type: string) {
+        let offset = 0;
+        this.tl.clear();
+        if (type === 'enter') {
+            offset = this.getOffset()
+        }
+        this.tl.to(textRef.value,
+            {
+                x: offset,
+                duration: 0.5,
+                ease: 'circ.out'
+            }
+        )
+        this.tl.to(icon1.value,
+            {
+                x: type === 'enter' ? offset * 1.5 : 0,
+                duration: 0.5,
+                ease: 'circ.out'
+            },
+            '<'
+        )
+        this.tl.to(icon2.value,
+            {
+                x: type === 'enter' ? 0 : '-110%',
+                duration: 0.5,
+                ease: 'circ.out'
+            },
+            '<'
+        )
+    },
+    getOffset() {
+        const textRect = textRef.value!.getBoundingClientRect();
+        const containerRect = icon1.value!.getBoundingClientRect();
+        return containerRect.right - textRect.right
+    }
+}
+
+
+</script>
+
+<style scoped></style>

@@ -36,3 +36,4 @@ export const buttonVariants = cva(
 export type ButtonVariants = VariantProps<typeof buttonVariants>
 
 export { default as outlineButton } from './outlineButton.vue'
+export { default as secondaryButton } from './secondaryButton.vue'

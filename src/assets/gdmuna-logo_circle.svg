@@ -23,7 +23,7 @@
       }
     </style>
     <clipPath id="clippath">
-      <circle id="_200w" data-name="200w" class="cls-5" cx="640" cy="640" r="640"/>
+      <path id="_200w" data-name="200w" class="cls-5" d="M1280,640c0,248.53-35.74,408.53-133.6,506.4-97.87,97.87-257.87,133.6-506.4,133.6s-408.53-35.74-506.4-133.6C35.74,1048.53,0,888.53,0,640S35.74,231.47,133.6,133.6,391.47,0,640,0s408.53,35.74,506.4,133.6c97.87,97.87,133.6,257.87,133.6,506.4Z"/>
     </clipPath>
     <linearGradient id="_未命名的渐变_90" data-name="未命名的渐变 90" x1="674.26" y1="989.94" x2="909.55" y2="1125.78" gradientUnits="userSpaceOnUse">
       <stop offset=".1" stop-color="#fff" stop-opacity="0"/>

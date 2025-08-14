@@ -27,7 +27,8 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 import { useRouter } from 'vue-router'
 
-import { useSystemStore } from '@/stores/system'
+import { useSystemStore } from '@/stores'
+import { useAuthStore } from '@/stores';
 import { storeToRefs } from 'pinia'
 
 const scroll_progress = ref<HTMLElement | null>(null)
@@ -35,6 +36,9 @@ const scroll_progress = ref<HTMLElement | null>(null)
 const systemStore = useSystemStore()
 const { initTheme, forceToggleTheme } = systemStore
 const { isDark, isMobile, isLoginCallback } = storeToRefs(systemStore)
+
+const authStore = useAuthStore()
+const { initUserInfo } = authStore
 
 const previousIsDark = ref(isDark.value)
 
@@ -61,7 +65,7 @@ onBeforeMount(() => {
 
 const router = useRouter()
 
-onMounted(() => {
+onMounted(async () => {
     // 初始化 GSAP ScrollSmoother
     const smoother = ScrollSmoother.create({
         wrapper: '#app',
@@ -88,6 +92,7 @@ onMounted(() => {
             return true
         })
     })
+    await initUserInfo()
 })
 
 

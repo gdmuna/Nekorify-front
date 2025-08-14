@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
             toast.success(data.message)
             setToken(data.data.token)
             console.log(data.data.userInfo);
-            
+
             handleUserInfo(data.data.userInfo)
         } else {
             toast.error(err.data.message || '登录失败')
@@ -76,15 +76,17 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function refresh() {
         if (!refreshToken.value) {
-            return false
+            return Promise.reject()
         }
         const { err, res } = await authApi.refresh(refreshToken.value)
         if (res) {
             const token = res.data.data
             setToken(token)
+            return Promise.resolve()
         } else {
             toast.error(err.data.message || '刷新失败')
             setToken()
+            return Promise.reject('登录态已过期，请重新登录')
         }
     }
 
@@ -93,8 +95,23 @@ export const useAuthStore = defineStore('auth', () => {
         if (res) {
             const info = res.data.data
             handleUserInfo(info)
+            return Promise.resolve()
         } else {
             toast.error(err.data.message || '获取用户信息失败')
+            return Promise.reject()
+        }
+    }
+
+    async function initUserInfo() {
+        try {
+            await refresh();
+            await getUserInfo();
+            return true;
+        } catch (e) {
+            if (e) {
+                toast.error(e);
+            }
+            return false;
         }
     }
 
@@ -114,7 +131,7 @@ export const useAuthStore = defineStore('auth', () => {
         toast.info('已登出')
     }
 
-    return { 
+    return {
         login,
         loginCallback,
         isAuthenticated,
@@ -123,6 +140,7 @@ export const useAuthStore = defineStore('auth', () => {
         refreshToken,
         userInfo,
         getUserInfo,
-        logout
+        logout,
+        initUserInfo
     }
 })

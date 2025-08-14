@@ -1,6 +1,6 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow overflow-x-auto z-50 px-4 flex items-center select-none">
-        <header class="flex h-full flex-1 items-center justify-between *:shrink-0">
+    <div class="fixed top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow z-50 px-4 flex items-center select-none">
+        <header  class="flex h-full flex-1 items-center justify-between *:shrink-0 relative overflow-x-auto">
             <!-- 页眉左侧内容 -->
             <div class="flex h-full items-center">
                 <!-- LOGO -->
@@ -55,7 +55,7 @@
                         <Smile class="size-6" />
                     </Button>
                     <img :src="boundary" alt="">
-                    <Button v-if="!isAuthenticated" class="cursor-pointer border-2 dark:border-[#FEFCE4] dark:bg-[#0E100F] dark:text-[#FEFCE4]" @click="login">
+                    <Button v-if="!isAuthenticated" class="cursor-pointer border-2 dark:bg-[#0E100F] dark:text-[#FEFCE4]" @click="login">
                         登录
                         <LogIn class="size-6" />
                     </Button>
