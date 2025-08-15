@@ -7,9 +7,18 @@
         <!-- 滚动进度条 -->
         <div ref="scroll_progress" class="fixed z-40 top-14 left-0 w-2 h-[calc(100%-3.5rem)] page-scroll-progress" />
         <!-- 主内容区 -->
-        <main id="content" class="pt-14">
-            <router-view />
-        </main>
+        <div id="content" class="pt-14">
+            <main>
+                <router-view />
+            </main>
+            <footer class="w-full border-t-2 border-[#222018]">
+                <div
+                    class="w-full h-20 bg-gray-200 dark:bg-[#0E100F] flex flex-col justify-evenly items-center md:text-sm text-xs text-gray-500 dark:text-gray-400">
+                    <p>已经到底了喵~</p>
+                    <p>© 2025 GDMU-NA & GDMU-ACM. All rights reserved.</p>
+                </div>
+            </footer>
+        </div>
     </div>
 </template>
 
