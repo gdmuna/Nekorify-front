@@ -50,8 +50,6 @@ export const useAuthStore = defineStore('auth', () => {
             const data = res.data
             toast.success(data.message)
             setToken(data.data.token)
-            console.log(data.data.userInfo);
-
             handleUserInfo(data.data.userInfo)
         } else {
             toast.error(err.data.message || '登录失败')
@@ -84,6 +82,7 @@ export const useAuthStore = defineStore('auth', () => {
             setToken(token)
             return Promise.resolve()
         } else {
+            console.log('err1', err);
             toast.error(err.data.message || '刷新失败')
             setToken()
             return Promise.reject('登录态已过期，请重新登录')
@@ -97,6 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
             handleUserInfo(info)
             return Promise.resolve()
         } else {
+            console.log('err2', err);
             toast.error(err.data.message || '获取用户信息失败')
             return Promise.reject()
         }

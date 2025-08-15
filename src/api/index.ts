@@ -6,6 +6,8 @@ import { toast } from 'vue-sonner';
 import { useAuthStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 
+import { errTemplate } from '@/lib/utils';
+
 const alovaInst = createAlova({
     requestAdapter: adapterFetch(),
     baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -21,12 +23,19 @@ const alovaInst = createAlova({
     },
     responded: {
         onSuccess: async (res) => {
-            // console.log(res);
-            const resJson = await res.json()
+            const contentType = res.headers.get('content-type');
+            let resJson = null;
+            if (contentType && contentType.includes('application/json')) {
+                // 防止空响应体导致解析错误
+                const text = await res.text();
+                resJson = text ? JSON.parse(text) : {};
+            } else {
+                resJson = errTemplate('服务端错误', '请重试，或等待业务恢复');
+            }
             if (res.status >= 400) {
                 return Promise.reject(resJson);
             }
-            return resJson
+            return resJson;
         },
         onError: async (err) => {
             toast.error(err.message || '请求失败，请稍后再试');

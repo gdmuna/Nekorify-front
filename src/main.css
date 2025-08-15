@@ -10,6 +10,7 @@ body {
     /* Firefox */
     -ms-overflow-style: none;
     /* IE 10+ */
+    background-color: #0E100F;
 }
 
 body::-webkit-scrollbar {
