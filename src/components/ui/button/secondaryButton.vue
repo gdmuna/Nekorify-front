@@ -1,9 +1,9 @@
 <template>
-    <Button class="cursor-pointer rounded-[0] dark:bg-[#0E100F] dark:text-[#FEFCE4]" @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')">
-        <div ref="container" class="md:text-lg flex items-center space-x-3 relative overflow-hidden">
+    <Button class="cursor-pointer rounded-[0] dark:bg-[#0E100F] dark:text-[#FEFCE4] md:text-lg" @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')">
+        <div ref="container" class="flex items-center space-x-3 relative overflow-hidden">
             <p ref="textRef">{{ text }}</p>
-            <component :is="icon" ref="icon1" class="md:size-6 size-4 m-0" />
-            <component :is="icon" ref="icon2" class="md:size-6 size-4 absolute left-0" />
+            <component :is="icon" ref="icon1" class="md:size-5 size-4 m-0" />
+            <component :is="icon" ref="icon2" class="md:size-5 size-4 absolute left-0" />
         </div>
     </Button>
 </template>

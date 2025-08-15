@@ -1,5 +1,6 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow z-50 px-4 flex items-center select-none">
+    <div
+        class="fixed top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow z-50 px-4 flex items-center select-none">
         <header class="flex h-full flex-1 items-center justify-between *:shrink-0 relative overflow-x-auto">
             <!-- 页眉左侧内容 -->
             <div class="flex h-full items-center">
@@ -12,7 +13,8 @@
                 </div>
                 <!-- 导航菜单 -->
                 <nav class="flex items-center md:ml-6 ml-2 md:space-x-4 space-x-1 whitespace-nowrap">
-                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]" @click="routerGoto('/home')">首页</Button>
+                    <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
+                        @click="routerGoto('/home')">首页</Button>
                     <img :src="boundary" alt="">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
                         @click="routerGoto('/announcements')">公告</Button>
@@ -21,7 +23,7 @@
                         @click="routerGoto('/articles')">文章</Button>
                     <img :src="boundary" alt="">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
-                        @click="routerGoto('/replay')">课程回放</Button>
+                        @click="routerGoto('/videos')">视频</Button>
                     <img :src="boundary" alt="">
                     <Button variant="link" class="cursor-pointer p-2 text-lg dark:text-[#FEFCE4]"
                         @click="routerGoto('/resourcesHub')">资源站</Button>
@@ -36,7 +38,7 @@
                             <Moon v-if="isDark" class="size-5" />
                             <Sun v-else class="size-5" />
                         </template>
-                    </toggleThemeButton> -->
+</toggleThemeButton> -->
                     <Button variant="ghost" class="rounded-full size-10" as="a" href="https://github.com/gdmuna"
                         target="_blank" rel="noopener noreferer">
                         <Github class="size-6" />
@@ -55,11 +57,17 @@
                         <Smile class="size-6" />
                     </Button>
                     <img :src="boundary" alt="">
-                    <Button v-if="!isAuthenticated" class="cursor-pointer border-2 dark:bg-[#0E100F] dark:text-[#FEFCE4]" @click="login">
+                    <Button v-if="!isAuthenticated"
+                        class="cursor-pointer border-2 dark:bg-[#0E100F] dark:text-[#FEFCE4]" @click="login">
                         登录
                         <LogIn class="size-6" />
                     </Button>
-                    <DropdownMenu v-else />
+                    <Button v-else class="dark:bg-[#0E100F] cursor-pointer dark:text-[#FEFCE4] border-2 py-2" @click="routerGoto('/me')">
+                        <img :src="userInfo.avatar"
+                            class="size-6 rounded-full border-1 dark:border-[#0E100F] object-cover">
+                        <p>个人中心</p>
+                        <ArrowRight class="icon duration-300 size-4" />
+                    </Button>
                 </div>
             </div>
         </header>
@@ -86,7 +94,7 @@ import { Smile } from 'lucide-vue-next';
 import { Mail } from 'lucide-vue-next';
 import { Sun } from 'lucide-vue-next';
 import { Moon } from 'lucide-vue-next';
-import { CalendarFold } from 'lucide-vue-next';
+import { CalendarFold, ArrowRight } from 'lucide-vue-next';
 
 import boundary from '@/assets/boundary.svg'
 import DropdownMenu from '@/components/headerDropdownMenu.vue'
@@ -94,15 +102,14 @@ import DropdownMenu from '@/components/headerDropdownMenu.vue'
 import { gsap } from 'gsap'
 
 // 导入状态管理
-import { useSystemStore } from '@/stores/system'
+import { useSystemStore, useAuthStore } from '@/stores'
 const systemStore = useSystemStore()
 
 const { isDark } = storeToRefs(systemStore)
 const { toggleTheme, routerGoto } = systemStore
 
-import { useAuthStore } from '@/stores'
 const authStore = useAuthStore()
-const { isAuthenticated } = storeToRefs(authStore)
+const { isAuthenticated, userInfo } = storeToRefs(authStore)
 const { login } = authStore
 
 const logo1 = ref<HTMLImageElement | null>(null)

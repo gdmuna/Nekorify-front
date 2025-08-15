@@ -1,21 +1,57 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import introduction from '../views/introduction/index.vue'
-import home from '../views/home/index.vue'
-import announcements from '../views/announcements/index.vue'
-import articles from '../views/articles/index.vue'
-import replay from '../views/replays/index.vue'
-import resourcesHub from '../views/resourcesHub/index.vue'
-import loginCallback from '../views/loginCallback/index.vue'
-
 
 const routes = [
-  { path: '/', component: introduction },
-  { path: '/home', component: home },
-  { path: '/announcements', component: announcements },
-  { path: '/articles', component: articles },
-  { path: '/replay', component: replay },
-  { path: '/resourcesHub', component: resourcesHub},
-  { path: '/loginCallback', component: loginCallback },
+  {
+    path: '/',
+    component: introduction
+  },
+  {
+    path:'/home',
+    component: () => import('../views/home/index.vue')
+  },
+  {
+    path: '/announcements',
+    component: () => import('../views/announcements/index.vue')
+  },
+  {
+    path: '/articles',
+    component: () => import('../views/articles/index.vue')
+  },
+  {
+    path: '/videos',
+    component: () => import('../views/videos/index.vue')
+  },
+  {
+    path: '/resourcesHub',
+    component: () => import('../views/resourcesHub/index.vue')
+  },
+  {
+    path: '/loginCallback',
+    component: () => import('../views/loginCallback/index.vue')
+  },
+  {
+    path: '/me' ,
+    component: () => import('../views/me/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('../components/me/appGroup.vue')
+      },
+      {
+        path: 'announcements'
+      },
+      {
+        path: 'articles'
+      },
+      {
+        path: 'videos'
+      },
+      {
+        path: 'interview'
+      }
+    ]
+  },
 ]
 
 const router = createRouter({

@@ -13,7 +13,7 @@
             </main>
             <footer class="w-full border-t-2 border-[#222018]">
                 <div
-                    class="w-full h-20 bg-gray-200 dark:bg-[#0E100F] flex flex-col justify-evenly items-center md:text-sm text-xs text-gray-500 dark:text-gray-400">
+                    class="w-full h-20 dark:bg-[#0E100F] flex flex-col justify-evenly items-center md:text-sm text-xs dark:text-[#B0B0B0]">
                     <p>已经到底了喵~</p>
                     <p>© 2025 GDMU-NA & GDMU-ACM. All rights reserved.</p>
                 </div>

@@ -142,3 +142,7 @@ export async function to(promise: Promise<any>): Promise<ReturnTemplate> {
         return returnTemplate(err, null);
     }
 }
+
+export function openInNewTab(url: string) {
+  window.open(url, '_blank', 'noopener,noreferrer');
+}

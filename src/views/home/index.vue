@@ -18,7 +18,7 @@
         <!-- Section 3 -->
         <section class="bg-gray-200 dark:bg-[#0E100F] flex flex-col">
             <articles />
-            <titleBlock titleA="课程回放" titleB="COURSE REPLAY" />
+            <titleBlock titleA="视频" titleB="VIDEO" />
         </section>
         <!-- Section 4 -->
         <section class="bg-gray-200 dark:bg-[#0E100F] flex flex-col">

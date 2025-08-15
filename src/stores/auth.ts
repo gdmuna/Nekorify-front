@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
     const router = useRouter();
 
     const systemStore = useSystemStore();
-    const { routerBack, setPrevPath } = systemStore;
+    const { routerBack, setPrevPath, routerGoto } = systemStore;
 
     const accessToken = ref<string | null>(localStorage.getItem('accessToken'))
     const refreshToken = ref<string | null>(localStorage.getItem('refreshToken'))
@@ -30,12 +30,15 @@ export const useAuthStore = defineStore('auth', () => {
     const userInfo = reactive<UserInfo>({
         studentNumber: 0,
         username: '',
+        nickname: '',
+        bio: '',
         email: '',
         avatar: '',
         affiliation: '',
         createdAt: new Date(),
         lastLogin: new Date(),
-        group: [] as string[]
+        group: [] as string[],
+        links: [] as string[]
     })
 
     function login() {
@@ -118,16 +121,35 @@ export const useAuthStore = defineStore('auth', () => {
     function handleUserInfo(info: any) {
         userInfo.studentNumber = info.name
         userInfo.username = info.displayName
+        userInfo.nickname = info.bio || '千早爱音'
+        userInfo.bio = info.bio || '千早爱音美貌盖世无双'
         userInfo.email = info.email
         userInfo.avatar = info.avatar
         userInfo.affiliation = info.affiliation
         userInfo.createdAt = new Date(info.createdTime)
         userInfo.lastLogin = new Date(info.lastSigninTime)
         userInfo.group = info.groups
+        userInfo.links = info.links || ['https://fov-rgt.cn']
+    }
+
+    function cleanUserInfo() {
+        userInfo.studentNumber = 0
+        userInfo.username = ''
+        userInfo.nickname = ''
+        userInfo.bio = ''
+        userInfo.email = ''
+        userInfo.avatar = ''
+        userInfo.affiliation = ''
+        userInfo.createdAt = new Date()
+        userInfo.lastLogin = new Date()
+        userInfo.group = []
+        userInfo.links = []
     }
 
     function logout() {
         setToken()
+        cleanUserInfo()
+        routerGoto('/home')
         toast.info('已登出')
     }
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        replays
+        videos
     </div>
 </template>
 
