@@ -1,15 +1,21 @@
 <template>
-    <Button class="cursor-pointer rounded-[0] dark:bg-[#0E100F] dark:text-[#FEFCE4] md:text-lg" @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')">
+    <Button class="cursor-pointer rounded-[0] dark:bg-[#0E100F] dark:text-[#FEFCE4] md:text-lg " @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')">
         <div ref="container" class="flex items-center space-x-3 relative overflow-hidden">
             <p ref="textRef">{{ text }}</p>
-            <component :is="icon" ref="icon1" class="md:size-5 size-4 m-0" />
-            <component :is="icon" ref="icon2" class="md:size-5 size-4 absolute left-0" />
+            <div ref="icon1" class="m-0">
+                <component :is="icon" class="md:size-5 size-4" />
+                <slot />
+            </div>
+            <div ref="icon2" class="absolute left-0 m-0">
+                <component :is="icon" class="md:size-5 size-4" />
+                <slot />
+            </div>
         </div>
     </Button>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import type { Component } from 'vue'
 
 import { gsap } from 'gsap';
@@ -21,14 +27,15 @@ const textRef = ref<HTMLElement | null>(null);
 const icon1 = ref<HTMLElement | null>(null);
 const icon2 = ref<HTMLElement | null>(null);
 
-defineProps<{
+const props = defineProps<{
     text: string
-    icon: Component
+    icon?: Component
 }>();
 
 onMounted(() => {
     gsap.set(icon2.value, { x: '-110%' })
 })
+
 
 const animate = {
     tl: gsap.timeline(),

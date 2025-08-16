@@ -5,14 +5,12 @@ import { authApi } from '@/api';
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores';
+import { useUserStore } from '@/stores'
 
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
-import type {
-    Token,
-    UserInfo
-} from '@/types/auth';
+import type { Token } from '@/types/auth';
 
 
 export const useAuthStore = defineStore('auth', () => {
@@ -20,6 +18,8 @@ export const useAuthStore = defineStore('auth', () => {
 
     const systemStore = useSystemStore();
     const { routerBack, setPrevPath, routerGoto } = systemStore;
+    const userStore = useUserStore();
+    const { handleUserInfo, cleanUserInfo } = userStore;
 
     const accessToken = ref<string | null>(localStorage.getItem('accessToken'))
     const refreshToken = ref<string | null>(localStorage.getItem('refreshToken'))
@@ -27,19 +27,19 @@ export const useAuthStore = defineStore('auth', () => {
         return !!accessToken.value
     })
 
-    const userInfo = reactive<UserInfo>({
-        studentNumber: 0,
-        username: '',
-        nickname: '',
-        bio: '',
-        email: '',
-        avatar: '',
-        affiliation: '',
-        createdAt: new Date(),
-        lastLogin: new Date(),
-        group: [] as string[],
-        links: [] as string[]
-    })
+    // const userInfo = reactive<UserInfo>({
+    //     studentNumber: 0,
+    //     username: '',
+    //     nickname: '',
+    //     bio: '',
+    //     email: '',
+    //     avatar: '',
+    //     affiliation: '',
+    //     createdAt: new Date(),
+    //     lastLogin: new Date(),
+    //     group: [] as string[],
+    //     links: [] as string[]
+    // })
 
     function login() {
         const prevPath = router.currentRoute.value.path;
@@ -92,59 +92,59 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
-    async function getUserInfo() {
-        const { err, res } = await authApi.getUserInfo()
-        if (res) {
-            const info = res.data.data
-            handleUserInfo(info)
-            return Promise.resolve()
-        } else {
-            console.log('err2', err);
-            toast.error(err.data.message || '获取用户信息失败')
-            return Promise.reject()
-        }
-    }
+    // async function getUserInfo() {
+    //     const { err, res } = await authApi.getUserInfo()
+    //     if (res) {
+    //         const info = res.data.data
+    //         handleUserInfo(info)
+    //         return Promise.resolve()
+    //     } else {
+    //         console.log('err2', err);
+    //         toast.error(err.data.message || '获取用户信息失败')
+    //         return Promise.reject()
+    //     }
+    // }
 
-    async function initUserInfo() {
-        try {
-            await refresh();
-            await getUserInfo();
-            return true;
-        } catch (e) {
-            if (e) {
-                toast.error(e);
-            }
-            return false;
-        }
-    }
+    // async function initUserInfo() {
+    //     try {
+    //         await refresh();
+    //         await getUserInfo();
+    //         return true;
+    //     } catch (e) {
+    //         if (e) {
+    //             toast.error(e);
+    //         }
+    //         return false;
+    //     }
+    // }
 
-    function handleUserInfo(info: any) {
-        userInfo.studentNumber = info.name
-        userInfo.username = info.displayName
-        userInfo.nickname = info.bio || '千早爱音'
-        userInfo.bio = info.bio || '千早爱音美貌盖世无双'
-        userInfo.email = info.email
-        userInfo.avatar = info.avatar
-        userInfo.affiliation = info.affiliation
-        userInfo.createdAt = new Date(info.createdTime)
-        userInfo.lastLogin = new Date(info.lastSigninTime)
-        userInfo.group = info.groups
-        userInfo.links = info.links || ['https://fov-rgt.cn']
-    }
+    // function handleUserInfo(info: any) {
+    //     userInfo.studentNumber = info.name
+    //     userInfo.username = info.displayName
+    //     userInfo.nickname = info.bio || '千早爱音'
+    //     userInfo.bio = info.bio || '千早爱音美貌盖世无双'
+    //     userInfo.email = info.email
+    //     userInfo.avatar = info.avatar
+    //     userInfo.affiliation = info.affiliation
+    //     userInfo.createdAt = new Date(info.createdTime)
+    //     userInfo.lastLogin = new Date(info.lastSigninTime)
+    //     userInfo.group = info.groups
+    //     userInfo.links = info.links || ['https://fov-rgt.cn']
+    // }
 
-    function cleanUserInfo() {
-        userInfo.studentNumber = 0
-        userInfo.username = ''
-        userInfo.nickname = ''
-        userInfo.bio = ''
-        userInfo.email = ''
-        userInfo.avatar = ''
-        userInfo.affiliation = ''
-        userInfo.createdAt = new Date()
-        userInfo.lastLogin = new Date()
-        userInfo.group = []
-        userInfo.links = []
-    }
+    // function cleanUserInfo() {
+    //     userInfo.studentNumber = 0
+    //     userInfo.username = ''
+    //     userInfo.nickname = ''
+    //     userInfo.bio = ''
+    //     userInfo.email = ''
+    //     userInfo.avatar = ''
+    //     userInfo.affiliation = ''
+    //     userInfo.createdAt = new Date()
+    //     userInfo.lastLogin = new Date()
+    //     userInfo.group = []
+    //     userInfo.links = []
+    // }
 
     function logout() {
         setToken()
@@ -160,9 +160,6 @@ export const useAuthStore = defineStore('auth', () => {
         refresh,
         accessToken,
         refreshToken,
-        userInfo,
-        getUserInfo,
-        logout,
-        initUserInfo
+        logout
     }
 })

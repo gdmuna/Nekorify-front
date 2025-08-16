@@ -1,8 +1,8 @@
 <template>
     <div ref="root" class="flex-1 relative">
         <p class="dark:text-amber-100 md:text-5xl text-4xl font-bold">应用</p>
-        <div class="flex flex-col space-y-6 pt-5">
-            <div class="w-full h-[1px] dark:bg-[#CFCBA0]" />
+        <div class="w-full h-[1px] dark:bg-[#CFCBA0] my-5" />
+        <div class="flex flex-col space-y-6">
             <p class="dark:text-[#E0DEC0] md:text-4xl text-2xl font-bold">社团相关</p>
             <div class="flex flex-col">
                 <liItem v-for="(item, index) in items" :key="index" class="flex-1"

@@ -47,3 +47,4 @@ const alovaInst = createAlova({
 export default alovaInst;
 
 export { authApi } from './auth';
+export { userApi } from './user';

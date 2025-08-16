@@ -35,7 +35,7 @@
                 <p class="inline">·</p>
                 <p class="inline">BI部部长</p>
             </div>
-            <div class="space-x-2">
+            <div v-if="userInfo.email" class="space-x-2">
                 <Mail class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
                 <p class="inline break-all">{{ userInfo.email }}</p>
             </div>
@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from 'vue';
 
-import { useAuthStore, useSystemStore } from '@/stores';
+import { useAuthStore, useUserStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 
 import { secondaryButton } from '@/components/ui/button';
@@ -66,9 +66,10 @@ import { editDialog } from '@/components/me';
 
 
 
+const userStore = useUserStore();
 const authStore = useAuthStore();
 const { logout } = authStore;
-const { userInfo } = storeToRefs(authStore);
+const { userInfo } = storeToRefs(userStore);
 
 const isEditing = ref(false);
 

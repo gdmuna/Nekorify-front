@@ -102,15 +102,18 @@ import DropdownMenu from '@/components/headerDropdownMenu.vue'
 import { gsap } from 'gsap'
 
 // 导入状态管理
-import { useSystemStore, useAuthStore } from '@/stores'
+import { useSystemStore, useAuthStore, useUserStore } from '@/stores'
 const systemStore = useSystemStore()
 
 const { isDark } = storeToRefs(systemStore)
 const { toggleTheme, routerGoto } = systemStore
 
 const authStore = useAuthStore()
-const { isAuthenticated, userInfo } = storeToRefs(authStore)
+const { isAuthenticated } = storeToRefs(authStore)
 const { login } = authStore
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 
 const logo1 = ref<HTMLImageElement | null>(null)
 const logo2 = ref<HTMLImageElement | null>(null)
