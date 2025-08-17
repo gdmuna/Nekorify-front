@@ -3,7 +3,7 @@ import adapterFetch from 'alova/fetch';
 
 import { toast } from 'vue-sonner';
 
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 
 import { errTemplate } from '@/lib/utils';

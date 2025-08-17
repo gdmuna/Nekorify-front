@@ -36,7 +36,7 @@ import { outlineButton } from '@/components/ui/button';
 
 import { gsap } from 'gsap';
 
-import { useSystemStore } from '@/stores/system';
+import { useSystemStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 const systemStore = useSystemStore();
 const { isMobile } = storeToRefs(systemStore);

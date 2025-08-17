@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSystemStore } from '@/stores/system';
+import { useSystemStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 
 const systemStore = useSystemStore();

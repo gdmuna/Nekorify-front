@@ -86,7 +86,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.js'
 import { gsap } from "gsap"
 import { SplitText } from "gsap/SplitText";
 
-import { useSystemStore } from '@/stores/system'
+import { useSystemStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 
 const systemStore = useSystemStore()

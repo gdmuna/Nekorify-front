@@ -491,7 +491,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // 导入动画服务
 import { Animation } from '@/services'
 
-import { useSystemStore } from '@/stores/system';
+import { useSystemStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 
 const systemStore = useSystemStore();

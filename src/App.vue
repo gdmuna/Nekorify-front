@@ -36,8 +36,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 import { useRouter } from 'vue-router'
 
-import { useSystemStore } from '@/stores/system'
-import { useUserStore } from '@/stores/user'
+import { useSystemStore, useUserStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 
 const scroll_progress = ref<HTMLElement | null>(null)

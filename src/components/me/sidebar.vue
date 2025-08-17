@@ -64,8 +64,8 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from 'vue';
 
-import { useAuthStore } from '@/stores/auth';
-import { useUserStore } from '@/stores/user';
+import { useAuthStore } from '@/stores';
+import { useUserStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 
 import { secondaryButton } from '@/components/ui/button';

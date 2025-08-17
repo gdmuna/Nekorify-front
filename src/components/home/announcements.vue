@@ -26,7 +26,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { getRemPx } from '@/lib/utils';
 
-import { useSystemStore } from '@/stores/system';
+import { useSystemStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 const systemStore = useSystemStore();
 const { isMobile } = storeToRefs(systemStore);

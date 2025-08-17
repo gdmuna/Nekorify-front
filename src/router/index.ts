@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import introduction from '../views/introduction/index.vue'
 
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
