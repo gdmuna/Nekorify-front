@@ -6,6 +6,8 @@ import { toast } from 'vue-sonner'
 
 import { useRouter } from 'vue-router'
 
+import { useMediaQuery } from '@vueuse/core'
+
 export const useSystemStore = defineStore('system', () => {
     const router = useRouter()
     const isDark = ref<boolean>(true)
@@ -67,11 +69,10 @@ export const useSystemStore = defineStore('system', () => {
         prevPath.value = path
     }
 
-    const isMobile = computed(() => window.innerWidth <= 767)
-
-    const isTablet = computed(() => window.innerWidth > 767 && window.innerWidth <= 1024)
-
-    const isDesktop = computed(() => window.innerWidth > 1024)
+    const isMobile = useMediaQuery('(max-width: 767px)')
+    const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1024px)')
+    const isDesktop = useMediaQuery('(min-width: 1025px)')
+    const isXlDesktop = useMediaQuery('(min-width: 1281px)')
 
     const isLoginCallback = computed(() => {
         return router.currentRoute.value.path === '/loginCallback'
@@ -83,6 +84,7 @@ export const useSystemStore = defineStore('system', () => {
         isMobile,
         isTablet,
         isDesktop,
+        isXlDesktop,
         initTheme,
         toggleTheme,
         forceToggleTheme,

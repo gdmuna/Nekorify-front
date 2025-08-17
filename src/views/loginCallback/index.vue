@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { onMounted, nextTick } from 'vue';
 
-import { useAuthStore } from '@/stores';
+import { useAuthStore } from '@/stores/auth';
 
 onMounted(() => {
     const authStore = useAuthStore();

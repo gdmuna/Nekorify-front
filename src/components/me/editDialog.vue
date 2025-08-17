@@ -118,7 +118,7 @@ import { PenLine, UserRound, Mail, Link, Hash, Check, LoaderCircle } from 'lucid
 
 import { outlineText } from "@/components/ui/text"
 
-import { useUserStore } from "@/stores"
+import { useUserStore } from "@/stores/user"
 import { storeToRefs } from "pinia";
 const userStore = useUserStore();
 const { userInfo } = storeToRefs(userStore);

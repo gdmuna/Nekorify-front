@@ -102,7 +102,9 @@ import DropdownMenu from '@/components/headerDropdownMenu.vue'
 import { gsap } from 'gsap'
 
 // 导入状态管理
-import { useSystemStore, useUserStore, useAuthStore } from '@/stores'
+import { useSystemStore } from '@/stores/system'
+import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
 const systemStore = useSystemStore()
 

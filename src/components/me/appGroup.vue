@@ -26,7 +26,7 @@ import { ShieldUser, ArrowRight, Newspaper, Notebook, Video, Info } from 'lucide
 
 import { openInNewTab } from '@/lib/utils';
 
-import { useSystemStore } from '@/stores';
+import { useSystemStore } from '@/stores/system';
 const systemStore = useSystemStore();
 const { routerGoto } = systemStore;
 

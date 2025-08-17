@@ -11,8 +11,6 @@ import { toast } from 'vue-sonner';
 import type { UserInfo } from '@/types/user';
 
 export const useUserStore = defineStore('user', () => {
-    const authStore = useAuthStore()
-    const { refresh } = authStore;
     async function getUserInfo() {
         const { err, res } = await userApi.getUserInfo()
         if (res) {
@@ -28,7 +26,8 @@ export const useUserStore = defineStore('user', () => {
 
     async function initUserInfo() {
         try {
-            await refresh();
+            const authStore = useAuthStore()
+            await authStore.refresh();
             await getUserInfo();
             return true;
         } catch (e) {

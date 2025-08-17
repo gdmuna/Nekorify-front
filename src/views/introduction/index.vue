@@ -55,7 +55,7 @@
                 <div class="flex flex-col xl:mt-40 mt-16 ml-8 mr-2 xl:mx-6">
                     <!-- card-1 -->
                     <div class="relative">
-                        <div ref="lottieContainerA" v-if="isDesktop" class="size-[42rem] absolute top-0 left-0"></div>
+                        <div ref="lottieContainerA" v-if="isXlDesktop" class="size-[42rem] absolute top-0 left-0"></div>
                         <macWindow border enterAnimate enableSplitText class="xl:!w-128 xl:mr-20 xl:ml-auto md:mx-auto">
                             <template #TR>
                                 <div class="flex-1"></div>
@@ -92,13 +92,13 @@
                                 </div>
                             </template>
                         </macWindow>
-                        <div ref="lottieContainerB" v-if="isDesktop"
+                        <div ref="lottieContainerB" v-if="isXlDesktop"
                             class="size-[42rem] absolute top-0 right-0 -translate-y-1/2">
                         </div>
                     </div>
                     <!-- card-3 -->
                     <div class="flex items-center justify-evenly xl:mt-48 mt-6">
-                        <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64" v-if="isDesktop">
+                        <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64" v-if="isXlDesktop">
                         <macWindow border enterAnimate enableSplitText class="xl:!w-128">
                             <template #TR>
                                 <div class="flex-1"></div>
@@ -120,7 +120,7 @@
                                 </div>
                             </template>
                         </macWindow>
-                        <img ref="fish_smile" src="/src/assets/鱼-笑.webp" alt="" class="size-64" v-if="isDesktop">
+                        <img ref="fish_smile" src="/src/assets/鱼-笑.webp" alt="" class="size-64" v-if="isXlDesktop">
                     </div>
                 </div>
             </div>
@@ -341,12 +341,16 @@
                                 AND MORE...
                             </p>
                         </div>
-                        <div v-if="isMobile" ref="section3_cards_toggle" class="mt-8 relative overflow-hidden text-xl text-[#0E100F] font-bold py-2 pl-4 pr-2 bg-[#23d1dd] rounded-lg" @click="section3CardsManager.toggleStatus">
+                        <div v-if="isMobile" ref="section3_cards_toggle"
+                            class="mt-8 relative overflow-hidden text-xl text-[#0E100F] font-bold py-2 pl-4 pr-2 bg-[#23d1dd] rounded-lg"
+                            @click="section3CardsManager.toggleStatus">
                             <div class="flex items-center justify-center">
-                                <span>展开</span><ChevronsDown class="size-6" />
+                                <span>展开</span>
+                                <ChevronsDown class="size-6" />
                             </div>
                             <div class="flex items-center justify-center absolute top-1/2 -translate-y-1/2">
-                                <span>收起</span><ChevronsUp class="size-6" />
+                                <span>收起</span>
+                                <ChevronsUp class="size-6" />
                             </div>
                         </div>
                     </div>
@@ -458,7 +462,7 @@
 </template>
 <script setup lang="ts">
 
-import { computed, onMounted, ref, onUnmounted, onBeforeMount } from 'vue';
+import { computed, onMounted, ref, onUnmounted, onBeforeMount, watch, nextTick } from 'vue';
 
 // 导入组件
 import matrix from '@/components/introduction/matrix.vue';
@@ -491,12 +495,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // 导入动画服务
 import { Animation } from '@/services'
 
-import { useSystemStore } from '@/stores';
+import { useSystemStore } from '@/stores/system';
 import { storeToRefs } from 'pinia';
 
 const systemStore = useSystemStore();
 const { forceToggleTheme } = systemStore;
-const { isDesktop, isMobile } = storeToRefs(systemStore);
+const { isDesktop, isXlDesktop, isMobile } = storeToRefs(systemStore);
 
 const introPageRoot = ref<HTMLElement | null>(null);
 
@@ -553,7 +557,7 @@ onMounted(() => {
         setion1_height.value = section1.value.clientHeight + 500;
     }
     window.addEventListener('resize', handleResize)
-    if (isDesktop.value) {
+    if (isXlDesktop.value) {
         // 设置 Lottie 动画
         lottie.loadAnimation({
             container: lottieContainerA.value!,
@@ -584,6 +588,17 @@ onMounted(() => {
     ScrollTrigger.refresh(true)
 })
 
+let horizontalScrollTrigger: ScrollTrigger | null = null
+
+// 监听 isDesktop 变化
+watch(isXlDesktop, async (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+        await nextTick()
+        // 重新初始化动画
+        reinitializeAnimations()
+    }
+}, { immediate: false })
+
 onBeforeMount(() => {
     forceToggleTheme('dark')
 })
@@ -606,25 +621,7 @@ const section3_progressText = computed(() => {
 });
 
 function initAnimate() {
-    if (isDesktop.value) {
-        // 横向滚动动画
-        const scrollContainer = section3_scrollContainer.value;
-        const totalWidth = scrollContainer!.scrollWidth;
-        const clientWidth = scrollContainer!.clientWidth;
-        section3_scrollLength.value = totalWidth - clientWidth;
-        gsap.to(scrollContainer, {
-            x: -section3_scrollLength.value,
-            ease: "none",
-            scrollTrigger: {
-                trigger: section3_scrollMain.value,
-                start: "top top",
-                end: () => `+=${section3_scrollLength.value}`,
-                pin: true,
-                scrub: true,
-                anticipatePin: 1
-            }
-        });
-    }
+    createHorizontalScroll()
     // 轮换 title 初始化样式
     gsap.set(
         section2_dynamicTitleArray.map(item => item.value),
@@ -856,10 +853,57 @@ const section3CardsManager = {
     }
 }
 
+function createHorizontalScroll() {
+    if (!isXlDesktop.value || !section3_scrollContainer.value) return
+
+    const scrollContainer = section3_scrollContainer.value
+    const totalWidth = scrollContainer.scrollWidth
+    const clientWidth = scrollContainer.clientWidth
+    section3_scrollLength.value = totalWidth - clientWidth
+
+    horizontalScrollTrigger = ScrollTrigger.create({
+        trigger: section3_scrollMain.value,
+        start: "top top",
+        end: () => `+=${section3_scrollLength.value}`,
+        pin: true,
+        scrub: true,
+        anticipatePin: 1,
+        animation: gsap.to(scrollContainer, {
+            x: -section3_scrollLength.value,
+            ease: "none"
+        })
+    })
+}
+
+function destroyHorizontalScroll() {
+    if (horizontalScrollTrigger) {
+        horizontalScrollTrigger.kill()
+        horizontalScrollTrigger = null
+    }
+    // 重置容器位置
+    if (section3_scrollContainer.value) {
+        // gsap.set(section3_scrollContainer.value, { x: 0 })
+    }
+}
+
+function reinitializeAnimations() {
+    // 销毁旧的动画
+    destroyHorizontalScroll()
+
+    // 重新创建动画
+    if (isXlDesktop.value) {
+        createHorizontalScroll()
+    }
+
+    // 刷新 ScrollTrigger
+    ScrollTrigger.refresh()
+}
+
 onUnmounted(() => {
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    destroyHorizontalScroll()
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     window.removeEventListener('resize', handleResize)
-});
+})
 
 
 </script>

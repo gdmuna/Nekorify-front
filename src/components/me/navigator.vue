@@ -97,7 +97,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { useSystemStore } from "@/stores"
+import { useSystemStore } from "@/stores/system"
 const systemStore = useSystemStore()
 const { routerGoto } = systemStore
 

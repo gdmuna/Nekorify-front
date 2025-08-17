@@ -14,11 +14,6 @@ import type { Token } from '@/types/auth';
 
 
 export const useAuthStore = defineStore('auth', () => {
-    const systemStore = useSystemStore();
-    const { setPrevPath, routerBack, routerGoto } = systemStore;
-    const userStore = useUserStore();
-    const { cleanUserInfo, handleUserInfo } = userStore;
-
     const router = useRouter();
     const accessToken = ref<string | null>(localStorage.getItem('accessToken'))
     const refreshToken = ref<string | null>(localStorage.getItem('refreshToken'))
@@ -28,7 +23,8 @@ export const useAuthStore = defineStore('auth', () => {
 
     function login() {
         const prevPath = router.currentRoute.value.path;
-        setPrevPath(prevPath);
+        const systemStore = useSystemStore();
+        systemStore.setPrevPath(prevPath);
         authApi.login()
     }
 
@@ -38,12 +34,14 @@ export const useAuthStore = defineStore('auth', () => {
             const data = res.data
             toast.success(data.message)
             setToken(data.data.token)
-            handleUserInfo(data.data.userInfo)
+            const userStore = useUserStore();
+            userStore.handleUserInfo(data.data.userInfo)
         } else {
             toast.error(err.data.message || '登录失败')
             setToken()
         }
-        routerBack()
+        const systemStore = useSystemStore();
+        systemStore.routerBack()
     }
 
     function setToken(token?: Token) {
@@ -79,8 +77,10 @@ export const useAuthStore = defineStore('auth', () => {
 
     function logout() {
         setToken()
-        cleanUserInfo()
-        routerGoto('/home')
+        const userStore = useUserStore();
+        userStore.cleanUserInfo()
+        const systemStore = useSystemStore();
+        systemStore.routerGoto('/home')
         toast.info('已登出')
     }
 
