@@ -65,11 +65,11 @@
                             <div class="space-y-4">
                                 <div v-for="(_, idx) in value" :key="idx" class="flex items-center space-x-2">
                                     <Input type="url" :placeholder="`链接${idx + 1}`" v-model="value[idx]" />
-                                    <button type="button" @click="removeLink(idx, value, setValue)"
-                                        class="text-red-500 shrink-0 cursor-pointer">删除</button>
+                                    <outlineText @click="removeLink(idx, value, setValue)" text="删除"
+                                        lineColor="oklch(63.7% 0.237 25.331)" class="w-fit shrink-0 text-red-500" />
                                 </div>
-                                <button v-if="value.length < 4" type="button" @click="addLink(value, setValue)"
-                                    class="text-blue-500 cursor-pointer">添加</button>
+                                <outlineText v-if="value.length < 4" @click="addLink(value, setValue)" text="添加"
+                                    lineColor="oklch(62.3% 0.214 259.815)" class="w-fit text-blue-500" />
                             </div>
                             <FormMessage />
                         </FormItem>
@@ -78,7 +78,8 @@
                 <DialogFooter>
                     <secondaryButton text="保存更改" type="submit" form="dialogForm"
                         :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem]', { 'cursor-progress': underSubmit }]">
-                        <component :is="useIcon" ref="iconRef" :class="['md:size-5 size-4', { 'animate-spin': underSubmit }]" />
+                        <component :is="useIcon" ref="iconRef"
+                            :class="['md:size-5 size-4', { 'animate-spin': underSubmit }]" />
                     </secondaryButton>
                 </DialogFooter>
             </DialogContent>
@@ -114,6 +115,8 @@ import { Input } from "@/components/ui/input"
 import { toast } from 'vue-sonner'
 
 import { PenLine, UserRound, Mail, Link, Hash, Check, LoaderCircle } from 'lucide-vue-next';
+
+import { outlineText } from "@/components/ui/text"
 
 import { useUserStore } from "@/stores"
 import { storeToRefs } from "pinia";
@@ -193,7 +196,7 @@ async function onSubmit(values: any) {
         description: h("pre", { class: "mt-2 w-[340px] rounded-md bg-slate-950 p-4" }, h("code", { class: "text-white" }, JSON.stringify(values, null, 2))),
     })
     const ok = await updateUserInfo(values)
-    if (ok){
+    if (ok) {
         toast.success('个人资料已更新')
     } else {
         toast.error('更新失败，请稍后再试')

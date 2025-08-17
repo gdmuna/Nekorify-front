@@ -8,6 +8,4 @@
 
 </script>
 
-<style scoped>
-@import './index.css';
-</style>
+<style scoped></style>

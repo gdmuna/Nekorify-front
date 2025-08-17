@@ -1,6 +1,6 @@
 <template>
     <div>
-        announcements
+        announcement manager
     </div>
 </template>
 
@@ -8,4 +8,6 @@
 
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

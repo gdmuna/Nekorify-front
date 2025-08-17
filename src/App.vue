@@ -87,19 +87,19 @@ onMounted(async () => {
         },
     })
     // 路由跳转后重置滚动进度
-    router.beforeEach(() => {
-        // 立即滚动到顶部
-        smoother.scrollTo(0, false)
-        // if (from.path !== '/') {
-        //     previousIsDark.value = isDark.value
-        // }
-        // if (from.path === '/' && previousIsDark.value === false) {
-        //     forceToggleTheme(`${previousIsDark.value}`)
-        // }
-        nextTick(() => {
-            return true
-        })
-    })
+    // router.beforeEach(() => {
+    //     // 立即滚动到顶部
+    //     smoother.scrollTo(0, false)
+    //     // if (from.path !== '/') {
+    //     //     previousIsDark.value = isDark.value
+    //     // }
+    //     // if (from.path === '/' && previousIsDark.value === false) {
+    //     //     forceToggleTheme(`${previousIsDark.value}`)
+    //     // }
+    //     nextTick(() => {
+    //         return true
+    //     })
+    // })
     await initUserInfo()
 })
 

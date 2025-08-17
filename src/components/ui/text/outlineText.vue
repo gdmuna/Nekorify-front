@@ -2,12 +2,12 @@
     <div class="cursor-pointer relative select-none" @mouseenter="animate.play('enter')"
         @mouseleave="animate.play('leave')">
         <p class="text-center">{{ text }}</p>
-        <div ref="bottomLine" class="w-full h-[1px] mt-[0.1rem] bg-amber-100 absolute" />
+        <div ref="bottomLine" class="w-full h-[1px] mt-[0.1rem] absolute" :style="{ backgroundColor: setColor}"/>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted, computed } from 'vue';
 
 import { gsap } from 'gsap';
 
@@ -17,10 +17,17 @@ onMounted(() => {
     gsap.set(bottomLine.value, { scaleX: 0 });
 })
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     text: string
     lineColor?: string
-}>();
+    transitionLineColor?: boolean
+}>(), {
+    transitionLineColor: false
+})
+
+const setColor = computed(() => {
+    return props.lineColor && !props.transitionLineColor ? props.lineColor : '#FEFCE4';
+})
 
 onUnmounted(() => {
     animate.tl.kill();
@@ -40,7 +47,7 @@ const animate = {
                 },
                 '<'
             )
-            if (props.lineColor) {
+            if (props.lineColor && props.transitionLineColor) {
                 this.tl.to(bottomLine.value,
                     {
                         backgroundColor: props.lineColor,
@@ -60,14 +67,16 @@ const animate = {
                 },
                 '<'
             )
-            this.tl.to(bottomLine.value,
-                {
-                    backgroundColor: '#fef3c6',
-                    duration: 0.3,
-                    ease: 'circ.out'
-                },
-                '<'
-            )
+            if (props.lineColor && props.transitionLineColor) {
+                this.tl.to(bottomLine.value,
+                    {
+                        backgroundColor: '#fef3c6',
+                        duration: 0.3,
+                        ease: 'circ.out'
+                    },
+                    '<'
+                )
+            }
         }
     }
 }
