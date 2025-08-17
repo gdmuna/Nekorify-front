@@ -23,7 +23,6 @@
             <Hash class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
             <p class="inline">{{ userInfo.bio }}</p>
         </div>
-        <!-- <secondaryButton text="编辑个人资料" :icon="PenLine" class="dark:bg-[#E0DEC0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem]" /> -->
         <editDialog />
         <div class="flex flex-col space-y-1">
             <div class="space-x-2">
@@ -65,13 +64,14 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from 'vue';
 
-import { useAuthStore, useUserStore } from '@/stores';
+import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 
 import { secondaryButton } from '@/components/ui/button';
 import { outlineText } from '@/components/ui/text';
 
-import { PenLine, UsersRound, Mail, Link, Hash, BadgeInfo, CircleDollarSign, LogOut, ImageUp } from 'lucide-vue-next';
+import { UsersRound, Mail, Link, Hash, BadgeInfo, CircleDollarSign, LogOut, ImageUp } from 'lucide-vue-next';
 
 import { openInNewTab } from '@/lib/utils';
 

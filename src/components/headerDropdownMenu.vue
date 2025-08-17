@@ -27,7 +27,9 @@ import { Button, secondaryButton } from '@/components/ui/button'
 
 import { ChevronDown, User, LogOut, ShieldUser } from 'lucide-vue-next';
 
-import { useAuthStore, useSystemStore } from '@/stores'
+import { useAuthStore } from '@/stores/auth'
+import { useSystemStore } from '@/stores/system'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
 import { gsap } from 'gsap'
@@ -35,9 +37,9 @@ import { gsap } from 'gsap'
 import { getRemPx } from '@/lib/utils'
 
 
-
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 const authStore = useAuthStore()
-const { userInfo } = storeToRefs(authStore)
 const { logout } = authStore
 const systemStore = useSystemStore()
 const { routerGoto } = systemStore

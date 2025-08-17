@@ -3,23 +3,23 @@ import { ref, computed, reactive } from 'vue';
 
 import { authApi } from '@/api';
 
-import { storeToRefs } from 'pinia';
-import { useSystemStore } from '@/stores';
-import { useUserStore } from '@/stores'
+import { useSystemStore } from '@/stores/system';
+import { useUserStore } from '@/stores/user'
 
 import { useRouter } from 'vue-router';
+
 import { toast } from 'vue-sonner';
 
 import type { Token } from '@/types/auth';
 
 
 export const useAuthStore = defineStore('auth', () => {
-    const router = useRouter();
-
     const systemStore = useSystemStore();
-    const { routerBack, setPrevPath, routerGoto } = systemStore;
+    const { setPrevPath, routerBack, routerGoto } = systemStore;
     const userStore = useUserStore();
+    const { cleanUserInfo, handleUserInfo } = userStore;
 
+    const router = useRouter();
     const accessToken = ref<string | null>(localStorage.getItem('accessToken'))
     const refreshToken = ref<string | null>(localStorage.getItem('refreshToken'))
     const isAuthenticated = computed(() => {
@@ -38,7 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
             const data = res.data
             toast.success(data.message)
             setToken(data.data.token)
-            userStore.handleUserInfo(data.data.userInfo)
+            handleUserInfo(data.data.userInfo)
         } else {
             toast.error(err.data.message || '登录失败')
             setToken()
@@ -79,7 +79,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     function logout() {
         setToken()
-        userStore.cleanUserInfo()
+        cleanUserInfo()
         routerGoto('/home')
         toast.info('已登出')
     }

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 import { ref, reactive, computed } from 'vue';
 
-import { useAuthStore } from '@/stores';
+import { useAuthStore } from '@/stores/auth';
 
 import { userApi } from '@/api';
 
@@ -12,8 +12,7 @@ import type { UserInfo } from '@/types/user';
 
 export const useUserStore = defineStore('user', () => {
     const authStore = useAuthStore()
-    const { refresh } = authStore
-
+    const { refresh } = authStore;
     async function getUserInfo() {
         const { err, res } = await userApi.getUserInfo()
         if (res) {
