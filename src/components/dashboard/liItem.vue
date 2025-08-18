@@ -1,18 +1,19 @@
 <template>
     <div>
-        <div class="li-item relative *:z-10 flex items-center justify-between p-4 select-none cursor-pointer
+        <div ref="root" class="li-item relative *:z-10 flex items-center justify-between p-4 select-none cursor-pointer
                 border-b-2 dark:border-[#bbb89c] *:duration-300" @mouseenter="animate.start('enter')"
             @mouseleave="animate.start('back')">
-            <div class="flex space-x-4 items-center">
-                <component :is="leftIcon" class="size-8 shrink-0" />
-                <div class="flex flex-col">
+            <div class="flex flex-1 space-x-4 items-center">
+                <component v-if="leftIcon" :is="leftIcon" class="size-8 shrink-0" />
+                <slot />
+                <div v-if="!useSlot" class="flex flex-col">
                     <div class="text-xl relative overflow-hidden">
                         <p ref="liTitle1">{{ title }}</p>
                         <p ref="liTitle2" class="absolute">{{ title }}</p>
                     </div>
                     <div class="relative overflow-hidden">
-                        <p ref="liSubtitle1" class="dark:text-[#D5C8B0]">{{ subtitle }}</p>
-                        <p ref="liSubtitle2" class="dark:text-[#D5C8B0] absolute">{{ subtitle }}</p>
+                        <p class="dark:text-[#D5C8B0] subtitle">{{ subtitle }}</p>
+                        <p class="dark:text-[#D5C8B0] absolute subtitle">{{ subtitle }}</p>
                     </div>
                 </div>
             </div>
@@ -40,12 +41,14 @@ const liSubtitle1 = ref<HTMLElement | null>(null);
 const liSubtitle2 = ref<HTMLElement | null>(null);
 const icon1 = ref<HTMLElement | null>(null);
 const icon2 = ref<HTMLElement | null>(null);
+const root = ref<HTMLElement | null>(null);
 
-defineProps<{
-    title: string
-    subtitle: string
-    leftIcon: Component
-    rightIcon: Component
+const props = defineProps<{
+    title?: string
+    subtitle?: string
+    leftIcon?: Component
+    rightIcon?: Component
+    useSlot?: boolean
 }>()
 
 onUnmounted(() => {
@@ -56,7 +59,7 @@ const animate = {
     tl: gsap.timeline(),
     start(type: string) {
         this.tl.clear();
-        this.tl.to([icon1.value, icon2.value], {
+        if (props.rightIcon) this.tl.to([icon1.value, icon2.value], {
             x: type === 'enter' ? '100%' : 0,
             duration: 0.5,
             ease: 'circ.out'
@@ -66,12 +69,15 @@ const animate = {
         //     duration: 0.35,
         //     ease: 'circ.out'
         // }, '<')
-        this.tl.to([liSubtitle1.value, liSubtitle2.value], {
-            // y: type === 'enter' ? '-100%' : 0,
-            color: type === 'enter' ? '#595959' : '#D5C8B0',
-            duration: 0.35,
-            ease: 'power2.out'
-        }, '<')
+        const els = root.value?.querySelectorAll('.subtitle');
+        if (els) {
+            this.tl.to(els, {
+                // y: type === 'enter' ? '-100%' : 0,
+                color: type === 'enter' ? '#595959' : '#D5C8B0',
+                duration: 0.35,
+                ease: 'power2.out'
+            }, '<')
+        }
     }
 }
 
@@ -97,7 +103,11 @@ const animate = {
     height: calc(100% + 2px);
 }
 
-:deep(.li-item:hover) > * {
+:deep(.li-item:hover)>* {
     color: #0E100F;
+}
+
+.subtitle {
+    color: #D5C8B0;
 }
 </style>

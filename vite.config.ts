@@ -13,9 +13,15 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': {
-        target: 'http://localhost:3000', // Express服务器地址
-        changeOrigin: true
+      '/nekorify': {
+        target: 'http://localhost:3000', // Nekorify后端地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/nekorify/, '/api')
+      },
+      '/ranaminder': {
+        target: 'http://localhost:3001', // RanaMinder后端地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/ranaminder/, '/api')
       }
     }
   },

@@ -13,9 +13,9 @@
             </main>
             <footer class="w-full border-t-2 border-[#222018]">
                 <div
-                    class="w-full h-20 dark:bg-[#0E100F] flex flex-col justify-evenly items-center md:text-sm text-xs dark:text-[#B0B0B0]">
+                    class="w-full h-20 dark:bg-[#0E100F] flex flex-col justify-evenly text-center md:text-sm text-[0.7rem] dark:text-[#B0B0B0]">
                     <p>已经到底了喵~</p>
-                    <p>© 2025 GDMU-NA & GDMU-ACM. All rights reserved.</p>
+                    <p>Copyright © 2025 GDMU-NA & GDMU-ACM. All Rights Reserved.</p>
                 </div>
             </footer>
         </div>

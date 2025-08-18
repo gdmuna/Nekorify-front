@@ -8,11 +8,10 @@ import { storeToRefs } from 'pinia';
 
 import { errTemplate } from '@/lib/utils';
 
-const alovaInst = createAlova({
+const config = {
     requestAdapter: adapterFetch(),
-    baseURL: import.meta.env.VITE_API_BASE_URL,
     timeout: 10000,
-    beforeRequest(method) {
+    beforeRequest(method: any) {
         const authStore = useAuthStore();
         const { accessToken } = storeToRefs(authStore);
         if (!method.config.meta?.ignoreToken) {
@@ -22,7 +21,7 @@ const alovaInst = createAlova({
         }
     },
     responded: {
-        onSuccess: async (res) => {
+        onSuccess: async (res: any) => {
             const contentType = res.headers.get('content-type');
             let resJson = null;
             if (contentType && contentType.includes('application/json')) {
@@ -37,14 +36,24 @@ const alovaInst = createAlova({
             }
             return resJson;
         },
-        onError: async (err) => {
+        onError: async (err: any) => {
             toast.error(err.message || '请求失败，请稍后再试');
             Promise.reject(err);
         }
     }
+}
+
+const nekorify = createAlova({
+    ...config,
+    baseURL: import.meta.env.VITE_API_NEKORIFY_BASE_URL
 });
 
-export default alovaInst;
+const ranaMinder = createAlova({
+    ...config,
+    baseURL: import.meta.env.VITE_API_RANAMINDER_BASE_URL
+})
+
+export { nekorify, ranaMinder };
 
 export { authApi } from './auth';
 export { userApi } from './user';

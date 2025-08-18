@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from 'vue';
 
-import { liItem } from '@/components/me';
+import { liItem } from '@/components/dashboard';
 
 import { ShieldUser, ArrowRight, Newspaper, Notebook, Video, Info } from 'lucide-vue-next';
 
@@ -48,7 +48,7 @@ const items = ref([
         rightIcon: ArrowRight,
         path: {
             type: 'route',
-            to: '/me/announcement-manager'
+            to: '/dashboard/announcement-manager'
         }
     },
     {
@@ -58,7 +58,7 @@ const items = ref([
         rightIcon: ArrowRight,
         path: {
             type: 'route',
-            to: '/me/article-manager'
+            to: '/dashboard/article-manager'
         }
     },
     {
@@ -68,17 +68,17 @@ const items = ref([
         rightIcon: ArrowRight,
         path: {
             type: 'route',
-            to: '/me/video-manager'
+            to: '/dashboard/video-manager'
         }
     },
     {
-        title: '面试状态',
-        subtitle: '查看您的面试状态',
+        title: '面试',
+        subtitle: '参加面试；查看您的面试状态',
         leftIcon: Info,
         rightIcon: ArrowRight,
         path: {
             type: 'route',
-            to: '/me/interview-status'
+            to: '/dashboard/interview'
         }
     }
 ]);

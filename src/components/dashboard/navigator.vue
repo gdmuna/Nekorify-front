@@ -69,7 +69,7 @@
 
 <script lang="ts" setup>
 import { useMediaQuery } from "@vueuse/core"
-import { computed, ref, onMounted } from "vue"
+import { computed, ref } from "vue"
 import {
     Breadcrumb,
     BreadcrumbEllipsis,
@@ -123,8 +123,4 @@ const firstLabel = computed(() => items.value[0]?.label)
 const allButLastTwoItems = computed(() => items.value.slice(1, -2))
 const remainingItems = computed(() => items.value.slice(-Math.min(itemsToDisplay, items.value.length) + 1))
 
-onMounted(() => {
-    console.log("Navigator mounted with items:", items.value);
-
-})
 </script>

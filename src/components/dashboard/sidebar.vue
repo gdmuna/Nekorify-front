@@ -75,7 +75,7 @@ import { UsersRound, Mail, Link, Hash, BadgeInfo, CircleDollarSign, LogOut, Imag
 
 import { openInNewTab } from '@/lib/utils';
 
-import { editDialog } from '@/components/me';
+import { editDialog } from './index';
 
 
 

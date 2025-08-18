@@ -52,7 +52,7 @@
                 </div>
                 <img :src="boundary" alt="" class="ml-2 mr-4">
                 <div class="flex items-center space-x-4 !overflow-y-visible">
-                    <Button class="join-us-button cursor-pointer font-bold">
+                    <Button class="join-us-button cursor-pointer font-bold" @click="routerGoto('/dashboard/interview')" >
                         加入我们
                         <Smile class="size-6" />
                     </Button>
@@ -62,10 +62,10 @@
                         登录
                         <LogIn class="size-6" />
                     </Button>
-                    <Button v-else class="dark:bg-[#0E100F] cursor-pointer dark:text-[#FEFCE4] border-2 py-2" @click="routerGoto('/me')">
+                    <Button v-else class="dark:bg-[#0E100F] cursor-pointer dark:text-[#FEFCE4] border-2 py-2" @click="routerGoto('/dashboard')">
                         <img :src="userInfo.avatar"
                             class="size-6 rounded-full border-1 dark:border-[#0E100F] object-cover">
-                        <p>个人中心</p>
+                        <p>仪表盘</p>
                         <ArrowRight class="icon duration-300 size-4" />
                     </Button>
                 </div>

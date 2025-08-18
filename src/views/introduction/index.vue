@@ -17,8 +17,8 @@
             <div class="absolute bottom-0 left-1/2 flex items-center justify-between -translate-x-1/2
             mb-2 space-x-2 z-10 pointer-events-none">
                 <div class="flex flex-col items-center justify-between font-extrabold whitespace-nowrap">
-                    <p class="text-sm md:text-lg">Where we're going, we don't need roads.</p>
-                    <p class="tracking-[0.4em] md:text-lg">你·好·世·界</p>
+                    <p class="text-sm md:text-lg">Where we're going, we don't need roads</p>
+                    <p class="tracking-wider text-sm md:text-lg">前路未有路，心之所向即坦途</p>
                 </div>
             </div>
         </section>

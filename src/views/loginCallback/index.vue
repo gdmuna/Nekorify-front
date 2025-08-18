@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick } from 'vue';
+import { onMounted } from 'vue';
 
 import { useAuthStore } from '@/stores/auth';
 

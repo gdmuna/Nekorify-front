@@ -72,26 +72,26 @@ const routes = [
     }
   },
   {
-    path: '/me',
-    component: () => import('../views/me/index.vue'),
+    path: '/dashboard',
+    component: () => import('../views/dashboard/index.vue'),
     meta: {
-      title: '个人中心',
+      title: '仪表盘',
       requireAuth: true
     },
     children: [
       {
         path: '',
-        component: () => import('../components/me/appGroup.vue'),
-        name: 'me',
+        component: () => import('../components/dashboard/appGroup.vue'),
+        name: 'dashboard',
         meta: {
-          title: '个人中心',
+          title: '仪表盘',
           requireAuth: true,
           scrollToTop: true
         },
       },
       {
         path: 'announcement-manager',
-        component: () => import('../components/me/app/announcementManager.vue'),
+        component: () => import('../components/dashboard/app/announcementManager.vue'),
         name: 'announcementManager',
         meta: {
           title: '公告管理',
@@ -103,7 +103,7 @@ const routes = [
       },
       {
         path: 'article-manager',
-        component: () => import('../components/me/app/articleManager.vue'),
+        component: () => import('../components/dashboard/app/articleManager.vue'),
         name: 'articleManager',
         meta: {
           title: '文章管理',
@@ -115,7 +115,7 @@ const routes = [
       },
       {
         path: 'video-manager',
-        component: () => import('../components/me/app/videoManager.vue'),
+        component: () => import('../components/dashboard/app/videoManager.vue'),
         name: 'videoManager',
         meta: {
           title: '视频管理',
@@ -126,19 +126,37 @@ const routes = [
         }
       },
       {
-        path: 'interview-status',
-        component: () => import('../components/me/app/interviewStatus.vue'),
-        name: 'interviewStatus',
+        path: 'interview',
+        component: () => import('../components/dashboard/app/interview.vue'),
+        name: 'interview',
         meta: {
-          title: '面试状态',
+          title: '面试',
           requireAuth: true,
           parentAction: {
             doNotScrollToTop: true
           }
-        }
-      }
+        },
+        children: [
+          {
+            path: ':nodeId',
+            component: () => import('../components/dashboard/app/interviewNode.vue'),
+            name: 'interviewNode',
+            meta: {
+              title: '面试节点',
+              requireAuth: true,
+              parentAction: {
+                doNotScrollToTop: true
+              }
+            }
+          }
+        ]
+      },
     ]
   },
+  {
+    path: '/:pathMatch(.*)/',
+    redirect: (to: any) => '/' + to.params.pathMatch
+  }
 ]
 
 const title = document.title
@@ -146,6 +164,7 @@ const title = document.title
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  strict: true
 })
 
 router.beforeEach((to, from, next) => {

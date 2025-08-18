@@ -1,3 +1,5 @@
+import 'vue-router'
+
 export { }
 
 declare global {

@@ -93,12 +93,42 @@ export const useUserStore = defineStore('user', () => {
         })
     }
 
+    const hasInterviews = ref<number[]>([])
+    function checkHasInterview(nodeId: number) {
+        return hasInterviews.value.includes(nodeId)
+    }
+
+    async function addInterview(nodeId: number) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                // 模拟添加面试
+                hasInterviews.value.push(nodeId);
+                console.log('面试已添加:', nodeId);
+                
+                resolve(true);
+            }, 1000);
+        })
+    }
+
+    async function removeInterview(nodeId: number) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                // 模拟移除面试
+                hasInterviews.value = hasInterviews.value.filter(id => id !== nodeId);
+                resolve(true);
+            }, 1000);
+        })
+    }
+
     return {
         getUserInfo,
         initUserInfo,
         userInfo,
         handleUserInfo,
         cleanUserInfo,
-        updateUserInfo
+        updateUserInfo,
+        checkHasInterview,
+        addInterview,
+        removeInterview
     }
 })
