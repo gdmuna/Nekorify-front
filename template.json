@@ -1,0 +1,370 @@
+[
+    {
+        "label": "学号",
+        "fieldName": "studentNumber",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 11,
+            "minLength": 11
+        },
+        "style": {
+            "inputType": "text"
+        }
+    },
+    {
+        "label": "姓名",
+        "fieldName": "name",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 50
+        },
+        "style": {
+            "inputType": "text"
+        }
+    },
+    {
+        "label": "性别",
+        "fieldName": "sex",
+        "required": true,
+        "type": "radioGroup",
+        "value": {
+            "type": "string",
+            "options": [
+                {
+                    "label": "男",
+                    "value": "man"
+                },
+                {
+                    "label": "女",
+                    "value": "woman"
+                }
+            ]
+        }
+    },
+    {
+        "label": "民族",
+        "description": "范例：汉族",
+        "fieldName": "nation",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 50
+        },
+        "style": {
+            "inputType": "text"
+        }
+    },
+    {
+        "label": "政治面貌",
+        "fieldName": "politicalStatus",
+        "required": true,
+        "type": "select",
+        "value": {
+            "type": "string",
+            "maxLength": 50,
+            "options": [
+                {
+                    "label": "中共党员",
+                    "value": "party_member"
+                },
+                {
+                    "label": "中共预备党员",
+                    "value": "probationary_member"
+                },
+                {
+                    "label": "共青团员",
+                    "value": "league_member"
+                },
+                {
+                    "label": "群众",
+                    "value": "masses"
+                }
+            ]
+        }
+    },
+    {
+        "label": "籍贯",
+        "description": "范例：广东省东莞市",
+        "fieldName": "nativePlace",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 100
+        },
+        "style": {
+            "inputType": "text"
+        }
+    },
+    {
+        "label": "个人照片",
+        "fieldName": "photo",
+        "required": true,
+        "type": "upload",
+        "value": {
+            "type": "file",
+            "maxSize": 10485760,
+            "accept": [
+                "image/png",
+                "image/jpeg",
+                "image/jpg",
+                "image/webp",
+                "image/svg+xml",
+                "image/gif"
+            ]
+        }
+    },
+    {
+        "label": "在读学历",
+        "fieldName": "education",
+        "required": true,
+        "type": "radioGroup",
+        "value": {
+            "type": "string",
+            "options": [
+                {
+                    "label": "本科",
+                    "value": "undergraduate"
+                },
+                {
+                    "label": "研究生",
+                    "value": "postgraduate"
+                }
+            ]
+        }
+    },
+    {
+        "label": "年级",
+        "fieldName": "grade",
+        "required": true,
+        "type": "radioGroup",
+        "value": {
+            "type": "number",
+            "options": [
+                {
+                    "label": "2024级",
+                    "value": 2024
+                },
+                {
+                    "label": "2025级",
+                    "value": 2025
+                }
+            ]
+        }
+    },
+    {
+        "label": "学院",
+        "fieldName": "college",
+        "required": true,
+        "type": "radioGroup",
+        "value": {
+            "type": "string",
+            "options": [
+                {
+                    "label": "第二临床医学院",
+                    "value": 2024
+                },
+                {
+                    "label": "医学技术学院",
+                    "value": 2025
+                },
+                {
+                    "label": "护理学院",
+                    "value": 2024
+                },
+                {
+                    "label": "公共卫生学院",
+                    "value": 2025
+                },
+                {
+                    "label": "药学院",
+                    "value": 2024
+                },
+                {
+                    "label": "人文与管理学院",
+                    "value": 2025
+                },
+                {
+                    "label": "基础医学院",
+                    "value": 2024
+                },
+                {
+                    "label": "生物医学工程学院",
+                    "value": 2025
+                },
+                {
+                    "label": "外国语学院",
+                    "value": 2024
+                }
+            ]
+        }
+    },
+    {
+        "label": "专业",
+        "description": "请填写专业全称，范例：信息管理与信息系统、数据科学与大数据技术、智能科学技术",
+        "fieldName": "major",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 50
+        },
+        "style": {
+            "inputType": "text"
+        }
+    },
+    {
+        "label": "微信号",
+        "description": "(如果你的微信绑定了手机号，那可以输入手机号；但实际上，微信号不是你的微信呢称，而是一组由你自己定义的字母、数字、短横线和下划线的字符串)",
+        "fieldName": "wechatId",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 50
+        },
+        "style": {
+            "inputType": "text"
+        }
+    },
+    {
+        "label": "QQ号",
+        "fieldName": "qqNumber",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 50
+        },
+        "style": {
+            "inputType": "text"
+        }
+    },
+    {
+        "label": "电子邮箱",
+        "fieldName": "email",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 50
+        },
+        "style": {
+            "inputType": "email"
+        }
+    },
+    {
+        "label": "联系电话",
+        "description": "请填写中国大陆的手机号",
+        "fieldName": "phoneNumber",
+        "required": true,
+        "type": "input",
+        "value": {
+            "type": "string",
+            "maxLength": 50
+        },
+        "style": {
+            "inputType": "text"
+        }
+    },
+    {
+        "label": "意向部门",
+        "description": "(该选项仅用于了解你对自身的定位，干事招新通过后，我们会进行为期半年的不区分部门培训，最后再结合个人表现决定部门去向)",
+        "fieldName": "intendedDepartment",
+        "required": true,
+        "type": "checkbox",
+        "value": {
+            "type": "array",
+            "arrayItem": {
+                "type": "string"
+            },
+            "default": [],
+            "options": [
+                {
+                    "label": "BI部",
+                    "value": "biDepartment"
+                },
+                {
+                    "label": "宣传部",
+                    "value": "publicityDepartment"
+                },
+                {
+                    "label": "学术部",
+                    "value": "academicDepartment"
+                },
+                {
+                    "label": "科研部",
+                    "value": "researchDepartment"
+                }
+            ]
+        }
+    },
+    {
+        "label": "一年后的留任意向",
+        "fieldName": "intentionToStay",
+        "required": true,
+        "type": "radioGroup",
+        "value": {
+            "type": "string",
+            "options": [
+                {
+                    "label": "我想坐会长（副会长）这个位置",
+                    "value": "president"
+                },
+                {
+                    "label": "我想担任某个部门的部长",
+                    "value": "departmentHead"
+                },
+                {
+                    "label": "我只想水群",
+                    "value": "justChill"
+                }
+            ]
+        }
+    },
+    {
+        "label": "爱好特长",
+        "fieldName": "hobbiesAndSpecialties",
+        "required": true,
+        "type": "textarea",
+        "value": {
+            "type": "string",
+            "maxLength": 2000
+        }
+    },
+    {
+        "label": "曾担任职务",
+        "fieldName": "previousPositions",
+        "required": true,
+        "type": "textarea",
+        "value": {
+            "type": "string",
+            "maxLength": 2000
+        }
+    },
+    {
+        "label": "曾获荣誉",
+        "fieldName": "honorsReceived",
+        "required": true,
+        "type": "textarea",
+        "value": {
+            "type": "string",
+            "maxLength": 2000
+        }
+    },
+    {
+        "label": "自我评价",
+        "fieldName": "selfEvaluation",
+        "required": true,
+        "type": "textarea",
+        "value": {
+            "type": "string",
+            "maxLength": 2000
+        }
+    }
+]

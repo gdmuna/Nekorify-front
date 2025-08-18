@@ -181,6 +181,24 @@ export function generateZodSchema(fields: InterviewFormJSON[]) {
                 if (!f.required) config = config.optional();
                 if (f.value.default) config = config.default(f.value.default as boolean);
                 break
+            case "file":
+                config = z.instanceof(File, { message: `${f.label} 必须上传文件` });
+                // 校验文件类型
+                if (Array.isArray(f.value.accept) && f.value.accept.length > 0) {
+                    config = config.refine(
+                        file => f.value.accept!.includes(file.type),
+                        { message: `${f.label} 文件类型不正确` }
+                    );
+                }
+                if (f.value.maxSize) {
+                    const maxSize = f.value.maxSize ?? Infinity;
+                    config = config.refine(
+                        file => file.size <= maxSize,
+                        { message: `${f.label} 文件大小不能超过 ${Math.round(f.value.maxSize / 1024 / 1024)}MB` }
+                    );
+                }
+                if (!f.required) config = config.optional();
+                break;
             default:
                 config = z.any();
                 if (!f.required) config = config.optional();

@@ -45,7 +45,7 @@
                                 @click="triggerFileInput(index)">
                                 <img v-if="previewUrl" :src="previewUrl" alt="预览" class="size-full object-fit" />
                                 <div v-else class="text-sm text-center dark:text-[#D5C8B0]">点击上传图片</div>
-                                <input ref="fileInput" type="file" accept="image/*" class="hidden"
+                                <input ref="fileInput" type="file" :accept="handleFileAccept(item.value.accept)" class="hidden"
                                     @change="onFileChange($event)" :data-index="index" v-bind="componentField" />
                             </div>
                             <div v-if="item.type === 'checkbox'" class="flex flex-col space-y-3">
@@ -132,6 +132,7 @@ const useIcon = computed(() => {
 watch(isOpen, () => {
     if (underSubmit.value) {
         isOpen.value = true
+        
     }
 })
 
@@ -181,6 +182,7 @@ const previewUrl = ref<string | null>(null)
 
 function triggerFileInput(index: number) {
     fileInput.value.find(input => input.dataset.index === String(index))?.click()
+    console.log(JSON.stringify(interviewFormJSON.value, null, 1));
 }
 
 function onFileChange(e: Event) {
@@ -200,6 +202,12 @@ function updateCheckboxArray(optionValue: any, checked: string | boolean, value:
         arr = arr.filter(v => v !== optionValue);
     }
     setValue(arr);
+}
+
+function handleFileAccept(accept: string[] | undefined) {
+    if (Array.isArray(accept) && accept.length > 0) {
+        return accept.join(',')
+    }
 }
 
 </script>

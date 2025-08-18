@@ -263,7 +263,15 @@ export const useUserStore = defineStore('user', () => {
             type: 'upload',
             value: {
                 type: 'file',
-                maxLength: 100,
+                maxSize: 10 * 1024 * 1024,
+                accept: [
+                    "image/png",
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/webp",
+                    "image/svg+xml",
+                    "image/gif"
+                ],
             }
         },
         {
@@ -343,7 +351,7 @@ export const useUserStore = defineStore('user', () => {
                     {
                         label: '生物医学工程学院',
                         value: 2025
-                    },{
+                    }, {
                         label: '外国语学院',
                         value: 2024
                     }

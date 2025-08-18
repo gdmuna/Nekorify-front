@@ -22,6 +22,8 @@ export interface InterviewFormJSON {
         type: 'string' | 'number' | 'boolean' | 'array' | 'file'
         minLength?: number
         maxLength?: number
+        maxSize?: number
+        accept?: string[]
         arrayItem?: {
             type: 'string' | 'number' | 'boolean'
             minLength?: number
