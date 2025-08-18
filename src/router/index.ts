@@ -139,7 +139,7 @@ const routes = [
         children: [
           {
             path: ':nodeId',
-            component: () => import('../components/dashboard/app/interviewNode.vue'),
+            component: () => import('../components/dashboard/app/interview/interviewNode.vue'),
             name: 'interviewNode',
             meta: {
               title: '面试节点',

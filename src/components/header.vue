@@ -66,7 +66,6 @@
                         <img :src="userInfo.avatar"
                             class="size-6 rounded-full border-1 dark:border-[#0E100F] object-cover">
                         <p>仪表盘</p>
-                        <ArrowRight class="icon duration-300 size-4" />
                     </Button>
                 </div>
             </div>
@@ -94,7 +93,7 @@ import { Smile } from 'lucide-vue-next';
 import { Mail } from 'lucide-vue-next';
 import { Sun } from 'lucide-vue-next';
 import { Moon } from 'lucide-vue-next';
-import { CalendarFold, ArrowRight } from 'lucide-vue-next';
+import { CalendarFold } from 'lucide-vue-next';
 
 import boundary from '@/assets/boundary.svg'
 import DropdownMenu from '@/components/headerDropdownMenu.vue'

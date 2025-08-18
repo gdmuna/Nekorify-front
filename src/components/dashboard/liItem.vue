@@ -37,8 +37,6 @@ import { gsap } from 'gsap';
 
 const liTitle1 = ref<HTMLElement | null>(null);
 const liTitle2 = ref<HTMLElement | null>(null);
-const liSubtitle1 = ref<HTMLElement | null>(null);
-const liSubtitle2 = ref<HTMLElement | null>(null);
 const icon1 = ref<HTMLElement | null>(null);
 const icon2 = ref<HTMLElement | null>(null);
 const root = ref<HTMLElement | null>(null);

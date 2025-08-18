@@ -1,20 +1,24 @@
 <template>
-    <div>
-        <div v-if="!showDetails">
-            <liItem useSlot v-for="(item, index) in items" :key="index" :rightIcon="ArrowRight"
-                @click="routerGoto(`/dashboard/interview/${item.id}`)">
-                <div class="flex flex-1 justify-between items-center duration-300">
-                    <div class="flex flex-col space-y-2">
-                        <p class="text-2xl">{{ item.title }}</p>
-                        <p class="dark:text-[#D5C8B0] subtitle">{{ item.description }}</p>
+    <div class="flex-1 flex flex-col">
+        <div v-if="!showDetails" class="flex flex-col space-y-4">
+            <h1 class="text-4xl dark:text-[#E0DEC0]">开放中</h1>
+            <p class="text-lg dark:text-[#A0A0A0]">以下是当前开放的面试列表，点击查看详情。</p>
+            <div>
+                <liItem useSlot v-for="(item, index) in items" :key="index" :rightIcon="ArrowRight"
+                    @click="routerGoto(`/dashboard/interview/${item.id}`)">
+                    <div class="flex flex-1 justify-between items-center duration-300">
+                        <div class="flex flex-col space-y-2">
+                            <p class="text-2xl">{{ item.title }}</p>
+                            <p class="dark:text-[#D5C8B0] subtitle">{{ item.description }}</p>
+                        </div>
+                        <div class="flex flex-col space-y-2 items-center">
+                            <p class="text-sm">开始时间: {{ item.startDate }}</p>
+                            <p class="text-sm">结束时间: {{ item.endDate }}</p>
+                        </div>
+                        <div />
                     </div>
-                    <div class="flex flex-col space-y-2 items-center">
-                        <p class="text-sm">开始时间: {{ item.startDate }}</p>
-                        <p class="text-sm">结束时间: {{ item.endDate }}</p>
-                    </div>
-                    <div />
-                </div>
-            </liItem>
+                </liItem>
+            </div>
         </div>
         <router-view :items="items" />
     </div>

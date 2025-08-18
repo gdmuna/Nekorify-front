@@ -8,6 +8,10 @@ import type {
     res
 } from '@/types/utils'
 
+import type { InterviewFormJSON } from '@/types/user'
+
+import * as z from "zod";
+
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -111,12 +115,12 @@ export async function retry<T>(
     }
 }
 
-export function getRemPx(rem: number):number {
+export function getRemPx(rem: number): number {
     const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
     return rem * fontSize;
 }
 
-export function errTemplate(err: string ,detail?: string): ErrTemplate {
+export function errTemplate(err: string, detail?: string): ErrTemplate {
     return {
         success: false,
         data: {
@@ -144,5 +148,57 @@ export async function to(promise: Promise<any>): Promise<ReturnTemplate> {
 }
 
 export function openInNewTab(url: string) {
-  window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+export function generateZodSchema(fields: InterviewFormJSON[]) {
+    const shape: Record<string, z.ZodTypeAny> = {};
+    fields.forEach((f: InterviewFormJSON) => {
+        let rule, config, type;
+        if (f.value.arrayItem && f.value.arrayItem.type) {
+            type = f.value.arrayItem.type;
+        } else {
+            type = f.value.type;
+        }
+        switch (type) {
+            case "string":
+                config = z.string({ invalid_type_error: `${f.label} 必须是字符串`, required_error: `${f.label} 不能为空` });
+                if (f.value.maxLength) config = config.max(f.value.maxLength, { message: `${f.label} 长度需小于 ${f.value.maxLength}` });
+                if (f.value.minLength) config = config.min(f.value.minLength, { message: `${f.label} 长度需大于 ${f.value.minLength}` });
+                // if (f.required) config = config.nonempty({ message: `${f.label} 不能为空` });
+                if (f.value.default) config = config.default(f.value.default as string);
+                break;
+            case "number":
+                config = z.number({ invalid_type_error: `${f.label} 必须是数字`, required_error: `${f.label} 不能为空` })
+                if (f.value.maxLength) config = config.max(f.value.maxLength, { message: `${f.label} 长度需小于 ${f.value.maxLength}` });
+                if (f.value.minLength) config = config.min(f.value.minLength, { message: `${f.label} 长度需大于 ${f.value.minLength}` });
+                if (!f.required) config = config.optional();
+                if (f.value.default) config = config.default(f.value.default as number);
+                config = z.preprocess(val => Number(val), config);
+                break;
+            case "boolean":
+                config = z.boolean({ invalid_type_error: `${f.label} 必须是布尔值`, required_error: `${f.label} 不能为空` });
+                if (!f.required) config = config.optional();
+                if (f.value.default) config = config.default(f.value.default as boolean);
+                break
+            default:
+                config = z.any();
+                if (!f.required) config = config.optional();
+        }
+        // if (f.type === 'radioGroup' || f.type === 'checkbox' || f.type === 'select') {
+        //     if (f.value.options && f.value.options.length > 0) {
+        //         config.refine(val => !val || f.value.options?.some(opt => opt.value === val), { message: `${f.label} 必须是选项之一` });
+        //     }
+        // }
+        if (f.value.arrayItem && f.value.arrayItem.type) {
+            rule = z.array(config);
+            if (f.value.maxLength) rule = rule.max(f.value.maxLength, { message: `该数组 ${f.label} 长度需小于 ${f.value.maxLength}` });
+            if (f.value.minLength) rule = rule.min(f.value.minLength, { message: `该数组 ${f.label} 长度需大于 ${f.value.minLength}` });
+            if (f.required) rule = rule.nonempty({ message: `${f.label} 至少选择一项` });
+            if (!f.required) rule = rule.optional();
+            if (f.value.default) rule = rule.default((f.value.default as [any, ...any[]]) || []);
+            shape[f.fieldName] = rule;
+        } else shape[f.fieldName] = config
+    });
+    return z.object(shape);
 }

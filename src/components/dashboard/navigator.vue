@@ -2,7 +2,7 @@
     <Breadcrumb>
         <BreadcrumbList>
             <BreadcrumbItem>
-                <BreadcrumbLink @click="routerGoto(items[0].path)" class="cursor-pointer">
+                <BreadcrumbLink @click="routerGoto(items[0].path)" class="cursor-pointer dark:hover:text-[#FEFCE4]">
                     {{ firstLabel }}
                 </BreadcrumbLink>
             </BreadcrumbItem>
@@ -53,13 +53,13 @@
             <BreadcrumbItem v-for="(item, idx) in remainingItems" :key="item.label">
                 <template v-if="idx !== remainingItems.length - 1">
                     <BreadcrumbLink as-child class="max-w-20 truncate md:max-w-none">
-                        <a @click="routerGoto(item.path)" class="cursor-pointer">
+                        <a @click="routerGoto(item.path)" class="cursor-pointer dark:hover:text-[#FEFCE4]">
                             {{ item.label }}
                         </a>
                     </BreadcrumbLink>
                     <BreadcrumbSeparator />
                 </template>
-                <BreadcrumbPage v-else class="max-w-20 truncate md:max-w-none">
+                <BreadcrumbPage v-else class="max-w-20 truncate md:max-w-none dark:text-amber-100">
                     {{ item.label }}
                 </BreadcrumbPage>
             </BreadcrumbItem>
@@ -97,9 +97,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { storeToRefs } from "pinia"
 import { useSystemStore } from "@/stores/system"
 const systemStore = useSystemStore()
 const { routerGoto } = systemStore
+
+import { useUserStore } from "@/stores/user"
+const userStore = useUserStore()
+const { currentTitle } = storeToRefs(userStore)
 
 import { useRoute } from "vue-router"
 const route = useRoute()
@@ -111,10 +116,18 @@ const items = computed(() => {
     // 路由链，去掉没有meta.title的（比如根路由）
     return route.matched
         .filter(r => r.meta && r.meta.title)
-        .map(r => ({
-            label: r.meta.title,
-            path: r.path
-        }))
+        .map(r => {
+            if (r.meta.title === '面试节点') {
+                return {
+                    label: currentTitle.value,
+                    path: r.path
+                }
+            }
+            return {
+                label: r.meta.title,
+                path: r.path
+            }
+        })
 })
 
 const itemsToDisplay = 3

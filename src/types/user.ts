@@ -11,3 +11,30 @@ export interface UserInfo {
     group: string[]
     links: string[]
 }
+
+export interface InterviewFormJSON {
+    label: string
+    description?: string
+    fieldName: string
+    required: boolean
+    type: 'input' | 'radioGroup' | 'select' | 'upload' | 'checkbox' | 'textarea'
+    value: {
+        type: 'string' | 'number' | 'boolean' | 'array' | 'file'
+        minLength?: number
+        maxLength?: number
+        arrayItem?: {
+            type: 'string' | 'number' | 'boolean'
+            minLength?: number
+            maxLength?: number
+            default?: string | number | boolean
+        }
+        options?: Array<{
+            label: string
+            value: string | number | boolean
+        }>
+        default?: string | number | boolean | Array<string | number | boolean>
+    },
+    style?: {
+        inputType?: 'text' | 'email' | 'number' | 'password'
+    }
+}

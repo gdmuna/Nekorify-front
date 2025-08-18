@@ -1,5 +1,5 @@
 <template>
-    <div ref="introPageRoot" class="dark:bg-[#0E100F]">
+    <div ref="introPageRoot" class="dark:bg-[#0E100F] w-[100dvw]">
         <scrollHint />
         <!-- Section 1 -->
         <section ref="section1" class="relative h-[calc(100dvh-3.5rem)] flex items-center justify-center

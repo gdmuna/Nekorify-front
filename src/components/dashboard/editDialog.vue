@@ -160,14 +160,12 @@ const formSchema = toTypedSchema(z.object({
         .refine(val => !val || z.string().max(40).safeParse(val).success, { message: "签名长度需小于40" })
         .optional()
         .default(userInfo.value?.bio || ""),
-    // ...existing code...
     email: z.string()
         .transform(val => val.trim() === "" ? undefined : val)
         .optional()
         .refine(val => !val || !/[<>]/.test(val), { message: "邮箱不能包含特殊字符" })
         .refine(val => !val || z.string().email().safeParse(val).success, { message: "请输入有效的邮箱地址" })
         .default(userInfo.value?.email || ""),
-    // ...existing code...
     links: z.array(
         z.string()
             .url({ message: "请检查URL输入" })
