@@ -96,26 +96,23 @@ const photobox = {
     total_width: 0,
     total_height: 0,
     // 图片数据，用以储存每张图片的源以及xy坐标位置
-    img_data: [] as { img: HTMLImageElement, x: number, y: number, src: string }[],
+    img_data: [] as { img: HTMLImageElement | null, x: number, y: number, src: string }[],
     // 当前画布是否可以移动
     if_movable: false,
     if_dragging: false,
     _touchStart: null as { x: number, y: number } | null,
     img_opened: ref(false),
     img_opened_src: ref(''),
-    // 添加基准宽度
-    baseWidth: 1000,
-    // 基准尺寸 - 以1380px屏幕宽度为基准
-    baseImgWidth: 500,  // 1000/2
-    baseImgHeight: 350, // 700/2
-    baseImgMargin: 100,
+    baseWidth: 1024,
+    baseImgWidth: 450,
+    baseImgHeight: 300,
+    baseImgMargin: 75,
     // 当前应用的尺寸
     img_width: 0,
     img_height: 0,
     img_margin: 0,
     _boundEvents: {
         handleResize: null as handleFn,
-        handleOrientationchange: null as handleFn,
         handleMousedown: null as handleFn,
         handleMouseup: null as handleFn,
         handleMouseleave: null as handleFn,
@@ -134,24 +131,37 @@ const photobox = {
         this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
         this.resize();
         this.creat_events();
-        this.creat_img_data();
+        this.creat_img_data(true, true);
     },
     // 计算响应式尺寸的方法
-    calculateResponsiveSizes() {
-        // 获取当前容器宽度
+    // 完整替换calculateResponsiveSizes方法
+    calculateResponsiveSizes(refresh: boolean = true) {
+        // 1. 获取当前容器尺寸
         const containerWidth = container.value!.clientWidth;
-        // 计算缩放比例
+        const containerHeight = container.value!.clientHeight;
+        const aspectRatio = containerWidth / containerHeight;
+        // 2. 根据屏幕方向动态调整行列数
+        if (aspectRatio < 1) {
+            // 竖屏模式
+            this.row_max = 4
+            this.line_max = 8
+        } else {
+            // 横屏模式
+            this.row_max = 8;
+            this.line_max = 4;
+        }
+        // 3. 计算缩放比例
         const scale = Math.max(0.6, Math.min(1, containerWidth / this.baseWidth));
-        // 应用缩放后的尺寸
-        this.img_width = Math.floor(this.baseImgWidth * scale);
-        this.img_height = Math.floor(this.baseImgHeight * scale);
-        this.img_margin = Math.floor(this.baseImgMargin * scale);
-        // 确保最小值
-        this.img_width = Math.max(200, this.img_width);
-        this.img_height = Math.max(140, this.img_height);
-        this.img_margin = Math.max(30, this.img_margin);
+        // 4. 应用缩放后的尺寸
+        this.img_width = Math.max(200, Math.floor(this.baseImgWidth * scale));
+        this.img_height = Math.max(140, Math.floor(this.baseImgHeight * scale));
+        this.img_margin = Math.max(30, Math.floor(this.baseImgMargin * scale));
+        // 5. 更新总宽高 - 确保这里计算而不是在resize重复计算
+        this.total_width = this.row_max * (this.img_width + this.img_margin) - this.img_margin;
+        this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
+        if (refresh) this.move_imgs(0, 0);
     },
-    resize() {
+    resize(refresh: boolean = true) {
         const dpr = window.devicePixelRatio || 1;
         const width = container.value!.clientWidth;
         const height = container.value!.clientHeight;
@@ -159,62 +169,81 @@ const photobox = {
         this.canvas!.height = height * dpr;
         this.canvas!.style.width = width + "px";   // CSS 尺寸和容器一致
         this.canvas!.style.height = height + "px";
+        this.total_width = this.row_max * (this.img_width + this.img_margin) - this.img_margin;
+        this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
         // 让 2d context 也适配 DPR
         this.content!.setTransform(1, 0, 0, 1, 0, 0); // 重置 transform
         this.content!.scale(dpr, dpr);
         // 重新绘制图片
-        if (this.img_data.length > 0) this.move_imgs(0, 0);
+        if (this.img_data.length > 0 && refresh) this.move_imgs(0, 0);
     },
-    // 创建图片数据即img_data
-    creat_img_data() {
-        // 1. 先同步生成 img_data，x/y 坐标一次性确定
+    // 添加一个新的布局函数
+    relayoutImages(preserveImages = true, refresh = true) {
+        // 保存现有图片对象引用(如果需要)
+        const existingImgs = preserveImages ?
+            this.img_data.reduce((map, item) => {
+                map[item.src] = item.img;
+                return map;
+            }, {} as Record<string, HTMLImageElement | null>) : {};
+        // 重新计算每张图片的位置
         this.img_data = [];
         for (let i = 0; i < this.img_total; i++) {
             let col_index = i % this.row_max;
             let line_index = Math.floor(i / this.row_max);
             let x = col_index * (this.img_width + this.img_margin);
             let y = line_index * (this.img_height + this.img_margin);
-            // 先放一个空 img 占位
-            this.img_data.push({ img: null as any, x, y, src: `/picture/${i}.jpg` });
+            const src = `/picture/${i}.jpg`;
+            // 使用现有图片对象(如果有)
+            const img = preserveImages ? existingImgs[src] || null : null;
+            this.img_data.push({ img, x, y, src });
         }
-        // 2. 再批量加载图片，加载完成后只赋值 img，不再动 x/y
+        // 如果没有保留图片，则加载新图片
+        if (!preserveImages) {
+            this.loadImages(refresh);
+        } else if (refresh) {
+            this.move_imgs(0, 0);
+        }
+    },
+    // 分离图片加载逻辑
+    loadImages(refresh = true) {
         this.img_data.forEach((item) => {
-            const img = new Image();
-            img.src = item.src;
-            img.onload = () => {
-                item.img = img;
-                // 这里不再 push，不再算 x/y
-                // 只需要重绘一次
-                this.move_imgs(0, 0);
-            };
+            if (!item.img) { // 只加载未加载的图片
+                const img = new Image();
+                img.src = item.src;
+                img.onload = () => {
+                    item.img = img;
+                    if (refresh) this.move_imgs(0, 0);
+                };
+            }
         });
-        nextTick(() => {
-            gsap.to(velocity.value, {
-                inertia: {
-                    vx: {
-                        velocity: 0.5,
-                        end: 1.5
+    },
+    // 创建图片数据即img_data
+    creat_img_data(refresh: boolean = true, init: boolean = false) {
+        this.relayoutImages(false, false);
+        this.loadImages(refresh);
+        if (init) {
+            nextTick(() => {
+                gsap.to(velocity.value, {
+                    inertia: {
+                        vx: { velocity: 0.5, end: 1.5 },
+                        vy: { velocity: 0.3, end: 0.5 },
+                        duration: { min: 0.5, max: 3 }
                     },
-                    vy: {
-                        velocity: 0.3,
-                        end: 0.5
-                    },
-                    duration: { min: 0.5, max: 3 }
-                },
-                overwrite: true
+                    overwrite: true
+                });
             });
-        })
+        }
     },
     handleResize() {
-        console.log('Handling resize')
-        this.resize()
-        this.calculateResponsiveSizes()
-        this.creat_img_data()
-    },
-    handleOrientationchange() {
-        this.resize()
-        this.calculateResponsiveSizes()
-        this.creat_img_data()
+        // 1. 计算新的响应式尺寸
+        this.calculateResponsiveSizes(false);
+        // 2. 调整画布大小
+        this.resize(false);
+        // 3. 更新总宽高
+        this.total_width = this.row_max * (this.img_width + this.img_margin) - this.img_margin;
+        this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
+        // 4. 重新布局图片，保留已加载的图片对象
+        this.relayoutImages(true, true);
     },
     handleMousedown() {
         this.if_movable = true;
@@ -292,7 +321,6 @@ const photobox = {
     creat_events() {
         // 存储所有绑定的事件处理函数
         this._boundEvents.handleResize = this.handleResize.bind(this);
-        this._boundEvents.handleOrientationchange = this.handleOrientationchange.bind(this);
         this._boundEvents.handleMousedown = this.handleMousedown.bind(this);
         this._boundEvents.handleMouseup = this.handleMouseup.bind(this);
         this._boundEvents.handleMouseleave = this.handleMouseleave.bind(this);
@@ -302,7 +330,7 @@ const photobox = {
         this._boundEvents.handleTouchend = this.handleTouchend.bind(this);
         // 使用存储的引用添加事件监听器
         window.addEventListener("resize", this._boundEvents.handleResize);
-        window.addEventListener("orientationchange", this._boundEvents.handleOrientationchange);
+        window.addEventListener("orientationchange", this._boundEvents.handleResize);
         this.canvas!.addEventListener("mousedown", this._boundEvents.handleMousedown);
         this.canvas!.addEventListener("mouseup", this._boundEvents.handleMouseup);
         this.canvas!.addEventListener("mouseleave", this._boundEvents.handleMouseleave);
@@ -315,7 +343,7 @@ const photobox = {
     remove_events() {
         // 使用相同的引用移除事件监听器
         window.removeEventListener("resize", this._boundEvents.handleResize!);
-        window.removeEventListener("orientationchange", this._boundEvents.handleOrientationchange!);
+        window.removeEventListener("orientationchange", this._boundEvents.handleResize!);
         this.canvas!.removeEventListener("mousedown", this._boundEvents.handleMousedown!);
         this.canvas!.removeEventListener("mouseup", this._boundEvents.handleMouseup!);
         this.canvas!.removeEventListener("mouseleave", this._boundEvents.handleMouseleave!);
@@ -326,7 +354,6 @@ const photobox = {
         // 清空引用
         this._boundEvents = {
             handleResize: null,
-            handleOrientationchange: null,
             handleMousedown: null,
             handleMouseup: null,
             handleMouseleave: null,

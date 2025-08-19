@@ -1,12 +1,15 @@
 <template>
     <div class="flex-1 flex flex-col">
         <div v-if="!checkHasInterview(Number(nodeId)) && !editForm" class="w-full h-full flex flex-col justify-between">
-            <p class="dark:text-[#D5C8B0] text-xl">尚未报名参加此面试</p>
+            <div class="flex space-x-2 items-center text-[#53B7DE]">
+                <Info class="size-6" />
+                <p class="text-xl">尚未报名参加此面试</p>
+            </div>
             <div class="flex flex-col space-y-8 justify-center items-center text-center mb-10">
-                <div class="md:text-8xl text-4xl overflow-hidden">
+                <div class="xl:text-8xl md:text-6xl text-4xl overflow-hidden">
                     <h1 ref="title">人生海海，何惧一试</h1>
                 </div>
-                <secondaryButton text="于此启航" :icon="Rocket" @click="editForm = true" />
+                <secondaryButton text="我要报名!" :icon="Rocket" @click="editForm = true" />
             </div>
             <div />
         </div>
@@ -21,7 +24,7 @@ import { useRoute } from 'vue-router'
 
 import { secondaryButton } from '@/components/ui/button';
 
-import { Rocket } from 'lucide-vue-next';
+import { Info, Rocket } from 'lucide-vue-next';
 
 import interviewForm from './interviewForm.vue';
 
