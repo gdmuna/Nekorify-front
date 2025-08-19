@@ -22,9 +22,6 @@ import { onMounted, ref, nextTick, onBeforeUnmount } from 'vue';
 
 import { gsap } from 'gsap';
 
-import { toast } from 'vue-sonner'
-
-
 const imgOpened = ref(false);
 const imgOpenedSrc = ref('');
 

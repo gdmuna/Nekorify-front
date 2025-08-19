@@ -7,7 +7,7 @@
         <!-- 滚动进度条 -->
         <div ref="scroll_progress" class="fixed z-40 top-14 left-0 w-2 h-[calc(100%-3.5rem)] page-scroll-progress" />
         <!-- 主内容区 -->
-        <div id="content" class="pt-14 min-h-[100dvh] min-w-[100dvw] flex flex-col">
+        <div id="content" class="min-h-[100dvh] min-w-[100dvw] flex flex-col">
             <main class="flex flex-col flex-1">
                 <router-view />
             </main>

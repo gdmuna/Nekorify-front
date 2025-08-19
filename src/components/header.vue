@@ -1,7 +1,7 @@
 <template>
     <div
-        class="fixed top-0 left-0 w-full h-14 bg-white dark:bg-[#0E100F] shadow z-50 px-4 flex items-center select-none">
-        <header class="flex h-full flex-1 items-center justify-between *:shrink-0 relative overflow-x-auto">
+        class="fixed top-0 left-0 w-full h-14 header-bg z-50 px-4 flex items-center select-none pointer-events-none">
+        <header class="flex h-full flex-1 items-center justify-between *:shrink-0 relative overflow-x-auto *:pointer-events-auto">
             <!-- 页眉左侧内容 -->
             <div class="flex h-full items-center">
                 <!-- LOGO -->
@@ -202,5 +202,10 @@ const logoAnimate = {
 
 .join-us-button:hover {
     box-shadow: 0 0.2em 1em rgba(39, 201, 63, 0.4);
+}
+
+.header-bg {
+    background: linear-gradient(180.00deg, rgba(14, 16, 15, 1),rgba(14, 16, 15, 0) 100%);
+    backdrop-filter: blur(2px);
 }
 </style>

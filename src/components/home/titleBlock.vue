@@ -40,12 +40,11 @@ onMounted(() => {
 const animate = {
     tl: null as gsap.core.Timeline | null,
     init() {
-        const offset = getRemPx(3.5);
         this.tl = gsap.timeline({
             scrollTrigger: {
                 trigger: root.value,
                 start: 'top bottom',
-                end: `bottom top+=${offset}`,
+                end: `bottom top`,
                 toggleActions: 'restart none restart none',
             }
         })

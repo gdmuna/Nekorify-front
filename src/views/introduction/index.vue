@@ -2,7 +2,7 @@
     <div ref="introPageRoot" class="dark:bg-[#0E100F] w-[100dvw]">
         <scrollHint />
         <!-- Section 1 -->
-        <section ref="section1" class="relative h-[calc(100dvh-3.5rem)] flex items-center justify-center
+        <section ref="section1" class="relative h-[100dvh] flex items-center justify-center
         bg-gray-100">
             <matrix class="absolute z-1 select-none" :width="setion1_width" :height="setion1_height"
                 v-if="setion1_width > 0 && setion1_height > 0" />

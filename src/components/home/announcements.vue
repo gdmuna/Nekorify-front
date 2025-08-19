@@ -54,13 +54,12 @@ onUnmounted(() => {
 const animate = {
     tls: [] as Array<gsap.core.Timeline>,
     init() {
-        const offset = getRemPx(3.5);
         itemsRef.value.forEach((el) => {
             gsap.set(el, { autoAlpha: 0 })
             ScrollTrigger.create({
                 trigger: el,
                 start: 'top bottom',
-                end: `bottom top+=${offset}`,
+                end: `bottom top`,
                 onEnter: () => {
                     gsap.fromTo(el,
                         {
@@ -100,7 +99,7 @@ const animate = {
                 scrollTrigger: {
                     trigger: el,
                     start: 'top bottom',
-                    end: `bottom top+=${offset}`,
+                    end: `bottom top`,
                     toggleActions: 'restart none restart none',
                 }
             })
