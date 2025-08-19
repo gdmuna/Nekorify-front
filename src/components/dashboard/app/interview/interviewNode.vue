@@ -3,7 +3,9 @@
         <div v-if="!checkHasInterview(Number(nodeId)) && !editForm" class="w-full h-full flex flex-col justify-between">
             <p class="dark:text-[#D5C8B0] text-xl">尚未报名参加此面试</p>
             <div class="flex flex-col space-y-8 justify-center items-center text-center mb-10">
-                <h1 class="md:text-6xl text-4xl">人生海海，何妨一试</h1>
+                <div class="md:text-8xl text-4xl overflow-hidden">
+                    <h1 ref="title">人生海海，何惧一试</h1>
+                </div>
                 <secondaryButton text="于此启航" :icon="Rocket" @click="editForm = true" />
             </div>
             <div />
@@ -23,6 +25,9 @@ import { Rocket } from 'lucide-vue-next';
 
 import interviewForm from './interviewForm.vue';
 
+import { gsap } from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore()
 const { checkHasInterview, addInterview, removeInterview } = userStore
@@ -34,6 +39,30 @@ const nodeId = route.params.nodeId
 const node = props.items.find(item => String(item.id) === String(nodeId))
 
 const editForm = ref(false)
+
+const title = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+    animate.start()
+})
+
+const animate = {
+    tl: gsap.timeline(),
+    start() {
+        const split = new SplitText(title.value, {
+            type: 'chars',
+            linesClass: 'lineChildren',
+        })
+        this.tl.from(split.chars, {
+            y: '100%',
+            duration: 0.75,
+            ease: 'power2.out',
+            stagger: {
+                amount: 0.5
+            }
+        })
+    }
+}
 
 onBeforeMount(() => {
     if (node) {

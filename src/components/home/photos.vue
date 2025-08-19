@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, nextTick, onUnmounted } from 'vue';
+import { onMounted, ref, nextTick, onBeforeUnmount } from 'vue';
 
 import { gsap } from 'gsap';
 
@@ -28,24 +28,18 @@ import { toast } from 'vue-sonner'
 const imgOpened = ref(false);
 const imgOpenedSrc = ref('');
 
-
 onMounted(() => {
     photobox.init();
     nextTick(animate)
 })
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
     // 清理事件监听
     if (photobox.canvas) {
-        photobox.canvas.removeEventListener('mousedown', photobox.creat_events);
-        photobox.canvas.removeEventListener('mouseup', photobox.creat_events);
-        photobox.canvas.removeEventListener('mouseleave', photobox.creat_events);
-        photobox.canvas.removeEventListener('mousemove', photobox.creat_events);
-        photobox.canvas.removeEventListener('touchstart', photobox.creat_events);
-        photobox.canvas.removeEventListener('touchmove', photobox.creat_events);
-        photobox.canvas.removeEventListener('touchend', photobox.creat_events);
-        if (animateId) cancelAnimationFrame(animateId);
+        console.log('Removing events from photobox');
+        photobox.remove_events()
     }
+    if (animateId) cancelAnimationFrame(animateId);
 })
 
 const canvas = ref<HTMLCanvasElement | null>(null);
@@ -82,6 +76,8 @@ function animate() {
     animateId = requestAnimationFrame(animate);
 }
 
+type handleFn = ((e: any) => void) | null
+
 // 以下代码魔改自B站UP主@JIEJOE_轻敲代码
 // B站主页：https://space.bilibili.com/3546390319860710
 // 相关视频：https://www.bilibili.com/video/BV11D421T7AV
@@ -117,7 +113,17 @@ const photobox = {
     img_width: 0,
     img_height: 0,
     img_margin: 0,
-    // 初始化时添加计算
+    _boundEvents: {
+        handleResize: null as handleFn,
+        handleOrientationchange: null as handleFn,
+        handleMousedown: null as handleFn,
+        handleMouseup: null as handleFn,
+        handleMouseleave: null as handleFn,
+        handleMousemove: null as handleFn,
+        handleTouchstart: null as handleFn,
+        handleTouchmove: null as handleFn,
+        handleTouchend: null as handleFn
+    },
     init() {
         this.canvas = canvas.value;
         this.content = this.canvas!.getContext("2d");
@@ -199,94 +205,136 @@ const photobox = {
             });
         })
     },
+    handleResize() {
+        console.log('Handling resize')
+        this.resize()
+        this.calculateResponsiveSizes()
+        this.creat_img_data()
+    },
+    handleOrientationchange() {
+        this.resize()
+        this.calculateResponsiveSizes()
+        this.creat_img_data()
+    },
+    handleMousedown() {
+        this.if_movable = true;
+        this.if_dragging = false;
+    },
+    handleMouseup(e: MouseEvent) {
+        this.if_movable = false;
+        // 当鼠标点击时，调用check_img函数，获取当前鼠标所指向的图片
+        if (!this.if_dragging) this.check_img(e);
+        this.if_dragging = false;
+    },
+    handleMouseleave() {
+        this.if_movable = false;
+        this.if_dragging = false;
+    },
+    handleMousemove(e: MouseEvent) {
+        // if_movable为flase则不可以移动图片，即鼠标未按下时
+        if (!this.if_movable) return 0;
+        this.if_dragging = true;
+        gsap.to(velocity.value, {
+            inertia: {
+                vx: {
+                    velocity: e.movementX * 8,
+                    end: 1.5
+                },
+                vy: {
+                    velocity: e.movementY * 8,
+                    end: 0.5
+                },
+                duration: { min: 0.5, max: 3 }
+            },
+            overwrite: true
+        });
+    },
+    handleTouchstart(e: TouchEvent) {
+        this.if_movable = true;
+        this.if_dragging = false;
+        // 记录起始点（可选，便于拖动/点击区分）
+        this._touchStart = getTouchPos(e, true);
+    },
+    handleTouchmove(e: TouchEvent) {
+        e.preventDefault();
+        if (!this.if_movable) return;
+        this.if_dragging = true;
+        const curr = getTouchPos(e, true);
+        const prev = this._touchStart || curr;
+        const dpr = window.devicePixelRatio || 1;
+        const dx = (curr.x - prev.x) / dpr;
+        const dy = (curr.y - prev.y) / dpr;
+        // 触屏惯性与鼠标类似
+        gsap.to(velocity.value, {
+            inertia: {
+                vx: {
+                    velocity: dx * 8,
+                    end: 1.5
+                },
+                vy: {
+                    velocity: dy * 8,
+                    end: 0.5
+                },
+                duration: { min: 0.5, max: 3 }
+            },
+            overwrite: true
+        });
+        this._touchStart = curr; // 记录上一次
+    },
+    handleTouchend(e: TouchEvent) {
+        e.preventDefault();
+        this.if_movable = false;
+        if (!this.if_dragging) this.check_img(getFakeMouseEvent(e) as MouseEvent);
+        this.if_dragging = false;
+        this._touchStart = null;
+    },
     // 绑定所有监听事件
     creat_events() {
-        window.addEventListener("resize", () => {
-            this.resize();
-        });
-        window.addEventListener("orientationchange", () => {
-            this.resize();
-        });
-        // 当鼠标按下时，才可以移动所有图片
-        this.canvas!.addEventListener("mousedown", () => {
-            this.if_movable = true;
-            this.if_dragging = false;
-        });
-        // 当鼠标弹起时，图片无法被移动，并且调用check_img函数，获取当前鼠标所指向的图片
-        this.canvas!.addEventListener("mouseup", (e) => {
-            this.if_movable = false;
-            // 当鼠标点击时，调用check_img函数，获取当前鼠标所指向的图片
-            if (!this.if_dragging) this.check_img(e);
-            this.if_dragging = false;
-        });
-        // 当鼠标离开选区时，图片无法被移动，
-        this.canvas!.addEventListener("mouseleave", () => {
-            this.if_movable = false;
-            this.if_dragging = false;
-        });
-        // 当鼠标移动时，调用move_imgs函数，移动所有图片
-        this.canvas!.addEventListener("mousemove", (e) => {
-            // if_movable为flase则不可以移动图片，即鼠标未按下时
-            if (!this.if_movable) return 0;
-            this.if_dragging = true;
-            gsap.to(velocity.value, {
-                inertia: {
-                    vx: {
-                        velocity: e.movementX * 8,
-                        end: 1.5
-                    },
-                    vy: {
-                        velocity: e.movementY * 8,
-                        end: 0.5
-                    },
-                    duration: { min: 0.5, max: 3 }
-                },
-                overwrite: true
-            });
-        });
-        // 触摸按下
-        this.canvas!.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // 阻止滚动
-            this.if_movable = true;
-            this.if_dragging = false;
-            // 记录起始点（可选，便于拖动/点击区分）
-            this._touchStart = getTouchPos(e, true);
-        }, { passive: false });
-        // 触摸移动
-        this.canvas!.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (!this.if_movable) return;
-            this.if_dragging = true;
-            const curr = getTouchPos(e, true);
-            const prev = this._touchStart || curr;
-            const dpr = window.devicePixelRatio || 1;
-            const dx = (curr.x - prev.x) / dpr;
-            const dy = (curr.y - prev.y) / dpr;
-            // 触屏惯性与鼠标类似
-            gsap.to(velocity.value, {
-                inertia: {
-                    vx: {
-                        velocity: dx * 8,
-                        end: 1.5
-                    },
-                    vy: {
-                        velocity: dy * 8,
-                        end: 0.5
-                    },
-                    duration: { min: 0.5, max: 3 }
-                },
-                overwrite: true
-            });
-            this._touchStart = curr; // 记录上一次
-        }, { passive: false });
-        // 触摸抬起
-        this.canvas!.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            this.if_movable = false;
-            if (!this.if_dragging) this.check_img(getFakeMouseEvent(e) as MouseEvent);
-            this.if_dragging = false;
-            this._touchStart = null;
-        }, { passive: false });
+        // 存储所有绑定的事件处理函数
+        this._boundEvents.handleResize = this.handleResize.bind(this);
+        this._boundEvents.handleOrientationchange = this.handleOrientationchange.bind(this);
+        this._boundEvents.handleMousedown = this.handleMousedown.bind(this);
+        this._boundEvents.handleMouseup = this.handleMouseup.bind(this);
+        this._boundEvents.handleMouseleave = this.handleMouseleave.bind(this);
+        this._boundEvents.handleMousemove = this.handleMousemove.bind(this);
+        this._boundEvents.handleTouchstart = this.handleTouchstart.bind(this);
+        this._boundEvents.handleTouchmove = this.handleTouchmove.bind(this);
+        this._boundEvents.handleTouchend = this.handleTouchend.bind(this);
+        // 使用存储的引用添加事件监听器
+        window.addEventListener("resize", this._boundEvents.handleResize);
+        window.addEventListener("orientationchange", this._boundEvents.handleOrientationchange);
+        this.canvas!.addEventListener("mousedown", this._boundEvents.handleMousedown);
+        this.canvas!.addEventListener("mouseup", this._boundEvents.handleMouseup);
+        this.canvas!.addEventListener("mouseleave", this._boundEvents.handleMouseleave);
+        this.canvas!.addEventListener("mousemove", this._boundEvents.handleMousemove);
+        this.canvas!.addEventListener('touchstart', this._boundEvents.handleTouchstart, { passive: false });
+        this.canvas!.addEventListener('touchmove', this._boundEvents.handleTouchmove, { passive: false });
+        this.canvas!.addEventListener('touchend', this._boundEvents.handleTouchend, { passive: false });
+    },
+    // 修改事件移除方法
+    remove_events() {
+        // 使用相同的引用移除事件监听器
+        window.removeEventListener("resize", this._boundEvents.handleResize!);
+        window.removeEventListener("orientationchange", this._boundEvents.handleOrientationchange!);
+        this.canvas!.removeEventListener("mousedown", this._boundEvents.handleMousedown!);
+        this.canvas!.removeEventListener("mouseup", this._boundEvents.handleMouseup!);
+        this.canvas!.removeEventListener("mouseleave", this._boundEvents.handleMouseleave!);
+        this.canvas!.removeEventListener("mousemove", this._boundEvents.handleMousemove!);
+        this.canvas!.removeEventListener('touchstart', this._boundEvents.handleTouchstart!);
+        this.canvas!.removeEventListener('touchmove', this._boundEvents.handleTouchmove!);
+        this.canvas!.removeEventListener('touchend', this._boundEvents.handleTouchend!);
+        // 清空引用
+        this._boundEvents = {
+            handleResize: null,
+            handleOrientationchange: null,
+            handleMousedown: null,
+            handleMouseup: null,
+            handleMouseleave: null,
+            handleMousemove: null,
+            handleTouchstart: null,
+            handleTouchmove: null,
+            handleTouchend: null
+        };
     },
     // 移动所有图片
     move_imgs(x: number, y: number) {

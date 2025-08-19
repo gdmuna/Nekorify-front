@@ -48,7 +48,7 @@
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
-                            <div v-if="item.type === 'upload'"
+                            <div v-if="item.type === 'upload'" :data-error="!meta.valid && meta.touched ? 'true' : 'false'" @blur="componentField.onBlur"
                                 class="size-30 flex items-center justify-center cursor-pointer border-2 upload-container-dashed dark:border-[#B0B0B0]"
                                 @click="triggerFileInput(index)">
                                 <img v-if="!!previewUrl" :src="previewUrl" alt="预览" class="size-full object-fit" />
@@ -89,7 +89,7 @@
 <script lang="ts" setup>
 import { toTypedSchema } from "@vee-validate/zod"
 
-import { h, ref, computed, watch } from "vue"
+import { h, ref, computed } from "vue"
 
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -107,7 +107,6 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
@@ -140,13 +139,6 @@ const useIcon = computed(() => {
     return underSubmit.value ? iconMap.value['loading'] : iconMap.value['submit']
 })
 
-function fieldStatus(pending: boolean, validate: boolean) {
-    console.log(`pending: ${pending}, validate: ${validate}`);
-    if (pending) return 'pending'
-    if (validate) return 'validate'
-    return 'invalid'
-}
-
 const formRef = ref<HTMLFormElement | null>(null)
 
 // 校验规则
@@ -175,8 +167,6 @@ const previewUrl = ref<string | null>(null)
 function triggerFileInput(index: number) {
     fileInput.value.find(input => input.dataset.index === String(index))?.click()
     // console.log(JSON.stringify(interviewFormJSON.value, null, 1));
-    console.log(`触发文件输入框，索引：${index}`);
-    
 }
 
 function onFileChange(e: Event, setValue: (v: File) => void) {
@@ -227,10 +217,11 @@ function onInvalidSubmit() {
 </script>
 
 <style scoped>
-.upload-container-dashed {
-    border-width: 2px;
-    border-style: dashed;
-    border-image: url("data:image/svg+xml;utf8,<svg width='10' height='10' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='8' height='8' fill='none' stroke='gray' stroke-width='2' stroke-dasharray='4,4' stroke-dashoffset='2'/></svg>") 2;
+.upload-container-dashed[data-error="true"] {
+    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23FB2C36'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E") 2;
+}
+.upload-container-dashed[data-error="false"] {
+    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23A0A0A0'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E") 2;
 }
 
 /* Chrome, Safari, Edge */

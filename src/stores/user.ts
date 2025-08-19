@@ -96,7 +96,7 @@ export const useUserStore = defineStore('user', () => {
         })
     }
 
-    const hasInterviews = ref<number[]>([])
+    const hasInterviews = ref<number[]>([1])
     const interviews = ref([
         {
             id: 1,
