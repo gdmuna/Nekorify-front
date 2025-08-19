@@ -54,7 +54,7 @@
                                 <img v-if="!!previewUrl" :src="previewUrl" alt="预览" class="size-full object-fit" />
                                 <div v-else class="text-sm text-center dark:text-[#D5C8B0]">点击上传图片</div>
                                 <input ref="fileInput" type="file" :accept="handleFileAccept(item.value.accept)"
-                                    class="hidden" @change="onFileChange($event, setValue)" :data-index="index" />
+                                    class="hidden" @change="onFileChange($event, setValue)" :data-index="index" @click.stop />
                             </div>
                             <div v-if="item.type === 'checkbox'" class="flex flex-col space-y-3">
                                 <div v-for="(option, optionIndex) in item.value.options" :key="optionIndex"
@@ -175,9 +175,13 @@ const previewUrl = ref<string | null>(null)
 function triggerFileInput(index: number) {
     fileInput.value.find(input => input.dataset.index === String(index))?.click()
     // console.log(JSON.stringify(interviewFormJSON.value, null, 1));
+    console.log(`触发文件输入框，索引：${index}`);
+    
 }
 
 function onFileChange(e: Event, setValue: (v: File) => void) {
+    console.log("文件输入变化", e);
+    
     const files = (e.target as HTMLInputElement).files
     if (files && files[0]) {
         const file = files[0]
