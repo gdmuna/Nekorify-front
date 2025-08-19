@@ -1,24 +1,37 @@
 <template>
     <div class="flex-1 flex flex-col">
-        <div v-if="!showDetails" class="flex flex-col space-y-4">
-            <h1 class="text-4xl dark:text-[#E0DEC0]">开放中</h1>
-            <p class="text-lg dark:text-[#A0A0A0]">以下是当前开放的面试列表，点击查看详情。</p>
-            <div>
+        <div v-if="!showDetails" class="space-y-4">
+            <section class="space-y-2">
+                <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">开放中</h2>
+                <p class="md:text-lg dark:text-[#A0A0A0]">以下是当前开放的面试列表，点击查看详情。</p>
+            </section>
+            <section>
                 <liItem useSlot v-for="(item, index) in items" :key="index" :rightIcon="ArrowRight"
                     @click="routerGoto(`/dashboard/interview/${item.id}`)">
                     <div class="flex flex-1 justify-between items-center duration-300">
-                        <div class="flex flex-col space-y-2">
-                            <p class="text-2xl">{{ item.title }}</p>
-                            <p class="dark:text-[#D5C8B0] subtitle">{{ item.description }}</p>
+                        <div class="md:space-y-2 space-y-1 mr-2">
+                            <p class="md:text-2xl">{{ item.title }}</p>
+                            <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">{{ item.description }}</p>
                         </div>
-                        <div class="flex flex-col space-y-2 items-center">
-                            <p class="text-sm">开始时间: {{ item.startDate }}</p>
-                            <p class="text-sm">结束时间: {{ item.endDate }}</p>
+                        <div class="md:space-y-2 space-y-1">
+                            <p class="md:text-sm text-xs">
+                                <span>开始时间: </span>
+                                <span class="whitespace-nowrap">{{ item.startDate }}</span>
+                            </p>
+                            <p class="md:text-sm text-xs">
+                                <span>结束时间: </span>
+                                <span class="whitespace-nowrap">{{ item.endDate }}</span>
+                            </p>
                         </div>
                         <div />
                     </div>
                 </liItem>
-            </div>
+            </section>
+            <section class="space-y-2">
+                <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">已结束</h2>
+                <p class="md:text-lg dark:text-[#A0A0A0]">以下是已结束的面试列表，点击查看详情。</p>
+                <p class="mt-6 text-center dark:text-[#A0A0A0]">还没有已结束的面试喵...</p>
+            </section>
         </div>
         <router-view :items="items" />
     </div>

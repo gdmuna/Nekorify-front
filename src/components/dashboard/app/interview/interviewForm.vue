@@ -1,15 +1,22 @@
 <template>
-    <div class="mt-4 mx-auto">
-        <Form v-slot="{ handleSubmit }" keep-values :validation-schema="formSchema" class="min-w-[min(78rem,90%dvw)]">
-            <form id="dialogForm" @submit="handleSubmit($event, onSubmit)" class="flex flex-col space-y-4 md:px-0 px-4">
+    <div class="mb-4 mx-auto">
+        <section class="space-y-2">
+            <h1 class="text-center md:text-3xl text-2xl">面试报名表</h1>
+            <p class="text-center md:text-lg text-[#A0A0A0]">请如实填写以下信息，所有内容仅用于本次面试报名及后续联系，我们将严格保密您的个人信息</p>
+        </section>
+        <Form v-slot="{ handleSubmit }" @invalid-submit="onInvalidSubmit" keep-values :validation-schema="formSchema"
+            class="min-w-[min(78rem,90%dvw)] mt-6">
+            <form id="form" ref="formRef" @submit="handleSubmit($event, onSubmit)"
+                class="flex flex-col space-y-4 md:px-0 px-4">
                 <!-- 昵称 -->
-                <FormField v-slot="{ componentField, value, setValue, handleChange }"
-                    v-for="(item, index) in interviewFormJSON" :key="index" :name="item.fieldName">
+                <FormField v-slot="{ componentField, value, setValue, meta }" v-for="(item, index) in interviewFormJSON"
+                    :key="index" :name="item.fieldName">
                     <FormItem>
-                        <FormLabel class="data-[error=false]:dark:text-[#FEFCE4]">
-                            {{ item.label }}
+                        <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-xl text-lg">
+                            <p>{{ item.label }}</p>
+                            <sup v-if="item.required" class="text-[#FF5F56]">*</sup>
                         </FormLabel>
-                        <FormDescription>
+                        <FormDescription v-if="!!item.description" class="select-none">
                             {{ item.description }}
                         </FormDescription>
                         <FormControl>
@@ -20,9 +27,10 @@
                                 <FormItem v-for="(option, optionIndex) in item.value.options" :key="optionIndex"
                                     class="flex items-center space-y-0 gap-x-3">
                                     <FormControl>
-                                        <RadioGroupItem :value="String(option.value)" class="cursor-pointer" />
+                                        <RadioGroupItem :value="String(option.value)"
+                                            class="cursor-pointer dark:bg-[#202420]" />
                                     </FormControl>
-                                    <FormLabel class="data-[error=false]:dark:text-[#FEFCE4]">
+                                    <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] cursor-pointer">
                                         {{ option.label }}
                                     </FormLabel>
                                 </FormItem>
@@ -43,29 +51,36 @@
                             <div v-if="item.type === 'upload'"
                                 class="size-30 flex items-center justify-center cursor-pointer border-2 upload-container-dashed dark:border-[#B0B0B0]"
                                 @click="triggerFileInput(index)">
-                                <img v-if="previewUrl" :src="previewUrl" alt="预览" class="size-full object-fit" />
+                                <img v-if="!!previewUrl" :src="previewUrl" alt="预览" class="size-full object-fit" />
                                 <div v-else class="text-sm text-center dark:text-[#D5C8B0]">点击上传图片</div>
-                                <input ref="fileInput" type="file" :accept="handleFileAccept(item.value.accept)" class="hidden"
-                                    @change="onFileChange($event)" :data-index="index" v-bind="componentField" />
+                                <input ref="fileInput" type="file" :accept="handleFileAccept(item.value.accept)"
+                                    class="hidden" @change="onFileChange($event, setValue)" :data-index="index" />
                             </div>
                             <div v-if="item.type === 'checkbox'" class="flex flex-col space-y-3">
                                 <div v-for="(option, optionIndex) in item.value.options" :key="optionIndex"
                                     class="flex items-center space-x-3">
-                                    <Checkbox :checked="Array.isArray(value) && value.includes(option.value)"
-                                        @update:modelValue="checked => updateCheckboxArray(option.value, checked, value, setValue)"
-                                        class="cursor-pointer" />
-                                    <FormLabel class="data-[error=false]:dark:text-[#FEFCE4]">
-                                        {{ option.label }}
-                                    </FormLabel>
+                                    <FormControl>
+                                        <Checkbox :id="`${index}-${optionIndex}`"
+                                            :checked="Array.isArray(value) && value.includes(option.value)"
+                                            @update:modelValue="checked => updateCheckboxArray(option.value, checked, value, setValue)"
+                                            @blur="componentField.onBlur"
+                                            class="cursor-pointer data-[state=unchecked]:dark:bg-[#202420]" />
+                                        <label :for="`${index}-${optionIndex}`"
+                                            :data-error="!meta.valid && meta.touched ? 'true' : 'false'"
+                                            class="cursor-pointer select-none data-[error=true]:text-red-500 data-[error=false]:dark:text-[#FEFCE4]">
+                                            {{ option.label }}
+                                        </label>
+                                    </FormControl>
                                 </div>
                             </div>
-                            <Textarea v-if="item.type === 'textarea'" :placeholder="item.label" v-bind="componentField" />
+                            <Textarea v-if="item.type === 'textarea'" :placeholder="item.label"
+                                v-bind="componentField" />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage class="whitespace-pre-line select-none" />
                     </FormItem>
                 </FormField>
-                <secondaryButton text="保存更改" type="submit" form="dialogForm" :icon="useIcon"
-                    :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] mt-5 w-fit', { 'cursor-progress': underSubmit }]" />
+                <secondaryButton text="上传表单" type="submit" form="form" :icon="useIcon"
+                    :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] mt-2 w-fit', { 'cursor-progress': underSubmit }]" />
             </form>
         </Form>
     </div>
@@ -76,11 +91,7 @@ import { toTypedSchema } from "@vee-validate/zod"
 
 import { h, ref, computed, watch } from "vue"
 
-import * as z from "zod"
-
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
     Form,
@@ -105,7 +116,7 @@ import { Textarea } from "@/components/ui/textarea"
 
 import { secondaryButton } from "@/components/ui/button"
 
-import { Rocket, Check, LoaderCircle } from "lucide-vue-next"
+import { FileUp, LoaderCircle } from "lucide-vue-next"
 
 import { toast } from 'vue-sonner'
 
@@ -114,14 +125,14 @@ import { useUserStore } from "@/stores/user"
 const userStore = useUserStore()
 const { interviewFormJSON } = storeToRefs(userStore)
 
-import { generateZodSchema } from "@/lib/utils"
+import { generateZodSchema, getRemPx } from "@/lib/utils"
 
-const isOpen = ref(false)
+import { gsap } from "gsap"
 
 const underSubmit = ref(false)
 
 const iconMap = ref({
-    'submit': Check,
+    'submit': FileUp,
     'loading': LoaderCircle
 })
 
@@ -129,41 +140,23 @@ const useIcon = computed(() => {
     return underSubmit.value ? iconMap.value['loading'] : iconMap.value['submit']
 })
 
-watch(isOpen, () => {
-    if (underSubmit.value) {
-        isOpen.value = true
-        
-    }
-})
+function fieldStatus(pending: boolean, validate: boolean) {
+    console.log(`pending: ${pending}, validate: ${validate}`);
+    if (pending) return 'pending'
+    if (validate) return 'validate'
+    return 'invalid'
+}
+
+const formRef = ref<HTMLFormElement | null>(null)
 
 // 校验规则
-// const formSchema = toTypedSchema(z.object({
-//     nickname: z.string()
-//         .transform(val => val.trim() === "" ? undefined : val)
-//         .optional()
-//         .refine(val => !val || !/[<>]/.test(val), { message: "昵称不能包含特殊字符" })
-//         .refine(val => !val || z.string().max(10).safeParse(val).success, { message: "昵称长度需小于10" })
-//         .default(""),
-//     bio: z.string()
-//         .transform(val => val.trim() === "" ? undefined : val)
-//         .optional()
-//         .refine(val => !val || !/[<>]/.test(val), { message: "签名不能包含特殊字符" })
-//         .refine(val => !val || z.string().max(40).safeParse(val).success, { message: "签名长度需小于40" })
-//         .optional()
-//         .default(""),
-//     email: z.string()
-//         .transform(val => val.trim() === "" ? undefined : val)
-//         .optional()
-//         .refine(val => !val || !/[<>]/.test(val), { message: "邮箱不能包含特殊字符" })
-//         .refine(val => !val || z.string().email().safeParse(val).success, { message: "请输入有效的邮箱地址" })
-//         .default(""),
-// }))
-
 const formSchema = toTypedSchema(generateZodSchema(interviewFormJSON.value))
 
 async function onSubmit(values: any) {
     if (underSubmit.value) return
     underSubmit.value = true
+    console.log(values);
+    toast.success('表单提交成功')
     toast("You submitted the following values:", {
         description: h("pre", { class: "mt-2 w-[340px] rounded-md bg-slate-950 p-4" }, h("code", { class: "text-white" }, JSON.stringify(values, null, 2))),
     })
@@ -173,7 +166,6 @@ async function onSubmit(values: any) {
     // } else {
     //     toast.error('更新失败，请稍后再试')
     // }
-    isOpen.value = false
     underSubmit.value = false
 }
 
@@ -182,15 +174,17 @@ const previewUrl = ref<string | null>(null)
 
 function triggerFileInput(index: number) {
     fileInput.value.find(input => input.dataset.index === String(index))?.click()
-    console.log(JSON.stringify(interviewFormJSON.value, null, 1));
+    // console.log(JSON.stringify(interviewFormJSON.value, null, 1));
 }
 
-function onFileChange(e: Event) {
+function onFileChange(e: Event, setValue: (v: File) => void) {
     const files = (e.target as HTMLInputElement).files
     if (files && files[0]) {
         const file = files[0]
         previewUrl.value = URL.createObjectURL(file)
-        // 你可以在这里把 file 传给表单
+        setValue(file)
+    } else {
+        return
     }
 }
 
@@ -210,26 +204,48 @@ function handleFileAccept(accept: string[] | undefined) {
     }
 }
 
+function onInvalidSubmit() {
+    toast.error('请检查表单填写内容');
+    const errorField = formRef.value?.querySelector('[data-error=true]')
+    gsap.to(window,
+        {
+            duration: 0.5,
+            ease: 'power3.out',
+            scrollTo: {
+                y: errorField!,
+                offsetY: getRemPx(3.5)
+            }
+        })
+}
+
+
+
 </script>
 
-<style>
-.dialogContent {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    background-color: #0E100F;
-}
-
-.dialogContent::-webkit-scrollbar {
-    display: none;
-}
-
-/* div[data-slot="drawer-content"]::after {
-    pointer-events: none !important;
-} */
-
+<style scoped>
 .upload-container-dashed {
     border-width: 2px;
     border-style: dashed;
     border-image: url("data:image/svg+xml;utf8,<svg width='10' height='10' xmlns='http://www.w3.org/2000/svg'><rect x='1' y='1' width='8' height='8' fill='none' stroke='gray' stroke-width='2' stroke-dasharray='4,4' stroke-dashoffset='2'/></svg>") 2;
+}
+
+/* Chrome, Safari, Edge */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: none;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #EEE1CA inset !important;
+    box-shadow: 0 0 0 1000px #EEE1CA inset !important;
+    -webkit-text-fill-color: #0E100F !important;
 }
 </style>

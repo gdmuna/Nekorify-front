@@ -163,18 +163,35 @@ export function generateZodSchema(fields: InterviewFormJSON[]) {
         switch (type) {
             case "string":
                 config = z.string({ invalid_type_error: `${f.label} 必须是字符串`, required_error: `${f.label} 不能为空` });
-                if (f.value.maxLength) config = config.max(f.value.maxLength, { message: `${f.label} 长度需小于 ${f.value.maxLength}` });
-                if (f.value.minLength) config = config.min(f.value.minLength, { message: `${f.label} 长度需大于 ${f.value.minLength}` });
-                // if (f.required) config = config.nonempty({ message: `${f.label} 不能为空` });
+                if (f.value.maxLength) config = config.max(f.value.maxLength, { message: `${f.label} 长度需小于等于 ${f.value.maxLength}` });
+                if (f.value.minLength) config = config.min(f.value.minLength, { message: `${f.label} 长度需大于等于 ${f.value.minLength}` });
+                if (f.required) config = config.nonempty({ message: `${f.label} 不能为空` });
                 if (f.value.default) config = config.default(f.value.default as string);
                 break;
             case "number":
                 config = z.number({ invalid_type_error: `${f.label} 必须是数字`, required_error: `${f.label} 不能为空` })
-                if (f.value.maxLength) config = config.max(f.value.maxLength, { message: `${f.label} 长度需小于 ${f.value.maxLength}` });
-                if (f.value.minLength) config = config.min(f.value.minLength, { message: `${f.label} 长度需大于 ${f.value.minLength}` });
+                // 限制数值大小
+                if (f.value.minCount) config = config.min(f.value.minCount, { message: `${f.label} 不能小于 ${f.value.minCount}` });
+                if (f.value.maxCount) config = config.max(f.value.maxCount, { message: `${f.label} 不能大于 ${f.value.maxCount}` });
+                // 限制数字位数
+                if (f.value.maxLength) {
+                    config = config.refine(
+                        val => String(Math.abs(val)).length <= f.value.maxLength!,
+                        { message: `${f.label} 长度需小于等于 ${f.value.maxLength}` }
+                    );
+                }
+                if (f.value.minLength) {
+                    config = config.refine(
+                        val => String(Math.abs(val)).length >= f.value.minLength!,
+                        { message: `${f.label} 长度需大于等于 ${f.value.minLength}` }
+                    );
+                }
                 if (!f.required) config = config.optional();
                 if (f.value.default) config = config.default(f.value.default as number);
-                config = z.preprocess(val => Number(val), config);
+                config = z.preprocess(val => {
+                    if (val === "" || val === null || val === undefined) return undefined;
+                    return Number(val);
+                }, config);
                 break;
             case "boolean":
                 config = z.boolean({ invalid_type_error: `${f.label} 必须是布尔值`, required_error: `${f.label} 不能为空` });
@@ -185,9 +202,10 @@ export function generateZodSchema(fields: InterviewFormJSON[]) {
                 config = z.instanceof(File, { message: `${f.label} 必须上传文件` });
                 // 校验文件类型
                 if (Array.isArray(f.value.accept) && f.value.accept.length > 0) {
+                    const acceptList = f.value.accept.join('\n');
                     config = config.refine(
                         file => f.value.accept!.includes(file.type),
-                        { message: `${f.label} 文件类型不正确` }
+                        { message: `${f.label} 文件类型不正确，必须是下列类型之一:\n${acceptList}` }
                     );
                 }
                 if (f.value.maxSize) {

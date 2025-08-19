@@ -160,12 +160,12 @@ export const useUserStore = defineStore('user', () => {
             required: true,
             type: 'input',
             value: {
-                type: 'string',
+                type: 'number',
                 maxLength: 11,
                 minLength: 11,
             },
             style: {
-                inputType: 'text'
+                inputType: 'number'
             }
         },
         {
@@ -225,19 +225,19 @@ export const useUserStore = defineStore('user', () => {
                 options: [
                     {
                         label: '中共党员',
-                        value: 'party_member'
+                        value: '中共党员'
                     },
                     {
                         label: '中共预备党员',
-                        value: 'probationary_member'
+                        value: '中共预备党员'
                     },
                     {
                         label: '共青团员',
-                        value: 'league_member'
+                        value: '共青团员'
                     },
                     {
                         label: '群众',
-                        value: 'masses'
+                        value: '群众'
                     }
                 ]
             }
@@ -284,11 +284,11 @@ export const useUserStore = defineStore('user', () => {
                 options: [
                     {
                         label: '本科',
-                        value: 'undergraduate'
+                        value: '本科'
                     },
                     {
                         label: '研究生',
-                        value: 'postgraduate'
+                        value: '研究生'
                     }
                 ]
             }
@@ -322,38 +322,38 @@ export const useUserStore = defineStore('user', () => {
                 options: [
                     {
                         label: '第二临床医学院',
-                        value: 2024
+                        value: '第二临床医学院'
                     },
                     {
                         label: '医学技术学院',
-                        value: 2025
+                        value: '医学技术学院'
                     },
                     {
                         label: '护理学院',
-                        value: 2024
+                        value: '护理学院'
                     },
                     {
                         label: '公共卫生学院',
-                        value: 2025
+                        value: '公共卫生学院'
                     },
                     {
                         label: '药学院',
-                        value: 2024
+                        value: '药学院'
                     },
                     {
                         label: '人文与管理学院',
-                        value: 2025
+                        value: '人文与管理学院'
                     },
                     {
                         label: '基础医学院',
-                        value: 2024
+                        value: '基础医学院'
                     },
                     {
                         label: '生物医学工程学院',
-                        value: 2025
+                        value: '生物医学工程学院'
                     }, {
                         label: '外国语学院',
-                        value: 2024
+                        value: '外国语学院'
                     }
                 ]
             }
@@ -392,11 +392,11 @@ export const useUserStore = defineStore('user', () => {
             required: true,
             type: 'input',
             value: {
-                type: 'string',
+                type: 'number',
                 maxLength: 50,
             },
             style: {
-                inputType: 'text'
+                inputType: 'number'
             }
         },
         {
@@ -419,11 +419,11 @@ export const useUserStore = defineStore('user', () => {
             required: true,
             type: 'input',
             value: {
-                type: 'string',
+                type: 'number',
                 maxLength: 50,
             },
             style: {
-                inputType: 'text'
+                inputType: 'number'
             }
         },
         {
@@ -441,19 +441,19 @@ export const useUserStore = defineStore('user', () => {
                 options: [
                     {
                         label: 'BI部',
-                        value: 'biDepartment'
+                        value: 'BI部'
                     },
                     {
                         label: '宣传部',
-                        value: 'publicityDepartment'
+                        value: '宣传部'
                     },
                     {
                         label: '学术部',
-                        value: 'academicDepartment'
+                        value: '学术部'
                     },
                     {
                         label: '科研部',
-                        value: 'researchDepartment'
+                        value: '科研部'
                     }
                 ]
             }
@@ -468,15 +468,15 @@ export const useUserStore = defineStore('user', () => {
                 options: [
                     {
                         label: "我想坐会长（副会长）这个位置",
-                        value: "president"
+                        value: "会长"
                     },
                     {
                         label: "我想担任某个部门的部长",
-                        value: "departmentHead"
+                        value: "部长"
                     },
                     {
                         label: "我只想水群",
-                        value: "justChill"
+                        value: "水群"
                     }
                 ]
             }
