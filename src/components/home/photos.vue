@@ -95,11 +95,11 @@ const photobox = {
     // canvas 2d上下文
     content: null as CanvasRenderingContext2D | null,
     // 图片的总数
-    img_total: 32,
+    img_total: 42,
     // 图片排列的总列数
-    row_max: 8,
+    row_max: 7,
     // 图片排列的总行数
-    line_max: 4,
+    line_max: 6,
     // 所有图片纵横排列之后的总宽高，用作图片超出范围的界限判定
     total_width: 0,
     total_height: 0,
@@ -151,12 +151,12 @@ const photobox = {
         // 2. 根据屏幕方向动态调整行列数
         if (aspectRatio < 1) {
             // 竖屏模式
-            this.row_max = 4
-            this.line_max = 8
+            this.row_max = 6
+            this.line_max = 7
         } else {
             // 横屏模式
-            this.row_max = 8;
-            this.line_max = 4;
+            this.row_max = 7
+            this.line_max = 6
         }
         // 3. 计算缩放比例
         const scale = Math.max(0.6, Math.min(1.5, containerWidth / this.baseWidth));
