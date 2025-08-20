@@ -1,7 +1,7 @@
 <template>
     <div class="flex-1 flex flex-col">
         <div v-if="!checkHasInterview(Number(nodeId)) && !editForm" class="w-full h-full flex flex-col justify-between">
-            <div class="flex space-x-2 items-center text-[#53B7DE]">
+            <div class="inline-flex space-x-2 items-center text-[#53B7DE]">
                 <Info class="size-6" />
                 <p class="text-xl">尚未报名参加此面试</p>
             </div>
@@ -14,6 +14,7 @@
             <div />
         </div>
         <interviewForm v-else-if="!checkHasInterview(Number(nodeId)) && editForm" />
+        <interviewStatus v-else />
     </div>
 </template>
 
@@ -27,6 +28,7 @@ import { secondaryButton } from '@/components/ui/button';
 import { Info, Rocket } from 'lucide-vue-next';
 
 import interviewForm from './interviewForm.vue';
+import interviewStatus from './interviewStatus.vue';
 
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
@@ -52,6 +54,7 @@ onMounted(() => {
 const animate = {
     tl: gsap.timeline(),
     start() {
+        if (!title.value) return
         const split = new SplitText(title.value, {
             type: 'chars',
             linesClass: 'lineChildren',

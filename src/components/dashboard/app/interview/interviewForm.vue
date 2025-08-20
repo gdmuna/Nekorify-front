@@ -1,8 +1,8 @@
 <template>
     <div class="mb-4 mx-auto">
-        <section class="space-y-2">
-            <h1 class="text-center md:text-3xl text-2xl">面试报名表</h1>
-            <p class="text-center md:text-lg text-[#A0A0A0]">请如实填写以下信息，所有内容仅用于本次面试报名及后续联系，我们将严格保密您的个人信息</p>
+        <section class="space-y-2 text-center">
+            <h1 class="md:text-3xl text-2xl">面试报名表</h1>
+            <p class="text-[#A0A0A0] md:text-lg text-[1rem]">请如实填写以下信息，所有内容仅用于本次面试报名及后续联系，我们将严格保密您的个人信息</p>
         </section>
         <Form v-slot="{ handleSubmit }" @invalid-submit="onInvalidSubmit" keep-values :validation-schema="formSchema"
             class="min-w-[min(78rem,90%dvw)] mt-6">
@@ -12,12 +12,16 @@
                 <FormField v-slot="{ componentField, value, setValue, meta }" v-for="(item, index) in interviewFormJSON"
                     :key="index" :name="item.fieldName">
                     <FormItem>
-                        <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-xl text-lg">
+                        <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-xl text-lg cursor-pointer" :data-index="`formLabel-${index}`" @click="scrollTo(`formLabel-${index}`)">
+                            <Hash class="size-5 data-[error=false]:text-[#E9EBE4] data-[error=true]:text-red-500" />
                             <p>{{ item.label }}</p>
-                            <sup v-if="item.required" class="text-[#FF5F56]">*</sup>
+                            <sup v-if="item.required" class="text-[#FF5F56]">
+                                <Asterisk class="size-4" />
+                            </sup>
                         </FormLabel>
-                        <FormDescription v-if="!!item.description" class="select-none">
-                            {{ item.description }}
+                        <FormDescription v-if="!!item.description" class="select-none space-x-2">
+                            <Info class="size-4 inline -translate-y-0.5" />
+                            <p class="inline">{{ item.description }}</p>
                         </FormDescription>
                         <FormControl>
                             <Input v-if="item.type === 'input'" :type="item.style?.inputType || 'text'"
@@ -52,7 +56,10 @@
                                 class="size-30 flex items-center justify-center cursor-pointer border-2 upload-container-dashed dark:border-[#B0B0B0]"
                                 @click="triggerFileInput(index)">
                                 <img v-if="!!previewUrl" :src="previewUrl" alt="预览" class="size-full object-fit" />
-                                <div v-else class="text-sm text-center dark:text-[#D5C8B0]">点击上传图片</div>
+                                <div v-else class="text-sm text-center dark:text-[#D5C8B0] flex flex-col items-center">
+                                    <ImageUp class="size-6" />
+                                    <p>点击上传图片</p>
+                                </div>
                                 <input ref="fileInput" type="file" :accept="handleFileAccept(item.value.accept)"
                                     class="hidden" @change="onFileChange($event, setValue)" :data-index="index" @click.stop />
                             </div>
@@ -115,7 +122,7 @@ import { Textarea } from "@/components/ui/textarea"
 
 import { secondaryButton } from "@/components/ui/button"
 
-import { FileUp, LoaderCircle } from "lucide-vue-next"
+import { FileUp, LoaderCircle, ImageUp, Info, Hash, Asterisk } from "lucide-vue-next"
 
 import { toast } from 'vue-sonner'
 
@@ -210,6 +217,20 @@ function onInvalidSubmit() {
                 offsetY: getRemPx(3.5)
             }
         })
+}
+
+function scrollTo(index: string) {
+    const label = formRef.value?.querySelector(`[data-index="${index}"]`)
+    if (label) {
+        gsap.to(window, {
+            duration: 0.5,
+            ease: 'power3.out',
+            scrollTo: {
+                y: label,
+                offsetY: getRemPx(3.5)
+            }
+        })
+    }
 }
 
 

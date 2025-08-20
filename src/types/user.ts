@@ -143,3 +143,59 @@ export interface InterviewFormJSON {
         inputType?: 'text' | 'email' | 'number' | 'password'
     }
 }
+
+export interface TimeSlot {
+    id: number
+    start_time: string
+    end_time: string
+    max_seats: number
+    booked_seats: number
+    is_available: boolean
+}
+
+export interface Session {
+    id: number
+    title: string
+    start_time: string
+    end_time: string
+    location: string
+    time_slot: TimeSlot
+}
+
+export interface Stage {
+    id: number
+    title: string
+    description: string
+    campaign_id: number
+    session: Session
+}
+
+export interface Campaign {
+    id: number
+    title: string
+    description: string
+    start_date: string
+    end_date: string
+    is_active: boolean
+    stage: Stage
+}
+
+export interface InterviewReservation {
+    id: number
+    user_id: number
+    campaign: Campaign
+    selection_status: string
+    createdAt: string
+    updatedAt: string
+}
+
+export interface Step {
+    step: number
+    title: string
+    description: string
+    session?: Session
+    state: 'completed' | 'active' | 'inactive'
+    result: 'resolved' | 'rejected' | 'pending'
+    type: 'event' | 'process'
+    details?: any
+}

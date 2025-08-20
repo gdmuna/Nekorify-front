@@ -42,7 +42,7 @@ const animate = {
                 {
                     scaleX: '100%',
                     duration: 0.5,
-                    ease: 'circ.out',
+                    ease: 'power3.out',
                     transformOrigin: 'left center'
                 },
                 '<'
@@ -52,7 +52,7 @@ const animate = {
                     {
                         backgroundColor: props.lineColor,
                         duration: 0.3,
-                        ease: 'circ.out'
+                        ease: 'power3.out'
                     },
                     '<'
                 )
@@ -62,7 +62,7 @@ const animate = {
                 {
                     scaleX: 0,
                     duration: 0.5,
-                    ease: 'circ.out',
+                    ease: 'power3.out',
                     transformOrigin: 'left center'
                 },
                 '<'
@@ -72,7 +72,7 @@ const animate = {
                     {
                         backgroundColor: '#fef3c6',
                         duration: 0.3,
-                        ease: 'circ.out'
+                        ease: 'power3.out'
                     },
                     '<'
                 )

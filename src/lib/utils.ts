@@ -10,7 +10,7 @@ import type {
 
 import type { InterviewFormJSON } from '@/types/user'
 
-import * as z from "zod";
+import z from "zod";
 
 
 export function cn(...inputs: ClassValue[]) {

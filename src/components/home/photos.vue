@@ -5,13 +5,14 @@
         </div>
         <teleport to='body'>
             <transition name="bg">
-                <div v-if="imgOpened" class="fixed top-1/2 left-1/2 bg-[#0E100F]/50 -translate-1/2 z-50 size-full"
-                    @click="imgOpened = false">
+                <div v-if="imgOpened" class="fixed top-1/2 left-1/2 bg-[#0E100F]/25 -translate-1/2 z-50 size-full"
+                    @click="imgOpened = false" @keyup.tab="imgOpened = false">
+                    <CircleX class="absolute top-14 right-6 size-8 text-[#FEFCE4] cursor-pointer" />
                 </div>
             </transition>
             <transition name="picture">
                 <img v-if="imgOpened" :src="imgOpenedSrc"
-                    class="fixed top-1/2 left-1/2 -translate-1/2 z-50 max-h-[90%] max-w-[90%] select-none" />
+                    class="fixed top-1/2 left-1/2 -translate-1/2 z-50 bg-[#0E100F]/50 max-h-[90%] max-w-[90%] select-none" />
             </transition>
         </teleport>
     </div>
@@ -22,12 +23,15 @@ import { onMounted, ref, nextTick, onBeforeUnmount } from 'vue';
 
 import { gsap } from 'gsap';
 
+import { CircleX } from 'lucide-vue-next';
+
 const imgOpened = ref(false);
 const imgOpenedSrc = ref('');
 
 onMounted(() => {
     photobox.init();
     nextTick(animate)
+    document.addEventListener('keyup', handleKeyup);
 })
 
 onBeforeUnmount(() => {
@@ -37,7 +41,14 @@ onBeforeUnmount(() => {
         photobox.remove_events()
     }
     if (animateId) cancelAnimationFrame(animateId);
+    document.removeEventListener('keyup', handleKeyup);
 })
+
+function handleKeyup(e: KeyboardEvent) {
+    if (e.key === 'Escape' && imgOpened.value) {
+        imgOpened.value = false;
+    }
+}
 
 const canvas = ref<HTMLCanvasElement | null>(null);
 const container = ref<HTMLDivElement | null>(null);
@@ -101,9 +112,9 @@ const photobox = {
     img_opened: ref(false),
     img_opened_src: ref(''),
     baseWidth: 1024,
-    baseImgWidth: 450,
-    baseImgHeight: 300,
-    baseImgMargin: 75,
+    baseImgWidth: 375,
+    baseImgHeight: 250,
+    baseImgMargin: 50,
     // 当前应用的尺寸
     img_width: 0,
     img_height: 0,
@@ -148,7 +159,7 @@ const photobox = {
             this.line_max = 4;
         }
         // 3. 计算缩放比例
-        const scale = Math.max(0.6, Math.min(1, containerWidth / this.baseWidth));
+        const scale = Math.max(0.6, Math.min(1.5, containerWidth / this.baseWidth));
         // 4. 应用缩放后的尺寸
         this.img_width = Math.max(200, Math.floor(this.baseImgWidth * scale));
         this.img_height = Math.max(140, Math.floor(this.baseImgHeight * scale));

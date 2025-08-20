@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, computed, watch, toRaw } from 'vue';
 
 import { useAuthStore } from '@/stores/auth';
 
@@ -8,7 +8,12 @@ import { userApi } from '@/api';
 
 import { toast } from 'vue-sonner';
 
-import type { UserInfo, InterviewFormJSON } from '@/types/user';
+import type {
+    UserInfo,
+    InterviewFormJSON,
+    InterviewReservation,
+    Step
+} from '@/types/user';
 
 import { useRoute } from 'vue-router';
 
@@ -32,6 +37,8 @@ export const useUserStore = defineStore('user', () => {
             const authStore = useAuthStore()
             await authStore.refresh();
             await getUserInfo();
+            await loadInterviewFormJSON();
+            generateSteps()
             return true;
         } catch (e) {
             if (e) {
@@ -153,375 +160,149 @@ export const useUserStore = defineStore('user', () => {
         { immediate: true }
     )
 
-    const interviewFormJSON = ref<InterviewFormJSON[]>([
-        {
-            label: '学号',
-            fieldName: 'studentNumber',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'number',
-                maxLength: 11,
-                minLength: 11,
-            },
-            style: {
-                inputType: 'number'
-            }
-        },
-        {
-            label: '姓名',
-            fieldName: 'name',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'string',
-                maxLength: 50,
-            },
-            style: {
-                inputType: 'text'
-            }
-        },
-        {
-            label: '性别',
-            fieldName: 'sex',
-            required: true,
-            type: 'radioGroup',
-            value: {
-                type: 'string',
-                options: [
-                    {
-                        label: '男',
-                        value: 'man'
-                    },
-                    {
-                        label: '女',
-                        value: 'woman'
+    async function loadInterviewFormJSON() {
+        const res = await fetch('/template.json');
+        if (!res.ok) {
+            throw new Error('加载表单配置失败');
+        }
+        const data = await res.json();
+        interviewFormJSON.value = data;
+    }
+
+    const interviewFormJSON = ref<InterviewFormJSON[]>([])
+
+    // 示例面试数据
+    const originalData = ref<InterviewReservation[]>([{
+        id: 1,
+        user_id: 1,
+        campaign: {
+            id: 1,
+            title: "2025社团招新",
+            description: "2025年社团招新，欢迎各位同学加入我们的大家庭！",
+            start_date: "2025-08-31T16:00:00.000Z",
+            end_date: "2025-09-29T16:00:00.000Z",
+            is_active: true,
+            stage: {
+                id: 1,
+                title: "一面",
+                description: "第一次面试",
+                campaign_id: 1,
+                session: {
+                    id: 1,
+                    title: "一面10号场",
+                    start_time: "2025-09-10T00:00:00.000Z",
+                    end_time: "2025-09-10T23:59:59.000Z",
+                    location: "会议室A",
+                    time_slot: {
+                        id: 1,
+                        start_time: "2025-09-10T09:00:00.000Z",
+                        end_time: "2025-09-10T12:00:00.000Z",
+                        max_seats: 10,
+                        booked_seats: 2,
+                        is_available: true
                     }
-                ]
+                }
             }
         },
-        {
-            label: '民族',
-            description: '范例：汉族',
-            fieldName: 'nation',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'string',
-                maxLength: 50,
-            },
-            style: {
-                inputType: 'text'
-            }
-        },
-        {
-            label: '政治面貌',
-            fieldName: 'politicalStatus',
-            required: true,
-            type: 'select',
-            value: {
-                type: 'string',
-                maxLength: 50,
-                options: [
-                    {
-                        label: '中共党员',
-                        value: '中共党员'
-                    },
-                    {
-                        label: '中共预备党员',
-                        value: '中共预备党员'
-                    },
-                    {
-                        label: '共青团员',
-                        value: '共青团员'
-                    },
-                    {
-                        label: '群众',
-                        value: '群众'
-                    }
-                ]
-            }
-        },
-        {
-            label: '籍贯',
-            description: '范例：广东省东莞市',
-            fieldName: 'nativePlace',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'string',
-                maxLength: 100,
-            },
-            style: {
-                inputType: 'text'
-            }
-        },
-        {
-            label: '个人照片',
-            fieldName: 'photo',
-            required: true,
-            type: 'upload',
-            value: {
-                type: 'file',
-                maxSize: 10 * 1024 * 1024,
-                accept: [
-                    "image/png",
-                    "image/jpeg",
-                    "image/jpg",
-                    "image/webp",
-                    "image/svg+xml",
-                    "image/gif"
-                ],
-            }
-        },
-        {
-            label: '在读学历',
-            fieldName: 'education',
-            required: true,
-            type: 'radioGroup',
-            value: {
-                type: 'string',
-                options: [
-                    {
-                        label: '本科',
-                        value: '本科'
-                    },
-                    {
-                        label: '研究生',
-                        value: '研究生'
-                    }
-                ]
-            }
-        },
-        {
-            label: '年级',
-            fieldName: 'grade',
-            required: true,
-            type: 'radioGroup',
-            value: {
-                type: 'number',
-                options: [
-                    {
-                        label: '2024级',
-                        value: 2024
-                    },
-                    {
-                        label: '2025级',
-                        value: 2025
-                    }
-                ]
-            }
-        },
-        {
-            label: '学院',
-            fieldName: 'college',
-            required: true,
-            type: 'radioGroup',
-            value: {
-                type: 'string',
-                options: [
-                    {
-                        label: '第二临床医学院',
-                        value: '第二临床医学院'
-                    },
-                    {
-                        label: '医学技术学院',
-                        value: '医学技术学院'
-                    },
-                    {
-                        label: '护理学院',
-                        value: '护理学院'
-                    },
-                    {
-                        label: '公共卫生学院',
-                        value: '公共卫生学院'
-                    },
-                    {
-                        label: '药学院',
-                        value: '药学院'
-                    },
-                    {
-                        label: '人文与管理学院',
-                        value: '人文与管理学院'
-                    },
-                    {
-                        label: '基础医学院',
-                        value: '基础医学院'
-                    },
-                    {
-                        label: '生物医学工程学院',
-                        value: '生物医学工程学院'
-                    }, {
-                        label: '外国语学院',
-                        value: '外国语学院'
-                    }
-                ]
-            }
-        },
-        {
-            label: '专业',
-            description: '请填写专业全称，范例：信息管理与信息系统、数据科学与大数据技术、智能科学技术',
-            fieldName: 'major',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'string',
-                maxLength: 50,
-            },
-            style: {
-                inputType: 'text'
-            }
-        },
-        {
-            label: '微信号',
-            description: '(如果你的微信绑定了手机号，那可以输入手机号；但实际上，微信号不是你的微信呢称，而是一组由你自己定义的字母、数字、短横线和下划线的字符串)',
-            fieldName: 'wechatId',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'string',
-                maxLength: 50,
-            },
-            style: {
-                inputType: 'text'
-            }
-        },
-        {
-            label: 'QQ号',
-            fieldName: 'qqNumber',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'number',
-                maxLength: 50,
-            },
-            style: {
-                inputType: 'number'
-            }
-        },
-        {
-            label: '电子邮箱',
-            fieldName: 'email',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'string',
-                maxLength: 50,
-            },
-            style: {
-                inputType: 'email'
-            }
-        },
-        {
-            label: '联系电话',
-            description: '请填写中国大陆的手机号',
-            fieldName: 'phoneNumber',
-            required: true,
-            type: 'input',
-            value: {
-                type: 'number',
-                maxLength: 50,
-            },
-            style: {
-                inputType: 'number'
-            }
-        },
-        {
-            label: '意向部门',
-            description: '(该选项仅用于了解你对自身的定位，干事招新通过后，我们会进行为期半年的不区分部门培训，最后再结合个人表现决定部门去向)',
-            fieldName: 'intendedDepartment',
-            required: true,
-            type: 'checkbox',
-            value: {
-                type: 'array',
-                arrayItem: {
-                    type: 'string'
+        selection_status: "confirmed",
+        createdAt: "2025-08-14T13:16:59.000Z",
+        updatedAt: "2025-08-14T13:16:59.000Z"
+    }]);
+
+    const restructuredData = ref<InterviewReservation[]>([]);
+
+    function restructure(data: any) {
+        // 深拷贝
+        const deepClone = data.map((item: any) => structuredClone(item));
+        return deepClone
+    }
+
+    const rawData = toRaw(originalData.value);
+    restructuredData.value = restructure(rawData);
+
+    const steps = ref<Step[]>([])
+
+    function generateSteps() {
+        let Steps: Step[] = [{
+            step: 1,
+            title: "提交面试报名表",
+            description:
+                "于此网站中填写并提交面试报名表",
+            state: 'completed',
+            result: 'resolved',
+            type: 'event',
+            details: [
+                {
+                    tag: 'section',
+                    style: 'flex flex-col items-center justify-center md:space-y-4 space-y-2 md:col-span-3 md:mt-0 mt-2',
+                    children: [
+                        {
+                            tag: 'h1',
+                            content: '面试报名表已提交',
+                            style: 'text-emerald-500 md:text-3xl text-2xl font-bold',
+                            children: [
+                                {
+                                    tag: 'span',
+                                    content: '🎉'
+                                }
+                            ]
+                        },
+                        {
+                            tag: 'p',
+                            content: '您已成功提交面试报名表，请进行下一步，或等待后续通知。',
+                            style: 'text-green-100 text-lg text-center'
+                        }
+                    ]
                 },
-                default: [],
-                options: [
-                    {
-                        label: 'BI部',
-                        value: 'BI部'
-                    },
-                    {
-                        label: '宣传部',
-                        value: '宣传部'
-                    },
-                    {
-                        label: '学术部',
-                        value: '学术部'
-                    },
-                    {
-                        label: '科研部',
-                        value: '科研部'
-                    }
-                ]
-            }
+            ]
+        }]
+        restructuredData.value.forEach((item) => {
+            Steps.push({
+                step: Steps.length + 1,
+                title: `进行流程 ${item.campaign.stage.title}`,
+                description: `${item.campaign.stage.description}`,
+                ...(item.campaign.stage.session ? { session: item.campaign.stage.session } : {}),
+                state: 'completed',
+                result: 'pending',
+                type: 'process'
+            })
+        })
+        Steps = [...Steps, {
+            step: Steps.length + 1,
+            title: "等待后续通知",
+            description:
+                "根据实际情况，可能会进行加面。您可以在此网站中查看面试状态，也可以通过邮件或其他方式获取通知。",
+            state: 'completed',
+            result: 'pending',
+            type: 'event',
+            details: [
+                {
+                    tag: 'section',
+                    style: 'flex flex-col items-center justify-center md:space-y-4 space-y-2 md:col-span-3 md:mt-0 mt-2',
+                    children: [
+                        {
+                            tag: 'h1',
+                            content: '静候佳音 ✨',
+                            style: 'text-emerald-500 md:text-3xl text-2xl font-bold'
+                        }
+                    ]
+                }
+            ]
         },
         {
-            label: '一年后的留任意向',
-            fieldName: 'intentionToStay',
-            required: true,
-            type: 'radioGroup',
-            value: {
-                type: 'string',
-                options: [
-                    {
-                        label: "我想坐会长（副会长）这个位置",
-                        value: "会长"
-                    },
-                    {
-                        label: "我想担任某个部门的部长",
-                        value: "部长"
-                    },
-                    {
-                        label: "我只想水群",
-                        value: "水群"
-                    }
-                ]
-            }
-        },
-        {
-            label: "爱好特长",
-            fieldName: "hobbiesAndSpecialties",
-            required: true,
-            type: "textarea",
-            value: {
-                type: "string",
-                maxLength: 2000
-            }
-        },
-        {
-            label: "曾担任职务",
-            fieldName: "previousPositions",
-            required: true,
-            type: "textarea",
-            value: {
-                type: "string",
-                maxLength: 2000
-            }
-        },
-        {
-            label: "曾获荣誉",
-            fieldName: "honorsReceived",
-            required: true,
-            type: "textarea",
-            value: {
-                type: "string",
-                maxLength: 2000
-            }
-        },
-        {
-            label: "自我评价",
-            fieldName: "selfEvaluation",
-            required: true,
-            type: "textarea",
-            value: {
-                type: "string",
-                maxLength: 2000
-            }
-        },
-    ])
+            step: Steps.length + 2,
+            title: "面试结束",
+            description:
+                "面试结束后，您可以在此网站中查看面试结果，也可以通过邮件或其他方式获取通知。",
+            state: 'completed',
+            result: 'pending',
+            type: 'event'
+        }]
+        steps.value = Steps
+    }
+
+    generateSteps()
+
 
     return {
         getUserInfo,
@@ -535,6 +316,9 @@ export const useUserStore = defineStore('user', () => {
         removeInterview,
         interviews,
         currentTitle,
-        interviewFormJSON
+        interviewFormJSON,
+        originalData,
+        restructuredData,
+        steps
     }
 })
