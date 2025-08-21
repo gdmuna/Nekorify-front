@@ -12,6 +12,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    open: true,
     proxy: {
       '/nekorify': {
         target: 'http://localhost:3000', // Nekorify后端地址

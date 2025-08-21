@@ -199,3 +199,16 @@ export interface Step {
     type: 'event' | 'process'
     details?: any
 }
+
+export interface InterviewResult {
+    id: number
+    application_id: number
+    campaign_id: number
+    user_id: number
+    association: string | null
+    department: string | null
+    role: string | null
+    status: 'pending' | 'approved' | 'rejected'
+    createdAt: string
+    updatedAt: string
+}

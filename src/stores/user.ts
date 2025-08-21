@@ -12,6 +12,7 @@ import type {
     UserInfo,
     InterviewFormJSON,
     InterviewReservation,
+    InterviewResult,
     Step
 } from '@/types/user';
 
@@ -168,101 +169,153 @@ export const useUserStore = defineStore('user', () => {
         const data = await res.json();
         interviewFormJSON.value = data;
     }
+    loadInterviewFormJSON();
 
     const interviewFormJSON = ref<InterviewFormJSON[]>([])
-
     // 示例面试数据
-    const originalData = ref<InterviewReservation[]>([{
-        id: 1,
-        user_id: 1,
-        campaign: {
+    const originalData = ref<InterviewReservation[]>([
+        {
             id: 1,
-            title: "2025社团招新",
-            description: "2025年社团招新，欢迎各位同学加入我们的大家庭！",
-            start_date: "2025-08-31T16:00:00.000Z",
-            end_date: "2025-09-29T16:00:00.000Z",
-            is_active: true,
-            stage: {
+            user_id: 1,
+            campaign: {
                 id: 1,
-                title: "一面",
-                description: "第一次面试",
-                campaign_id: 1,
-                session: {
+                title: "2025社团招新",
+                description: "2025年社团招新，欢迎各位同学加入我们的大家庭！",
+                start_date: "2025-08-31T16:00:00.000Z",
+                end_date: "2025-09-29T16:00:00.000Z",
+                is_active: true,
+                stage: {
                     id: 1,
-                    title: "一面10号场",
-                    start_time: "2025-09-10T00:00:00.000Z",
-                    end_time: "2025-09-10T23:59:59.000Z",
-                    location: "会议室A",
-                    time_slot: {
+                    title: "一面",
+                    description: "第一次面试",
+                    campaign_id: 1,
+                    session: {
                         id: 1,
-                        start_time: "2025-09-10T09:00:00.000Z",
-                        end_time: "2025-09-10T12:00:00.000Z",
-                        max_seats: 10,
-                        booked_seats: 2,
-                        is_available: true
+                        title: "一面10号场",
+                        start_time: "2025-09-10T00:00:00.000Z",
+                        end_time: "2025-09-10T23:59:59.000Z",
+                        location: "会议室A",
+                        time_slot: {
+                            id: 1,
+                            start_time: "2025-09-10T09:00:00.000Z",
+                            end_time: "2025-09-10T12:00:00.000Z",
+                            max_seats: 10,
+                            booked_seats: 2,
+                            is_available: true
+                        }
                     }
                 }
-            }
+            },
+            selection_status: "confirmed",
+            createdAt: "2025-08-14T13:16:59.000Z",
+            updatedAt: "2025-08-14T13:16:59.000Z"
         },
-        selection_status: "confirmed",
-        createdAt: "2025-08-14T13:16:59.000Z",
-        updatedAt: "2025-08-14T13:16:59.000Z"
-    }]);
+        {
+            id: 1,
+            user_id: 1,
+            campaign: {
+                id: 1,
+                title: "2025社团招新",
+                description: "2025年社团招新，欢迎各位同学加入我们的大家庭！",
+                start_date: "2025-08-31T16:00:00.000Z",
+                end_date: "2025-09-29T16:00:00.000Z",
+                is_active: true,
+                stage: {
+                    id: 1,
+                    title: "二面",
+                    description: "第二次面试",
+                    campaign_id: 1,
+                    session: {
+                        id: 1,
+                        title: "二面10号场",
+                        start_time: "2025-09-12T00:00:00.000Z",
+                        end_time: "2025-09-12T23:59:59.000Z",
+                        location: "会议室B",
+                        time_slot: {
+                            id: 1,
+                            start_time: "2025-09-12T09:00:00.000Z",
+                            end_time: "2025-09-12T12:00:00.000Z",
+                            max_seats: 10,
+                            booked_seats: 2,
+                            is_available: true
+                        }
+                    }
+                }
+            },
+            selection_status: "confirmed",
+            createdAt: "2025-08-14T13:16:59.000Z",
+            updatedAt: "2025-08-14T13:16:59.000Z"
+        }
+    ]);
 
     const restructuredData = ref<InterviewReservation[]>([]);
-
     function restructure(data: any) {
         // 深拷贝
         const deepClone = data.map((item: any) => structuredClone(item));
         return deepClone
     }
-
     const rawData = toRaw(originalData.value);
     restructuredData.value = restructure(rawData);
 
-    const steps = ref<Step[]>([])
+    const interviewResult = reactive<InterviewResult[]>([
+        {
+            id: 0,
+            application_id: 0,
+            campaign_id: 1,
+            user_id: 0,
+            association: null,
+            department: null,
+            role: null,
+            status: 'pending',
+            createdAt: '2025-08-14T13:16:59.000Z',
+            updatedAt: '2025-08-14T13:16:59.000Z'
+        }
+    ])
 
+    const steps = ref<Step[]>([])
     function generateSteps() {
-        let Steps: Step[] = [{
-            step: 1,
-            title: "提交面试报名表",
-            description:
-                "于此网站中填写并提交面试报名表",
-            state: 'completed',
-            result: 'resolved',
-            type: 'event',
-            details: [
-                {
-                    tag: 'section',
-                    style: 'flex flex-col items-center justify-center md:space-y-4 space-y-2 md:col-span-3 md:mt-0 mt-2',
-                    children: [
-                        {
-                            tag: 'h1',
-                            content: '面试报名表已提交',
-                            style: 'text-emerald-500 md:text-3xl text-2xl font-bold',
-                            children: [
-                                {
-                                    tag: 'span',
-                                    content: '🎉'
-                                }
-                            ]
-                        },
-                        {
-                            tag: 'p',
-                            content: '您已成功提交面试报名表，请进行下一步，或等待后续通知。',
-                            style: 'text-green-100 text-lg text-center'
-                        }
-                    ]
-                },
-            ]
-        }]
-        restructuredData.value.forEach((item) => {
+        let Steps: Step[] = [
+            {
+                step: 1,
+                title: "提交面试报名表",
+                description:
+                    "于此网站中填写并提交面试报名表",
+                state: 'completed',
+                result: 'resolved',
+                type: 'event',
+                details: [
+                    {
+                        tag: 'section',
+                        style: 'flex flex-col items-center justify-center md:space-y-4 space-y-2 md:col-span-3 md:mt-0 mt-2',
+                        children: [
+                            {
+                                tag: 'h1',
+                                content: '面试报名表已提交',
+                                style: 'text-emerald-500 md:text-3xl text-2xl font-bold',
+                                children: [
+                                    {
+                                        tag: 'span',
+                                        content: '🎉'
+                                    }
+                                ]
+                            },
+                            {
+                                tag: 'p',
+                                content: '您已成功提交面试报名表，请进行下一步，或等待后续通知。',
+                                style: 'text-green-100 text-lg text-center'
+                            }
+                        ]
+                    },
+                ]
+            }
+        ]
+        restructuredData.value.forEach((item, index) => {
             Steps.push({
                 step: Steps.length + 1,
                 title: `进行流程 ${item.campaign.stage.title}`,
                 description: `${item.campaign.stage.description}`,
                 ...(item.campaign.stage.session ? { session: item.campaign.stage.session } : {}),
-                state: 'completed',
+                state: index < restructuredData.value.length - 1 ? 'completed' : 'active',
                 result: 'pending',
                 type: 'process'
             })
@@ -272,7 +325,7 @@ export const useUserStore = defineStore('user', () => {
             title: "等待后续通知",
             description:
                 "根据实际情况，可能会进行加面。您可以在此网站中查看面试状态，也可以通过邮件或其他方式获取通知。",
-            state: 'completed',
+            state: 'active',
             result: 'pending',
             type: 'event',
             details: [
@@ -294,7 +347,7 @@ export const useUserStore = defineStore('user', () => {
             title: "面试结束",
             description:
                 "面试结束后，您可以在此网站中查看面试结果，也可以通过邮件或其他方式获取通知。",
-            state: 'completed',
+            state: 'inactive',
             result: 'pending',
             type: 'event'
         }]

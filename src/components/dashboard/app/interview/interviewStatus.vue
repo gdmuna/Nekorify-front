@@ -181,6 +181,8 @@ import { Badge } from '@/components/ui/badge'
 import detailRenderer from '@/components/detailRenderer.vue';
 
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
@@ -192,11 +194,11 @@ const { restructuredData, originalData, steps } = storeToRefs(userStore);
 
 // 利用浏览器自动检测的时区
 function formatDate(dateString: string) {
-    return dayjs(dateString).format('YYYY年M月D日');
+    return dayjs.utc(dateString).format('YYYY年M月D日')
 }
 
 function formatTime(dateString: string) {
-    return dayjs(dateString).format('HH:mm');
+    return dayjs.utc(dateString).format('HH:mm')
 }
 
 const currentStep = ref()

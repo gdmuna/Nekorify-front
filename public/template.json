@@ -6,8 +6,8 @@
         "type": "input",
         "value": {
             "type": "number",
-            "maxLength": 11,
-            "minLength": 11
+            "minLength": 11,
+            "maxLength": 11
         },
         "style": {
             "inputType": "number"
