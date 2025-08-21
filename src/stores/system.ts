@@ -68,10 +68,9 @@ export const useSystemStore = defineStore('system', () => {
     }
 
     const isMobile = computed(() => window.innerWidth <= 767)
-
     const isTablet = computed(() => window.innerWidth > 767 && window.innerWidth <= 1024)
-
     const isDesktop = computed(() => window.innerWidth > 1024)
+    const isXlDesktop = computed(() => window.innerWidth > 1280)
 
     const isLoginCallback = computed(() => {
         return router.currentRoute.value.path === '/loginCallback'
@@ -90,6 +89,7 @@ export const useSystemStore = defineStore('system', () => {
         routerGoto,
         routerBack,
         prevPath,
-        setPrevPath
+        setPrevPath,
+        isXlDesktop
     }
 })
