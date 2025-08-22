@@ -5,7 +5,7 @@
         <!-- 消息弹窗挂载点 -->
         <Toaster theme="dark" :expand="!isMobile" position="bottom-right" richColors />
         <!-- 滚动进度条 -->
-        <div ref="scroll_progress" class="fixed z-40 top-0 left-0 w-2 h-[100dvh] page-scroll-progress" />
+        <div ref="scroll_progress" class="fixed z-40 top-0 left-0 w-1 md:w-2 h-[100dvh] page-scroll-progress" />
         <!-- 主内容区 -->
         <div id="content" class="min-h-[100dvh] min-w-[100dvw] flex flex-col">
             <main class="flex flex-col flex-1">

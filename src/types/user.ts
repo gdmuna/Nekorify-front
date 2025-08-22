@@ -8,7 +8,7 @@ export interface UserInfo {
     affiliation: string
     createdAt: Date
     lastLogin: Date
-    group: string[]
+    groups: string[]
     links: string[]
 }
 
@@ -195,8 +195,8 @@ export interface Step {
     description: string
     session?: Session
     state: 'completed' | 'active' | 'inactive'
-    result: 'resolved' | 'rejected' | 'pending'
-    type: 'event' | 'process'
+    result: 'pending' | 'approved' | 'rejected'
+    type: 'event' | 'process' | 'result'
     details?: any
 }
 

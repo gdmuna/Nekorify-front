@@ -37,7 +37,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
     // 清理事件监听
     if (photobox.canvas) {
-        console.log('Removing events from photobox');
         photobox.remove_events()
     }
     if (animateId) cancelAnimationFrame(animateId);

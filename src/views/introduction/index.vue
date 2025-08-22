@@ -17,8 +17,8 @@
             <div class="absolute bottom-0 left-1/2 flex items-center justify-between -translate-x-1/2
             mb-2 space-x-2 z-10 pointer-events-none">
                 <div class="flex flex-col items-center justify-between font-extrabold whitespace-nowrap">
-                    <p class="text-sm md:text-lg">Where we're going, we don't need roads</p>
-                    <p class="tracking-wider text-sm md:text-lg">前路未有路，心之所向即坦途</p>
+                    <p class="tracking-wider text-sm md:text-lg">我见青山多妩媚，料青山见我应如是</p>
+                    <p class="text-xs md:text-lg">Comely hills I commune, a kindred soul in tune</p>
                 </div>
             </div>
         </section>
@@ -60,7 +60,7 @@
                             <template #TR>
                                 <div class="flex-1"></div>
                                 <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
-                                <span class="text-lg Association">GDMU-NA</span>
+                                <span class="text-lg Association-NA">GDMU-NA</span>
                             </template>
                             <template #main>
                                 <div class="flex-1 flex justify-between items-center w-full h-full">
@@ -80,7 +80,7 @@
                             <template #TR>
                                 <div class="flex-1"></div>
                                 <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
-                                <span class="text-lg Association">GDMU-ACM</span>
+                                <span class="text-lg Association-ACM">GDMU-ACM</span>
                             </template>
                             <template #main>
                                 <div class="flex-1 flex justify-between items-center w-full h-full">
@@ -179,7 +179,7 @@
                                 <template #TR>
                                     <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
-                                    <span class="text-lg Association">GDMU-NA</span>
+                                    <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
@@ -199,7 +199,7 @@
                                 <template #TR>
                                     <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
-                                    <span class="text-lg Association">GDMU-NA</span>
+                                    <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
@@ -219,7 +219,7 @@
                                 <template #TR>
                                     <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
-                                    <span class="text-lg Association">GDMU-NA</span>
+                                    <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
@@ -239,7 +239,7 @@
                                 <template #TR>
                                     <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
-                                    <span class="text-lg Association">GDMU-NA</span>
+                                    <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
@@ -259,7 +259,7 @@
                                 <template #TR>
                                     <div class="flex-1"></div>
                                     <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
-                                    <span class="text-lg Association">GDMU-NA</span>
+                                    <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
@@ -279,7 +279,7 @@
                                 <template #TR>
                                     <div class="flex-1"></div>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
-                                    <span class="text-lg Association">GDMU-ACM</span>
+                                    <span class="text-lg Association-ACM">GDMU-ACM</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
@@ -299,7 +299,7 @@
                                 <template #TR>
                                     <div class="flex-1"></div>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
-                                    <span class="text-lg Association">GDMU-ACM</span>
+                                    <span class="text-lg Association-ACM">GDMU-ACM</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
@@ -319,7 +319,7 @@
                                 <template #TR>
                                     <div class="flex-1"></div>
                                     <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
-                                    <span class="text-lg Association">GDMU-ACM</span>
+                                    <span class="text-lg Association-ACM">GDMU-ACM</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">

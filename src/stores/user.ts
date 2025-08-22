@@ -18,6 +18,8 @@ import type {
 
 import { useRoute } from 'vue-router';
 
+import { isAfterNow, isBeforeOrBetweenNow } from '@/lib/utils';
+
 export const useUserStore = defineStore('user', () => {
     const route = useRoute();
     async function getUserInfo() {
@@ -27,7 +29,6 @@ export const useUserStore = defineStore('user', () => {
             handleUserInfo(info)
             return Promise.resolve()
         } else {
-            console.log('err2', err);
             toast.error(err.data.message || '获取用户信息失败')
             return Promise.reject()
         }
@@ -39,7 +40,6 @@ export const useUserStore = defineStore('user', () => {
             await authStore.refresh();
             await getUserInfo();
             await loadInterviewFormJSON();
-            generateSteps()
             return true;
         } catch (e) {
             if (e) {
@@ -59,7 +59,7 @@ export const useUserStore = defineStore('user', () => {
         affiliation: '',
         createdAt: new Date(),
         lastLogin: new Date(),
-        group: [] as string[],
+        groups: [] as string[],
         links: [] as string[]
     })
 
@@ -73,7 +73,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.affiliation = info.affiliation
         userInfo.createdAt = new Date(info.createdTime)
         userInfo.lastLogin = new Date(info.lastSigninTime)
-        userInfo.group = info.groups
+        userInfo.groups = info.groups
         userInfo.links = info.links || ['https://fov-rgt.cn']
     }
 
@@ -87,7 +87,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.affiliation = ''
         userInfo.createdAt = new Date()
         userInfo.lastLogin = new Date()
-        userInfo.group = []
+        userInfo.groups = []
         userInfo.links = []
     }
 
@@ -104,7 +104,15 @@ export const useUserStore = defineStore('user', () => {
         })
     }
 
-    const hasInterviews = ref<number[]>([1])
+    const hasInterviews = computed(() => {
+        const result = [] as number[]
+        restructuredData.value.forEach((item) => {
+            result.push(item.campaign.id)
+        })
+        console.log(result);
+        return result
+    })
+
     const interviews = ref([
         {
             id: 1,
@@ -127,36 +135,43 @@ export const useUserStore = defineStore('user', () => {
         return hasInterviews.value.includes(nodeId)
     }
 
-    async function addInterview(nodeId: number) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                // 模拟添加面试
-                hasInterviews.value.push(nodeId);
-                console.log('面试已添加:', nodeId);
-                resolve(true);
-            }, 1000);
-        })
-    }
-
-    async function removeInterview(nodeId: number) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                // 模拟移除面试
-                hasInterviews.value = hasInterviews.value.filter(id => id !== nodeId);
-                resolve(true);
-            }, 1000);
-        })
-    }
-
     const currentTitle = ref('面试节点')
+    const currentInterviewId = ref<number | null>(null)
+
+    const isUnderWay = computed(() => {
+        return currentInterviewResult.value?.status === 'pending'
+    })
+
+    const waitingInterview = computed(() => {
+        // 没有面试数据直接返回 false
+        if (!currentInterview.value || currentInterview.value.length === 0) return false
+        // 遍历所有 session，判断是否有等待中的
+        return currentInterview.value.some(item => {
+            const session = item.campaign.stage.session
+            if (!session) return false
+            // 当前时间在 start_time 之前，或者在 start_time 和 end_time 之间
+            return isBeforeOrBetweenNow(session.start_time, session.end_time)
+        })
+    })
+
+    const currentInterview = computed(() => {
+        if (currentInterviewId.value === null) return null
+        const result = restructuredData.value.filter(item =>
+            item.campaign.id === currentInterviewId.value
+        )
+        if (result.length === 0) return null
+        return result
+    })
 
     watch(
         () => route.params.nodeId,
         (nodeId) => {
             if (nodeId === undefined || route.name !== 'interviewNode') return
             const item = interviews.value.find(item => item.id === Number(nodeId))
+            const id = item ? item.id : null
             const title = item ? item.title : '面试节点'
             currentTitle.value = title
+            currentInterviewId.value = id
         },
         { immediate: true }
     )
@@ -192,8 +207,8 @@ export const useUserStore = defineStore('user', () => {
                     session: {
                         id: 1,
                         title: "一面10号场",
-                        start_time: "2025-09-10T00:00:00.000Z",
-                        end_time: "2025-09-10T23:59:59.000Z",
+                        start_time: "2025-08-10T00:00:00.000Z",
+                        end_time: "2025-08-10T23:59:59.000Z",
                         location: "会议室A",
                         time_slot: {
                             id: 1,
@@ -228,8 +243,8 @@ export const useUserStore = defineStore('user', () => {
                     session: {
                         id: 1,
                         title: "二面10号场",
-                        start_time: "2025-09-12T00:00:00.000Z",
-                        end_time: "2025-09-12T23:59:59.000Z",
+                        start_time: "2025-08-12T00:00:00.000Z",
+                        end_time: "2025-08-12T23:59:59.000Z",
                         location: "会议室B",
                         time_slot: {
                             id: 1,
@@ -266,14 +281,18 @@ export const useUserStore = defineStore('user', () => {
             association: null,
             department: null,
             role: null,
-            status: 'pending',
+            status: 'rejected',
             createdAt: '2025-08-14T13:16:59.000Z',
             updatedAt: '2025-08-14T13:16:59.000Z'
         }
     ])
 
-    const steps = ref<Step[]>([])
-    function generateSteps() {
+    const currentInterviewResult = computed(() => {
+        if (currentInterviewId.value === null) return null
+        return interviewResult.find(item => item.campaign_id === currentInterviewId.value) ?? null
+    })
+
+    const steps = computed(() => {
         let Steps: Step[] = [
             {
                 step: 1,
@@ -281,7 +300,7 @@ export const useUserStore = defineStore('user', () => {
                 description:
                     "于此网站中填写并提交面试报名表",
                 state: 'completed',
-                result: 'resolved',
+                result: 'approved',
                 type: 'event',
                 details: [
                     {
@@ -309,23 +328,34 @@ export const useUserStore = defineStore('user', () => {
                 ]
             }
         ]
-        restructuredData.value.forEach((item, index) => {
-            Steps.push({
-                step: Steps.length + 1,
-                title: `进行流程 ${item.campaign.stage.title}`,
-                description: `${item.campaign.stage.description}`,
-                ...(item.campaign.stage.session ? { session: item.campaign.stage.session } : {}),
-                state: index < restructuredData.value.length - 1 ? 'completed' : 'active',
-                result: 'pending',
-                type: 'process'
+        if (currentInterview.value) {
+            currentInterview.value.forEach((item) => {
+                Steps.push({
+                    step: Steps.length + 1,
+                    title: `进行流程 ${item.campaign.stage.title}`,
+                    description: `${item.campaign.stage.description}`,
+                    ...(item.campaign.stage.session ? { session: item.campaign.stage.session } : {}),
+                    state: function () {
+                        const session = item.campaign.stage.session
+                        if (isUnderWay.value && isBeforeOrBetweenNow(session.start_time, session.end_time)) return 'active'
+                        if (isAfterNow(session.end_time) || !isUnderWay.value) return 'completed'
+                        return 'inactive'
+                    }(),
+                    result: 'pending',
+                    type: 'process'
+                })
             })
-        })
+        }
         Steps = [...Steps, {
             step: Steps.length + 1,
             title: "等待后续通知",
             description:
                 "根据实际情况，可能会进行加面。您可以在此网站中查看面试状态，也可以通过邮件或其他方式获取通知。",
-            state: 'active',
+            state: function () {
+                if (isUnderWay.value && (!waitingInterview.value || !currentInterview.value)) return 'active'
+                if (!isUnderWay.value) return 'completed'
+                return 'inactive'
+            }(),
             result: 'pending',
             type: 'event',
             details: [
@@ -336,7 +366,7 @@ export const useUserStore = defineStore('user', () => {
                         {
                             tag: 'h1',
                             content: '静候佳音 ✨',
-                            style: 'text-emerald-500 md:text-3xl text-2xl font-bold'
+                            style: 'text-emerald-500 md:text-6xl text-4xl font-bold'
                         }
                     ]
                 }
@@ -347,14 +377,12 @@ export const useUserStore = defineStore('user', () => {
             title: "面试结束",
             description:
                 "面试结束后，您可以在此网站中查看面试结果，也可以通过邮件或其他方式获取通知。",
-            state: 'inactive',
-            result: 'pending',
-            type: 'event'
+            state: isUnderWay.value ? 'inactive' : 'completed',
+            result: currentInterviewResult.value?.status || 'pending',
+            type: 'result'
         }]
-        steps.value = Steps
-    }
-
-    generateSteps()
+        return Steps
+    })
 
 
     return {
@@ -365,13 +393,12 @@ export const useUserStore = defineStore('user', () => {
         cleanUserInfo,
         updateUserInfo,
         checkHasInterview,
-        addInterview,
-        removeInterview,
         interviews,
         currentTitle,
         interviewFormJSON,
         originalData,
         restructuredData,
-        steps
+        steps,
+        currentInterviewResult
     }
 })

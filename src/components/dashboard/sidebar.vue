@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col space-y-4 xl:text-xl md:text-[1rem] xl:w-[19.5rem] md:w-[16rem]">
         <div class="flex flex-row md:flex-col md:space-y-4 md:space-x-0 space-x-4 md:items-start items-center">
-            <div class="avatar-wrapper relative cursor-pointer rounded-full" @mouseenter="avatarHover = true"
+            <div class="relative cursor-pointer rounded-full" @mouseenter="avatarHover = true"
                 @mouseleave="avatarHover = false">
                 <img :src="userInfo.avatar" class="avatar xl:size-78 md:size-64 size-24 rounded-full object-cover
                 border-2 dark:border-[#E0DEC0] select-none">
@@ -19,7 +19,7 @@
                 <p class="dark:text-[#CFCBA0]">{{ userInfo.username }}</p>
             </div>
         </div>
-        <div class="space-x-2">
+        <div v-if="userInfo.bio !== undefined" class="space-x-2">
             <Hash class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
             <p class="inline">{{ userInfo.bio }}</p>
         </div>
@@ -39,11 +39,20 @@
             </div>
         </div>
         <div class="flex flex-col space-y-1">
-            <div class="space-x-2">
+            <div v-if="getGroupByLevel(4)" v-for="(item, index) in getGroupByLevel(4)" :key="index" class="space-x-2">
                 <BadgeInfo class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
-                <p class="inline">{{ userInfo.affiliation }}</p>
-                <p class="inline">·</p>
-                <p class="inline">BI部部长</p>
+                <p class="inline">{{ item.label }}</p>
+            </div>
+            <div v-if="getGroupByLevel(2)" v-for="(item, index) in getGroupByLevel(2)" :key="index" class="space-x-2">
+                <BadgeInfo class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
+                <p class="inline">
+                    {{ item.label }}
+                    <span v-if="isMinister(item.belongs!)">部长</span>
+                </p>
+            </div>
+            <div v-if="getGroupByLevel(0)" v-for="(item, index) in getGroupByLevel(0)" :key="index" class="space-x-2">
+                <BadgeInfo class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
+                <p class="inline">{{ item.label }}</p>
             </div>
             <div v-if="userInfo.email" class="space-x-2">
                 <Mail class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
@@ -81,10 +90,17 @@ import { editDialog } from './index';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
-const { logout } = authStore;
+const { logout, getGroupByKey, getGroupByLevel } = authStore;
 const { userInfo } = storeToRefs(userStore);
 
 const avatarHover = ref(false);
+
+function isMinister(belongs: string[]) {
+    const res = belongs.includes('gdmu-na') && getGroupByKey('gdmu/NA-minister') ? true : false
+    || belongs.includes('gdmu-acm') && getGroupByKey('gdmu/ACM-minister') ? true : false
+    console.log(res);
+    return res
+}
 
 </script>
 

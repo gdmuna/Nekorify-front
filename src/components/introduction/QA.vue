@@ -14,7 +14,7 @@
                     </div>
                 </AccordionTrigger>
                 <AccordionContent class="md:text-2xl text-lg">
-                    <div class="flex items-center justify-start space-x-4 select-none xl:py-8 md:py-6 py-4 px-4">
+                    <div class="flex items-center justify-start space-x-4 select-none xl:py-8 md:py-6 py-4 px-5">
                         <p class="text-6xl text-transparent text-stroke">A{{ index + 1 }}</p>
                         <div class="flex-1 flex items-center justify-start">
                             {{ item.answer }}

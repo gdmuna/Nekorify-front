@@ -35,7 +35,7 @@ import { SplitText } from 'gsap/SplitText';
 
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore()
-const { checkHasInterview, addInterview, removeInterview } = userStore
+const { checkHasInterview } = userStore
 
 const props = defineProps<{ items: Array<any> }>()
 const route = useRoute()

@@ -12,6 +12,8 @@ import type { InterviewFormJSON } from '@/types/user'
 
 import z from "zod";
 
+import dayjs from 'dayjs'
+
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -237,4 +239,46 @@ export function generateZodSchema(fields: InterviewFormJSON[]) {
         } else shape[f.fieldName] = config
     });
     return z.object(shape);
+}
+
+/**
+ * 
+ * @param time 
+ * @returns boolean - 当前时间是否在给定时间之后
+ */
+export function isAfterNow(time: string): boolean {
+    const now = dayjs()
+    const end = dayjs(time)
+    return now.isAfter(end)
+}
+
+/**
+ * 
+ * @param time 
+ * @returns boolean - 当前时间是否在给定时间之前
+ */
+export function isBeforeNow(time: string): boolean {
+    const now = dayjs()
+    const start = dayjs(time)
+    return now.isBefore(start)
+}
+
+/**
+ * 
+ * @param startTime 
+ * @param endTime 
+ * @returns boolean - 当前时间是否在给定时间区间内
+ */
+export function isBetweenNow(startTime: string, endTime: string): boolean {
+    const now = dayjs()
+    const start = dayjs(startTime)
+    const end = dayjs(endTime)
+    return now.isAfter(start) && now.isBefore(end)
+}
+
+export function isBeforeOrBetweenNow(startTime: string, endTime: string): boolean {
+    const now = dayjs()
+    const start = dayjs(startTime)
+    const end = dayjs(endTime)
+    return now.isBefore(start) || (now.isAfter(start) && now.isBefore(end))
 }
