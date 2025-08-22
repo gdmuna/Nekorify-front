@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="flex-1 relative">
+    <div ref="root" class="flex-1 relative mb-5">
         <div>
             <p class="dark:text-amber-100 md:text-5xl text-4xl font-bold">应用</p>
             <div class="w-full h-[1px] dark:bg-[#CFCBA0] my-5" />

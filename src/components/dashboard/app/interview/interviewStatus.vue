@@ -14,7 +14,7 @@
                             <StepperSeparator v-if="index !== steps.length - 1"
                                 :class="['absolute left-[1.125rem] top-[2.375rem] block h-[105%] w-0.5 shrink-0 rounded-full bg-muted', step.state === 'completed' && 'bg-[#F7F3ED]']" />
                             <StepperTrigger as-child>
-                                <Button
+                                <Button :id="`step-button-${index}`"
                                     :variant="step.state === 'completed' || step.state === 'active' ? 'default' : 'outline'"
                                     size="icon" :class="[
                                         'z-10 rounded-full shrink-0 bg-[#F7F3ED] cursor-pointer',
@@ -28,8 +28,8 @@
                             <div :data-steps-description-index="index" class="flex flex-1 flex-col gap-1">
                                 <StepperTitle :class="[state === 'active' && 'text-[#E2D7AB]']"
                                     class="font-bold transition text-3xl whitespace-break-spaces">
-                                    <p>
-                                        {{ step.title }}
+                                    <p class="space-x-2">
+                                        <label :for="`step-button-${index}`" class="cursor-pointer">{{ step.title }}</label>
                                         <sup>
                                             <Badge v-if="step.state === 'completed'"
                                                 class="bg-emerald-500 cursor-default select-none">已完成</Badge>

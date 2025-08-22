@@ -75,6 +75,8 @@ export const useUserStore = defineStore('user', () => {
         userInfo.lastLogin = new Date(info.lastSigninTime)
         userInfo.groups = info.groups
         userInfo.links = info.links || ['https://fov-rgt.cn']
+        console.log(userInfo.bio);
+        
     }
 
     function cleanUserInfo() {
@@ -109,7 +111,6 @@ export const useUserStore = defineStore('user', () => {
         restructuredData.value.forEach((item) => {
             result.push(item.campaign.id)
         })
-        console.log(result);
         return result
     })
 

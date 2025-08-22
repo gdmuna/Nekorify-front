@@ -19,7 +19,7 @@
                 <p class="dark:text-[#CFCBA0]">{{ userInfo.username }}</p>
             </div>
         </div>
-        <div v-if="userInfo.bio !== undefined" class="space-x-2">
+        <div v-if="userInfo.bio" class="space-x-2">
             <Hash class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
             <p class="inline">{{ userInfo.bio }}</p>
         </div>

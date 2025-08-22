@@ -25,7 +25,6 @@ import rippleMask from './rippleMask.vue'
 
 const root = ref<HTMLElement | null>(null);
 const mask1 = ref<HTMLElement | null>(null);
-const mask2 = ref<HTMLElement | null>(null);
 
 const ripples = ref<{ radius: number, color: string, key: number }[]>([])
 let rippleKey = 0
@@ -62,10 +61,6 @@ const animate = {
         gsap.set(mask1.value, {
             x: e.offsetX - (mask1.value?.offsetWidth || 0) / 2,
             y: e.offsetY - (mask1.value?.offsetHeight || 0) / 2
-        })
-        gsap.set(mask2.value, {
-            x: e.offsetX - (mask2.value?.offsetWidth || 0) / 2,
-            y: e.offsetY - (mask2.value?.offsetHeight || 0) / 2
         })
     },
     click() {

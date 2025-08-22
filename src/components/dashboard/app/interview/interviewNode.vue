@@ -9,9 +9,16 @@
                 <div class="xl:text-8xl md:text-6xl text-4xl overflow-hidden">
                     <h1 ref="title">人生海海，何惧一试</h1>
                 </div>
-                <primaryButton class="dark:bg-amber-500 py-6" @click="editForm = true">
-                    <p class="text-4xl">我要报名!</p>
-                </primaryButton>
+                <div class="overflow-hidden">
+                    <div ref="buttonRef">
+                        <primaryButton class="dark:bg-sky-600 bg-emerald-500 dark:text-[#0E100F] md:py-7 py-6 md:px-8 px-6"
+                            @click="editForm = true"
+                            mask1-color="oklch(69.6% 0.17 162.48 / 0.5)"
+                            mask2-color="oklch(69.6% 0.17 162.48 / 0.5)">
+                            <p class="md:text-4xl text-3xl">我要报名!</p>
+                        </primaryButton>
+                    </div>
+                </div>
             </div>
             <div />
         </div>
@@ -27,7 +34,7 @@ import { useRoute } from 'vue-router'
 
 import { primaryButton } from '@/components/ui/button';
 
-import { Info, Rocket } from 'lucide-vue-next';
+import { Info } from 'lucide-vue-next';
 
 import interviewForm from './interviewForm.vue';
 import interviewStatus from './interviewStatus.vue';
@@ -49,6 +56,8 @@ const editForm = ref(false)
 
 const title = ref<HTMLElement | null>(null)
 
+const buttonRef = ref<HTMLElement | null>(null)
+
 onMounted(() => {
     animate.start()
 })
@@ -62,13 +71,24 @@ const animate = {
             linesClass: 'lineChildren',
         })
         this.tl.from(split.chars, {
-            y: '100%',
+            y: '110%',
             duration: 0.75,
             ease: 'power2.out',
             stagger: {
                 amount: 0.5
             }
         })
+        this.tl.fromTo(buttonRef.value,
+            {
+                y: '-110%',
+            },
+            {
+                y: 0,
+                duration: 0.75,
+                ease: 'power2.out',
+            },
+            '-=0.25'
+        )
     }
 }
 
