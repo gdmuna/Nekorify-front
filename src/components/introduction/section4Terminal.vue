@@ -31,7 +31,7 @@
                 </p>
                 <p ref="pTag4" class="text-[#FFBD2E] font-bold mt-8 mb-4">> ACTION REQUIRED:</p>
                 <button ref="Button" class="px-4 py-2 text-[#0E100F] rounded-md font-bold
-                cursor-pointer mb-2 will-change-transform relative">
+                cursor-pointer mb-2 will-change-transform relative" @click="routerGoto('/dashboard/interview')">
                     <p class="button-text1 pointer-events-none whitespace-nowrap">CLICK TO DEPLOY NEW NODE</p>
                     <p
                         class="button-text2 absolute top-1/2 left-1/2 text-xl -translate-1/2 pointer-events-none whitespace-nowrap flex items-center space-x-2">
@@ -56,7 +56,9 @@ import { SplitText } from "gsap/SplitText";
 
 import { Smile } from 'lucide-vue-next';
 
-const showImg = ref(false)
+import { useSystemStore } from '@/stores/system';
+const systemStore = useSystemStore();
+const { routerGoto } = systemStore;
 
 const pTag1 = ref<HTMLElement | null>(null)
 const pTag2 = ref<HTMLElement | null>(null)

@@ -1,7 +1,7 @@
 <template>
-    <div
-        class="fixed top-0 left-0 w-full h-14 header-bg z-50 px-4 flex items-center select-none pointer-events-none">
-        <header class="flex h-full flex-1 items-center justify-between *:shrink-0 relative overflow-x-auto *:pointer-events-auto">
+    <div class="fixed top-0 left-0 w-full h-14 header-bg z-50 px-4 flex items-center select-none pointer-events-none">
+        <header
+            class="flex h-full flex-1 items-center justify-between *:shrink-0 relative overflow-x-auto *:pointer-events-auto">
             <!-- 页眉左侧内容 -->
             <div class="flex h-full items-center">
                 <!-- LOGO -->
@@ -52,7 +52,7 @@
                 </div>
                 <img :src="boundary" alt="" class="ml-2 mr-4">
                 <div class="flex items-center space-x-4 !overflow-y-visible">
-                    <Button class="join-us-button cursor-pointer font-bold" @click="routerGoto('/dashboard/interview')" >
+                    <Button class="join-us-button cursor-pointer font-bold" @click="routerGoto('/dashboard/interview')">
                         加入我们
                         <Smile class="size-6" />
                     </Button>
@@ -62,11 +62,14 @@
                         登录
                         <LogIn class="size-6" />
                     </Button>
-                    <Button v-else class="dark:bg-[#0E100F] cursor-pointer dark:text-[#FEFCE4] border-2 py-2" @click="routerGoto('/dashboard')">
-                        <img :src="userInfo.avatar"
-                            class="size-6 rounded-full border-1 dark:border-[#0E100F] object-cover">
-                        <p>仪表盘</p>
-                    </Button>
+                    <primaryButton v-else class="border-2 py-2"
+                        @click="routerGoto('/dashboard')">
+                        <div class="flex items-center space-x-2">
+                            <img :src="userInfo.avatar"
+                                class="size-6 rounded-full border-1 dark:border-[#0E100F] object-cover">
+                            <p>仪表盘</p>
+                        </div>
+                    </primaryButton>
                 </div>
             </div>
         </header>
@@ -83,7 +86,7 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
 // 导入 shadcn UI 组件
-import { Button } from '@/components/ui/button'
+import { Button, primaryButton } from '@/components/ui/button'
 import { toggleThemeButton } from '@/components/ui/switch'
 
 // 导入图标
@@ -205,7 +208,7 @@ const logoAnimate = {
 }
 
 .header-bg {
-    background: linear-gradient(180.00deg, rgba(14, 16, 15, 1),rgba(14, 16, 15, 0) 100%);
+    background: linear-gradient(180.00deg, rgba(14, 16, 15, 1), rgba(14, 16, 15, 0) 100%);
     backdrop-filter: blur(2px);
 }
 </style>

@@ -142,7 +142,7 @@
                                 <p>{{ section3_scrollProgressPercent }}</p>
                             </div>
                             <div class="relative overflow-hidden truncate break-all">
-                                <span v-for="(_, index) in Array.from({ length: 13 })" :key="index">░░░</span>
+                                <span v-for="(_, index) in Array.from({ length: 15 })" :key="index">░░░</span>
                                 <div ref="section3_progressBlock"
                                     class="absolute top-0 w-full h-full section3-progressBlock">
                                 </div>

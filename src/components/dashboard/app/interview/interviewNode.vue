@@ -9,7 +9,9 @@
                 <div class="xl:text-8xl md:text-6xl text-4xl overflow-hidden">
                     <h1 ref="title">人生海海，何惧一试</h1>
                 </div>
-                <secondaryButton text="我要报名!" :icon="Rocket" @click="editForm = true" />
+                <primaryButton class="dark:bg-amber-500 py-6" @click="editForm = true">
+                    <p class="text-4xl">我要报名!</p>
+                </primaryButton>
             </div>
             <div />
         </div>
@@ -23,7 +25,7 @@ import { onMounted, ref, onBeforeMount } from 'vue'
 
 import { useRoute } from 'vue-router'
 
-import { secondaryButton } from '@/components/ui/button';
+import { primaryButton } from '@/components/ui/button';
 
 import { Info, Rocket } from 'lucide-vue-next';
 

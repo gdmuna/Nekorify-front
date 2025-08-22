@@ -11,11 +11,22 @@
             <main class="flex flex-col flex-1">
                 <router-view />
             </main>
-            <footer class="w-full border-t-2 border-[#222018] mt-auto">
+            <footer class="border-t-2 border-[#222018] mt-auto mx-4">
                 <div
-                    class="w-full h-20 dark:bg-[#0E100F] flex flex-col justify-evenly text-center md:text-sm text-[0.7rem] dark:text-[#B0B0B0]">
+                    class="dark:bg-[#0E100F] flex flex-col space-y-2 my-4 justify-evenly text-center md:text-sm text-xs dark:text-[#B0B0B0]">
                     <p>已经到底了喵~</p>
-                    <p>Copyright © 2025 GDMU-NA & GDMU-ACM. All Rights Reserved.</p>
+                    <p class="inline-flex flex-wrap justify-center items-center">Copyright © 2025
+                        &nbsp;<outlineText text="GDMU-NA" lineColor="#B0B0B0" @click="openInNewTab('https://github.com/gdmuna')" />&nbsp;
+                        &
+                        &nbsp;<outlineText text="GDMU-ACM" lineColor="#B0B0B0" @click="openInNewTab('https://github.com/gdmuna')" />&nbsp;
+                        &
+                        &nbsp;<outlineText text="MyGO!!!" lineColor="#B0B0B0" @click="openInNewTab('https://github.com/orgs/gdmuna/teams/mygo')" />&nbsp;.&nbsp;
+                        <span>All Rights Reserved.</span>
+                    </p>
+                    <p>
+                        Powered by
+                        <outlineText text="Nekorify" lineColor="#B0B0B0" class="inline-block" @click="openInNewTab('https://github.com/gdmuna/Nekorify-front')" />
+                    </p>
                 </div>
             </footer>
         </div>
@@ -29,8 +40,11 @@ import { Toaster } from 'vue-sonner'
 
 // 导入组件
 import Header from '@/components/header.vue'
+import { outlineText } from './components/ui/text'
 
-import { onMounted, onBeforeMount, ref, nextTick, computed } from 'vue'
+import { onMounted, onBeforeMount, ref } from 'vue'
+
+import { openInNewTab } from './lib/utils'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 

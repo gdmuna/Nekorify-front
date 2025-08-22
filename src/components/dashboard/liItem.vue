@@ -2,7 +2,8 @@
     <div>
         <div ref="root" class="li-item relative *:z-10 flex items-center justify-between p-4 select-none cursor-pointer
                 border-b-2 dark:border-[#bbb89c] *:duration-300" @mouseenter="animate.start('enter')"
-            @mouseleave="animate.start('back')">
+            @mouseleave="animate.start('back')" @touchend="animate.start('start')"
+            @touchcancel="animate.start('back')">
             <div class="flex flex-1 space-x-4 items-center">
                 <component v-if="leftIcon" :is="leftIcon" class="size-8 shrink-0" />
                 <slot />

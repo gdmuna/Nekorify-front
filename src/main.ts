@@ -37,6 +37,7 @@ import { createPinia } from 'pinia'
 import './index.css' // shadcn-ui
 import './main.css' // 全局样式
 import 'vue-sonner/style.css' // vue-sonner
+import '@fontsource-variable/inter/opsz.css';
 
 // 导入 PrismJS 代码高亮库
 import 'prismjs/components/prism-clike';

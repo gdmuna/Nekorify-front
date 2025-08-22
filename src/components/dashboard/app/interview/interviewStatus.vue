@@ -1,9 +1,4 @@
 <template>
-    <div>
-        <!-- <div class="mb-4">
-            <h2 class="text-xl font-bold mb-2">原始数据结构</h2>
-            <pre class=" p-3 rounded text-sm overflow-auto">{{ originalData }}</pre>
-        </div> -->
         <section id="interviewDetails" class="grid grid-cols-5 mb-10 gap-4">
             <div class="col-span-5 md:col-span-2">
                 <div class="inline-flex items-center space-x-2 mb-4 text-emerald-400">
@@ -179,7 +174,7 @@
                                         <p>
                                             谨以此言相赠：
                                         </p>
-                                        <blockquote class="border-l-4 border-emerald-400 pl-4 italic rounded
+                                        <blockquote class="border-l-4 border-emerald-400 pl-4 italic rounded font-poem
                                         dark:text-amber-300 bg-amber-50 dark:bg-[#23221c]">
                                             “试玉要烧三日满，辨材须待七年期。”
                                         </blockquote>
@@ -219,7 +214,7 @@
                                         <p>
                                             前路广阔，天地浩荡。愿你：
                                         </p>
-                                        <blockquote class="border-l-4 border-emerald-400 pl-4 italic rounded
+                                        <blockquote class="border-l-4 border-emerald-400 pl-4 italic rounded font-poem
                                         dark:text-amber-300 bg-amber-50 dark:bg-[#23221c]">
                                             “鹏北海，凤朝阳。又携书剑路茫茫。”
                                         </blockquote>
@@ -234,11 +229,6 @@
                 </div>
             </div>
         </section>
-        <!-- <div class="mt-[calc(100dvh-9rem)]">
-            <h2 class="text-xl font-bold mb-2">重组后的数据结构</h2>
-            <pre class=" p-3 rounded text-sm overflow-auto">{{ restructuredData }}</pre>
-        </div> -->
-    </div>
 </template>
 
 <script setup lang="ts">

@@ -281,7 +281,7 @@ export const useUserStore = defineStore('user', () => {
             association: null,
             department: null,
             role: null,
-            status: 'rejected',
+            status: 'approved',
             createdAt: '2025-08-14T13:16:59.000Z',
             updatedAt: '2025-08-14T13:16:59.000Z'
         }

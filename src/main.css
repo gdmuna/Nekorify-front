@@ -1,8 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 html,
 body {
-    font-family: 'Inter', system-ui, Arial, sans-serif;
+    font-family: 'Inter Variable', system-ui, Arial, sans-serif;
     scrollbar-width: none;
     /* Firefox */
     -ms-overflow-style: none;

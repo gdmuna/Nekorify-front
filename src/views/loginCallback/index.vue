@@ -11,7 +11,9 @@ import { useAuthStore } from '@/stores/auth';
 
 onMounted(() => {
     const authStore = useAuthStore();
-    authStore.loginCallback()
+    setTimeout(() => {
+        authStore.loginCallback()
+    }, 500)
 });
 
 </script>
