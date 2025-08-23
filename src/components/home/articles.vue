@@ -1,7 +1,7 @@
 <template>
     <div class="md:mx-10 mx-4 mt-5 mb-10">
         <div ref="container" class="grid grid-cols-2 md:grid-cols-3 md:gap-10 gap-5">
-            <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="flex flex-col items-start justify-between md:space-y-4 space-y-2">
+            <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="flex flex-col items-start justify-between md:space-y-4 space-y-2 will-change-transform">
                 <div class="flex w-full xl:h-80 md:h-60 h-40 items-center justify-center rounded-xl dark:bg-[#CAB8A4] cursor-pointer">img{{ index + 1 }}</div>
                 <p class="md:text-2xl cursor-pointer">{{ item.title }}</p>
                 <p ref="itemsDate">{{ item.date }}</p>
@@ -37,11 +37,17 @@ const items = ref([
 
 onMounted(() => {
     animate.init();
+    window.addEventListener('resize', handleResize);
 })
 
 onUnmounted(() => {
     animate.tl?.kill()
+    window.removeEventListener('resize', handleResize);
 })
+
+function handleResize() {
+    animate.tl?.scrollTrigger?.refresh();
+}
 
 const animate = {
     tl: null as gsap.core.Timeline | null,

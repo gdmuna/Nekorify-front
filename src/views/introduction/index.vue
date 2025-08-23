@@ -2,7 +2,7 @@
     <div ref="introPageRoot" class="dark:bg-[#0E100F] w-[100dvw]">
         <scrollHint />
         <!-- Section 1 -->
-        <section ref="section1" class="relative h-[100dvh] flex items-center justify-center
+        <section ref="section1" class="relative h-[100dvh] flex items-center justify-center pt-14
         bg-gray-100">
             <matrix class="absolute z-1 select-none" :width="setion1_width" :height="setion1_height"
                 v-if="setion1_width > 0 && setion1_height > 0" />
@@ -56,7 +56,7 @@
                     <!-- card-1 -->
                     <div class="relative">
                         <div ref="lottieContainerA" v-if="isXlDesktop" class="size-[42rem] absolute top-0 left-0"></div>
-                        <macWindow border enterAnimate enableSplitText class="xl:!w-128 xl:mr-20 xl:ml-auto md:mx-auto">
+                        <macWindow border enterAnimate :enableSplitText="!isMobile" class="xl:!w-128 xl:mr-20 xl:ml-auto md:mx-auto">
                             <template #TR>
                                 <div class="flex-1"></div>
                                 <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
@@ -76,7 +76,7 @@
                     </div>
                     <!-- card-2 -->
                     <div class="relative xl:mt-100 mt-6">
-                        <macWindow border enterAnimate enableSplitText class="xl:!w-128 xl:ml-20">
+                        <macWindow border enterAnimate :enableSplitText="!isMobile" class="xl:!w-128 xl:ml-20">
                             <template #TR>
                                 <div class="flex-1"></div>
                                 <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
@@ -99,7 +99,7 @@
                     <!-- card-3 -->
                     <div class="flex items-center justify-evenly xl:mt-48 mt-6">
                         <img ref="cat_smile" src="/src/assets/猫-笑.webp" alt="" class="size-64" v-if="isXlDesktop">
-                        <macWindow border enterAnimate enableSplitText class="xl:!w-128">
+                        <macWindow border enterAnimate :enableSplitText="!isMobile" class="xl:!w-128">
                             <template #TR>
                                 <div class="flex-1"></div>
                                 <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
@@ -889,12 +889,10 @@ function destroyHorizontalScroll() {
 function reinitializeAnimations() {
     // 销毁旧的动画
     destroyHorizontalScroll()
-
     // 重新创建动画
     if (isXlDesktop.value) {
         createHorizontalScroll()
     }
-
     // 刷新 ScrollTrigger
     ScrollTrigger.refresh()
 }

@@ -1,7 +1,7 @@
 <template>
     <div ref="root" class="md:mx-10 mx-4 mb-10">
         <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
-        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2">
+        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2 will-change-transform">
             <div>
                 <div class="overflow-hidden">
                     <p class="md:text-4xl text-xl title">{{ item.title }}</p>
@@ -43,14 +43,22 @@ const itemsRef = ref<Array<HTMLElement>>([]);
 
 onMounted(() => {
     animate.init()
+    window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
     // animate.tls.forEach((tl) => {
     //     tl.kill();
     // })
+    window.removeEventListener('resize', handleResize)
     animate.triggers.forEach(trigger => trigger.kill())
 })
+
+function handleResize() {
+    animate.triggers.forEach(trigger => {
+        trigger.refresh()
+    })
+}
 
 const animate = {
     tls: [] as Array<gsap.core.Timeline>,

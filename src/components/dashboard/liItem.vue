@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div ref="root" class="li-item relative *:z-10 flex items-center justify-between p-4 select-none cursor-pointer
-                border-b-2 dark:border-[#bbb89c] *:duration-300" @mouseenter="animate.start('enter')"
-            @mouseleave="animate.start('back')" @touchend="animate.start('start')"
-            @touchcancel="animate.start('back')">
+        <div ref="root" :class="
+            ['relative *:z-10 flex items-center justify-between p-4 select-none cursor-pointer border-b-2 dark:border-[#bbb89c]', 
+            isXlDesktop ? 'li-item' : '']" @mouseenter="animate.start('enter')"
+            @mouseleave="animate.start('back')">
             <div class="flex flex-1 space-x-4 items-center">
-                <component v-if="leftIcon" :is="leftIcon" class="size-8 shrink-0" />
+                <component v-if="leftIcon" :is="leftIcon" class="size-8 shrink-0 duration-300" />
                 <slot />
-                <div v-if="!useSlot" class="flex flex-col">
+                <div v-if="!useSlot" class="flex flex-col duration-300">
                     <div class="text-xl relative overflow-hidden">
                         <p ref="liTitle1">{{ title }}</p>
                         <p ref="liTitle2" class="absolute">{{ title }}</p>
@@ -18,9 +18,9 @@
                     </div>
                 </div>
             </div>
-            <div class="relative overflow-hidden shrink-0">
-                <component :is="rightIcon" ref="icon1" class="size-8" />
-                <component :is="rightIcon" ref="icon2" class="absolute top-0 -left-full size-8" />
+            <div class="relative overflow-hidden shrink-0 duration-300">
+                <component :is="rightIcon" ref="icon1" class="size-8 will-change-transform" />
+                <component :is="rightIcon" ref="icon2" class="absolute top-0 -left-full size-8 will-change-transform" />
             </div>
         </div>
     </div>
@@ -30,7 +30,10 @@
 import { onMounted, ref, onUnmounted } from 'vue';
 import type { Component } from 'vue';
 
-
+import { storeToRefs } from 'pinia';
+import { useSystemStore } from '@/stores/system';
+const systemStore = useSystemStore();
+const { isXlDesktop } = storeToRefs(systemStore);
 
 import { gsap } from 'gsap';
 
@@ -57,6 +60,7 @@ onUnmounted(() => {
 const animate = {
     tl: gsap.timeline(),
     start(type: string) {
+        if (!isXlDesktop.value) return
         this.tl.clear();
         if (props.rightIcon) this.tl.to([icon1.value, icon2.value], {
             x: type === 'enter' ? '100%' : 0,
@@ -95,7 +99,7 @@ const animate = {
     transition: height 0.35s cubic-bezier(0.1, 0.7, 0.9, 1);
     z-index: 0;
     pointer-events: none;
-    will-change: auto;
+    will-change: transform;
 }
 
 :deep(.li-item:hover::before) {

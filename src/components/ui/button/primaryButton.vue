@@ -6,7 +6,7 @@
         <div class="z-10">
             <slot />
         </div>
-        <div ref="mask1" class="absolute size-0 inset-0 rounded-full overflow-hidden text-yellow-100"
+        <div ref="mask1" class="absolute size-0 inset-0 rounded-full overflow-hidden text-yellow-100 will-change-transform"
             :style="{ backgroundColor: props.mask1Color || '#CFCBA0' }">
             <rippleMask v-for="r in ripples" :key="r.key" :radius="r.radius" :color="r.color"
             :onDone="() => handleRippleDone(r.key)" />

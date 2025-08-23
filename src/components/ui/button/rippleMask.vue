@@ -1,6 +1,6 @@
 <!-- filepath: src/components/ui/button/RippleMask.vue -->
 <template>
-    <div ref="root" class="absolute top-1/2 left-1/2 -translate-1/2 z-10 rounded-full pointer-events-none" :style="{
+    <div ref="root" class="absolute top-1/2 left-1/2 -translate-1/2 z-10 rounded-full pointer-events-none will-change-transform" :style="{
         width: radius + 'px',
         height: radius + 'px',
         backgroundColor: color

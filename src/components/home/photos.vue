@@ -25,12 +25,17 @@ import { gsap } from 'gsap';
 
 import { CircleX } from 'lucide-vue-next';
 
+import { toast } from 'vue-sonner'
+
 const imgOpened = ref(false);
 const imgOpenedSrc = ref('');
 
 onMounted(() => {
-    photobox.init();
-    nextTick(animate)
+    nextTick(() => {
+        requestAnimationFrame(() => {
+            photobox.init()
+        })
+    })
     document.addEventListener('keyup', handleKeyup);
 })
 
@@ -128,8 +133,13 @@ const photobox = {
         handleTouchmove: null as handleFn,
         handleTouchend: null as handleFn
     },
+    success: false,
     init() {
         this.canvas = canvas.value;
+        if (!this.canvas) {
+            requestAnimationFrame(() => this.init());
+            return
+        }
         this.content = this.canvas!.getContext("2d");
         // 计算适应当前屏幕的尺寸
         this.calculateResponsiveSizes();
@@ -138,11 +148,13 @@ const photobox = {
         this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
         this.resize();
         this.creat_events();
-        this.creat_img_data(true, true);
+        this.creat_img_data(true);
+        animate()
+        toast.success('点击图片可查看大图，按Esc键或点击空白处关闭')
+        this.success = true
     },
     // 计算响应式尺寸的方法
-    // 完整替换calculateResponsiveSizes方法
-    calculateResponsiveSizes(refresh: boolean = true) {
+    calculateResponsiveSizes() {
         // 1. 获取当前容器尺寸
         const containerWidth = container.value!.clientWidth;
         const containerHeight = container.value!.clientHeight;
@@ -163,12 +175,12 @@ const photobox = {
         this.img_width = Math.max(200, Math.floor(this.baseImgWidth * scale));
         this.img_height = Math.max(140, Math.floor(this.baseImgHeight * scale));
         this.img_margin = Math.max(30, Math.floor(this.baseImgMargin * scale));
-        // 5. 更新总宽高 - 确保这里计算而不是在resize重复计算
+        // 5. 更新总宽高
         this.total_width = this.row_max * (this.img_width + this.img_margin) - this.img_margin;
         this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
-        if (refresh) this.move_imgs(0, 0);
+        // if (refresh) this.move_imgs(0, 0);
     },
-    resize(refresh: boolean = true) {
+    resize() {
         const dpr = window.devicePixelRatio || 1;
         const width = container.value!.clientWidth;
         const height = container.value!.clientHeight;
@@ -176,15 +188,13 @@ const photobox = {
         this.canvas!.height = height * dpr;
         this.canvas!.style.width = width + "px";   // CSS 尺寸和容器一致
         this.canvas!.style.height = height + "px";
-        this.total_width = this.row_max * (this.img_width + this.img_margin) - this.img_margin;
-        this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;
         // 让 2d context 也适配 DPR
         this.content!.setTransform(1, 0, 0, 1, 0, 0); // 重置 transform
         this.content!.scale(dpr, dpr);
         // 重新绘制图片
-        if (this.img_data.length > 0 && refresh) this.move_imgs(0, 0);
+        // if (this.img_data.length > 0 && refresh) this.move_imgs(0, 0);
     },
-    // 添加一个新的布局函数
+    // 布局函数
     relayoutImages(preserveImages = true, refresh = true) {
         // 保存现有图片对象引用(如果需要)
         const existingImgs = preserveImages ?
@@ -206,28 +216,28 @@ const photobox = {
         }
         // 如果没有保留图片，则加载新图片
         if (!preserveImages) {
-            this.loadImages(refresh);
+            this.loadImages();
         } else if (refresh) {
-            this.move_imgs(0, 0);
+            // this.move_imgs(0, 0);
         }
     },
-    // 分离图片加载逻辑
-    loadImages(refresh = true) {
+    // 图片加载逻辑
+    loadImages() {
         this.img_data.forEach((item) => {
             if (!item.img) { // 只加载未加载的图片
                 const img = new Image();
                 img.src = item.src;
                 img.onload = () => {
                     item.img = img;
-                    if (refresh) this.move_imgs(0, 0);
+                    // if (refresh) this.move_imgs(0, 0);
                 };
             }
         });
     },
     // 创建图片数据即img_data
-    creat_img_data(refresh: boolean = true, init: boolean = false) {
+    creat_img_data(init: boolean = false) {
         this.relayoutImages(false, false);
-        this.loadImages(refresh);
+        this.loadImages();
         if (init) {
             nextTick(() => {
                 gsap.to(velocity.value, {
@@ -243,9 +253,9 @@ const photobox = {
     },
     handleResize() {
         // 1. 计算新的响应式尺寸
-        this.calculateResponsiveSizes(false);
+        this.calculateResponsiveSizes();
         // 2. 调整画布大小
-        this.resize(false);
+        this.resize();
         // 3. 更新总宽高
         this.total_width = this.row_max * (this.img_width + this.img_margin) - this.img_margin;
         this.total_height = this.line_max * (this.img_height + this.img_margin) - this.img_margin;

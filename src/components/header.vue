@@ -4,17 +4,16 @@
         <div v-if="!isDesktop" class="size-full flex items-center justify-between">
             <ChartNoAxesGantt class="shrink-0 size-8 cursor-pointer" @click="headerAnimate.toggle()" />
             <div class="flex items-center space-x-4">
-                <Button class="cursor-pointer font-bold relative rounded-md"
-                    @mouseenter="btnAnimate.play('enter')" @mouseleave="btnAnimate.play('back')"
-                    @click="routerGoto('/dashboard/interview')">
+                <Button class="cursor-pointer font-bold relative rounded-md" @mouseenter="btnAnimate.play('enter')"
+                    @mouseleave="btnAnimate.play('back')" @click="routerGoto('/dashboard/interview')">
                     <div ref="btn_bg1" class="btn-bg-1 absolute size-full rounded-md" />
                     <div ref="btn_bg2" class="btn-bg-2 absolute size-full rounded-md opacity-0" />
                     <div class="relative flex items-center space-x-2 z-10 rounded-md">
-                        <div class="relative text-[1rem] overflow-hidden">
+                        <div class="relative text-[1rem] overflow-hidden *:will-change-transform">
                             <p ref="btn_pTag1">加入我们</p>
                             <p ref="btn_pTag2" class="absolute top-0 left-0 translate-y-full">加入我们</p>
                         </div>
-                        <div class="relative overflow-hidden">
+                        <div class="relative overflow-hidden *:will-change-transform">
                             <Smile ref="btn_icon1" class="size-6" />
                             <Smile ref="btn_icon2" class="size-6 absolute top-0 left-0 -translate-x-full" />
                         </div>
@@ -36,22 +35,21 @@
                 </primaryButton>
             </div>
         </div>
-        <header ref="headerRef"
-            class="flex lg:flex-row flex-col lg:h-full h-[100dvh] lg:w-full w-[min(24rem,70dvw)] -translate-x-full lg:-translate-x-0
-        lg:items-center items-start lg:justify-between justify-start *:shrink-0 z-60 lg:p-0 p-3 space-y-4 lg:space-y-0
+        <header ref="headerRef" class="flex lg:flex-row flex-col lg:h-full h-[100dvh] lg:w-full w-[min(24rem,70dvw)] -translate-x-full lg:-translate-x-0
+        lg:items-center items-start lg:justify-between justify-start *:shrink-0 z-60 lg:p-0 p-3 space-y-4 lg:space-y-0 will-change-transform
         overflow-x-auto *:pointer-events-auto relative -top-14 lg:-top-0 -left-4 lg:-left-0 lg:bg-transparent bg-[#0E100F]">
             <!-- 页眉左侧内容 -->
             <div class="flex lg:flex-row flex-col lg:h-full lg:items-center lg:w-auto w-full space-y-4 lg:space-y-0">
                 <!-- LOGO -->
                 <div class="flex items-center lg:h-full lg:p-0 p-3 rounded-lg lg:dark:bg-transparent dark:bg-[#1f1e1e]">
                     <div class="relative overflow-hidden cursor-pointer shrink-0 text-lg font-bold"
-                        @click="routerGoto('/'),headerAnimate.toggle()">
-                        <div ref="logo1" class="space-x-2 flex items-center">
+                        @click="routerGoto('/'), headerAnimate.toggle()">
+                        <div ref="logo1" class="space-x-2 flex items-center will-change-transform">
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt=""
                                 class="lg:size-10 size-12 will-change-transform">
                             <p class="mr-6 Association-NA">GDMU-NA</p>
                         </div>
-                        <div ref="logo2" class="absolute top-0 left-0 whitespace-nowrap space-x-1 flex items-center">
+                        <div ref="logo2" class="absolute top-0 left-0 whitespace-nowrap space-x-1 flex items-center will-change-transform">
                             <img src="/src/assets/ACM-LOGO 1.svg" alt=""
                                 class="lg:size-10 size-12 will-change-transform">
                             <p class="whitespace-nowrap Association-ACM">GDMU-ACM</p>
@@ -64,54 +62,29 @@
                 <!-- 导航菜单 -->
                 <div class="lg:dark:bg-transparent dark:bg-[#191a19] lg:p-0 p-3 rounded-lg">
                     <h2 v-if="!isDesktop" class="text-2xl mb-4 text-center text-[#D5C8B0]">网站导航</h2>
-                    <nav class="flex lg:flex-row flex-col lg:h-full ml-0 lg:items-center whitespace-nowrap lg:space-x-4 lg:space-y-0 space-y-2
+                    <nav class="flex lg:flex-row flex-col lg:h-full ml-0 lg:items-center whitespace-nowrap lg:p-0 px-6 lg:space-x-4 lg:space-y-0 space-y-2
                         lg:dark:text-[#FEFCE4] dark:text-[#0E100F]">
-                        <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#CFCBA0] rounded cursor-pointer"
-                            @click="routerGoto('/home'),headerAnimate.toggle()">
-                            <outlineText v-if="isDesktop" text="首页"
-                                class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit" line-color="#51A2FF"
-                                transition-line-color />
-                            <p v-else class="md:text-xl">首页</p>
-                        </div>
-                        <img v-if="isDesktop" :src="boundary" alt="" class="shrink-0">
-                        <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#CFCBA0] rounded cursor-pointer"
-                            @click="routerGoto('/announcements'),headerAnimate.toggle()">
-                            <outlineText v-if="isDesktop" text="公告"
-                                class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit" line-color="#51A2FF"
-                                transition-line-color />
-                            <p v-else class="md:text-xl">公告</p>
-                        </div>
-                        <img v-if="isDesktop" :src="boundary" alt="" class="shrink-0">
-                        <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#CFCBA0] rounded cursor-pointer"
-                            @click="routerGoto('/articles'),headerAnimate.toggle()">
-                            <outlineText v-if="isDesktop" text="文章"
-                                class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit" line-color="#51A2FF"
-                                transition-line-color />
-                            <p v-else class="md:text-xl">文章</p>
-                        </div>
-                        <img v-if="isDesktop" :src="boundary" alt="" class="shrink-0">
-                        <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#CFCBA0] rounded cursor-pointer"
-                            @click="routerGoto('/videos'),headerAnimate.toggle()">
-                            <outlineText v-if="isDesktop" text="视频"
-                                class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit" line-color="#51A2FF"
-                                transition-line-color />
-                            <p v-else class="md:text-xl">视频</p>
-                        </div>
-                        <img v-if="isDesktop" :src="boundary" alt="" class="shrink-0">
-                        <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#CFCBA0] rounded cursor-pointer"
-                            @click="routerGoto('/resourcesHub'),headerAnimate.toggle()">
-                            <outlineText v-if="isDesktop" text="资源站"
-                                class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit" line-color="#51A2FF"
-                                transition-line-color />
-                            <p v-else class="md:text-xl">资源站</p>
-                        </div>
+                        <template v-for="(item, index) in routeMeta" :key="index">
+                            <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#FEFCE4] rounded cursor-pointer"
+                                @click="routerGoto(item.path), headerAnimate.toggle()">
+                                <outlineText v-show="isDesktop" :text="item.label" :keep-in-end="item.active"
+                                    class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit"
+                                    :class="[item.active ? 'text-blue-400' : '']"
+                                    line-color="#51A2FF" transition-line-color />
+                                <div v-show="!isDesktop" class="md:text-xl flex items-center space-x-2">
+                                    <component :is="item.icon" class="size-6" />
+                                    <p>{{ item.label }}</p>
+                                </div>
+                            </div>
+                            <img v-if="isDesktop && index < routeMeta.length - 1" :src="boundary" alt="" class="shrink-0">
+                        </template>
                     </nav>
                 </div>
             </div>
             <div v-if="!isDesktop" class="w-full h-[1px] dark:bg-neutral-600" />
             <!-- 页眉右侧内容 -->
             <div class="lg:ml-6 ml-0 flex lg:flex-row flex-col items-center lg:w-auto w-full space-y-4 lg:space-y-0">
-                <div class="flex lg:flex-row flex-col lg:items-center lg:space-x-2 lg:space-y-0 space-y-2 rounded-lg
+                <div class="flex lg:flex-row flex-col lg:items-center lg:gap-2 lg:space-y-0 space-y-2 rounded-lg
                 lg:dark:bg-transparent dark:bg-[#191a19] lg:w-auto w-full lg:p-0 p-3">
                     <!-- <toggleThemeButton :disabled="disableSwitchTheme" :model-value="isDark"
                         @update:model-value="toggleTheme" class="cursor-pointer dark:bg-[#FEFCE4]">
@@ -122,29 +95,29 @@
 </toggleThemeButton> -->
                     <h2 v-if="!isDesktop" class="text-2xl mb-4 text-[#D5C8B0] mx-auto">快捷操作</h2>
                     <div class="flex items-center space-x-1 lg:rounded-full lg:dark:bg-transparent cursor-pointer
-                    dark:bg-[#CFCBA0] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded"
-                        @click="openInNewTab('https://github.com/gdmuna'),headerAnimate.toggle()">
+                    dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6"
+                        @click="openInNewTab('https://github.com/gdmuna'), headerAnimate.toggle()">
                         <Button variant="ghost"
                             class="rounded-full size-10 cursor-pointer lg:pointer-events-auto pointer-events-none">
                             <Github class="size-6" />
                         </Button>
-                        <p v-if="!isDesktop">前往协会Github仓库</p>
+                        <p v-if="!isDesktop">协会GitHub仓库</p>
                     </div>
                     <div class="flex items-center space-x-1 lg:rounded-full lg:dark:bg-transparent cursor-pointer
-                    dark:bg-[#CFCBA0] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded">
+                    dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6">
                         <Button variant="ghost"
                             class="rounded-full size-10 cursor-pointer lg:pointer-events-auto pointer-events-none">
                             <Mail class="size-6" />
                         </Button>
-                        <p v-if="!isDesktop">查看站内信</p>
+                        <p v-if="!isDesktop">站内信</p>
                     </div>
                     <div class="flex items-center space-x-1 lg:rounded-full lg:dark:bg-transparent cursor-pointer
-                    dark:bg-[#CFCBA0] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded">
+                    dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6">
                         <Button variant="ghost"
                             class="rounded-full size-10 cursor-pointer lg:pointer-events-auto pointer-events-none">
                             <CalendarFold class="size-6" />
                         </Button>
-                        <p v-if="!isDesktop">查看课程安排</p>
+                        <p v-if="!isDesktop">课程安排</p>
                     </div>
                 </div>
                 <img v-if="isDesktop" :src="boundary" alt="" class="ml-2 mr-4 shrink-0">
@@ -208,11 +181,28 @@ import { toggleThemeButton } from '@/components/ui/switch'
 import { outlineText } from '@/components/ui/text'
 
 // 导入图标
-import { Github, LogIn, Smile, Mail, Sun, Moon, CalendarFold, ChartNoAxesGantt } from 'lucide-vue-next';
+import { 
+    Github,
+    LogIn,
+    Smile,
+    Mail,
+    Sun,
+    Moon,
+    CalendarFold,
+    ChartNoAxesGantt,
+    House,
+    Megaphone,
+    Newspaper,
+    Youtube,
+    Database
+} from 'lucide-vue-next'
 
 import boundary from '@/assets/boundary.svg'
 
 import { gsap } from 'gsap'
+
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
 // 导入状态管理
 import { useSystemStore } from '@/stores/system'
@@ -230,9 +220,6 @@ const { login } = authStore
 
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
-
-const logo1 = ref<HTMLImageElement | null>(null)
-const logo2 = ref<HTMLImageElement | null>(null)
 
 const router = useRouter()
 
@@ -257,6 +244,42 @@ function handleKeyup(event: KeyboardEvent): void {
 const disableSwitchTheme = computed(() => {
     return router.currentRoute.value.path === '/'
 })
+
+const routeMeta = ref([
+    {
+        label: '首页',
+        path: '/home',
+        active: false,
+        icon: House
+    },
+    {
+        label: '公告',
+        path: '/announcements',
+        active: false,
+        icon: Megaphone
+    },
+    {
+        label: '文章',
+        path: '/articles',
+        active: false,
+        icon: Newspaper
+    },
+    {
+        label: '视频',
+        path: '/videos',
+        active: false,
+        icon: Youtube
+    },
+    {
+        label: '资源站',
+        path: '/resourcesHub',
+        active: false,
+        icon: Database
+    }
+])
+
+const logo1 = ref<HTMLImageElement | null>(null)
+const logo2 = ref<HTMLImageElement | null>(null)
 
 const logoAnimate = {
     tl: gsap.timeline({ repeat: -1 }),
@@ -394,6 +417,41 @@ const headerAnimate = {
     }
 }
 
+watch(() => route.name, (newVal) => {
+    switch (newVal) {
+        case 'home':
+            routeMeta.value.forEach(item => {
+                item.active = item.path === '/home'
+            })
+            break
+        case 'announcements':
+            routeMeta.value.forEach(item => {
+                item.active = item.path === '/announcements'
+            })
+            break
+        case 'articles':
+            routeMeta.value.forEach(item => {
+                item.active = item.path === '/articles'
+            })
+            break
+        case 'videos':
+            routeMeta.value.forEach(item => {
+                item.active = item.path === '/videos'
+            })
+            break
+        case 'resourcesHub':
+            routeMeta.value.forEach(item => {
+                item.active = item.path === '/resourcesHub'
+            })
+            break
+        default:
+            routeMeta.value.forEach(item => {
+                item.active = false
+            })
+            break
+    }
+})
+
 </script>
 
 <style scoped>
@@ -411,7 +469,7 @@ const headerAnimate = {
     backdrop-filter: blur(2px);
 }
 
-.nav-item:hover {
+.nav-item-active {
     text-shadow: 0 0 8px #0d407a
 }
 

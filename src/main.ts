@@ -53,6 +53,24 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.css'
 const pinia = createPinia()
 const app = createApp(App)
 
+// import { toast } from 'vue-sonner'
+// 添加全局错误处理
+// app.config.errorHandler = (err) => {
+//     console.error('Vue 全局错误:', err)
+    
+//     // 方法1：使用类型守卫
+//     let errorMessage = '未知错误'
+//     if (err instanceof Error) {
+//         errorMessage = err.message
+//     } else if (typeof err === 'string') {
+//         errorMessage = err
+//     } else if (err && typeof err === 'object' && 'message' in err) {
+//         errorMessage = (err as { message: string }).message
+//     }
+    
+//     toast.error(`应用错误: ${errorMessage}`)
+// }
+
 app.use(router)
 app.use(pinia)
 app.mount('#app')

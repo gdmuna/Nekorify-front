@@ -4,7 +4,7 @@
             <div class="flex md:flex-row flex-col md:space-x-4 space-y-4">
                 <div class="xl:w-180 md:w-120 w-78 md:h-80 h-40 rounded-xl dark:bg-[#CAB8A4] flex items-center justify-center shrink-1">video{{ currentIdx + 1 }}</div>
                 <div class="flex space-x-4 md:-translate-x-0 -translate-x-6">
-                    <div ref="indicator" class="md:size-4 size-3 dark:bg-amber-100 rounded-full" />
+                    <div ref="indicator" class="md:size-4 size-3 dark:bg-amber-100 rounded-full will-change-transform" />
                     <div ref="titles" class="flex flex-col space-y-4">
                         <div v-for="(item, index) in items" :key="index" class="flex flex-col space-y-2"
                             :data-index="index">

@@ -1,8 +1,8 @@
 <template>
     <div ref="root" class="relative h-auto mb-20">
-        <macWindow ref="visibleMacWindow" class="lg:!w-120 md:!w-108 md:h-100 h-80 !w-96 z-1">
+        <macWindow ref="visibleMacWindow" class="lg:!w-120 md:!w-108 md:h-100 h-80 !w-96 z-1 will-change-transform">
             <template #TR>
-                <div class="relative flex-1 overflow-hidden">
+                <div class="relative flex-1 overflow-hidden *:will-change-transform">
                     <div ref="logo_cpp" class="flex items-center space-x-2 justify-end">
                         <img src="@/assets/C++-LOGO.svg" class="size-8">
                         <span class="text-lg code-cpp">C++</span>
@@ -30,13 +30,13 @@
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
                     <pre :class="['!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 !overflow-hidden', !isMobile ? 'line-numbers' : '!pb-0']"
                         tabindex="-1">
-<code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.675rem]', codeClass[codesIndex], isMobile ? '!leading-3.5' : '']" ></code><span ref="cursor" class="cursor">▌</span>
+<code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.675rem] will-change-contents', codeClass[codesIndex], isMobile ? '!leading-3.5' : '']" ></code><span ref="cursor" class="cursor">▌</span>
 </pre>
                 </div>
                 <!-- 底部输出 -->
                 <div class="flex items-center w-full pt-2 border-t-[#595959] border-t-1">
                     <ChevronRight class="size-8 text-[#75777D]" />
-                    <span ref="output" class="text-2xl">Hello GDMU!</span>
+                    <span ref="output" class="text-2xl will-change-transform">Hello GDMU!</span>
                 </div>
             </template>
         </macWindow>
@@ -120,6 +120,8 @@ const root = ref<HTMLElement | null>(null)
 
 let codeTimer: number | null = null
 
+let heightObserver: ResizeObserver | null = null
+
 onMounted(() => {
     Prism.highlightAll()
     gsap.set(logos.map(el => el.value), {
@@ -137,6 +139,8 @@ onMounted(() => {
         helloGDMU.init()
         enterAnimate()
     })
+    // 初始化高度观察器
+    initHeightObserver()
 })
 
 onUnmounted(() => {
@@ -149,6 +153,11 @@ onUnmounted(() => {
     if (helloGDMU.tl) {
         helloGDMU.tl.kill()
         helloGDMU.tl = null
+    }
+    // 清理 ResizeObserver
+    if (heightObserver) {
+        heightObserver.disconnect()
+        heightObserver = null
     }
 })
 
@@ -366,6 +375,26 @@ function eraseCode() {
         }
         frame()
     }
+}
+
+// 初始化高度观察器
+function initHeightObserver() {
+    if (!hiddenMacWindow.value) return
+    heightObserver = new ResizeObserver(entries => {
+        Prism.highlightAllUnder(root.value)
+        for (const entry of entries) {
+            const el = (hiddenMacWindow.value as any)?.$el || hiddenMacWindow.value
+            const newHeight = entry.contentRect.height
+            gsap.to((visibleMacWindow.value as any)!.$el, {
+                height: newHeight,
+                ease: "power3.out",
+                duration: 1.5,
+                transformOrigin: "bottom 50%"
+            })
+        }
+    })
+    const el = (hiddenMacWindow.value as any)?.$el || hiddenMacWindow.value
+    heightObserver.observe(el)
 }
 
 </script>

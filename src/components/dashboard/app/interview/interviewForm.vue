@@ -6,7 +6,7 @@
         </section>
         <Form v-slot="{ handleSubmit }" @invalid-submit="onInvalidSubmit" keep-values :validation-schema="formSchema"
             class="min-w-[min(78rem,90%dvw)] mt-6">
-            <form id="form" ref="formRef" @submit="handleSubmit($event, onSubmit)"
+            <form id="form" ref="formRef" @submit.prevent="handleSubmit($event, onSubmit)"
                 class="flex flex-col space-y-4 md:px-0 px-4">
                 <!-- 昵称 -->
                 <FormField v-slot="{ componentField, value, setValue, meta }" v-for="(item, index) in interviewFormJSON"
@@ -86,7 +86,7 @@
                         <FormMessage class="whitespace-pre-line select-none" />
                     </FormItem>
                 </FormField>
-                <secondaryButton text="上传表单" type="submit" form="form" :icon="useIcon"
+                <secondaryButton text="提交报名表" type="submit" form="form" :icon="useIcon"
                     :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] mt-2 w-fit', { 'cursor-progress': underSubmit }]" />
             </form>
         </Form>

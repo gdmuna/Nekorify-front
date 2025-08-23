@@ -1,7 +1,7 @@
 <template>
     <div>
         <Accordion type="single" collapsible>
-            <AccordionItem v-for="(item, index) in QA" :key="index" :value="item.value" class="border-0">
+            <AccordionItem v-for="(item, index) in QA" :key="index" :value="item.value" class="border-0 will-change-transform">
                 <AccordionTrigger
                     class="accordion-trigger relative text-2xl cursor-pointer will-change-transform xl:py-8 md:py-6 py-4 border-t-2 border-[#bbb89c]">
                     <div class="flex-1 flex items-center justify-start space-x-4 z-10 px-4">

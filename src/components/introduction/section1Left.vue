@@ -1,44 +1,45 @@
 <template>
-    <div ref="root"
-        class="relative xl:*:text-7xl lg:*:text-[4rem] md:*:text-[3.5rem] *:text-[2.5rem] md:mt-0 mt-2 *:text-xl font-bold *:leading-[1.4em] tracking-[0.2em] !pointer-events-none will-change-transform *:whitespace-nowrap">
+    <div ref="root" class="relative xl:*:text-7xl lg:*:text-[4rem] md:*:text-[3.5rem]
+    *:text-[2.5rem] md:my-0 my-2 font-bold *:leading-[1.2em]
+        tracking-[0.2em] !pointer-events-none will-change-transform *:whitespace-nowrap">
         <div class="relative z-30 *:overflow-hidden flex flex-col">
-            <div class="flex flex-row md:flex-col md:self-start self-end">
+            <div class="flex flex-row md:flex-col self-start">
                 <h1 ref="tech1" class="text-[#9C95F8]">TECH</h1>
                 <h1 ref="otakus1" class="text-[#9C95F8] lg:ml-[4.5rem] md:ml-8 ml-2">OTAKUS</h1>
             </div>
-            <h1 ref="save1" class="text-[#F5C7F8] lg:ml-[9rem] ml-16 md:self-start self-end">SAVE</h1>
-            <div class="flex flex-row md:flex-col *:overflow-hidden md:self-start self-end">
-                <h1 ref="the1" class="text-[#53B7DE] lg:ml-[4.5rem] md:ml-8 ml-2">THE</h1>
-                <h1 ref="world1" class="text-[#53B7DE] md:ml-0 ml-4">WORLD</h1>
+            <h1 ref="save1" class="text-[#F5C7F8] lg:ml-[9rem] md:ml-16 ml-0 self-start">SAVE</h1>
+            <div class="flex flex-row md:flex-col *:overflow-hidden self-start">
+                <h1 ref="the1" class="text-[#53B7DE] lg:ml-[4.5rem] md:ml-8">THE</h1>
+                <h1 ref="world1" class="text-[#53B7DE] md:ml-0 ml-2">WORLD</h1>
             </div>
         </div>
         <div class="absolute top-0 left-0 translate-x-[1%] translate-y-[1%] flex flex-col
         font-bold text-[#0E100F] z-20 *:overflow-hidden">
-            <div class="flex flex-row md:flex-col md:self-start self-end">
+            <div class="flex flex-row md:flex-col self-start">
                 <h1 ref="tech2">TECH</h1>
                 <h1 ref="otakus2" class="lg:ml-[4.5rem] md:ml-8 ml-2">OTAKUS</h1>
             </div>
-            <h1 ref="save2" class="lg:ml-[9rem] ml-16 md:self-start self-end">SAVE</h1>
-            <div class="flex flex-row md:flex-col *:overflow-hidden md:self-start self-end">
-                <h1 ref="the2" class="lg:ml-[4.5rem] md:ml-8 ml-2">THE</h1>
-                <h1 ref="world2" class="md:ml-0 ml-4">WORLD</h1>
+            <h1 ref="save2" class="lg:ml-[9rem] md:ml-16 ml-0 self-start">SAVE</h1>
+            <div class="flex flex-row md:flex-col *:overflow-hidden self-start">
+                <h1 ref="the2" class="lg:ml-[4.5rem] md:ml-8">THE</h1>
+                <h1 ref="world2" class="md:ml-0 ml-2">WORLD</h1>
             </div>
         </div>
         <div class="absolute top-0 left-0 translate-x-[1.5%] translate-y-[1.5%] flex flex-col
         font-bold z-10 *:overflow-hidden">
-            <div class="flex flex-row md:flex-col md:self-start self-end">
+            <div class="flex flex-row md:flex-col self-start">
                 <h1 ref="tech3" class="text-[#9C95F8]">TECH</h1>
                 <h1 ref="otakus3" class="text-[#9C95F8] lg:ml-[4.5rem] md:ml-8 ml-2">OTAKUS</h1>
             </div>
-            <h1 ref="save3" class="text-[#F5C7F8] lg:ml-[9rem] ml-16 md:self-start self-end">SAVE</h1>
-            <div class="flex flex-row md:flex-col *:overflow-hidden md:self-start self-end">
-                <h1 ref="the3" class="text-[#53B7DE] lg:ml-[4.5rem] md:ml-8 ml-2">THE</h1>
-                <h1 ref="world3" class="text-[#53B7DE] md:ml-0 ml-4">WORLD</h1>
+            <h1 ref="save3" class="text-[#F5C7F8] lg:ml-[9rem] md:ml-16 ml-0 self-start">SAVE</h1>
+            <div class="flex flex-row md:flex-col *:overflow-hidden self-start">
+                <h1 ref="the3" class="text-[#53B7DE] lg:ml-[4.5rem] md:ml-8">THE</h1>
+                <h1 ref="world3" class="text-[#53B7DE] md:ml-0 ml-2">WORLD</h1>
             </div>
         </div>
         <div class="absolute top-1/2 left-1/2 -translate-1/2 z-0 *:overflow-hidden ">
-            <div
-                class="relative xl:*:text-8xl lg:*:text-[5.5rem] md:*:text-[4.25rem] *:text-[3.75rem] *:leading-[1.4em] font-bold tracking-[0.2em] whitespace-nowrap">
+            <div class="relative xl:*:text-8xl lg:*:text-[5.5rem] md:*:text-[4.25rem] *:text-[3.75rem]
+            *:leading-[1.2em] font-bold tracking-[0.2em] whitespace-nowrap">
                 <div class="relative z-30">
                     <h1 ref="cn_techOtakus1" class="text-[#9C95F8]">技术宅</h1>
                     <div class="flex">

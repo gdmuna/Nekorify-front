@@ -7,6 +7,7 @@ body {
     -ms-overflow-style: none;
     /* IE 10+ */
     background-color: #0E100F;
+    scroll-behavior: auto;
 }
 
 body::-webkit-scrollbar {

@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import introduction from '../views/introduction/index.vue'
+import home from '../views/home/index.vue'
 
 import { useAuthStore } from '@/stores/auth'
 
@@ -19,7 +20,7 @@ const routes = [
   },
   {
     path: '/home',
-    component: () => import('../views/home/index.vue'),
+    component: home,
     name: 'home',
     meta: {
       title: '主页',
@@ -76,7 +77,7 @@ const routes = [
     component: () => import('../views/dashboard/index.vue'),
     meta: {
       title: '仪表盘',
-      requireAuth: true
+      requireAuth: false
     },
     children: [
       {
@@ -85,7 +86,7 @@ const routes = [
         name: 'dashboard',
         meta: {
           title: '仪表盘',
-          requireAuth: true,
+          requireAuth: false,
           scrollToTop: true
         },
       },
@@ -95,7 +96,7 @@ const routes = [
         name: 'announcementManager',
         meta: {
           title: '公告管理',
-          requireAuth: true,
+          requireAuth: false,
           parentAction: {
             doNotScrollToTop: true
           }
@@ -107,7 +108,7 @@ const routes = [
         name: 'articleManager',
         meta: {
           title: '文章管理',
-          requireAuth: true,
+          requireAuth: false,
           parentAction: {
             doNotScrollToTop: true
           }
@@ -119,7 +120,7 @@ const routes = [
         name: 'videoManager',
         meta: {
           title: '视频管理',
-          requireAuth: true,
+          requireAuth: false,
           parentAction: {
             doNotScrollToTop: true
           }
@@ -131,7 +132,7 @@ const routes = [
         name: 'interview',
         meta: {
           title: '面试',
-          requireAuth: true,
+          requireAuth: false,
           parentAction: {
             doNotScrollToTop: true
           }
@@ -143,7 +144,7 @@ const routes = [
             name: 'interviewNode',
             meta: {
               title: '面试节点',
-              requireAuth: true,
+              requireAuth: false,
               parentAction: {
                 doNotScrollToTop: true
               }
@@ -170,6 +171,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   document.title = title + ' - ' + (to.meta.title || 'Nekorify')
+  // 只有在不是子路由跳转时，且目标路由配置了 scrollToTop 时，才滚动到顶部
   const isChildRoute = from.matched.length > 0 && to.path === from.matched[0].path
   const scrollToTop = to.meta.scrollToTop && !(from.meta.parentAction?.doNotScrollToTop && isChildRoute)
   if (scrollToTop) {
