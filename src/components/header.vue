@@ -243,6 +243,9 @@ onMounted((): void => {
 
 onUnmounted((): void => {
     document.removeEventListener('keyup', handleKeyup);
+    logoAnimate.tl.kill()
+    btnAnimate.tl.kill()
+    headerAnimate.tl.kill()
 })
 
 function handleKeyup(event: KeyboardEvent): void {
@@ -256,11 +259,8 @@ const disableSwitchTheme = computed(() => {
 })
 
 const logoAnimate = {
-    tl: null as gsap.core.Timeline | null,
+    tl: gsap.timeline({ repeat: -1 }),
     init() {
-        this.tl = gsap.timeline({
-            repeat: -1
-        })
         this.tl.fromTo(
             logo1.value,
             {
@@ -328,32 +328,32 @@ const btnAnimate = {
         this.tl.to(btn_bg1.value, {
             opacity: type === 'enter' ? 0 : 1,
             duration: 0.5,
-            ease: type === 'enter' ? 'power2.out' : 'power2.out'
+            ease: 'power2.out'
         })
         this.tl.to(btn_bg2.value, {
             opacity: type === 'enter' ? 1 : 0,
             duration: 0.5,
-            ease: type === 'enter' ? 'power2.out' : 'power2.out'
+            ease: 'power2.out'
         }, '<')
         this.tl.to(btn_pTag1.value, {
             y: type === 'enter' ? '-100%' : 0,
             duration: 0.3,
-            ease: type === 'enter' ? 'circ.out' : 'circ.out'
+            ease: 'circ.out'
         }, '<')
         this.tl.to(btn_pTag2.value, {
             y: type === 'enter' ? 0 : '100%',
             duration: 0.3,
-            ease: type === 'enter' ? 'circ.out' : 'circ.out'
+            ease: 'circ.out'
         }, '<')
         this.tl.to(btn_icon1.value, {
             x: type === 'enter' ? '100%' : 0,
             duration: 0.3,
-            ease: type === 'enter' ? 'circ.out' : 'circ.out'
+            ease: 'circ.out'
         }, '<')
         this.tl.to(btn_icon2.value, {
             x: type === 'enter' ? 0 : '-100%',
             duration: 0.3,
-            ease: type === 'enter' ? 'circ.out' : 'circ.out'
+            ease: 'circ.out'
         }, '<')
     }
 }

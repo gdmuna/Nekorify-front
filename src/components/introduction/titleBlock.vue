@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from 'vue';
+import { defineProps, onMounted, ref, onUnmounted } from 'vue';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -29,6 +29,8 @@ const container = ref<HTMLElement | null>(null);
 const titleA_block = ref<HTMLElement | null>(null);
 const titleB_block = ref<HTMLElement | null>(null);
 
+const triggers: ScrollTrigger[] = []
+
 onMounted(() => {
     // 先设置初始状态
     if (container.value) {
@@ -38,7 +40,7 @@ onMounted(() => {
         gsap.set(titleB_block.value, { rotateX: 90, transformOrigin: "top center" });
     }
     const tl = gsap.timeline()
-    ScrollTrigger.create({
+    let trigger = ScrollTrigger.create({
         trigger: container.value,
         start: "top 90%",
         end: "bottom top",
@@ -53,7 +55,8 @@ onMounted(() => {
             }
         }
     })
-    ScrollTrigger.create({
+    triggers.push(trigger)
+    trigger = ScrollTrigger.create({
         trigger: titleB_block.value,
         start: "top 80%",
         end: "bottom top",
@@ -77,6 +80,11 @@ onMounted(() => {
             }
         }
     })
+    triggers.push(trigger)
+})
+
+onUnmounted(() =>{
+    triggers.forEach(trigger => trigger.kill())
 })
 
 </script>

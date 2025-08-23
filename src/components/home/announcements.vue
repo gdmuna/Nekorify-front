@@ -45,18 +45,19 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    animate.tls.forEach((tl) => {
-        tl.kill();
-    })
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    // animate.tls.forEach((tl) => {
+    //     tl.kill();
+    // })
+    animate.triggers.forEach(trigger => trigger.kill())
 })
 
 const animate = {
     tls: [] as Array<gsap.core.Timeline>,
+    triggers: [] as Array<ScrollTrigger>,
     init() {
         itemsRef.value.forEach((el) => {
             gsap.set(el, { autoAlpha: 0 })
-            ScrollTrigger.create({
+            const trigger = ScrollTrigger.create({
                 trigger: el,
                 start: 'top bottom',
                 end: `bottom top`,
@@ -95,52 +96,53 @@ const animate = {
                     gsap.set(el, { autoAlpha: 0 })
                 }
             })
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: el,
-                    start: 'top bottom',
-                    end: `bottom top`,
-                    toggleActions: 'restart none restart none',
-                }
-            })
-            // const title = el.querySelector('.title')
-            // const subtitle = el.querySelector('.subtitle')
-            const date = el.querySelector('.date')
-            // tl.fromTo(title,
-            //     {
-            //         y: '100%'
-            //     },
-            //     {
-            //         y: 0,
-            //         duration: 0.6,
-            //         ease: 'circ.out'
+            this.triggers.push(trigger);
+            // const tl = gsap.timeline({
+            //     scrollTrigger: {
+            //         trigger: el,
+            //         start: 'top bottom',
+            //         end: `bottom top`,
+            //         toggleActions: 'restart none restart none',
             //     }
-            // )
-            // tl.fromTo(subtitle,
-            //     {
-            //         y: '100%'
-            //     },
-            //     {
-            //         y: 0,
-            //         duration: 0.6,
-            //         ease: 'circ.out'
-            //     },
-            //     '<'
-            // )
-            if (!isMobile.value) {
-                tl.to(date,
-                    {
-                        duration: 1,
-                        scrambleText: {
-                            text: '{original}',
-                            chars: '0123456789.',
-                            speed: 0.5
-                        }
-                    },
-                    '<'
-                )
-            }
-            this.tls.push(tl);
+            // })
+            // // const title = el.querySelector('.title')
+            // // const subtitle = el.querySelector('.subtitle')
+            // const date = el.querySelector('.date')
+            // // tl.fromTo(title,
+            // //     {
+            // //         y: '100%'
+            // //     },
+            // //     {
+            // //         y: 0,
+            // //         duration: 0.6,
+            // //         ease: 'circ.out'
+            // //     }
+            // // )
+            // // tl.fromTo(subtitle,
+            // //     {
+            // //         y: '100%'
+            // //     },
+            // //     {
+            // //         y: 0,
+            // //         duration: 0.6,
+            // //         ease: 'circ.out'
+            // //     },
+            // //     '<'
+            // // )
+            // if (!isMobile.value) {
+            //     tl.to(date,
+            //         {
+            //             duration: 1,
+            //             scrambleText: {
+            //                 text: '{original}',
+            //                 chars: '0123456789.',
+            //                 speed: 0.5
+            //             }
+            //         },
+            //         '<'
+            //     )
+            // }
+            // this.tls.push(tl);
         })
     }
 }

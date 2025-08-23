@@ -37,6 +37,10 @@ onMounted(() => {
     animate.init();
 })
 
+onUnmounted(() => {
+    animate.tl?.kill();
+})
+
 const animate = {
     tl: null as gsap.core.Timeline | null,
     init() {
@@ -68,12 +72,6 @@ const animate = {
         }, '<');
     }
 }
-
-onUnmounted(() => {
-    if (animate.tl) animate.tl.kill()
-    
-})
-
 
 </script>
 

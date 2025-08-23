@@ -139,8 +139,11 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    gsap.killTweensOf([].concat(...enAnimate.charsGroups.flat(), ...enAnimate.linesGroups.flat()));
-    gsap.killTweensOf([].concat(...cnAnimate.charsGroups.flat(), ...cnAnimate.linesGroups.flat()));
+    gsap.killTweensOf([].concat(...enAnimate.charsGroups.flat(), ...enAnimate.linesGroups.flat()))
+    gsap.killTweensOf([].concat(...cnAnimate.charsGroups.flat(), ...cnAnimate.linesGroups.flat()))
+    main.timeline.kill()
+    enAnimate.timeline?.kill()
+    cnAnimate.timeline?.kill()
 })
 
 // 划分组别，生成linesGroups和charsGroups

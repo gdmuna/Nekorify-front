@@ -43,6 +43,8 @@ const { border = false, enterAnimate = false, enableSplitText = false, customFn 
 const root = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)
 
+const triggers = []
+
 onMounted(() => {
     const rootHeight = root.value!.offsetHeight
     const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize)

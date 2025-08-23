@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 import { outlineButton } from '@/components/ui/button';
 
@@ -36,6 +36,10 @@ onMounted(() => {
     animate.init();
 })
 
+onUnmounted(() => {
+    animate.tl?.kill()
+})
+
 const animate = {
     tl: null as gsap.core.Timeline | null,
     init() {
@@ -55,18 +59,18 @@ const animate = {
                 stagger: 0.1
             }
         )
-        this.tl.to(itemsDate.value,
-            {
-                scrambleText: {
-                    text: '{original}',
-                    chars: '0123456789.',
-                    speed: 0.5,
-                },
-                duration: 2,
-                stagger: 0.1
-            },
-            '<'
-        )
+        // this.tl.to(itemsDate.value,
+        //     {
+        //         scrambleText: {
+        //             text: '{original}',
+        //             chars: '0123456789.',
+        //             speed: 0.5,
+        //         },
+        //         duration: 2,
+        //         stagger: 0.1
+        //     },
+        //     '<'
+        // )
     }
 }
 
