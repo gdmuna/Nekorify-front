@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="md:mx-10 mx-4 mt-5 mb-10">
+    <div ref="root" class="md:mx-10 mx-4 mb-10">
         <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
         py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2">
             <div>
@@ -12,7 +12,7 @@
             </div>
             <p class="date">{{ item.date }}</p>
         </div>
-        <outlineButton />
+        <outlineButton @click="routerGoto('/announcements')" />
     </div>
 </template>
 
@@ -29,6 +29,7 @@ import { getRemPx } from '@/lib/utils';
 import { useSystemStore } from '@/stores/system';
 import { storeToRefs } from 'pinia';
 const systemStore = useSystemStore();
+const { routerGoto } = systemStore
 const { isMobile } = storeToRefs(systemStore);
 
 const items = ref([

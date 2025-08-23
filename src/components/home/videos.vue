@@ -23,7 +23,7 @@
                         {{ items[currentIdx].subtitle }}
                     </p>
                 </transition>
-                <outlineButton />
+                <outlineButton @click="routerGoto('/videos')" />
             </div>
         </div>
     </div>
@@ -39,6 +39,7 @@ import { gsap } from 'gsap';
 import { useSystemStore } from '@/stores/system';
 import { storeToRefs } from 'pinia';
 const systemStore = useSystemStore();
+const { routerGoto } = systemStore
 const { isMobile } = storeToRefs(systemStore);
 
 const items = ref([

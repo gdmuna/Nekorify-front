@@ -7,7 +7,7 @@
                 <p ref="itemsDate">{{ item.date }}</p>
             </div>
         </div>
-        <outlineButton />
+        <outlineButton @click="routerGoto('/articles')" />
     </div>
 </template>
 
@@ -18,6 +18,9 @@ import { outlineButton } from '@/components/ui/button';
 
 import { gsap } from 'gsap';
 
+import { useSystemStore } from '@/stores/system';
+const systemStore = useSystemStore();
+const { routerGoto } = systemStore
 
 const container = ref<HTMLElement | null>(null);
 const itemsRef = ref<Array<HTMLElement>>([]);

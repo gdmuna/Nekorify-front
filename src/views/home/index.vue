@@ -22,7 +22,7 @@
         </section>
         <!-- Section 4 -->
         <section class="bg-gray-200 dark:bg-[#0E100F] flex flex-col">
-            <replays />
+            <videos />
         </section>
     </div>
 </template>
@@ -30,35 +30,14 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from 'vue';
 
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
 import scrollHint from '@/components/scrollHint.vue';
 import photobox from '@/components/home/photos.vue';
 import titleBlock from '@/components/home/titleBlock.vue';
 import announcement from '@/components/home/announcements.vue';
 import articles from '@/components/home/articles.vue';
-import replays from '@/components/home/replays.vue';
+import videos from '@/components/home/videos.vue';
 
 
-onMounted(() => {
-    ScrollTrigger.addEventListener('refreshInit', scrollTriggerRefreshInitHandler);
-    ScrollTrigger.addEventListener('refresh', scrollTriggerRefreshHandler);
-    ScrollTrigger.refresh(true)
-})
-
-onUnmounted(() => {
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    ScrollTrigger.removeEventListener('refreshInit', scrollTriggerRefreshInitHandler);
-    ScrollTrigger.removeEventListener('refresh', scrollTriggerRefreshHandler);
-});
-
-function scrollTriggerRefreshInitHandler() {
-    console.log('开始刷新ScrollTrigger')
-}
-
-function scrollTriggerRefreshHandler() {
-    console.log('ScrollTrigger刷新完成')
-}
 
 </script>
 
