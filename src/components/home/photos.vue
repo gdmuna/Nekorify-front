@@ -150,7 +150,7 @@ const photobox = {
         this.creat_events();
         this.creat_img_data(true);
         animate()
-        toast.success('点击图片可查看大图，按Esc键或点击空白处关闭')
+        toast.info('点击图片可查看大图，按Esc键或点击空白处关闭')
         this.success = true
     },
     // 计算响应式尺寸的方法

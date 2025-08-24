@@ -68,7 +68,7 @@ const titles = ref<HTMLElement | null>(null);
 const indicator = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-    // nextTick(() => enterAnimate.start('next'));
+    nextTick(() => enterAnimate.start('next'));
 })
 
 onUnmounted(() => {

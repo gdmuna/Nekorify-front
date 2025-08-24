@@ -42,14 +42,10 @@ const animate = {
     tl: gsap.timeline(),
     e: null as MouseEvent | null,
     play(type: string) {
+        this.tl.clear()
         const radius = (root.value as any)?.$el.offsetWidth || 0;
-        gsap.to(mask1.value, {
+        this.tl.to(mask1.value, {
             height: type === 'enter' ? radius * 1.75 : 0,
-            duration: 0.5,
-            ease: 'power2.out',
-            onUpdate: () => this.updateLocation(this.e as MouseEvent)
-        })
-        gsap.to(mask1.value, {
             width: type === 'enter' ? radius * 1.75 : 0,
             duration: 0.5,
             ease: 'power2.out',

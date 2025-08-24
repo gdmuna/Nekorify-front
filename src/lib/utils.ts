@@ -6,14 +6,15 @@ import type {
     ReturnTemplate,
     err,
     res
-} from '@/types/utils'
+} from '@/types/api'
 
-import type { InterviewFormJSON } from '@/types/user'
+import type { InterviewFormJSON } from '@/types/interview'
+
+import type { Method } from 'alova'
 
 import z from "zod";
 
 import dayjs from 'dayjs'
-
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -139,9 +140,9 @@ export function returnTemplate(err?: err, res?: res): ReturnTemplate {
     };
 }
 
-export async function to(promise: Promise<any>): Promise<ReturnTemplate> {
+export async function to<T = any>(method: Method): Promise<ReturnTemplate<T>> {
     try {
-        const res = await promise;
+        const res = await method;
         return returnTemplate(null, res);
     } catch (e) {
         const err = e || errTemplate('未知错误', '请稍后再试')
@@ -281,4 +282,12 @@ export function isBeforeOrBetweenNow(startTime: string, endTime: string): boolea
     const start = dayjs(startTime)
     const end = dayjs(endTime)
     return now.isBefore(start) || (now.isAfter(start) && now.isBefore(end))
+}
+
+export function formatDate(dateString: string) {
+    return dayjs(dateString).format('YYYY年M月D日')
+}
+
+export function formatTime(dateString: string) {
+    return dayjs(dateString).format('HH:mm')
 }

@@ -130,6 +130,7 @@ import { storeToRefs } from "pinia"
 import { useUserStore } from "@/stores/user"
 const userStore = useUserStore()
 const { interviewFormJSON } = storeToRefs(userStore)
+const { uploadInterviewForm } = userStore
 
 import { generateZodSchema, getRemPx } from "@/lib/utils"
 
@@ -154,10 +155,21 @@ const formSchema = toTypedSchema(generateZodSchema(interviewFormJSON.value))
 async function onSubmit(values: any) {
     if (underSubmit.value) return
     underSubmit.value = true
-    console.log(values);
-    toast.success('表单提交成功')
-    toast("You submitted the following values:", {
-        description: h("pre", { class: "mt-2 w-[340px] rounded-md bg-slate-950 p-4" }, h("code", { class: "text-white" }, JSON.stringify(values, null, 2))),
+    const formData = new FormData();
+    const jsonObj: Record<string, any> = {};
+    Object.entries(values).forEach(([key, value]) => {
+        if (value instanceof File) {
+            formData.append(key, value);
+        } else {
+            jsonObj[key] = value;
+        }
+    });
+    // 把普通字段整体作为 json 字段上传
+    formData.append('json', JSON.stringify(jsonObj));
+    toast.promise(() => uploadInterviewForm(formData), {
+        loading: '上传中...',
+        success: '面试报名表上传成功',
+        error: (err: any) => `上传失败: ${err}`
     })
     // const ok = await updateUserInfo(values)
     // if (ok) {
@@ -177,15 +189,11 @@ function triggerFileInput(index: number) {
 }
 
 function onFileChange(e: Event, setValue: (v: File) => void) {
-    console.log("文件输入变化", e);
-    
     const files = (e.target as HTMLInputElement).files
     if (files && files[0]) {
         const file = files[0]
         previewUrl.value = URL.createObjectURL(file)
         setValue(file)
-    } else {
-        return
     }
 }
 

@@ -57,3 +57,4 @@ export { nekorify, ranaMinder };
 
 export { authApi } from './auth';
 export { userApi } from './user';
+export { interviewApi } from './interview';

@@ -1,20 +1,24 @@
 import { defineStore } from 'pinia';
 
-import { ref, reactive, computed, watch, toRaw } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 
 import { useAuthStore } from '@/stores/auth';
 
-import { userApi } from '@/api';
+import { userApi, interviewApi } from '@/api';
 
 import { toast } from 'vue-sonner';
 
 import type {
-    UserInfo,
+    UserInfo
+} from '@/types/user';
+
+import type {
+    Interview,
     InterviewFormJSON,
-    InterviewReservation,
+    InterviewProgress,
     InterviewResult,
     Step
-} from '@/types/user';
+} from '@/types/interview';
 
 import { useRoute } from 'vue-router';
 
@@ -57,8 +61,8 @@ export const useUserStore = defineStore('user', () => {
         email: '',
         avatar: '',
         affiliation: '',
-        createdAt: new Date(),
-        lastLogin: new Date(),
+        createdAt: '',
+        lastLogin: '',
         groups: [] as string[],
         links: [] as string[]
     })
@@ -71,8 +75,8 @@ export const useUserStore = defineStore('user', () => {
         userInfo.email = info.email
         userInfo.avatar = info.avatar
         userInfo.affiliation = info.affiliation
-        userInfo.createdAt = new Date(info.createdTime)
-        userInfo.lastLogin = new Date(info.lastSigninTime)
+        userInfo.createdAt = info.createdTime
+        userInfo.lastLogin = info.lastSigninTime
         userInfo.groups = info.groups
         userInfo.links = info.links || ['https://fov-rgt.cn']
     }
@@ -85,8 +89,8 @@ export const useUserStore = defineStore('user', () => {
         userInfo.email = ''
         userInfo.avatar = ''
         userInfo.affiliation = ''
-        userInfo.createdAt = new Date()
-        userInfo.lastLogin = new Date()
+        userInfo.createdAt = ''
+        userInfo.lastLogin = ''
         userInfo.groups = []
         userInfo.links = []
     }
@@ -104,36 +108,62 @@ export const useUserStore = defineStore('user', () => {
         })
     }
 
-    const hasInterviews = computed(() => {
+    const interviews = ref<Interview[]>([])
+    async function getInterviewList() {
+        const { res, err } = await interviewApi.getInterviewList()
+        if (res) {
+            const data = res.data.data
+            interviews.value = data.campaigns || []
+        } else {
+            toast.error(err.data.message || '获取面试列表失败')
+        }
+    }
+
+    const interviewProgress = ref<InterviewProgress[]>([]);
+    async function getUserInterviewProgress() {
+        const { res, err } = await interviewApi.getUserInterviewProgress()
+        if (res) {
+            const data = res.data.data
+            interviewProgress.value = data || []
+        } else {
+            toast.error(err.data.message || '获取面试进度信息失败')
+        }
+    }
+    const hasInterviewsId = computed(() => {
         const result = [] as number[]
-        restructuredData.value.forEach((item) => {
+        interviewProgress.value.forEach((item) => {
             result.push(item.campaign.id)
         })
         return result
     })
-
-    const interviews = ref([
-        {
-            id: 1,
-            title: "2025年网络协会招新面试",
-            description: "网络协会招新，欢迎各位同学加入我们的大家庭！",
-            startDate: "2025-09-01",
-            endDate: "2025-09-30",
-            isActive: true
-        },
-        {
-            id: 2,
-            title: "2025年ACM协会招新面试",
-            description: "ACM协会招新，欢迎各位同学加入我们的大家庭！",
-            startDate: "2025-09-01",
-            endDate: "2025-09-30",
-            isActive: true
-        }
-    ])
     function checkHasInterview(nodeId: number) {
-        return hasInterviews.value.includes(nodeId)
+        return hasInterviewsId.value.includes(nodeId)
     }
 
+    const currentInterview = computed(() => {
+        if (currentInterviewId.value === null) return null
+        const result = interviewProgress.value.filter(item =>
+            item.campaign.id === currentInterviewId.value
+        )
+        if (result.length === 0) return null
+        return result
+    })
+
+    const interviewResult = ref<InterviewResult[]>([])
+    async function getInterviewResult() {
+        const { res, err } = await interviewApi.getInterviewResult()
+        if (res) {
+            const data = res.data.data.results
+            interviewResult.value = data || []
+        } else {
+            toast.error(err.data.message || '获取面试结果失败')
+        }
+    }
+
+    const currentInterviewResult = computed(() => {
+        if (currentInterviewId.value === null) return null
+        return interviewResult.value.find(item => item.campaign_id === currentInterviewId.value) ?? null
+    })
     const currentTitle = ref('面试节点')
     const currentInterviewId = ref<number | null>(null)
 
@@ -153,14 +183,16 @@ export const useUserStore = defineStore('user', () => {
         })
     })
 
-    const currentInterview = computed(() => {
-        if (currentInterviewId.value === null) return null
-        const result = restructuredData.value.filter(item =>
-            item.campaign.id === currentInterviewId.value
-        )
-        if (result.length === 0) return null
-        return result
-    })
+    async function loadInterviewFormJSON() {
+        const res = await fetch('/template.json');
+        if (!res.ok) {
+            throw new Error('加载表单配置失败');
+        }
+        const data = await res.json();
+        interviewFormJSON.value = data;
+    }
+    loadInterviewFormJSON();
+    const interviewFormJSON = ref<InterviewFormJSON[]>([])
 
     watch(
         () => route.params.nodeId,
@@ -174,122 +206,6 @@ export const useUserStore = defineStore('user', () => {
         },
         { immediate: true }
     )
-
-    async function loadInterviewFormJSON() {
-        const res = await fetch('/template.json');
-        if (!res.ok) {
-            throw new Error('加载表单配置失败');
-        }
-        const data = await res.json();
-        interviewFormJSON.value = data;
-    }
-    loadInterviewFormJSON();
-
-    const interviewFormJSON = ref<InterviewFormJSON[]>([])
-    // 示例面试数据
-    const originalData = ref<InterviewReservation[]>([
-        {
-            id: 1,
-            user_id: 1,
-            campaign: {
-                id: 1,
-                title: "2025社团招新",
-                description: "2025年社团招新，欢迎各位同学加入我们的大家庭！",
-                start_date: "2025-08-31T16:00:00.000Z",
-                end_date: "2025-09-29T16:00:00.000Z",
-                is_active: true,
-                stage: {
-                    id: 1,
-                    title: "一面",
-                    description: "第一次面试",
-                    campaign_id: 1,
-                    session: {
-                        id: 1,
-                        title: "一面10号场",
-                        start_time: "2025-08-10T00:00:00.000Z",
-                        end_time: "2025-08-10T23:59:59.000Z",
-                        location: "会议室A",
-                        time_slot: {
-                            id: 1,
-                            start_time: "2025-09-10T09:00:00.000Z",
-                            end_time: "2025-09-10T12:00:00.000Z",
-                            max_seats: 10,
-                            booked_seats: 2,
-                            is_available: true
-                        }
-                    }
-                }
-            },
-            selection_status: "confirmed",
-            createdAt: "2025-08-14T13:16:59.000Z",
-            updatedAt: "2025-08-14T13:16:59.000Z"
-        },
-        {
-            id: 1,
-            user_id: 1,
-            campaign: {
-                id: 1,
-                title: "2025社团招新",
-                description: "2025年社团招新，欢迎各位同学加入我们的大家庭！",
-                start_date: "2025-08-31T16:00:00.000Z",
-                end_date: "2025-09-29T16:00:00.000Z",
-                is_active: true,
-                stage: {
-                    id: 1,
-                    title: "二面",
-                    description: "第二次面试",
-                    campaign_id: 1,
-                    session: {
-                        id: 1,
-                        title: "二面10号场",
-                        start_time: "2025-08-12T00:00:00.000Z",
-                        end_time: "2025-08-12T23:59:59.000Z",
-                        location: "会议室B",
-                        time_slot: {
-                            id: 1,
-                            start_time: "2025-09-12T09:00:00.000Z",
-                            end_time: "2025-09-12T12:00:00.000Z",
-                            max_seats: 10,
-                            booked_seats: 2,
-                            is_available: true
-                        }
-                    }
-                }
-            },
-            selection_status: "confirmed",
-            createdAt: "2025-08-14T13:16:59.000Z",
-            updatedAt: "2025-08-14T13:16:59.000Z"
-        }
-    ]);
-
-    const restructuredData = ref<InterviewReservation[]>([]);
-    function restructure(data: any) {
-        // 深拷贝
-        const deepClone = data.map((item: any) => structuredClone(item));
-        return deepClone
-    }
-    const rawData = toRaw(originalData.value);
-    restructuredData.value = restructure(rawData);
-
-    const interviewResult = reactive<InterviewResult[]>([
-        {
-            id: 0,
-            application_id: 0,
-            campaign_id: 1,
-            user_id: 0,
-            association: null,
-            department: null,
-            role: null,
-            status: 'rejected',
-            createdAt: '2025-08-14T13:16:59.000Z',
-            updatedAt: '2025-08-14T13:16:59.000Z'
-        }
-    ])
-
-    const currentInterviewResult = computed(() => {
-        if (currentInterviewId.value === null) return null
-        return interviewResult.find(item => item.campaign_id === currentInterviewId.value) ?? null
-    })
 
     const steps = computed(() => {
         let Steps: Step[] = [
@@ -383,6 +299,16 @@ export const useUserStore = defineStore('user', () => {
         return Steps
     })
 
+    async function uploadInterviewForm(formData: FormData) {
+        const { err, res } = await interviewApi.uploadInterviewForm(formData)
+        console.log('uploadInterviewForm', { err, res });
+        if (res) {
+            await getUserInterviewProgress()
+            return Promise.resolve('面试报名表上传成功')
+        } else {
+            return Promise.reject(err.data?.message || '面试报名表上传失败')
+        }
+    }
 
     return {
         getUserInfo,
@@ -395,9 +321,11 @@ export const useUserStore = defineStore('user', () => {
         interviews,
         currentTitle,
         interviewFormJSON,
-        originalData,
-        restructuredData,
         steps,
-        currentInterviewResult
+        currentInterviewResult,
+        getInterviewList,
+        getUserInterviewProgress,
+        getInterviewResult,
+        uploadInterviewForm
     }
 })

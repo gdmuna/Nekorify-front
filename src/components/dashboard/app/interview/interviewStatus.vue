@@ -264,7 +264,7 @@ import { Badge } from '@/components/ui/badge'
 
 import detailRenderer from '@/components/detailRenderer.vue';
 
-import dayjs from 'dayjs';
+import { formatDate, formatTime } from '@/lib/utils'
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
@@ -276,14 +276,6 @@ const { steps, currentInterviewResult, userInfo } = storeToRefs(userStore);
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 const { getGroupByLevel } = authStore
-
-function formatDate(dateString: string) {
-    return dayjs(dateString).format('YYYY年M月D日')
-}
-
-function formatTime(dateString: string) {
-    return dayjs(dateString).format('HH:mm')
-}
 
 const currentStep = ref()
 
