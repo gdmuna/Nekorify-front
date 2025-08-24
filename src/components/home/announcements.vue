@@ -1,23 +1,28 @@
 <template>
     <div ref="root" class="md:mx-10 mx-4 mb-10">
-        <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
+        <template v-if="showItem">
+            <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
         py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2 will-change-transform">
-            <div>
-                <div class="overflow-hidden">
-                    <p class="md:text-4xl text-xl title">{{ item.title }}</p>
+                <div>
+                    <div class="overflow-hidden">
+                        <p class="md:text-4xl text-xl title">{{ item.title }}</p>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="md:text-2xl text-lg subtitle">{{ item.subtitle }}</p>
+                    </div>
                 </div>
-                <div class="overflow-hidden">
-                    <p class="md:text-2xl text-lg subtitle">{{ item.subtitle }}</p>
-                </div>
+                <p class="date">{{ item.date }}</p>
             </div>
-            <p class="date">{{ item.date }}</p>
-        </div>
-        <outlineButton @click="routerGoto('/announcements')" />
+            <outlineButton @click="routerGoto('/announcements')" />
+        </template>
+        <h2 v-else class="text-center text-2xl md:text-3xl dark:text-[#A0A0A0] mt-10">
+            还没有公告喵...
+        </h2>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted, computed } from 'vue';
 
 import { outlineButton } from '@/components/ui/button'
 
@@ -32,11 +37,21 @@ const systemStore = useSystemStore();
 const { routerGoto } = systemStore
 const { isMobile } = storeToRefs(systemStore);
 
-const items = ref([
+type Item = {
+    title: string;
+    subtitle: string;
+    date: string;
+}
+
+const items = ref<Item[]>([
     { title: '关于新生办理校园网的相关流程', subtitle: '[ 网络协会 ]', date: '2025.7.25' },
     { title: '关于教育邮箱系统更新的通知', subtitle: '[ 网络协会 ]', date: '2025.7.26' },
     { title: '关于ACM程序竞赛的报名事项', subtitle: '[ ACM协会 ]', date: '2025.7.27' }
 ])
+
+const showItem = computed(() => {
+    return items.value && items.value.length > 0
+})
 
 const root = ref<HTMLElement | null>(null);
 const itemsRef = ref<Array<HTMLElement>>([]);
@@ -47,9 +62,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    // animate.tls.forEach((tl) => {
-    //     tl.kill();
-    // })
     window.removeEventListener('resize', handleResize)
     animate.triggers.forEach(trigger => trigger.kill())
 })
@@ -106,52 +118,6 @@ const animate = {
                 }
             })
             this.triggers.push(trigger);
-            // const tl = gsap.timeline({
-            //     scrollTrigger: {
-            //         trigger: el,
-            //         start: 'top bottom',
-            //         end: `bottom top`,
-            //         toggleActions: 'restart none restart none',
-            //     }
-            // })
-            // // const title = el.querySelector('.title')
-            // // const subtitle = el.querySelector('.subtitle')
-            // const date = el.querySelector('.date')
-            // // tl.fromTo(title,
-            // //     {
-            // //         y: '100%'
-            // //     },
-            // //     {
-            // //         y: 0,
-            // //         duration: 0.6,
-            // //         ease: 'circ.out'
-            // //     }
-            // // )
-            // // tl.fromTo(subtitle,
-            // //     {
-            // //         y: '100%'
-            // //     },
-            // //     {
-            // //         y: 0,
-            // //         duration: 0.6,
-            // //         ease: 'circ.out'
-            // //     },
-            // //     '<'
-            // // )
-            // if (!isMobile.value) {
-            //     tl.to(date,
-            //         {
-            //             duration: 1,
-            //             scrambleText: {
-            //                 text: '{original}',
-            //                 chars: '0123456789.',
-            //                 speed: 0.5
-            //             }
-            //         },
-            //         '<'
-            //     )
-            // }
-            // this.tls.push(tl);
         })
     }
 }

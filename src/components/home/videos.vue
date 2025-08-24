@@ -1,6 +1,6 @@
 <template>
     <div class="mx-10 mt-5 mb-10 flex justify-center">
-        <div class="flex flex-col">
+        <div v-if="showItem" class="flex flex-col">
             <div class="flex md:flex-row flex-col md:space-x-4 space-y-4">
                 <div class="xl:w-180 md:w-120 w-78 md:h-80 h-40 rounded-xl dark:bg-[#CAB8A4] flex items-center justify-center shrink-1">video{{ currentIdx + 1 }}</div>
                 <div class="flex space-x-4 md:-translate-x-0 -translate-x-6">
@@ -26,11 +26,14 @@
                 <outlineButton @click="routerGoto('/videos')" />
             </div>
         </div>
+        <h2 v-else class="text-center text-2xl md:text-3xl dark:text-[#A0A0A0] my-10">
+            还没有视频喵...
+        </h2>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, nextTick, onUnmounted } from 'vue';
+import { onMounted, ref, nextTick, onUnmounted, computed } from 'vue';
 
 import { outlineButton } from '@/components/ui/button';
 
@@ -42,11 +45,21 @@ const systemStore = useSystemStore();
 const { routerGoto } = systemStore
 const { isMobile } = storeToRefs(systemStore);
 
-const items = ref([
+type Item = {
+    title: string;
+    subtitle: string;
+    date: string;
+}
+
+const items = ref<Item[]>([
     { title: 'VSCode环境配置', subtitle: '[ 网络协会 · 学术部 ]', date: '2025.7.25' },
     { title: 'Vue核心语法课', subtitle: '[ 网络协会 · 学术部 ]', date: '2025.7.26' },
     { title: 'Express入门课', subtitle: '[ ACM协会 · 学术部 ]', date: '2025.7.27' }
 ]);
+
+const showItem = computed(() => {
+    return items.value && items.value.length > 0
+})
 
 const currentIdx = ref(0);
 const prevIdx = ref(0);
@@ -55,7 +68,7 @@ const titles = ref<HTMLElement | null>(null);
 const indicator = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-    nextTick(() => enterAnimate.start('next'));
+    // nextTick(() => enterAnimate.start('next'));
 })
 
 onUnmounted(() => {
