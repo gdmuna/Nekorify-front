@@ -22,7 +22,19 @@ export interface InterviewsData {
     }
 }
 
-export type InterviewsRes = baseRes<InterviewsData>
+export interface Interviews {
+    message: string
+    code: string
+    pagination: {
+        currentPage: number
+        pageSize: number
+        totalRecords: number
+        totalPages: number
+    }
+    campaigns: Interview[]
+}
+
+export type InterviewRes = baseRes<Interviews>
 
 export interface TimeSlot {
     id: number

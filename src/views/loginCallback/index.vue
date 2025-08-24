@@ -10,7 +10,7 @@ import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 
 onMounted(() => {
-    const authStore = useAuthStore();
+    const authStore = useAuthStore()
     authStore.loginCallback()
 });
 

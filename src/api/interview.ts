@@ -3,7 +3,7 @@ import { nekorify, ranaMinder } from './index'
 import { errTemplate, returnTemplate, to } from '@/lib/utils'
 
 import type {
-    InterviewsRes,
+    InterviewRes,
     InterviewReservationRes,
     InterviewResultRes
 } from '@/types/interview';
@@ -11,7 +11,7 @@ import type {
 export const interviewApi = {
     async getInterviewList() {
         const inst = ranaMinder.Get('/campaign/user')
-        return await to<InterviewsRes>(inst)
+        return await to<InterviewRes>(inst)
     },
     async getUserInterviewProgress() {
         const inst = ranaMinder.Get('/user_selection/me')
@@ -24,7 +24,7 @@ export const interviewApi = {
     async uploadInterviewForm(formData: FormData) {
         // const inst = ranaMinder.Post('/application/', formData)
         // return await to(inst)
-        console.log('formData', JSON.stringify(formData.get('json')));
+        console.log('formData', JSON.stringify(formData.get('information')));
         return to(new Promise<any>((resolve, reject) => {
             const random = Math.random()
             if (random < 0.5) {

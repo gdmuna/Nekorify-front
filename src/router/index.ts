@@ -99,6 +99,11 @@ const routes = [
           requireAuth: false,
           parentAction: {
             doNotScrollToTop: true
+          },
+          minManageLevel: 3,
+          manageRange: {
+            onlySelfFrom: 2,
+            all: 1
           }
         }
       },
@@ -111,6 +116,11 @@ const routes = [
           requireAuth: false,
           parentAction: {
             doNotScrollToTop: true
+          },
+          minManageLevel: 3,
+          manageRange: {
+            onlySelfFrom: 1,
+            all: 0
           }
         }
       },
@@ -123,6 +133,11 @@ const routes = [
           requireAuth: false,
           parentAction: {
             doNotScrollToTop: true
+          },
+          minManageLevel: 3,
+          manageRange: {
+            onlySelfFrom: 1,
+            all: 0
           }
         }
       },

@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-4 mx-auto">
+    <div class="mb-10 mx-auto">
         <section class="space-y-2 text-center">
             <h1 class="md:text-3xl text-2xl">面试报名表</h1>
             <p class="text-[#A0A0A0] md:text-lg text-[1rem]">请如实填写以下信息，所有内容仅用于本次面试报名及后续联系，我们将严格保密您的个人信息</p>
@@ -129,7 +129,7 @@ import { toast } from 'vue-sonner'
 import { storeToRefs } from "pinia"
 import { useUserStore } from "@/stores/user"
 const userStore = useUserStore()
-const { interviewFormJSON } = storeToRefs(userStore)
+const { interviewFormJSON, currentInterviewId } = storeToRefs(userStore)
 const { uploadInterviewForm } = userStore
 
 import { generateZodSchema, getRemPx } from "@/lib/utils"
@@ -157,6 +157,7 @@ async function onSubmit(values: any) {
     underSubmit.value = true
     const formData = new FormData();
     const jsonObj: Record<string, any> = {};
+    formData.append('campaign_id', String(currentInterviewId.value))
     Object.entries(values).forEach(([key, value]) => {
         if (value instanceof File) {
             formData.append(key, value);
@@ -165,18 +166,12 @@ async function onSubmit(values: any) {
         }
     });
     // 把普通字段整体作为 json 字段上传
-    formData.append('json', JSON.stringify(jsonObj));
+    formData.append('information', JSON.stringify(jsonObj));
     toast.promise(() => uploadInterviewForm(formData), {
         loading: '上传中...',
         success: '面试报名表上传成功',
         error: (err: any) => `上传失败: ${err}`
     })
-    // const ok = await updateUserInfo(values)
-    // if (ok) {
-    //     toast.success('个人资料已更新')
-    // } else {
-    //     toast.error('更新失败，请稍后再试')
-    // }
     underSubmit.value = false
 }
 

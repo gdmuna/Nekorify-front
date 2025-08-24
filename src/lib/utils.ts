@@ -10,11 +10,17 @@ import type {
 
 import type { InterviewFormJSON } from '@/types/interview'
 
+import type { ModalOptions } from '@/types/utils'
+
 import type { Method } from 'alova'
 
 import z from "zod";
 
 import dayjs from 'dayjs'
+
+import { createVNode, render } from 'vue'
+
+import { baseModal } from '@/components/ui/modal'
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -140,7 +146,7 @@ export function returnTemplate(err?: err, res?: res): ReturnTemplate {
     };
 }
 
-export async function to<T = any>(method: Method): Promise<ReturnTemplate<T>> {
+export async function to<T = any>(method: Method | Promise<T>): Promise<ReturnTemplate<T>> {
     try {
         const res = await method;
         return returnTemplate(null, res);
@@ -290,4 +296,32 @@ export function formatDate(dateString: string) {
 
 export function formatTime(dateString: string) {
     return dayjs(dateString).format('HH:mm')
+}
+
+export function showModal(options: ModalOptions) {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const promise = new Promise((resolve) => {
+        const vnode = createVNode(baseModal, {
+            ...options,
+            onOk: () => {
+                options.onOk?.()
+                resolve(true)
+            },
+            onCancel: () => {
+                options.onCancel?.()
+                resolve(false)
+            },
+            selfClean: () => {
+                render(null, container)
+                document.body.removeChild(container)
+            },
+        }, { default: () => typeof options.content === 'function' ? options.content() : options.content })
+        render(vnode, container)
+    })
+    const close = () => {
+        render(null, container)
+        document.body.removeChild(container)
+    }
+    return { promise, close }
 }

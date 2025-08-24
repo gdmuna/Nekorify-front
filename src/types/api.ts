@@ -1,10 +1,6 @@
 export interface baseRes<T = any> {
     success: boolean
-    data: {
-        message: string
-        code: string
-        data: T
-    }
+    data: T
 }
 
 export interface ErrTemplate {
@@ -22,3 +18,5 @@ export interface ReturnTemplate<T = any> {
 
 export type err = ErrTemplate | any | null
 export type res = any | null
+
+export type dataStatus = 'idle' | 'loading' | 'loaded' | 'error'

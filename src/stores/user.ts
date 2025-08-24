@@ -20,9 +20,13 @@ import type {
     Step
 } from '@/types/interview';
 
+import type {
+    dataStatus
+} from '@/types/api';
+
 import { useRoute } from 'vue-router';
 
-import { isAfterNow, isBeforeOrBetweenNow } from '@/lib/utils';
+import { isAfterNow, isBeforeOrBetweenNow, to } from '@/lib/utils';
 
 export const useUserStore = defineStore('user', () => {
     const route = useRoute();
@@ -31,10 +35,10 @@ export const useUserStore = defineStore('user', () => {
         if (res) {
             const info = res.data.data
             handleUserInfo(info)
-            return Promise.resolve()
+            return Promise.resolve(res)
         } else {
             toast.error(err.data.message || '获取用户信息失败')
-            return Promise.reject()
+            return Promise.reject(err)
         }
     }
 
@@ -43,6 +47,7 @@ export const useUserStore = defineStore('user', () => {
             const authStore = useAuthStore()
             await authStore.refresh();
             await getUserInfo();
+            authStore.initUserPermission()
             await loadInterviewFormJSON();
             return true;
         } catch (e) {
@@ -109,24 +114,58 @@ export const useUserStore = defineStore('user', () => {
     }
 
     const interviews = ref<Interview[]>([])
+    const interviewDataStatus = ref<dataStatus>('idle')
     async function getInterviewList() {
-        const { res, err } = await interviewApi.getInterviewList()
+        interviewDataStatus.value = 'loading'
+        const { err, res } = await interviewApi.getInterviewList()
+        console.log('getInterviewList', { err, res });
         if (res) {
-            const data = res.data.data
-            interviews.value = data.campaigns || []
+            interviews.value = res.data.campaigns || []
+            interviewDataStatus.value = 'loaded'
+            return Promise.resolve(res)
         } else {
             toast.error(err.data.message || '获取面试列表失败')
+            interviewDataStatus.value = 'error'
+            return Promise.reject(err)
         }
     }
+    const validInterviewIds = computed(() => {
+        return interviews.value.map(item => item.id)
+    })
+    function checkValidInterviewId(id: number) {
+        return validInterviewIds.value.includes(id)
+    }
+    const currentInterview = computed(() => {
+        let result: Interview | null | undefined = interviews.value.find(item => item.id === currentInterviewId.value)
+        if (result === undefined) result = null
+        return result
+    })
+    const currentTitle = computed(() => {
+        return currentInterview.value ? currentInterview.value.title : '面试节点'
+    })
+    const currentInterviewId = ref<number | null>(null)
+    watch(
+        () => route.params.nodeId,
+        (nodeId) => {
+            if (nodeId === undefined || route.name !== 'interviewNode') return
+            currentInterviewId.value = Number(nodeId)
+        }, { immediate: true })
 
     const interviewProgress = ref<InterviewProgress[]>([]);
+    const interviewProgressStatus = ref<dataStatus>('idle')
     async function getUserInterviewProgress() {
-        const { res, err } = await interviewApi.getUserInterviewProgress()
+        interviewProgressStatus.value = 'loading'
+        const { err, res } = await interviewApi.getUserInterviewProgress()
+        console.log('getUserInterviewProgress', { err, res });
         if (res) {
-            const data = res.data.data
+            const data = res.data
             interviewProgress.value = data || []
+            interviewProgressStatus.value = 'loaded'
+            return Promise.resolve(res)
         } else {
-            toast.error(err.data.message || '获取面试进度信息失败')
+            // toast.error(err.data.message || '获取面试进度信息失败')
+            interviewProgressStatus.value = 'error'
+            return Promise.reject(err)
         }
     }
     const hasInterviewsId = computed(() => {
@@ -140,7 +179,7 @@ export const useUserStore = defineStore('user', () => {
         return hasInterviewsId.value.includes(nodeId)
     }
 
-    const currentInterview = computed(() => {
+    const currentInterviewProgress = computed(() => {
         if (currentInterviewId.value === null) return null
         const result = interviewProgress.value.filter(item =>
             item.campaign.id === currentInterviewId.value
@@ -150,13 +189,19 @@ export const useUserStore = defineStore('user', () => {
     })
 
     const interviewResult = ref<InterviewResult[]>([])
+    const interviewResultStatus = ref<dataStatus>('idle')
     async function getInterviewResult() {
-        const { res, err } = await interviewApi.getInterviewResult()
+        interviewResultStatus.value = 'loading'
+        const { err, res } = await interviewApi.getInterviewResult()
         if (res) {
-            const data = res.data.data.results
+            const data = res.data.results
             interviewResult.value = data || []
+            interviewResultStatus.value = 'loaded'
+            return Promise.resolve(res)
         } else {
-            toast.error(err.data.message || '获取面试结果失败')
+            // toast.error(err.data.message || '获取面试结果失败')
+            interviewResultStatus.value = 'error'
+            return Promise.reject(err)
         }
     }
 
@@ -164,8 +209,7 @@ export const useUserStore = defineStore('user', () => {
         if (currentInterviewId.value === null) return null
         return interviewResult.value.find(item => item.campaign_id === currentInterviewId.value) ?? null
     })
-    const currentTitle = ref('面试节点')
-    const currentInterviewId = ref<number | null>(null)
+
 
     const isUnderWay = computed(() => {
         return currentInterviewResult.value?.status === 'pending'
@@ -173,9 +217,9 @@ export const useUserStore = defineStore('user', () => {
 
     const waitingInterview = computed(() => {
         // 没有面试数据直接返回 false
-        if (!currentInterview.value || currentInterview.value.length === 0) return false
+        if (!currentInterviewProgress.value || currentInterviewProgress.value.length === 0) return false
         // 遍历所有 session，判断是否有等待中的
-        return currentInterview.value.some(item => {
+        return currentInterviewProgress.value.some(item => {
             const session = item.campaign.stage.session
             if (!session) return false
             // 当前时间在 start_time 之前，或者在 start_time 和 end_time 之间
@@ -194,18 +238,7 @@ export const useUserStore = defineStore('user', () => {
     loadInterviewFormJSON();
     const interviewFormJSON = ref<InterviewFormJSON[]>([])
 
-    watch(
-        () => route.params.nodeId,
-        (nodeId) => {
-            if (nodeId === undefined || route.name !== 'interviewNode') return
-            const item = interviews.value.find(item => item.id === Number(nodeId))
-            const id = item ? item.id : null
-            const title = item ? item.title : '面试节点'
-            currentTitle.value = title
-            currentInterviewId.value = id
-        },
-        { immediate: true }
-    )
+
 
     const steps = computed(() => {
         let Steps: Step[] = [
@@ -243,8 +276,8 @@ export const useUserStore = defineStore('user', () => {
                 ]
             }
         ]
-        if (currentInterview.value) {
-            currentInterview.value.forEach((item) => {
+        if (currentInterviewProgress.value) {
+            currentInterviewProgress.value.forEach((item) => {
                 Steps.push({
                     step: Steps.length + 1,
                     title: `进行流程 ${item.campaign.stage.title}`,
@@ -267,7 +300,7 @@ export const useUserStore = defineStore('user', () => {
             description:
                 "根据实际情况，可能会进行加面。您可以在此网站中查看面试状态，也可以通过邮件或其他方式获取通知。",
             state: function () {
-                if (isUnderWay.value && (!waitingInterview.value || !currentInterview.value)) return 'active'
+                if (isUnderWay.value && (!waitingInterview.value || !currentInterviewProgress.value)) return 'active'
                 if (!isUnderWay.value) return 'completed'
                 return 'inactive'
             }(),
@@ -303,11 +336,24 @@ export const useUserStore = defineStore('user', () => {
         const { err, res } = await interviewApi.uploadInterviewForm(formData)
         console.log('uploadInterviewForm', { err, res });
         if (res) {
-            await getUserInterviewProgress()
+            await Promise.all([
+                getUserInterviewProgress(),
+                getInterviewResult()
+            ]).catch(() => {
+                return Promise.reject('面试报名表上传成功，但获取最新面试信息失败')
+            })
             return Promise.resolve('面试报名表上传成功')
         } else {
             return Promise.reject(err.data?.message || '面试报名表上传失败')
         }
+    }
+
+    function initInterviewData() {
+        return Promise.allSettled([
+            getInterviewList(),
+            getUserInterviewProgress(),
+            getInterviewResult()
+        ])
     }
 
     return {
@@ -326,6 +372,11 @@ export const useUserStore = defineStore('user', () => {
         getInterviewList,
         getUserInterviewProgress,
         getInterviewResult,
-        uploadInterviewForm
+        uploadInterviewForm,
+        initInterviewData,
+        interviewDataStatus,
+        currentInterviewId,
+        checkValidInterviewId,
+        currentInterview
     }
 })

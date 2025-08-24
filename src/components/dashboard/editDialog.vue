@@ -1,5 +1,5 @@
 <template>
-    <Form v-slot="{ handleSubmit }" as="" keep-values :validation-schema="formSchema" class="select-none">
+    <Form v-slot="{ handleSubmit }" as="" keep-values :validation-schema="formSchema">
         <Dialog v-model:open="dialogOpen">
             <DialogTrigger as-child>
                 <secondaryButton text="编辑个人资料" :icon="PenLine"

@@ -161,6 +161,15 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
+    const userPermissions = ref<GroupMeta[]>([])
+    function initUserPermission() {
+        const userStore = useUserStore();
+        userPermissions.value = userStore.userInfo.groups
+            .map(key => groupMeta[key])
+            .filter(Boolean);
+        console.log('userPermissions', userPermissions.value);
+    }
+
     function getGroupByKey(group: string) {
         const userStore = useUserStore();
         const metas = userStore.userInfo.groups
@@ -168,13 +177,9 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     function getGroupByRank(type: 'max' | 'min' = 'min') {
-        const userStore = useUserStore();
-        const metas = userStore.userInfo.groups
-            .map(key => groupMeta[key])
-            .filter(Boolean);
-        if (metas.length === 0) return null;
-        return metas.reduce((prev, curr) => {
-            if (type === 'min') {
+        if (userPermissions.value.length === 0) return null;
+        return userPermissions.value.reduce((prev, curr) => {
+            if (type === 'max') {
                 return curr.level < prev.level ? curr : prev;
             } else {
                 return curr.level > prev.level ? curr : prev;
@@ -183,12 +188,8 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     function getGroupByLevel(level: number) {
-        const userStore = useUserStore();
-        const metas = userStore.userInfo.groups
-            .map(key => groupMeta[key])
-            .filter(Boolean);
-        if (metas.length === 0) return null;
-        return metas.filter(meta => meta.level === level);
+        if (userPermissions.value.length === 0) return null;
+        return userPermissions.value.filter(meta => meta.level === level);
     }
 
     return {
@@ -201,6 +202,8 @@ export const useAuthStore = defineStore('auth', () => {
         logout,
         getGroupByKey,
         getGroupByRank,
-        getGroupByLevel
+        getGroupByLevel,
+        initUserPermission,
+        userPermissions
     }
 })

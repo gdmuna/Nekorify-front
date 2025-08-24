@@ -6,8 +6,7 @@
                 <img :src="userInfo.avatar" class="avatar xl:size-78 md:size-64 size-24 rounded-full object-cover
                 border-2 dark:border-[#E0DEC0] select-none">
                 <transition name="avatar-fade">
-                    <div v-if="avatarHover"
-                        class="absolute top-0 w-full h-full flex flex-col rounded-full justify-center items-center
+                    <div v-if="avatarHover" class="absolute top-0 w-full h-full flex flex-col rounded-full justify-center items-center
                         bg-[#0E100F]/50 pointer-events-none overflow-hidden duration-300">
                         <ImageUp class="size-6 md:size-8 text-[#FEFCE4]/80" />
                         <p class="text-xs md:text-sm">上传新的头像</p>
@@ -33,9 +32,9 @@
             </div>
             <div class="space-x-2">
                 <CircleDollarSign class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
-                <outlineText text="0 猫粮" class="inline-block" />
+                <outlineText text="0 猫粮" class="inline-block" @click="toggleModal(0)" />
                 <p class="inline">·</p>
-                <outlineText text="0 鱼粮" class="inline-block" />
+                <outlineText text="0 鱼粮" class="inline-block" @click="toggleModal(0)" />
             </div>
         </div>
         <div class="flex flex-col space-y-1">
@@ -71,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted, h } from 'vue';
 
 import { useAuthStore } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
@@ -79,10 +78,11 @@ import { storeToRefs } from 'pinia';
 
 import { secondaryButton } from '@/components/ui/button';
 import { outlineText } from '@/components/ui/text';
+import pointShop from '@/components/pointShop.vue';
 
 import { UsersRound, Mail, Link, Hash, BadgeInfo, CircleDollarSign, LogOut, ImageUp } from 'lucide-vue-next';
 
-import { openInNewTab } from '@/lib/utils';
+import { openInNewTab, showModal } from '@/lib/utils';
 
 import { editDialog } from './index';
 
@@ -97,10 +97,20 @@ const avatarHover = ref(false);
 
 function isMinister(belongs: string[]) {
     const res = belongs.includes('gdmu-na') && getGroupByKey('gdmu/NA-minister') ? true : false
-    || belongs.includes('gdmu-acm') && getGroupByKey('gdmu/ACM-minister') ? true : false
-    console.log(res);
+        || belongs.includes('gdmu-acm') && getGroupByKey('gdmu/ACM-minister') ? true : false
     return res
 }
+
+const modalConfig = [
+    {
+        content: h(pointShop, { visible: true})
+    }
+]
+
+function toggleModal(index: number) {
+    showModal(modalConfig[index])
+}
+
 
 </script>
 
