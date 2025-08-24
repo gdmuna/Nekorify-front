@@ -35,8 +35,9 @@
                 </primaryButton>
             </div>
         </div>
-        <header ref="headerRef" class="flex lg:flex-row flex-col lg:h-full h-[100dvh] lg:w-full w-[min(24rem,70dvw)] -translate-x-full lg:-translate-x-0
-        lg:items-center items-start lg:justify-between justify-start *:shrink-0 z-60 lg:p-0 p-3 space-y-4 lg:space-y-0 will-change-transform
+        <header ref="headerRef"
+            class="flex lg:flex-row flex-col lg:h-full h-[100dvh] lg:w-full w-[min(24rem,70dvw)] -translate-x-full lg:-translate-x-0
+        lg:items-center items-start lg:justify-between justify-start *:shrink-0 z-60 lg:p-0 p-3 space-y-4 lg:space-y-0 will-change-transform overscroll-contain
         overflow-x-auto *:pointer-events-auto relative -top-14 lg:-top-0 -left-4 lg:-left-0 lg:bg-transparent bg-[#0E100F]">
             <!-- 页眉左侧内容 -->
             <div class="flex lg:flex-row flex-col lg:h-full lg:items-center lg:w-auto w-full space-y-4 lg:space-y-0">
@@ -49,7 +50,8 @@
                                 class="lg:size-10 size-12 will-change-transform">
                             <p class="mr-6 Association-NA">GDMU-NA</p>
                         </div>
-                        <div ref="logo2" class="absolute top-0 left-0 whitespace-nowrap space-x-1 flex items-center will-change-transform">
+                        <div ref="logo2"
+                            class="absolute top-0 left-0 whitespace-nowrap space-x-1 flex items-center will-change-transform">
                             <img src="/src/assets/ACM-LOGO 1.svg" alt=""
                                 class="lg:size-10 size-12 will-change-transform">
                             <p class="whitespace-nowrap Association-ACM">GDMU-ACM</p>
@@ -69,14 +71,15 @@
                                 @click="routerGoto(item.path), headerAnimate.toggle()">
                                 <outlineText v-show="isDesktop" :text="item.label" :keep-in-end="item.active"
                                     class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit"
-                                    :class="[item.active ? 'text-blue-400' : '']"
-                                    line-color="#51A2FF" transition-line-color />
+                                    :class="[item.active ? 'text-blue-400' : '']" line-color="#51A2FF"
+                                    transition-line-color />
                                 <div v-show="!isDesktop" class="md:text-xl flex items-center space-x-2">
                                     <component :is="item.icon" class="size-6" />
                                     <p>{{ item.label }}</p>
                                 </div>
                             </div>
-                            <img v-if="isDesktop && index < routeMeta.length - 1" :src="boundary" alt="" class="shrink-0">
+                            <img v-if="isDesktop && index < routeMeta.length - 1" :src="boundary" alt=""
+                                class="shrink-0">
                         </template>
                     </nav>
                 </div>
@@ -181,7 +184,7 @@ import { toggleThemeButton } from '@/components/ui/switch'
 import { outlineText } from '@/components/ui/text'
 
 // 导入图标
-import { 
+import {
     Github,
     LogIn,
     Smile,

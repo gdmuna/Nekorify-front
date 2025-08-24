@@ -17,21 +17,21 @@
                     <p>已经到底了喵~</p>
                     <p class="inline-flex flex-wrap justify-center items-center">Copyright © 2025
                         &nbsp;
-                        <outlineText text="GDMU-NA" lineColor="#B0B0B0"
+                        <outlineText text="GDMU-NA" lineColor="#B0B0B0" keepInEnd
                             @click="openInNewTab('https://github.com/gdmuna')" />&nbsp;
                         &
                         &nbsp;
-                        <outlineText text="GDMU-ACM" lineColor="#B0B0B0"
+                        <outlineText text="GDMU-ACM" lineColor="#B0B0B0" keepInEnd
                             @click="openInNewTab('https://github.com/gdmuna')" />&nbsp;
                         &
                         &nbsp;
-                        <outlineText text="MyGO!!!" lineColor="#B0B0B0"
+                        <outlineText text="MyGO!!!" lineColor="#B0B0B0" keepInEnd
                             @click="openInNewTab('https://github.com/orgs/gdmuna/teams/mygo')" />&nbsp;.&nbsp;
                         <span>All Rights Reserved.</span>
                     </p>
                     <p>
                         Powered by
-                        <outlineText text="Nekorify" lineColor="#B0B0B0" class="inline-block"
+                        <outlineText text="Nekorify" lineColor="#B0B0B0" class="inline-block" keepInEnd
                             @click="openInNewTab('https://github.com/gdmuna/Nekorify-front')" />
                     </p>
                 </div>
@@ -49,13 +49,11 @@ import { Toaster, toast } from 'vue-sonner'
 import Header from '@/components/header.vue'
 import { outlineText } from './components/ui/text'
 
-import { onMounted, onBeforeMount, ref, nextTick } from 'vue'
+import { onMounted, onBeforeMount, ref } from 'vue'
 
-import { openInNewTab, debounce } from './lib/utils'
+import { openInNewTab } from './lib/utils'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
-
-import { useRouter } from 'vue-router'
 
 import { useSystemStore } from '@/stores/system'
 import { useUserStore } from '@/stores/user'
@@ -99,7 +97,6 @@ onMounted(async () => {
         wrapper: '#app',
         content: '#content',
         smooth: 0.75,
-        ignoreMobileResize: true,
         // smoothTouch: 0,
         onUpdate: (self: any) => {
             const progress = self.progress

@@ -3,7 +3,7 @@
         <Accordion type="single" collapsible>
             <AccordionItem v-for="(item, index) in QA" :key="index" :value="item.value" class="border-0 will-change-transform">
                 <AccordionTrigger
-                    class="accordion-trigger relative text-2xl cursor-pointer will-change-transform xl:py-8 md:py-6 py-4 border-t-2 border-[#bbb89c]">
+                    class="accordion-trigger relative md:text-3xl text-2xl cursor-pointer will-change-transform xl:py-8 md:py-6 py-4 border-t-2 border-[#bbb89c]">
                     <div class="flex-1 flex items-center justify-start space-x-4 z-10 px-4">
                         <p class="text-6xl text-transparent text-stroke duration-300">Q{{ index + 1 }}</p>
                         <div class="flex-1 flex items-center justify-start duration-300">

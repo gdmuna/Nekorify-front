@@ -585,7 +585,6 @@ onMounted(() => {
     if (isMobile.value) {
         section3CardsManager.init()
     }
-    ScrollTrigger.refresh(true)
 })
 
 let horizontalScrollTrigger: ScrollTrigger | null = null
@@ -657,6 +656,7 @@ function initAnimate() {
             start: "top top",
             end: () => `+=${section3_scrollListenLength}`,
             onUpdate: (self) => {
+                if (!section3_progressDivs.value) return
                 const velocity = self.getVelocity();
                 section3_scrollProgress.value = self.progress;
                 section3_progressBlock.value!.style.clipPath = `inset(0 ${100 - self.progress * 100}% 0 0)`;

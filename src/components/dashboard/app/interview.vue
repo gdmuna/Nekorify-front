@@ -14,11 +14,11 @@
                             <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">{{ item.description }}</p>
                         </div>
                         <div class="md:space-y-2 space-y-1">
-                            <p class="md:text-sm text-xs">
+                            <p class="md:text-base text-xs">
                                 <span>开始时间: </span>
                                 <span class="whitespace-nowrap">{{ item.startDate }}</span>
                             </p>
-                            <p class="md:text-sm text-xs">
+                            <p class="md:text-base text-xs">
                                 <span>结束时间: </span>
                                 <span class="whitespace-nowrap">{{ item.endDate }}</span>
                             </p>

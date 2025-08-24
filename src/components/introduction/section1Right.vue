@@ -212,9 +212,6 @@ const helloGDMU = {
                 delay: 1,
                 stagger: {
                     amount: 0.5
-                },
-                onComplete: () => {
-
                 }
             }
         )

@@ -5,7 +5,7 @@
                     <CircleCheckBig class="size-6" />
                     <p class="text-xl">已报名当前面试</p>
                 </div>
-                <div v-if="steps !== null" id="steps" class="mt-6 md:ml-4 md:gap-4">
+                <div ref="stepRoot" v-if="steps !== null" id="steps" class="mt-6 md:ml-4 md:gap-4">
                     <Stepper orientation="vertical" :defaultValue="activeStepIndex + 1" :linear="false"
                         v-model:model-value="currentStep"
                         class="flex flex-col gap-10 shrink-1 max-w-[90dvw] md:max-w-lg md:col-span-2 col-span-5 h-fit">
@@ -14,7 +14,7 @@
                             <StepperSeparator v-if="index !== steps.length - 1"
                                 :class="['absolute left-[1.125rem] top-[2.375rem] block h-[105%] w-0.5 shrink-0 rounded-full bg-muted', step.state === 'completed' && 'bg-[#F7F3ED]']" />
                             <StepperTrigger as-child>
-                                <Button :id="`step-button-${index}`"
+                                <Button :data-steps-button-index="index"
                                     :variant="step.state === 'completed' || step.state === 'active' ? 'default' : 'outline'"
                                     size="icon" :class="[
                                         'z-10 rounded-full shrink-0 bg-[#F7F3ED] cursor-pointer',
@@ -27,18 +27,20 @@
                             </StepperTrigger>
                             <div :data-steps-description-index="index" class="flex flex-1 flex-col gap-1">
                                 <StepperTitle :class="[state === 'active' && 'text-[#E2D7AB]']"
-                                    class="font-bold transition text-3xl whitespace-break-spaces">
+                                    class="font-bold transition text-3xl whitespace-break-spaces select-none">
                                     <p class="space-x-2">
-                                        <label :for="`step-button-${index}`" class="cursor-pointer">{{ step.title }}</label>
+                                        <label :class="[step.state !== 'inactive' && 'cursor-pointer']" @click="step.state !== 'inactive' && goto(index)">
+                                            {{ step.title }}
+                                        </label>
                                         <sup>
                                             <Badge v-if="step.state === 'completed'"
-                                                class="bg-emerald-500 cursor-default select-none">已完成</Badge>
+                                                class="bg-emerald-500 cursor-default">已完成</Badge>
                                             <Badge v-if="step.state === 'active'"
-                                                class="bg-amber-500 text-black badge-animate cursor-default select-none">
+                                                class="bg-amber-500 text-black badge-animate cursor-default">
                                                 进行中
                                             </Badge>
                                             <Badge v-if="step.state === 'inactive'"
-                                                class="bg-gray-700 text-[#CCCCCC] border border-gray-600 cursor-default select-none">
+                                                class="bg-gray-700 text-[#CCCCCC] border border-gray-600 cursor-default">
                                                 待处理</Badge>
                                         </sup>
                                     </p>
@@ -300,7 +302,6 @@ function teleportTo(index: number, type: string) {
     }
 }
 
-
 const currentAssociation = computed(() => {
     return getGroupByLevel(3)
 })
@@ -308,6 +309,12 @@ const currentAssociation = computed(() => {
 const currentDepartment = computed(() => {
     return getGroupByLevel(2)
 })
+
+const stepRoot = ref<HTMLElement | null>(null)
+
+function goto(index: number) {
+    currentStep.value = index + 1
+}
 
 </script>
 

@@ -1,8 +1,8 @@
 <template>
-    <div class="cursor-pointer relative select-none" @mouseenter="animate.play('enter')"
+    <div ref="root" class="cursor-pointer relative select-none" @mouseenter="animate.play('enter')"
         @mouseleave="animate.play('leave')">
         <p class="text-center">{{ text }}</p>
-        <div ref="bottomLine" class="w-full h-[1px] mt-[0.1rem] absolute will-change-transform" :style="{ backgroundColor: setColor }" />
+        <div ref="bottomLine" class="w-full h-[1px] mt-[0.1rem] absolute will-change-transform pointer-events-none" :style="{ backgroundColor: setColor }" />
     </div>
 </template>
 
@@ -13,8 +13,14 @@ import { gsap } from 'gsap';
 
 const bottomLine = ref<HTMLElement | null>(null);
 
+const root = ref<HTMLElement | null>(null);
+
 onMounted(() => {
     gsap.set(bottomLine.value, { scaleX: 0 });
+    if (props.keepInEnd) {
+        animate.play('enter')
+        animate.keepInEnd = true
+    }
 })
 
 const props = withDefaults(defineProps<{
@@ -36,6 +42,7 @@ onUnmounted(() => {
 })
 
 watch(() => props.keepInEnd, (newVal) => {
+    if (!root.value) return
     if (newVal) {
         animate.play('enter')
         animate.keepInEnd = true

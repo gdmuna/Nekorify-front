@@ -1,6 +1,6 @@
 <template>
     <Button ref="root"
-        class="cursor-pointer dark:bg-[#0E100F] dark:text-[#FEFCE4] hover:dark:text-[#0E100F] duration-300 relative overflow-hidden *:pointer-events-none"
+        class="cursor-pointer dark:bg-[#0E100F] dark:text-[#FEFCE4] hover:dark:text-[#0E100F] transition-colors duration-300 relative overflow-hidden *:pointer-events-none"
         @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')" @click="animate.click"
         @mousemove="animate.updateLocation($event)">
         <div class="z-10">

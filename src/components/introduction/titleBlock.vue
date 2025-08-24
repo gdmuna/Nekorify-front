@@ -33,57 +33,53 @@ const triggers: ScrollTrigger[] = []
 
 onMounted(() => {
     // 先设置初始状态
-    if (container.value) {
-        gsap.set(container.value, { x: -titleB_block.value!.getBoundingClientRect().right });
-    }
-    if (titleB_block.value) {
+    if (container.value && titleB_block.value) {
+        gsap.set(container.value, { x: -titleB_block.value.getBoundingClientRect().right });
         gsap.set(titleB_block.value, { rotateX: 90, transformOrigin: "top center" });
-    }
-    const tl = gsap.timeline()
-    let trigger = ScrollTrigger.create({
-        trigger: container.value,
-        start: "top 90%",
-        end: "bottom top",
-        once: true,
-        onEnter: () => {
-            if (container.value) {
+        const tl = gsap.timeline()
+        let trigger = ScrollTrigger.create({
+            trigger: container.value,
+            start: "top 90%",
+            end: "bottom top",
+            once: true,
+            onEnter: () => {
                 tl.to(container.value, {
                     x: 0,
                     duration: 0.75,
                     ease: "power3.out"
                 });
             }
-        }
-    })
-    triggers.push(trigger)
-    trigger = ScrollTrigger.create({
-        trigger: titleB_block.value,
-        start: "top 80%",
-        end: "bottom top",
-        once: true,
-        onEnter: () => {
-            if (tl.progress() * 0.75 < 0.35) {
-                tl.add(
+        })
+        triggers.push(trigger)
+        trigger = ScrollTrigger.create({
+            trigger: titleB_block.value,
+            start: "top 80%",
+            end: "bottom top",
+            once: true,
+            onEnter: () => {
+                if (tl.progress() * 0.75 < 0.35) {
+                    tl.add(
+                        gsap.to(titleB_block.value, {
+                            rotateX: 0,
+                            duration: 3,
+                            ease: "elastic.out(1.25,0.35)"
+                        }),
+                        "-=0.4"
+                    );
+                } else {
                     gsap.to(titleB_block.value, {
                         rotateX: 0,
                         duration: 3,
                         ease: "elastic.out(1.25,0.35)"
-                    }),
-                    "-=0.4"
-                );
-            } else {
-                gsap.to(titleB_block.value, {
-                    rotateX: 0,
-                    duration: 3,
-                    ease: "elastic.out(1.25,0.35)"
-                })
+                    })
+                }
             }
-        }
-    })
-    triggers.push(trigger)
+        })
+        triggers.push(trigger)
+    }
 })
 
-onUnmounted(() =>{
+onUnmounted(() => {
     triggers.forEach(trigger => trigger.kill())
 })
 
