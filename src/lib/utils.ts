@@ -22,6 +22,9 @@ import { createVNode, render } from 'vue'
 
 import { baseModal } from '@/components/ui/modal'
 
+import { jwtDecode } from "jwt-decode";
+import { toast } from 'vue-sonner'
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
@@ -328,4 +331,13 @@ export function showModal(options: ModalOptions) {
 
 export function notEmptyArray(array: Array<any>) {
     return Array.isArray(array) && array.length > 0
+}
+
+export function decodeJWT(token: string) {
+    try {
+        const payload = jwtDecode<object>(token)
+        return payload
+    } catch (e) {
+        return null
+    }
 }

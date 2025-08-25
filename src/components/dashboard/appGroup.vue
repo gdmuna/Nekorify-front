@@ -41,7 +41,7 @@ const { getGroupByRank } = authStore;
 
 const items = ref([
     {
-        title: '社团管理',
+        title: 'RanaMinder',
         subtitle: '管理社团信息与成员权限；进行面试的发布与管理',
         leftIcon: ShieldUser,
         rightIcon: ArrowRight,

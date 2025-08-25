@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, computed, watch, toRaw } from 'vue';
 
 import { useAuthStore } from '@/stores/auth';
 
@@ -26,7 +26,7 @@ import type {
 
 import { useRoute } from 'vue-router';
 
-import { isAfterNow, isBeforeOrBetweenNow, to } from '@/lib/utils';
+import { isAfterNow, isBeforeOrBetweenNow, decodeJWT } from '@/lib/utils';
 
 export const useUserStore = defineStore('user', () => {
     const route = useRoute();
@@ -35,10 +35,10 @@ export const useUserStore = defineStore('user', () => {
         if (res) {
             const info = res.data.data
             handleUserInfo(info)
-            return Promise.resolve(res)
+            return res
         } else {
             toast.error(err.data.message || '获取用户信息失败')
-            return Promise.reject(err)
+            throw err
         }
     }
 
@@ -49,12 +49,12 @@ export const useUserStore = defineStore('user', () => {
             await getUserInfo(true);
             authStore.initUserPermission()
             await loadInterviewFormJSON();
-            return true;
+            return true
         } catch (e) {
             if (e) {
-                toast.error(e);
+                toast.error(e)
             }
-            return false;
+            return false
         }
     }
 
@@ -113,6 +113,34 @@ export const useUserStore = defineStore('user', () => {
         })
     }
 
+    const casdoorUserInfo = ref<object | null>(null)
+    function generateCasdoorUserInfo(token: string) {
+        const payload = decodeJWT(token)
+        if (!payload) {
+            toast.error("无效的JWT")
+            return
+        }
+        console.log('payload', payload);
+        casdoorUserInfo.value = payload
+    }
+
+    async function updateCasdoorUserInfo(info: object) {
+        if (!casdoorUserInfo.value) {
+            toast.error("用户信息未初始化")
+            return
+        }
+        const payload = structuredClone(toRaw(casdoorUserInfo.value))
+        Object.assign(payload, info)
+        const { err, res } = await userApi.updateUserInfo(payload)
+        if (res) {
+            const authStore = useAuthStore()
+            await authStore.refresh()
+            return res
+        } else {
+            throw err
+        }
+    }
+
     const interviews = ref<Interview[]>([])
     const interviewDataStatus = ref<dataStatus>('idle')
     async function getInterviewList(force: boolean = false) {
@@ -122,11 +150,11 @@ export const useUserStore = defineStore('user', () => {
         if (res) {
             interviews.value = res.data.campaigns || []
             interviewDataStatus.value = 'loaded'
-            return Promise.resolve(res)
+            return res
         } else {
             toast.error(err.data.message || '获取面试列表失败')
             interviewDataStatus.value = 'error'
-            return Promise.reject(err)
+            throw err
         }
     }
     const activeInterviewIds = computed(() => {
@@ -173,11 +201,11 @@ export const useUserStore = defineStore('user', () => {
             const data = res.data
             interviewProgress.value = data || []
             interviewProgressStatus.value = 'loaded'
-            return Promise.resolve(res)
+            return res
         } else {
             // toast.error(err.data.message || '获取面试进度信息失败')
             interviewProgressStatus.value = 'error'
-            return Promise.reject(err)
+            throw err
         }
     }
     const hasInterviewsId = computed(() => {
@@ -211,13 +239,13 @@ export const useUserStore = defineStore('user', () => {
             const data = res.data.result
             interviewResult.value = data || []
             console.log('interviewResult', interviewResult.value);
-            
+
             interviewResultStatus.value = 'loaded'
-            return Promise.resolve(res)
+            return res
         } else {
             // toast.error(err.data.message || '获取面试结果失败')
             interviewResultStatus.value = 'error'
-            return Promise.reject(err)
+            throw err
         }
     }
 
@@ -251,7 +279,6 @@ export const useUserStore = defineStore('user', () => {
         const data = await res.json();
         interviewFormJSON.value = data;
     }
-    loadInterviewFormJSON();
     const interviewFormJSON = ref<InterviewFormJSON[]>([])
     const steps = computed(() => {
         let Steps: Step[] = [
@@ -360,10 +387,24 @@ export const useUserStore = defineStore('user', () => {
 
     function initInterviewData() {
         return Promise.allSettled([
-            getInterviewList(true),
-            getUserInterviewProgress(true),
-            getInterviewResult(true)
+            getInterviewList(),
+            getUserInterviewProgress(),
+            getInterviewResult()
         ])
+    }
+
+    async function uploadAvatar(avatar: File) {
+        const { err, res } = await userApi.uploadAvatar(avatar)
+        if (res) {
+            const url = res.data.url
+            await updateCasdoorUserInfo({ avatar: url })
+            userInfo.avatar = url
+            toast.success('上传头像成功')
+            return res
+        } else {
+            toast.error(err.data?.message || '上传头像失败')
+            throw err
+        }
     }
 
     return {
@@ -390,6 +431,9 @@ export const useUserStore = defineStore('user', () => {
         checkInactiveInterviewId,
         currentInterview,
         activeInterview,
-        inactiveInterview
+        inactiveInterview,
+        interviewResultStatus,
+        generateCasdoorUserInfo,
+        uploadAvatar
     }
 })

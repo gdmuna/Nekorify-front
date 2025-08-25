@@ -53,7 +53,12 @@ const ranaMinder = createAlova({
     baseURL: import.meta.env.VITE_API_RANAMINDER_BASE_URL
 })
 
-export { nekorify, ranaMinder };
+const casdoor = createAlova({
+    ...config,
+    baseURL: import.meta.env.VITE_API_CASDOOR_ENDPOINT
+})
+
+export { nekorify, ranaMinder, casdoor };
 
 export { authApi } from './auth';
 export { userApi } from './user';

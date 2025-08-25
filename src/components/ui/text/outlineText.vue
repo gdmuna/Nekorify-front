@@ -2,7 +2,7 @@
     <div ref="root" class="cursor-pointer relative select-none" @mouseenter="animate.play('enter')"
         @mouseleave="animate.play('leave')">
         <p class="text-center">{{ text }}</p>
-        <div ref="bottomLine" class="w-full h-[1px] mt-[0.1rem] absolute will-change-transform pointer-events-none" :style="{ backgroundColor: setColor }" />
+        <div ref="bottomLine" class="w-full h-[1px] mt-[0.1rem] absolute will-change-transform pointer-events-none" :style="{ backgroundColor: props.lineColor }" />
     </div>
 </template>
 
@@ -29,12 +29,9 @@ const props = withDefaults(defineProps<{
     transitionLineColor?: boolean
     keepInEnd?: boolean
 }>(), {
+    lineColor: '#FEFCE4',
     transitionLineColor: false,
     keepInEnd: false
-})
-
-const setColor = computed(() => {
-    return props.lineColor ? props.lineColor : '#FEFCE4';
 })
 
 onUnmounted(() => {

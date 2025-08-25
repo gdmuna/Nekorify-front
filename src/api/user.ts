@@ -1,4 +1,4 @@
-import { nekorify, ranaMinder} from './index';
+import { nekorify, ranaMinder, casdoor } from './index';
 
 import { errTemplate, returnTemplate, to } from '@/lib/utils';
 
@@ -9,8 +9,15 @@ export const userApi = {
         return await to<any>(inst);
     },
     // 更新用户信息
-    async updateUserInfo(data: Record<string, any>) {
-        const inst = nekorify.Put('/auth/user', data)
+    async updateUserInfo(data: object) {
+        const inst = casdoor.Post('/api/update-user', data)
         return await to<any>(inst);
+    },
+    async uploadAvatar(avatar: File) {
+        const formData = new FormData();
+        formData.append('type', 'avatar')
+        formData.append('file', avatar)
+        const inst = ranaMinder.Post('/upload/picture', formData)
+        return await to<any>(inst)
     }
 }

@@ -2,7 +2,7 @@
     <div class="flex flex-col space-y-4 xl:text-xl md:text-[1rem] xl:w-[19.5rem] md:w-[16rem]">
         <div class="flex flex-row md:flex-col md:space-y-4 md:space-x-0 space-x-4 md:items-start items-center">
             <div class="relative cursor-pointer rounded-full" @mouseenter="avatarHover = true"
-                @mouseleave="avatarHover = false">
+                @mouseleave="avatarHover = false" @click="handleAvatarClick">
                 <img :src="userInfo.avatar" class="avatar xl:size-78 md:size-64 size-24 rounded-full object-cover
                 border-2 dark:border-[#E0DEC0] select-none">
                 <transition name="avatar-fade">
@@ -12,6 +12,7 @@
                         <p class="text-xs md:text-sm">上传新的头像</p>
                     </div>
                 </transition>
+                <input type="file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" ref="fileInput" class="hidden" @change="handleAvatarUpload" />
             </div>
             <div class="text-3xl">
                 <p class="font-bold">{{ userInfo.nickname }}</p>
@@ -26,15 +27,15 @@
         <div class="flex flex-col space-y-1">
             <div class="space-x-2">
                 <UsersRound class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
-                <outlineText text="0 关注者" class="inline-block" @click="toggleModal(1)" />
+                <outlineText text="0 关注者" class="inline-block" @click="toggleModal(1)" :keepInEnd="!isDesktop" />
                 <p class="inline">·</p>
-                <outlineText text="0 关注" class="inline-block" @click="toggleModal(1)" />
+                <outlineText text="0 关注" class="inline-block" @click="toggleModal(1)" :keepInEnd="!isDesktop" />
             </div>
             <div class="space-x-2">
                 <CircleDollarSign class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
-                <outlineText text="0 猫粮" class="inline-block" @click="toggleModal(0)" />
+                <outlineText text="0 猫粮" class="inline-block" @click="toggleModal(0)" :keepInEnd="!isDesktop" />
                 <p class="inline">·</p>
-                <outlineText text="0 鱼粮" class="inline-block" @click="toggleModal(0)" />
+                <outlineText text="0 鱼粮" class="inline-block" @click="toggleModal(0)" :keepInEnd="!isDesktop" />
             </div>
         </div>
         <div class="flex flex-col space-y-1">
@@ -70,11 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted, h } from 'vue';
-
-import { useAuthStore } from '@/stores/auth';
-import { useUserStore } from '@/stores/user';
-import { storeToRefs } from 'pinia';
+import { onMounted, ref, onUnmounted, h, watch } from 'vue';
 
 import { secondaryButton } from '@/components/ui/button';
 import { outlineText } from '@/components/ui/text';
@@ -86,12 +83,18 @@ import { openInNewTab, showModal } from '@/lib/utils';
 
 import { editDialog } from './index';
 
-
-
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
+import { useSystemStore } from '@/stores/system'
 const userStore = useUserStore();
 const authStore = useAuthStore();
+const systemStore = useSystemStore();
 const { logout, getGroupByKey, getGroupByLevel } = authStore;
 const { userInfo } = storeToRefs(userStore);
+const { isDesktop } = storeToRefs(systemStore);
+
+
 
 const avatarHover = ref(false);
 
@@ -117,6 +120,22 @@ const modalConfig = [
 
 function toggleModal(index: number) {
     showModal(modalConfig[index])
+}
+
+const fileInput = ref<HTMLInputElement | null>(null);
+
+function handleAvatarClick() {
+    fileInput.value?.click();
+}
+
+function handleAvatarUpload(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const file = target.files ? target.files[0] : null;
+    if (file) {
+        userStore.uploadAvatar(file).then(() => {
+            target.value = ''; 
+        });
+    }
 }
 
 

@@ -228,12 +228,12 @@ const { userInfo } = storeToRefs(userStore)
 
 const router = useRouter()
 
-onMounted((): void => {
+onMounted(() => {
     logoAnimate.init()
     document.addEventListener('keyup', handleKeyup);
 })
 
-onUnmounted((): void => {
+onUnmounted(() => {
     document.removeEventListener('keyup', handleKeyup);
     logoAnimate.tl.kill()
     btnAnimate.tl.kill()

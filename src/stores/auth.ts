@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed, reactive } from 'vue';
+import { ref, computed } from 'vue';
 
 import { authApi } from '@/api';
 
@@ -11,6 +11,8 @@ import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
 import type { Token, GroupMeta } from '@/types/auth';
+
+import { decodeJWT } from '@/lib/utils';
 
 
 export const useAuthStore = defineStore('auth', () => {
@@ -32,9 +34,11 @@ export const useAuthStore = defineStore('auth', () => {
         const { err, res } = await authApi.loginCallback();
         if (res) {
             const data = res.data
+            const token = data.data.token
             toast.success(data.message)
-            setToken(data.data.token)
+            setToken(token)
             const userStore = useUserStore();
+            userStore.generateCasdoorUserInfo(token.access_token)
             userStore.handleUserInfo(data.data.userInfo)
             initUserPermission()
         } else {
@@ -67,10 +71,11 @@ export const useAuthStore = defineStore('auth', () => {
         if (res) {
             const token = res.data.data
             setToken(token)
+            const userStore = useUserStore();
+            userStore.generateCasdoorUserInfo(token.access_token)
             return Promise.resolve()
         } else {
             console.log('err1', err);
-            toast.error(err.data.message || '刷新失败')
             setToken()
             return Promise.reject('登录态已过期，请重新登录')
         }

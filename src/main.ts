@@ -58,7 +58,6 @@ const app = createApp(App)
 // app.config.errorHandler = (err) => {
 //     console.error('Vue 全局错误:', err)
     
-//     // 方法1：使用类型守卫
 //     let errorMessage = '未知错误'
 //     if (err instanceof Error) {
 //         errorMessage = err.message
