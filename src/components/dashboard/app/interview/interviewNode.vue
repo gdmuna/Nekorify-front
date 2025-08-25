@@ -1,16 +1,25 @@
 <template>
     <div class="flex-1 flex flex-col">
-        <template v-if="!checkValidInterviewId(Number(nodeId))">
+        <template v-if="!checkActiveInterviewId(Number(nodeId)) && !checkInactiveInterviewId(Number(nodeId))">
             <div class="w-full h-full flex flex-col justify-center items-center space-y-6">
                 <div class="inline-flex space-x-2 items-center text-[#53B7DE]">
                     <Info class="size-6" />
-                    <p class="text-2xl">无效的面试 ID</p>
+                    <p class="text-2xl">无效的面试ID</p>
                 </div>
                 <p class="text-xl dark:text-[#A0A0A0]">请检查你访问的链接是否正确</p>
             </div>
         </template>
+        <template v-else-if="!checkHasInterview(Number(nodeId)) && checkInactiveInterviewId(Number(nodeId))">
+            <div class="w-full h-full flex flex-col justify-center items-center space-y-6">
+                <div class="inline-flex space-x-2 items-center text-[#53B7DE]">
+                    <Info class="size-6" />
+                    <p class="text-2xl">报名已截止</p>
+                </div>
+                <p class="text-xl dark:text-[#A0A0A0]">该面试的报名时间已截止，无法报名参加</p>
+            </div>
+        </template>
         <template v-else>
-            <div v-if="!checkHasInterview(Number(nodeId)) && !editForm"
+            <div v-if="!checkHasInterview(Number(nodeId)) && checkActiveInterviewId(Number(nodeId)) && !editForm"
                 class="w-full h-full flex flex-col justify-between">
                 <div class="inline-flex space-x-2 items-center text-[#53B7DE]">
                     <Info class="size-6" />
@@ -33,8 +42,8 @@
                 </div>
                 <div />
             </div>
-            <interviewForm v-else-if="!checkHasInterview(Number(nodeId)) && editForm" />
-            <interviewStatus v-else />
+            <interviewForm v-else-if="!checkHasInterview(Number(nodeId)) && checkActiveInterviewId(Number(nodeId)) && editForm" />
+            <interviewStatus v-else-if="checkHasInterview(Number(nodeId))" />
         </template>
     </div>
 </template>
@@ -57,7 +66,7 @@ import { SplitText } from 'gsap/SplitText';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore()
-const { checkHasInterview, checkValidInterviewId } = userStore
+const { checkHasInterview, checkActiveInterviewId, checkInactiveInterviewId } = userStore
 const { interviews, currentTitle, currentInterview } = storeToRefs(userStore)
 
 

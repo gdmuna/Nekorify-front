@@ -108,7 +108,7 @@ export interface InterviewResult {
 }
 
 export type InterviewResultRes = baseRes<{
-    results: InterviewResult[]
+    result: InterviewResult[]
 }>
 
 /**

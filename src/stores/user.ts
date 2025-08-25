@@ -30,8 +30,8 @@ import { isAfterNow, isBeforeOrBetweenNow, to } from '@/lib/utils';
 
 export const useUserStore = defineStore('user', () => {
     const route = useRoute();
-    async function getUserInfo() {
-        const { err, res } = await userApi.getUserInfo()
+    async function getUserInfo(force: boolean = false) {
+        const { err, res } = await userApi.getUserInfo(force)
         if (res) {
             const info = res.data.data
             handleUserInfo(info)
@@ -46,7 +46,7 @@ export const useUserStore = defineStore('user', () => {
         try {
             const authStore = useAuthStore()
             await authStore.refresh();
-            await getUserInfo();
+            await getUserInfo(true);
             authStore.initUserPermission()
             await loadInterviewFormJSON();
             return true;
@@ -115,9 +115,9 @@ export const useUserStore = defineStore('user', () => {
 
     const interviews = ref<Interview[]>([])
     const interviewDataStatus = ref<dataStatus>('idle')
-    async function getInterviewList() {
+    async function getInterviewList(force: boolean = false) {
         interviewDataStatus.value = 'loading'
-        const { err, res } = await interviewApi.getInterviewList()
+        const { err, res } = await interviewApi.getInterviewList(force)
         console.log('getInterviewList', { err, res });
         if (res) {
             interviews.value = res.data.campaigns || []
@@ -129,34 +129,46 @@ export const useUserStore = defineStore('user', () => {
             return Promise.reject(err)
         }
     }
-    const validInterviewIds = computed(() => {
-        return interviews.value.map(item => item.id)
+    const activeInterviewIds = computed(() => {
+        return interviews.value.filter(item => item.is_active).map(item => item.id)
     })
-    function checkValidInterviewId(id: number) {
-        return validInterviewIds.value.includes(id)
+    function checkActiveInterviewId(id: number) {
+        return activeInterviewIds.value.includes(id)
     }
+    const inactiveInterviewIds = computed(() => {
+        return interviews.value.filter(item => !item.is_active).map(item => item.id)
+    })
+    function checkInactiveInterviewId(id: number) {
+        return inactiveInterviewIds.value.includes(id)
+    }
+    const activeInterview = computed(() => {
+        return interviews.value.filter(item => item.is_active)
+    })
+    const inactiveInterview = computed(() => {
+        return interviews.value.filter(item => !item.is_active)
+    })
     const currentInterview = computed(() => {
-        let result: Interview | null | undefined = interviews.value.find(item => item.id === currentInterviewId.value)
+        let result: Interview | null | undefined = interviews.value.find(item => item.id === currentInterviewNode.value)
         if (result === undefined) result = null
         return result
     })
     const currentTitle = computed(() => {
         return currentInterview.value ? currentInterview.value.title : '面试节点'
     })
-    const currentInterviewId = ref<number | null>(null)
+    const currentInterviewNode = ref<number | null>(null)
     watch(
         () => route.params.nodeId,
         (nodeId) => {
             if (nodeId === undefined || route.name !== 'interviewNode') return
-            currentInterviewId.value = Number(nodeId)
-        }, { immediate: true })
+            currentInterviewNode.value = Number(nodeId)
+        }, { immediate: true }
+    )
 
     const interviewProgress = ref<InterviewProgress[]>([]);
     const interviewProgressStatus = ref<dataStatus>('idle')
-    async function getUserInterviewProgress() {
+    async function getUserInterviewProgress(force: boolean = false) {
         interviewProgressStatus.value = 'loading'
-        const { err, res } = await interviewApi.getUserInterviewProgress()
-        console.log('getUserInterviewProgress', { err, res });
+        const { err, res } = await interviewApi.getUserInterviewProgress(force)
         if (res) {
             const data = res.data
             interviewProgress.value = data || []
@@ -170,19 +182,21 @@ export const useUserStore = defineStore('user', () => {
     }
     const hasInterviewsId = computed(() => {
         const result = [] as number[]
-        interviewProgress.value.forEach((item) => {
-            result.push(item.campaign.id)
+        interviewResult.value.forEach((item) => {
+            result.push(item.campaign_id)
         })
+        console.log('hasInterviewsId', result);
         return result
     })
     function checkHasInterview(nodeId: number) {
+        console.log('checkHasInterview', nodeId, hasInterviewsId.value.includes(nodeId));
         return hasInterviewsId.value.includes(nodeId)
     }
 
     const currentInterviewProgress = computed(() => {
-        if (currentInterviewId.value === null) return null
+        if (currentInterviewNode.value === null) return null
         const result = interviewProgress.value.filter(item =>
-            item.campaign.id === currentInterviewId.value
+            item.campaign.id === currentInterviewNode.value
         )
         if (result.length === 0) return null
         return result
@@ -190,12 +204,14 @@ export const useUserStore = defineStore('user', () => {
 
     const interviewResult = ref<InterviewResult[]>([])
     const interviewResultStatus = ref<dataStatus>('idle')
-    async function getInterviewResult() {
+    async function getInterviewResult(force: boolean = false) {
         interviewResultStatus.value = 'loading'
-        const { err, res } = await interviewApi.getInterviewResult()
+        const { err, res } = await interviewApi.getInterviewResult(force)
         if (res) {
-            const data = res.data.results
+            const data = res.data.result
             interviewResult.value = data || []
+            console.log('interviewResult', interviewResult.value);
+            
             interviewResultStatus.value = 'loaded'
             return Promise.resolve(res)
         } else {
@@ -206,8 +222,8 @@ export const useUserStore = defineStore('user', () => {
     }
 
     const currentInterviewResult = computed(() => {
-        if (currentInterviewId.value === null) return null
-        return interviewResult.value.find(item => item.campaign_id === currentInterviewId.value) ?? null
+        if (currentInterviewNode.value === null) return null
+        return interviewResult.value.find(item => item.campaign_id === currentInterviewNode.value) ?? null
     })
 
 
@@ -237,9 +253,6 @@ export const useUserStore = defineStore('user', () => {
     }
     loadInterviewFormJSON();
     const interviewFormJSON = ref<InterviewFormJSON[]>([])
-
-
-
     const steps = computed(() => {
         let Steps: Step[] = [
             {
@@ -336,11 +349,8 @@ export const useUserStore = defineStore('user', () => {
         const { err, res } = await interviewApi.uploadInterviewForm(formData)
         console.log('uploadInterviewForm', { err, res });
         if (res) {
-            await Promise.all([
-                getUserInterviewProgress(),
-                getInterviewResult()
-            ]).catch(() => {
-                return Promise.reject('面试报名表上传成功，但获取最新面试信息失败')
+            await getInterviewResult(true).catch(() => {
+                return Promise.resolve('面试报名表上传成功，但获取最新面试信息失败')
             })
             return Promise.resolve('面试报名表上传成功')
         } else {
@@ -350,9 +360,9 @@ export const useUserStore = defineStore('user', () => {
 
     function initInterviewData() {
         return Promise.allSettled([
-            getInterviewList(),
-            getUserInterviewProgress(),
-            getInterviewResult()
+            getInterviewList(true),
+            getUserInterviewProgress(true),
+            getInterviewResult(true)
         ])
     }
 
@@ -375,8 +385,11 @@ export const useUserStore = defineStore('user', () => {
         uploadInterviewForm,
         initInterviewData,
         interviewDataStatus,
-        currentInterviewId,
-        checkValidInterviewId,
-        currentInterview
+        currentInterviewNode,
+        checkActiveInterviewId,
+        checkInactiveInterviewId,
+        currentInterview,
+        activeInterview,
+        inactiveInterview
     }
 })

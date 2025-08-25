@@ -31,16 +31,11 @@ const imgOpened = ref(false);
 const imgOpenedSrc = ref('');
 
 onMounted(() => {
-    nextTick(() => {
-        requestAnimationFrame(() => {
-            photobox.init()
-        })
-    })
+    photobox.init()
     document.addEventListener('keyup', handleKeyup);
 })
 
 onBeforeUnmount(() => {
-    // 清理事件监听
     if (photobox.canvas) {
         photobox.remove_events()
     }
@@ -77,7 +72,6 @@ function animate() {
     const now = performance.now();
     const dt = (now - lastTime) / 1000; // 单位：秒
     lastTime = now;
-    // 根据速度更新位置
     position.value.x += velocity.value.vx * dt * 60;
     position.value.y += velocity.value.vy * dt * 60;
     const deltaX = position.value.x - lastX;

@@ -325,3 +325,7 @@ export function showModal(options: ModalOptions) {
     }
     return { promise, close }
 }
+
+export function notEmptyArray(array: Array<any>) {
+    return Array.isArray(array) && array.length > 0
+}

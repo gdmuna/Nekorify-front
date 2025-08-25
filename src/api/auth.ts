@@ -25,17 +25,6 @@ export const authApi = {
         return await to<any>(inst)
     },
 
-    // 获取用户信息
-    async getUserInfo() {
-        const inst = nekorify.Get('/auth/user-info')
-        return await to<any>(inst)
-    },
-
-    // 更新用户信息
-    async updateUserInfo () {
-        return nekorify.Put<any>('/auth/user')
-    },
-
     // 刷新令牌
     async refresh(refreshToken: string) {
         const inst = nekorify.Post('auth/refresh-token', {

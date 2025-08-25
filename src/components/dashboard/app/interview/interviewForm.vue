@@ -129,7 +129,7 @@ import { toast } from 'vue-sonner'
 import { storeToRefs } from "pinia"
 import { useUserStore } from "@/stores/user"
 const userStore = useUserStore()
-const { interviewFormJSON, currentInterviewId } = storeToRefs(userStore)
+const { interviewFormJSON, currentInterviewNode } = storeToRefs(userStore)
 const { uploadInterviewForm } = userStore
 
 import { generateZodSchema, getRemPx } from "@/lib/utils"
@@ -157,7 +157,7 @@ async function onSubmit(values: any) {
     underSubmit.value = true
     const formData = new FormData();
     const jsonObj: Record<string, any> = {};
-    formData.append('campaign_id', String(currentInterviewId.value))
+    formData.append('campaign_id', String(currentInterviewNode.value))
     Object.entries(values).forEach(([key, value]) => {
         if (value instanceof File) {
             formData.append(key, value);

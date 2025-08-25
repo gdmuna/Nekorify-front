@@ -114,7 +114,6 @@
                 "image/jpeg",
                 "image/jpg",
                 "image/webp",
-                "image/svg+xml",
                 "image/gif"
             ]
         }
