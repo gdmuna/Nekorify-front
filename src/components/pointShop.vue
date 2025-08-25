@@ -13,62 +13,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import { gsap } from 'gsap';
-
-
 const root = ref<HTMLElement | null>(null);
 
 const props = defineProps<{ visible: boolean }>()
 
-watch(() => props.visible, (newVal) => {
-    if (newVal) {
-        animate.enter()
-    } else {
-        animate.leave()
-    }
-})
-
-onMounted(() => {
-    animate.enter()
-})
-
-const animate = {
-    tl: gsap.timeline(),
-    enter() {
-        this.tl.from(root.value, {
-            scale: 0.9,
-            duration: 0.25,
-            ease: "power2.out",
-            opacity: 0,
-        })
-    },
-    leave() {
-        this.tl.to(root.value, {
-            scale: 0.9,
-            duration: 0.2,
-            ease: "power2.in",
-            opacity: 0,
-        })
-    }
-}
-
-
 
 </script>
 
-<style scoped>
-.content-enter-active,
-.content-leave-active {
-    transition: scale opacity 0.2s ease;
-}
-
-.content-leave-active {
-    pointer-events: none;
-}
-
-.content-enter-from,
-.content-leave-to {
-    opacity: 0;
-    transform: scale(0.9);
-}
-</style>
+<style scoped></style>

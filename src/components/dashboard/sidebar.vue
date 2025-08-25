@@ -26,9 +26,9 @@
         <div class="flex flex-col space-y-1">
             <div class="space-x-2">
                 <UsersRound class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
-                <outlineText text="0 关注者" class="inline-block" />
+                <outlineText text="0 关注者" class="inline-block" @click="toggleModal(1)" />
                 <p class="inline">·</p>
-                <outlineText text="0 关注" class="inline-block" />
+                <outlineText text="0 关注" class="inline-block" @click="toggleModal(1)" />
             </div>
             <div class="space-x-2">
                 <CircleDollarSign class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
@@ -103,7 +103,15 @@ function isMinister(belongs: string[]) {
 
 const modalConfig = [
     {
-        content: h(pointShop, { visible: true})
+        content: h(pointShop, { visible: true })
+    },
+    {
+        content: [
+            h('div', { class: 'flex flex-col space-y-4' }, [
+                h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
+                h('p', { class: 'dark:text-[#A0A0A0]' }, '该功能尚未完工，正在紧急施工中喵...')
+            ])
+        ]
     }
 ]
 

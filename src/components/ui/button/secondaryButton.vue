@@ -1,7 +1,7 @@
 <template>
     <Button class="cursor-pointer dark:bg-[#CFCBA0] dark:text-[#0E100F] text-lg" @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')">
         <div ref="container" class="flex items-center space-x-3 relative overflow-hidden *:will-change-transform">
-            <p ref="textRef">{{ text }}</p>
+            <p ref="textRef" class="select-none">{{ text }}</p>
             <div ref="icon1" class="m-0">
                 <component :is="icon" class="size-5" />
                 <slot />

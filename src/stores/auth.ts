@@ -36,6 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
             setToken(data.data.token)
             const userStore = useUserStore();
             userStore.handleUserInfo(data.data.userInfo)
+            initUserPermission()
         } else {
             toast.error(err.data.message || '登录失败')
             setToken()

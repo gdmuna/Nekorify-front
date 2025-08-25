@@ -107,7 +107,8 @@
                         <p v-if="!isDesktop">协会GitHub仓库</p>
                     </div>
                     <div class="flex items-center space-x-1 lg:rounded-full lg:dark:bg-transparent cursor-pointer
-                    dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6">
+                    dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6"
+                    @click="wtfman(), headerAnimate.toggle()">
                         <Button variant="ghost"
                             class="rounded-full size-10 cursor-pointer lg:pointer-events-auto pointer-events-none">
                             <Mail class="size-6" />
@@ -115,7 +116,8 @@
                         <p v-if="!isDesktop">站内信</p>
                     </div>
                     <div class="flex items-center space-x-1 lg:rounded-full lg:dark:bg-transparent cursor-pointer
-                    dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6">
+                    dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6"
+                    @click="wtfman(), headerAnimate.toggle()">
                         <Button variant="ghost"
                             class="rounded-full size-10 cursor-pointer lg:pointer-events-auto pointer-events-none">
                             <CalendarFold class="size-6" />
@@ -170,10 +172,10 @@
 
 <script setup lang="ts">
 // 导入 Vue 相关库和组件
-import { onMounted, ref, computed, watch, onUnmounted } from 'vue'
+import { onMounted, ref, computed, watch, onUnmounted, h } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { openInNewTab } from '@/lib/utils'
+import { openInNewTab, showModal } from '@/lib/utils'
 
 // 导入 Pinia 相关库
 import { storeToRefs } from 'pinia'
@@ -454,6 +456,17 @@ watch(() => route.name, (newVal) => {
             break
     }
 })
+
+function wtfman() {
+    showModal({
+        content: [
+            h('div', { class: 'flex flex-col space-y-4' }, [
+                h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
+                h('p', { class: 'dark:text-[#A0A0A0]' }, '该功能尚未完工，正在紧急施工中喵...')
+            ])
+        ]
+    })
+}
 
 </script>
 

@@ -42,6 +42,7 @@ const animate = {
     tl: gsap.timeline(),
     e: null as MouseEvent | null,
     play(type: string) {
+        if (!root.value) return
         this.tl.clear()
         const radius = (root.value as any)?.$el.offsetWidth || 0;
         this.tl.to(mask1.value, {
@@ -53,6 +54,7 @@ const animate = {
         })
     },
     updateLocation(e: MouseEvent) {
+        if (!mask1.value) return
         this.e = e
         gsap.set(mask1.value, {
             x: e.offsetX - (mask1.value?.offsetWidth || 0) / 2,

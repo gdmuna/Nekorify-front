@@ -26,8 +26,6 @@ import { ShieldUser, ArrowRight, Newspaper, Notebook, Video, Info } from 'lucide
 
 import { openInNewTab, showModal } from '@/lib/utils';
 
-import { primaryButton } from '../ui/button';
-
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
@@ -38,8 +36,6 @@ const { routerGoto } = systemStore;
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 const { getGroupByRank } = authStore;
-
-import { nonPermission } from '../ui/dialog';
 
 
 
@@ -108,17 +104,11 @@ function handleClick(path: { type: string; to: string }) {
             if (meta.minManageLevel === undefined) return routerGoto(path.to);
             const maxPermission = getGroupByRank('max')
             if (maxPermission === null || maxPermission.level > (meta.minManageLevel as number)) {
-                const { close } = showModal({
+                showModal({
                     content: [
                         h('div', { class: 'flex flex-col space-y-4' }, [
                             h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
-                            h('p', { class: 'dark:text-[#A0A0A0]' }, '您当前的权限等级不足，无法访问该页面。'),
-                            h(primaryButton, {
-                                class: 'dark:bg-sky-600 bg-emerald-500 dark:text-[#0E100F] md:py-4 py-3 md:px-6 px-5 w-fit self-center text-lg',
-                                onClick: () => close(),
-                                mask1Color: "oklch(69.6% 0.17 162.48 / 0.5)",
-                                mask2Color: "oklch(69.6% 0.17 162.48 / 0.5)"
-                            }, { default: () => '我知道了' })
+                            h('p', { class: 'dark:text-[#A0A0A0]' }, '您当前的权限等级不足，无法访问该页面。')
                         ])
                     ]
                 })

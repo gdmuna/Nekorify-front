@@ -3,10 +3,13 @@ import introduction from '../views/introduction/index.vue'
 import home from '../views/home/index.vue'
 
 import { useAuthStore } from '@/stores/auth'
+import { useSystemStore } from '@/stores/system'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
-import { nextTick } from 'vue';
+import { nextTick, h } from 'vue';
+
+import { showModal } from '@/lib/utils';
 
 const routes = [
   {
@@ -184,7 +187,36 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const systemStore = useSystemStore()
+  if (to.name == 'announcements' || to.name == 'articles' || to.name == 'videos' || to.name == 'resourcesHub') {
+    showModal({
+      content: [
+        h('div', { class: 'flex flex-col space-y-4' }, [
+          h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
+          h('p', { class: 'dark:text-[#A0A0A0]' }, '该功能尚未完工，正在紧急施工中喵...'),
+        ])
+      ]
+    })
+    return systemStore.routerBack()
+  }
   const authStore = useAuthStore()
+  const minManageLevel = to.meta.minManageLevel
+  if (minManageLevel !== undefined) {
+    const maxPermission = authStore.getGroupByRank('max')
+    console.log('maxPermission', maxPermission);
+    
+    if (maxPermission === null || maxPermission.level > (minManageLevel as number)) {
+      showModal({
+        content: [
+          h('div', { class: 'flex flex-col space-y-4' }, [
+            h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
+            h('p', { class: 'dark:text-[#A0A0A0]' }, '您当前的权限等级不足，无法访问该页面。')
+          ])
+        ]
+      })
+      return systemStore.routerBack()
+    }
+  }
   document.title = title + ' - ' + (to.meta.title || 'Nekorify')
   // 只有在不是子路由跳转时，且目标路由配置了 scrollToTop 时，才滚动到顶部
   const isChildRoute = from.matched.length > 0 && to.path === from.matched[0].path
