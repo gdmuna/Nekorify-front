@@ -77,7 +77,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.owner = info.owner
         userInfo.studentNumber = info.name
         userInfo.username = info.displayName
-        userInfo.nickname = info.nickname || '千早爱音'
+        userInfo.nickname = info.properties.nickname
         userInfo.bio = info.bio
         userInfo.email = info.email
         userInfo.avatar = info.avatar
@@ -85,7 +85,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.createdAt = info.createdTime
         userInfo.lastLogin = info.lastSigninTime
         userInfo.groups = info.groups
-        userInfo.links = info.links || ['https://fov-rgt.cn']
+        userInfo.links = info.properties.links.split(',').filter(Boolean)
     }
 
     function cleanUserInfo() {

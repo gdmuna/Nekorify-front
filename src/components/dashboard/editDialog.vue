@@ -69,8 +69,15 @@
                     <div class="w-full h-[1px] bg-[#2e2c2c]" />
                 </form>
             </Form>
-            <Form v-if="!isAdvanced" v-slot="{ handleSubmit }" as="" keep-values :validation-schema="normalFormSchema">
-                <form id="dialogForm2" @submit="handleSubmit($event, onSubmitNormalForm)" class="space-y-4">
+            <Form v-if="!isAdvanced" v-slot="{ handleSubmit, setFieldValue }" as="" keep-values
+                :validation-schema="normalFormSchema" :initial-values="{
+                    nickname: userInfo?.nickname || '',
+                    bio: userInfo?.bio || '',
+                    links: userInfo?.links || []
+                }">
+                <form id="dialogForm2"
+                    @submit="handleSubmit($event, (values) => onSubmitNormalForm(values, setFieldValue))"
+                    class="space-y-4">
                     <!-- 昵称 -->
                     <FormField v-slot="{ componentField }" name="nickname">
                         <FormItem>
@@ -232,14 +239,18 @@ import { outlineText } from "@/components/ui/text"
 
 import { useUserStore } from "@/stores/user"
 import { useSystemStore } from "@/stores/system"
+import { useAuthStore } from "@/stores/auth"
 import { storeToRefs } from "pinia";
 import { toast } from "vue-sonner"
 const userStore = useUserStore();
-const { userInfo, casdoorUserInfo } = storeToRefs(userStore);
-const { updateCasdoorUserInfo, setPassword } = userStore;
+const { userInfo } = storeToRefs(userStore);
+const { updateCasdoorUserInfo, setPassword, getUserInfo } = userStore;
 
 const systemStore = useSystemStore();
 const { isDesktop } = storeToRefs(systemStore);
+
+const authStore = useAuthStore();
+const { refresh } = authStore;
 
 const dialogOpen = ref(false);
 
@@ -284,7 +295,7 @@ const normalFormSchema = toTypedSchema(z.object({
     )
         .max(4, { message: "搞啥呢？" })
         .optional()
-        .default(userInfo.value.links || []),
+        .default(userInfo.value?.links || []),
 }))
 
 const passwordFormSchema = toTypedSchema(z.object({
@@ -332,18 +343,24 @@ function removeLink(idx: number, value: string[], setValue: (v: string[]) => voi
 
 const isAdvanced = ref(false);
 
-async function onSubmitNormalForm(values: any) {
+async function onSubmitNormalForm(values: any, setFieldValue: (field: string, value: any) => void) {
     if (underSubmit.value) return
     underSubmit.value = true
     const info = {
-        displayName: values.nickname,
         bio: values.bio,
-        // linkedin: values.links || null
+        properties: {
+            nickname: values.nickname,
+            links: Array.isArray(values.links) ? values.links.join(',') : values.links
+        }
     }
     const ok = await updateCasdoorUserInfo(info)
     if (ok) {
+        await refresh()
+        await getUserInfo(true)
         toast.success('个人资料更新成功')
-        casdoorUserInfo.value.bio = values.bio
+        setFieldValue('links', userInfo.value?.links || [])
+        setFieldValue('nickname', userInfo.value?.nickname || '')
+        setFieldValue('bio', userInfo.value?.bio || '')
     } else {
         toast.error(`个人资料更新失败`)
     }

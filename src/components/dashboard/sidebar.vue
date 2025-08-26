@@ -58,7 +58,7 @@
                 <Mail class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
                 <p class="inline break-all">{{ userInfo.email }}</p>
             </div>
-            <div class="space-x-2 shrink-0 -translate-y-0.5" v-for="(item, index) in userInfo.links" :key="index">
+            <div v-if="userInfo.links" class="space-x-2 shrink-0 -translate-y-0.5" v-for="(item, index) in userInfo.links" :key="index">
                 <Link class="size-5 inline dark:text-[#FEFCE4]/80" />
                 <outlineText :text="item" lineColor="#53B7DE" class="hover:text-[#53B7DE] duration-200 inline-block will-change-transform"
                     transitionLineColor @click="openInNewTab(item)" />
