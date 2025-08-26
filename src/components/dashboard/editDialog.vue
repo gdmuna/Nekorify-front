@@ -62,9 +62,9 @@
                         </FormItem>
                     </FormField>
                     <secondaryButton text="换绑邮箱" type="submit" form="dialogForm1"
-                        :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] ml-auto', { 'cursor-progress': underSubmit }]">
-                        <component :is="useIcon" ref="iconRef"
-                            :class="['md:size-5 size-4', { 'animate-spin': underSubmit }]" />
+                        :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] ml-auto', { 'cursor-progress': emailUnderSubmit }]">
+                        <component :is="emailUseIcon"
+                            :class="['md:size-5 size-4', { 'animate-spin': emailUnderSubmit }]" />
                     </secondaryButton>
                     <div class="w-full h-[1px] bg-[#2e2c2c]" />
                 </form>
@@ -137,26 +137,20 @@
                         <input type="text" name="username" :value="userInfo.studentNumber" autocomplete="username"
                             tabindex="-1" class="hidden" />
                     </h2>
-                    <FormField v-slot="{ componentField }" name="currentPassword">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                当前密码
-                            </FormLabel>
-                            <FormControl>
-                                <Input type="password" placeholder="请输入当前密码" v-bind="componentField"
-                                    autocomplete="current-password" />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
                     <FormField v-slot="{ componentField }" name="newPassword">
                         <FormItem>
                             <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
                                 新密码
                             </FormLabel>
                             <FormControl>
-                                <Input type="password" placeholder="新密码" v-bind="componentField"
-                                    autocomplete="new-password" />
+                                <div class="relative w-full">
+                                    <Input :type="showPassword ? 'text' : 'password'" placeholder="新密码"
+                                        v-bind="componentField" autocomplete="new-password" />
+                                    <button type="button" @click="showPassword = !showPassword"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                        <component :is="showPassword ? EyeOff : Eye" class="size-5" />
+                                    </button>
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -167,8 +161,14 @@
                                 确认密码
                             </FormLabel>
                             <FormControl>
-                                <Input type="password" placeholder="请再次输入新密码" v-bind="componentField"
-                                    autocomplete="new-password" />
+                                <div class="relative w-full">
+                                    <Input :type="showConfirmPassword ? 'text' : 'password'" placeholder="请再次输入新密码"
+                                        v-bind="componentField" autocomplete="new-password" />
+                                    <button type="button" @click="showConfirmPassword = !showConfirmPassword"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                        <component :is="showConfirmPassword ? EyeOff : Eye" class="size-5" />
+                                    </button>
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -181,9 +181,9 @@
                     bottom-line-class="!mt-0" :keep-in-end="!isDesktop" />
                 <secondaryButton :text="isAdvanced ? '修改密码' : '保存更改'" type="submit"
                     :form="isAdvanced ? 'dialogForm3' : 'dialogForm2'"
-                    :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem]', { 'cursor-progress': underSubmit }]">
-                    <component :is="useIcon" ref="iconRef"
-                        :class="['md:size-5 size-4', { 'animate-spin': underSubmit }]" />
+                    :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem]', { 'cursor-progress': isAdvanced ? normalUnderSubmit : passwordUnderSubmit }]">
+                    <component :is="isAdvanced ? normalUseIcon : passwordUseIcon"
+                        :class="['md:size-5 size-4', { 'animate-spin': isAdvanced ? normalUnderSubmit : passwordUnderSubmit }]" />
                 </secondaryButton>
             </DialogFooter>
         </DialogScrollContent>
@@ -233,6 +233,8 @@ import {
     ArrowRight,
     Undo2,
     KeyRound,
+    Eye,
+    EyeOff
 } from 'lucide-vue-next';
 
 import { outlineText } from "@/components/ui/text"
@@ -254,17 +256,13 @@ const { refresh } = authStore;
 
 const dialogOpen = ref(false);
 
-const iconRef = ref<HTMLElement | null>(null);
-
 const iconMap = ref({
     'submit': Check,
     'loading': LoaderCircle
 })
 
-const underSubmit = ref(false);
-
-const useIcon = computed(() => {
-    return underSubmit.value ? iconMap.value['loading'] : iconMap.value['submit']
+const underSubmit = computed(() => {
+    return normalUnderSubmit.value || passwordUnderSubmit.value || emailUnderSubmit.value
 })
 
 watch(dialogOpen, () => {
@@ -272,6 +270,9 @@ watch(dialogOpen, () => {
         dialogOpen.value = true
     }
 })
+
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 // 校验规则
 const normalFormSchema = toTypedSchema(z.object({
@@ -299,16 +300,12 @@ const normalFormSchema = toTypedSchema(z.object({
 }))
 
 const passwordFormSchema = toTypedSchema(z.object({
-    currentPassword: z.string({ invalid_type_error: `当前密码 必须是字符串`, required_error: `当前密码 不能为空` })
-        .min(6, { message: "当前密码 长度需大于等于 6" })
-        .max(50, { message: `当前密码 长度需小于等于 50` })
-        .nonempty({ message: `当前密码 不能为空` }),
     newPassword: z.string({ invalid_type_error: `新密码 必须是字符串`, required_error: `新密码 不能为空` })
-        .min(6, { message: "新密码 长度需大于等于 6" })
+        .min(6, { message: "新密码 长度需大于等于 8" })
         .max(50, { message: `新密码 长度需小于等于 50` })
         .nonempty({ message: `新密码 不能为空` }),
     confirmPassword: z.string({ invalid_type_error: `确认密码 必须是字符串`, required_error: `确认密码 不能为空` })
-        .min(6, { message: "确认密码 长度需大于等于 6" })
+        .min(6, { message: "确认密码 长度需大于等于 8" })
         .max(50, { message: `确认密码 长度需小于等于 50` })
         .nonempty({ message: `确认密码 不能为空` })
 }).refine(data => data.newPassword === data.confirmPassword, {
@@ -329,12 +326,12 @@ const emailFormSchema = toTypedSchema(z.object({
         .refine(val => String(Math.abs(val)).length === 6, { message: "邮箱验证码 必须是6位数字" }))
 }))
 
-
 function addLink(value: string[], setValue: (v: string[]) => void) {
     if (value.length < 4) {
         setValue([...value, ""]);
     }
 }
+
 function removeLink(idx: number, value: string[], setValue: (v: string[]) => void) {
     const newLinks = value.slice();
     newLinks.splice(idx, 1);
@@ -343,9 +340,14 @@ function removeLink(idx: number, value: string[], setValue: (v: string[]) => voi
 
 const isAdvanced = ref(false);
 
+const normalUseIcon = computed(() => {
+    return normalUnderSubmit.value ? iconMap.value['loading'] : iconMap.value['submit']
+})
+
+const normalUnderSubmit = ref(false);
 async function onSubmitNormalForm(values: any, setFieldValue: (field: string, value: any) => void) {
-    if (underSubmit.value) return
-    underSubmit.value = true
+    if (normalUnderSubmit.value) return
+    normalUnderSubmit.value = true
     const info = {
         bio: values.bio,
         properties: {
@@ -365,28 +367,39 @@ async function onSubmitNormalForm(values: any, setFieldValue: (field: string, va
         toast.error(`个人资料更新失败`)
     }
     dialogOpen.value = false
-    underSubmit.value = false
+    normalUnderSubmit.value = false
 }
 
+const passwordUseIcon = computed(() => {
+    return passwordUnderSubmit.value ? iconMap.value['loading'] : iconMap.value['submit']
+})
+
+const passwordUnderSubmit = ref(false);
 async function onSubmitPasswordForm(values: any) {
-    if (underSubmit.value) return
-    underSubmit.value = true
+    if (passwordUnderSubmit.value) return
+    passwordUnderSubmit.value = true
     const formData = new FormData()
     formData.append('userOwner', String(userInfo.value.owner))
     formData.append('userName', String(userInfo.value.studentNumber))
-    formData.append('oldPassword ', values.currentPassword)
     formData.append('newPassword', values.newPassword)
     await setPassword(formData)
     dialogOpen.value = false
-    underSubmit.value = false
+    passwordUnderSubmit.value = false
 }
 
+const emailUseIcon = computed(() => {
+    return emailUnderSubmit.value ? iconMap.value['loading'] : iconMap.value['submit']
+})
+
+const emailUnderSubmit = ref(false);
+//casdoor文档过于答辩 暂时搞不定
 async function onSubmitEmailForm(values: any) {
-    if (underSubmit.value) return
-    underSubmit.value = true
+    if (emailUnderSubmit.value) return
+    emailUnderSubmit.value = true
+    console.log(values);
     const formData = new FormData()
     dialogOpen.value = false
-    underSubmit.value = false
+    emailUnderSubmit.value = false
 }
 
 function handleClick() {
