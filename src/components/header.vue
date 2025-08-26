@@ -45,10 +45,10 @@
                 <div class="flex items-center lg:h-full lg:p-0 p-3 rounded-lg lg:dark:bg-transparent dark:bg-[#1f1e1e]">
                     <div class="relative overflow-hidden cursor-pointer shrink-0 text-lg font-bold"
                         @click="routerGoto('/'), headerAnimate.toggle()">
-                        <div ref="logo1" class="space-x-2 flex items-center will-change-transform">
+                        <div ref="logo1" class="space-x-2 flex items-center will-change-transform mr-7">
                             <img src="/src/assets/gdmuna-logo_gradient.svg" alt=""
                                 class="lg:size-10 size-12 will-change-transform">
-                            <p class="mr-6 Association-NA">GDMU-NA</p>
+                            <p class="Association-NA">GDMU-NA</p>
                         </div>
                         <div ref="logo2"
                             class="absolute top-0 left-0 whitespace-nowrap space-x-1 flex items-center will-change-transform">
@@ -62,7 +62,7 @@
                 </div>
                 <div v-if="!isDesktop" class="w-full h-[1px] dark:bg-neutral-600" @click="headerAnimate.toggle()" />
                 <!-- 导航菜单 -->
-                <div class="lg:dark:bg-transparent dark:bg-[#191a19] lg:p-0 p-3 lg:ml-1 rounded-lg">
+                <div class="lg:dark:bg-transparent dark:bg-[#191a19] lg:p-0 p-3 rounded-lg">
                     <h2 v-if="!isDesktop" class="text-2xl mb-4 text-center text-[#D5C8B0]">网站导航</h2>
                     <nav class="flex lg:flex-row flex-col lg:h-full ml-0 lg:items-center whitespace-nowrap lg:p-0 px-6 lg:space-x-4 lg:space-y-0 space-y-2
                         lg:dark:text-[#FEFCE4] dark:text-[#0E100F]">
