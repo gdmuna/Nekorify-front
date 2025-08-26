@@ -59,6 +59,7 @@ export const useUserStore = defineStore('user', () => {
     }
 
     const userInfo = reactive<UserInfo>({
+        owner: '',
         studentNumber: 0,
         username: '',
         nickname: '',
@@ -73,10 +74,11 @@ export const useUserStore = defineStore('user', () => {
     })
 
     function handleUserInfo(info: any) {
+        userInfo.owner = info.owner
         userInfo.studentNumber = info.name
         userInfo.username = info.displayName
         userInfo.nickname = info.nickname || '千早爱音'
-        userInfo.bio = info.bio || '千早爱音美貌盖世无双'
+        userInfo.bio = info.bio
         userInfo.email = info.email
         userInfo.avatar = info.avatar
         userInfo.affiliation = info.affiliation
@@ -87,6 +89,7 @@ export const useUserStore = defineStore('user', () => {
     }
 
     function cleanUserInfo() {
+        userInfo.owner = '',
         userInfo.studentNumber = 0
         userInfo.username = ''
         userInfo.nickname = ''
@@ -113,7 +116,7 @@ export const useUserStore = defineStore('user', () => {
         })
     }
 
-    const casdoorUserInfo = ref<object | null>(null)
+    const casdoorUserInfo = ref<any>(null)
     function generateCasdoorUserInfo(token: string) {
         const payload = decodeJWT(token)
         if (!payload) {
@@ -127,16 +130,31 @@ export const useUserStore = defineStore('user', () => {
     async function updateCasdoorUserInfo(info: object) {
         if (!casdoorUserInfo.value) {
             toast.error("用户信息未初始化")
-            return
+            return false
         }
         const payload = structuredClone(toRaw(casdoorUserInfo.value))
         Object.assign(payload, info)
         const { err, res } = await userApi.updateUserInfo(payload)
+        console.log({ err, res });
         if (res) {
             const authStore = useAuthStore()
             await authStore.refresh()
+            console.log('updateCasdoorUserInfo', res);
+            
+            return true
+        } else {
+            throw err
+        }
+    }
+
+    async function setPassword(formData: FormData) {
+        const { err, res } = await userApi.setPassword(formData)
+        console.log('setPassword', { err, res });
+        if (res) {
+            toast.success('修改密码成功')
             return res
         } else {
+            toast.error(err.data?.message || '修改密码失败')
             throw err
         }
     }
@@ -434,6 +452,9 @@ export const useUserStore = defineStore('user', () => {
         inactiveInterview,
         interviewResultStatus,
         generateCasdoorUserInfo,
-        uploadAvatar
+        uploadAvatar,
+        setPassword,
+        updateCasdoorUserInfo,
+        casdoorUserInfo
     }
 })

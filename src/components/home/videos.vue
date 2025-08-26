@@ -23,7 +23,7 @@
                         {{ items[currentIdx].subtitle }}
                     </p>
                 </transition>
-                <outlineButton @click="routerGoto('/videos')" />
+                <outlineButton text="查看更多" :icon="ArrowRight" @click="routerGoto('/videos')" class="mt-5" />
             </div>
         </div>
         <h2 v-else class="text-center text-2xl md:text-3xl dark:text-[#A0A0A0] my-10">
@@ -36,6 +36,8 @@
 import { onMounted, ref, nextTick, onUnmounted, computed } from 'vue';
 
 import { outlineButton } from '@/components/ui/button';
+
+import { ArrowRight } from 'lucide-vue-next';
 
 import { gsap } from 'gsap';
 

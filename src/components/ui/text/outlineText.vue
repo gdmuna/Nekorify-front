@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted, computed, watch } from 'vue';
+import { onMounted, ref, onUnmounted, watch } from 'vue';
 
 import { gsap } from 'gsap';
 

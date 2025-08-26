@@ -11,7 +11,7 @@
                     <p ref="itemsDate">{{ item.date }}</p>
                 </div>
             </div>
-            <outlineButton @click="routerGoto('/articles')" />
+            <outlineButton text="查看更多" :icon="ArrowRight" @click="routerGoto('/articles')" class="mt-5" />
         </template>
         <h2 v-else class="text-center text-2xl md:text-3xl dark:text-[#A0A0A0] mt-10">
             还没有文章喵...
@@ -23,6 +23,8 @@
 import { onMounted, onUnmounted, ref, computed } from 'vue';
 
 import { outlineButton } from '@/components/ui/button';
+
+import { ArrowRight } from 'lucide-vue-next';
 
 import { gsap } from 'gsap';
 

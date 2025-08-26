@@ -161,7 +161,7 @@ export const useAuthStore = defineStore('auth', () => {
             level: 2,
             belongs: ['gdmu-acm']
         },
-        'gdmu/NekorifyAdmin': {
+        'gdmu/Nekorify-admin': {
             label: 'Nekorify管理员',
             level: 0
         }

@@ -22,8 +22,6 @@
 import { onMounted, ref, onUnmounted } from 'vue';
 import { gsap } from 'gsap';
 
-import { getRemPx } from '@/lib/utils';
-
 defineProps<{
     titleA?: string;
     titleB?: string;

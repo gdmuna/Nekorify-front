@@ -13,7 +13,7 @@
                 </div>
                 <p class="date">{{ item.date }}</p>
             </div>
-            <outlineButton @click="routerGoto('/announcements')" />
+            <outlineButton text="查看更多" :icon="ArrowRight" @click="routerGoto('/announcements')" class="mt-5" />
         </template>
         <h2 v-else class="text-center text-2xl md:text-3xl dark:text-[#A0A0A0] mt-10">
             还没有公告喵...
@@ -28,6 +28,8 @@ import { outlineButton } from '@/components/ui/button'
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+import { ArrowRight } from 'lucide-vue-next';
 
 import { getRemPx } from '@/lib/utils';
 

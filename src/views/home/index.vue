@@ -9,7 +9,7 @@
         <!-- Section 2 -->
         <section>
             <div class="bg-gray-200 dark:bg-[#0E100F] flex flex-col relative">
-                <div class="absolute top-[-0.7rem] left-0 w-full h-3 transition-bg" />
+                <div class="absolute top-[-0.7rem] left-0 w-full h-3 transition-bg pointer-events-none" />
                 <titleBlock titleA="公告" titleB="ANNOUNCEMENT" />
                 <announcement />
                 <titleBlock titleA="文章" titleB="ARTICLE" />

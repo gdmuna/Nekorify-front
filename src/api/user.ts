@@ -19,5 +19,9 @@ export const userApi = {
         formData.append('file', avatar)
         const inst = ranaMinder.Post('/upload/picture', formData)
         return await to<any>(inst)
+    },
+    async setPassword(formData: FormData) {
+        const inst = casdoor.Post('/api/set-password', formData)
+        return await to<any>(inst)
     }
 }

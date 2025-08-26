@@ -1,4 +1,5 @@
 export interface UserInfo {
+    owner: string
     studentNumber: number
     username: string
     nickname: string

@@ -4,6 +4,7 @@
         @mouseenter="animate.play('enter')" @mouseleave="animate.play('leave')" @click="animate.click"
         @mousemove="animate.updateLocation($event)">
         <div class="z-10">
+            <p v-if="props.text" :class="cn(textClass)">{{ props.text }}</p>
             <slot />
         </div>
         <div ref="mask1" class="absolute size-0 inset-0 rounded-full overflow-hidden text-yellow-100 will-change-transform"
@@ -17,6 +18,7 @@
 
 <script setup lang="ts">
 import { onUnmounted, ref } from 'vue';
+import { cn } from '@/lib/utils';
 
 import { gsap } from 'gsap';
 
@@ -32,6 +34,8 @@ let rippleKey = 0
 const props = defineProps<{
     mask1Color?: string
     mask2Color?: string
+    text?: string
+    textClass?: string
 }>();
 
 onUnmounted(() => {

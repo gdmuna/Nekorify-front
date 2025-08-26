@@ -36,6 +36,7 @@ const visible = ref(false)
 
 onMounted(() => {
     visible.value = true
+    document.body.style.overflow = 'hidden'
     window.addEventListener('keyup', handleKeyup)
     nextTick(animate.enter.bind(animate))
 })
@@ -52,12 +53,14 @@ function handleKeyup(event: KeyboardEvent) {
 
 function onOk() {
     visible.value = false
+    document.body.style.overflow = 'auto'
     animate.leave()
     props.onOk()
 }
 
 function onCancel() {
     visible.value = false
+    document.body.style.overflow = 'auto'
     animate.leave()
     props.onCancel()
 }

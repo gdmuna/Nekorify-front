@@ -14,3 +14,15 @@ body::-webkit-scrollbar {
     display: none;
     /* Chrome/Safari/Webkit */
 }
+
+body>* {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+    scroll-behavior: auto;
+}
+
+body>*::-webkit-scrollbar {
+    display: none;
+}
