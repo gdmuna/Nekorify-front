@@ -1,6 +1,6 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-14 header-bg z-50 px-4 lg:flex lg:items-center select-none
-    pointer-events-none lg:*:pointer-events-none *:pointer-events-auto">
+    <div class="fixed top-0 left-0 w-full h-14 z-50 *:px-4 lg:flex lg:items-center select-none
+    pointer-events-none lg:*:pointer-events-none *:pointer-events-auto header-bg">
         <div v-if="!isDesktop" class="size-full flex items-center justify-between">
             <ChartNoAxesGantt class="shrink-0 size-8 cursor-pointer" @click="headerAnimate.toggle()" />
             <div class="flex items-center space-x-4">
@@ -35,14 +35,14 @@
                 </primaryButton>
             </div>
         </div>
-        <header ref="headerRef"
-            class="flex lg:flex-row flex-col lg:h-full h-[100dvh] lg:w-full w-[min(24rem,70dvw)] -translate-x-full lg:-translate-x-0
-        lg:items-center items-start lg:justify-between justify-start *:shrink-0 z-60 lg:p-0 p-3 space-y-4 lg:space-y-0 will-change-transform overscroll-contain
-        overflow-x-auto *:pointer-events-auto relative -top-14 lg:-top-0 -left-4 lg:-left-0 lg:bg-transparent bg-[#0E100F]">
+        <header ref="headerRef" class="flex lg:flex-row flex-col lg:h-full h-[100dvh] lg:w-full w-[min(24rem,70dvw)] -translate-x-full lg:-translate-x-0 relative
+        lg:items-center items-start lg:justify-between justify-start *:shrink-0 z-60 space-y-4 lg:space-y-0 will-change-transform overscroll-contain
+        overflow-x-auto *:pointer-events-auto -top-14 lg:-top-0 -left-4 lg:-left-0 lg:bg-transparent bg-[#0E100F]">
             <!-- 页眉左侧内容 -->
             <div class="flex lg:flex-row flex-col lg:h-full lg:items-center lg:w-auto w-full space-y-4 lg:space-y-0">
                 <!-- LOGO -->
-                <div class="flex items-center lg:h-full lg:p-0 p-3 rounded-lg lg:dark:bg-transparent dark:bg-[#1f1e1e] !mix-blend-normal">
+                <div
+                    class="flex items-center lg:h-full lg:p-0 p-3 rounded-lg lg:dark:bg-transparent dark:bg-[#1f1e1e] !mix-blend-normal">
                     <div class="relative overflow-hidden cursor-pointer shrink-0 text-lg font-bold"
                         @click="routerGoto('/'), headerAnimate.toggle()">
                         <div ref="logo1" class="space-x-2 flex items-center will-change-transform mr-7">

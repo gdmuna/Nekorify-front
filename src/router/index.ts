@@ -151,6 +151,7 @@ const routes = [
         name: 'interview',
         meta: {
           title: '面试',
+          scrollToTop: true,
           requireAuth: true,
           parentAction: {
             doNotScrollToTop: true
@@ -189,7 +190,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const systemStore = useSystemStore()
-  if (to.name == 'announcements' || to.name == 'articles' || to.name == 'videos' || to.name == 'resourcesHub') {
+  if (to.name == 'articles' || to.name == 'videos' || to.name == 'resourcesHub') {
     showModal({
       content: [
         h('div', { class: 'flex flex-col space-y-4' }, [
