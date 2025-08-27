@@ -45,15 +45,36 @@ export const useUserStore = defineStore('user', () => {
     async function initUserInfo() {
         try {
             const authStore = useAuthStore()
-            await authStore.refresh();
-            await getUserInfo(true);
+            await new Promise((resolve, reject) => {
+                getUserInfo(true).then(() => {
+                    authStore.refresh().then(() => {
+                        resolve(true)
+                        toast.success('自动登录成功')
+                    }).catch(() => {
+                        toast.info('登录成功，但刷新access_token失败')
+                        resolve(true)
+                    })
+                }).catch(() => {
+                    authStore.refresh().then(() => {
+                        new Promise((res, rej) => {
+                            setTimeout(() => {
+                                getUserInfo(true).then(() => {
+                                    toast.success('自动登录成功')
+                                    res(true)
+                                }).catch(() => {
+                                    toast.error('自动登录失败，请重新登录')
+                                    rej(false)
+                                    reject(false)
+                                })
+                            }, 1000)
+                        })
+                    })
+                })
+            })
             authStore.initUserPermission()
             await loadInterviewFormJSON();
             return true
         } catch (e) {
-            if (e) {
-                toast.error(e)
-            }
             return false
         }
     }
@@ -89,7 +110,7 @@ export const useUserStore = defineStore('user', () => {
     }
 
     function cleanUserInfo() {
-        userInfo.owner = '',
+        userInfo.owner = ''
         userInfo.studentNumber = 0
         userInfo.username = ''
         userInfo.nickname = ''
@@ -140,7 +161,7 @@ export const useUserStore = defineStore('user', () => {
             const authStore = useAuthStore()
             await authStore.refresh()
             console.log('updateCasdoorUserInfo', res);
-            
+
             return true
         } else {
             throw err
@@ -455,6 +476,7 @@ export const useUserStore = defineStore('user', () => {
         uploadAvatar,
         setPassword,
         updateCasdoorUserInfo,
-        casdoorUserInfo
+        casdoorUserInfo,
+        loadInterviewFormJSON
     }
 })

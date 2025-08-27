@@ -7,8 +7,8 @@
                     <p class="md:text-lg  dark:text-[#A0A0A0]">以下是当前开放的面试列表，点击查看详情</p>
                 </section>
                 <section>
-                    <liItem v-if="notEmptyArray(activeInterview)" useSlot v-for="(item, index) in activeInterview" :key="index" :rightIcon="ArrowRight"
-                        @click="routerGoto(`/dashboard/interview/${item.id}`)">
+                    <liItem v-if="notEmptyArray(activeInterview)" useSlot v-for="(item, index) in activeInterview"
+                        :key="index" :rightIcon="ArrowRight" @click="routerGoto(`/dashboard/interview/${item.id}`)">
                         <div class="flex flex-1 justify-between items-center duration-300">
                             <div class="md:space-y-2 space-y-1 mr-2">
                                 <p class="md:text-2xl">{{ item.title }}</p>
@@ -33,8 +33,10 @@
                 <section class="space-y-2">
                     <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">已结束</h2>
                     <p class="md:text-lg dark:text-[#A0A0A0]">以下是已结束的面试列表，点击查看详情</p>
-                    <liItem v-if="notEmptyArray(inactiveInterview)" useSlot v-for="(item, index) in inactiveInterview" :key="index" :rightIcon="ArrowRight"
-                        @click="routerGoto(`/dashboard/interview/${item.id}`)">
+                </section>
+                <section>
+                    <liItem v-if="notEmptyArray(inactiveInterview)" useSlot v-for="(item, index) in inactiveInterview"
+                        :key="index" :rightIcon="ArrowRight" @click="routerGoto(`/dashboard/interview/${item.id}`)">
                         <div class="flex flex-1 justify-between items-center duration-300">
                             <div class="md:space-y-2 space-y-1 mr-2">
                                 <p class="md:text-2xl">{{ item.title }}</p>
@@ -88,7 +90,7 @@ const { routerGoto } = systemStore;
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore();
 const { initInterviewData } = userStore;
-const { activeInterview, inactiveInterview , interviewDataStatus } = storeToRefs(userStore)
+const { activeInterview, inactiveInterview, interviewDataStatus } = storeToRefs(userStore)
 
 import { useRoute } from 'vue-router';
 const route = useRoute();

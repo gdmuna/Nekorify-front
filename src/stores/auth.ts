@@ -33,11 +33,12 @@ export const useAuthStore = defineStore('auth', () => {
     async function loginCallback() {
         const { err, res } = await authApi.loginCallback();
         if (res) {
+            const userStore = useUserStore();
+            await userStore.loadInterviewFormJSON()
             const data = res.data
             const token = data.data.token
             toast.success(data.message)
             setToken(token)
-            const userStore = useUserStore();
             userStore.generateCasdoorUserInfo(token.access_token)
             userStore.handleUserInfo(data.data.userInfo)
             initUserPermission()

@@ -2,12 +2,12 @@
     <div class="flex-1 flex flex-col">
         <template v-if="interviewResultStatus === 'loading'">
             <div class="size-full flex justify-center items-center">
-                <p class="text-center dark:text-[#A0A0A0]">正在努力加载面试信息喵~</p>
+                <p class="text-center dark:text-[#A0A0A0]">正在努力加载节点信息喵~</p>
             </div>
         </template>
         <template v-else-if="interviewResultStatus === 'error'">
             <div class="size-full flex justify-center items-center">
-                <p class="text-center dark:text-[#A0A0A0]">加载面试信息失败喵... 请稍后再试~</p>
+                <p class="text-center dark:text-[#A0A0A0]">加载节点信息失败喵... 请稍后再试~</p>
             </div>
         </template>
         <template v-else-if="interviewResultStatus === 'loaded'">

@@ -42,18 +42,18 @@ const a = computed(() => {
 
 // 常量定义
 // const a = 0.5       // 六边形外接圆半径
-const dx = a.value * Math.sqrt(3)  // 列间距（水平方向中心点距离）
-const dy = a.value * 1.5  // 行间距（垂直方向中心点距离）
+const dx = computed(() => a.value * Math.sqrt(3))   // 列间距（水平方向中心点距离）})
+const dy = computed(() => a.value * 1.5)            // 行间距（垂直方向中心点距离）)
 
 const matrix = ref<SVGSVGElement | null>(null)
 
-const colCount = computed(() => Math.ceil(width.value / (dx * 100)))
-const rowCount = computed(() => Math.ceil(height.value / (dy * 100)))
+const colCount = computed(() => Math.ceil(width.value / (dx.value * 100)))
+const rowCount = computed(() => Math.ceil(height.value / (dy.value * 100)))
 
-const viewBoxWidth = computed(() => dx * (colCount.value + 0.5))
+const viewBoxWidth = computed(() => dx.value * (colCount.value + 0.5))
 const viewBoxHeight = computed(() => {
     // 基础高度 = 顶部间距 + 行数×行高 + 底部间距
-    return a.value + (rowCount.value * dy) + a.value
+    return a.value + (rowCount.value * dy.value) + a.value
 })
 
 function onEnter(id: string) {
@@ -76,9 +76,9 @@ function onLeave(id: string) {
  * @returns 六边形6个顶点的坐标字符串
  */
 const hexPoints = (i: number, j: number) => {
-    const offsetX = (i % 2) * dx / 2
-    const centerX = j * dx + dx / 2 + offsetX
-    const centerY = a.value + i * dy
+    const offsetX = (i % 2) * dx.value / 2
+    const centerX = j * dx.value + dx.value / 2 + offsetX
+    const centerY = a.value + i * dy.value
 
     return Array.from({ length: 6 }).map((_, k) => {
         const angle = Math.PI / 6 + k * Math.PI / 3

@@ -185,7 +185,7 @@
                                                 :key="index" class="font-bold text-emerald-500">{{ item.label }}
                                                 <span v-if="index < currentAssociation.length - 1">& </span>
                                             </span>
-                                            ，期待与你并肩，见证更多可能。
+                                            期待与你并肩，见证更多可能。
                                         </p>
                                     </template>
                                     <template v-if="step.result === 'rejected'">

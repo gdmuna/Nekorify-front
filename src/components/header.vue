@@ -42,7 +42,7 @@
             <!-- 页眉左侧内容 -->
             <div class="flex lg:flex-row flex-col lg:h-full lg:items-center lg:w-auto w-full space-y-4 lg:space-y-0">
                 <!-- LOGO -->
-                <div class="flex items-center lg:h-full lg:p-0 p-3 rounded-lg lg:dark:bg-transparent dark:bg-[#1f1e1e]">
+                <div class="flex items-center lg:h-full lg:p-0 p-3 rounded-lg lg:dark:bg-transparent dark:bg-[#1f1e1e] !mix-blend-normal">
                     <div class="relative overflow-hidden cursor-pointer shrink-0 text-lg font-bold"
                         @click="routerGoto('/'), headerAnimate.toggle()">
                         <div ref="logo1" class="space-x-2 flex items-center will-change-transform mr-7">
@@ -65,7 +65,7 @@
                 <div class="lg:dark:bg-transparent dark:bg-[#191a19] lg:p-0 p-3 rounded-lg">
                     <h2 v-if="!isDesktop" class="text-2xl mb-4 text-center text-[#D5C8B0]">网站导航</h2>
                     <nav class="flex lg:flex-row flex-col lg:h-full ml-0 lg:items-center whitespace-nowrap lg:p-0 px-6 lg:space-x-4 lg:space-y-0 space-y-2
-                        lg:dark:text-[#FEFCE4] dark:text-[#0E100F]">
+                        lg:dark:text-[#FEFCE4] dark:text-[#0E100F]e">
                         <template v-for="(item, index) in routeMeta" :key="index">
                             <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#FEFCE4] rounded cursor-pointer"
                                 @click="routerGoto(item.path), headerAnimate.toggle()">
@@ -108,7 +108,7 @@
                     </div>
                     <div class="flex items-center space-x-1 lg:rounded-full lg:dark:bg-transparent cursor-pointer
                     dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6"
-                    @click="wtfman(), headerAnimate.toggle()">
+                        @click="wtfman(), headerAnimate.toggle()">
                         <Button variant="ghost"
                             class="rounded-full size-10 cursor-pointer lg:pointer-events-auto pointer-events-none">
                             <Mail class="size-6" />
@@ -117,7 +117,7 @@
                     </div>
                     <div class="flex items-center space-x-1 lg:rounded-full lg:dark:bg-transparent cursor-pointer
                     dark:bg-[#FEFCE4] lg:dark:text-[#FEFCE4] dark:text-[#0E100F] rounded lg:m-0 mx-6"
-                    @click="wtfman(), headerAnimate.toggle()">
+                        @click="wtfman(), headerAnimate.toggle()">
                         <Button variant="ghost"
                             class="rounded-full size-10 cursor-pointer lg:pointer-events-auto pointer-events-none">
                             <CalendarFold class="size-6" />

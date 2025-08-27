@@ -77,10 +77,11 @@ const routes = [
   },
   {
     path: '/dashboard',
-    component: () => import('../views/dashboard/index.vue'),
+    component: () => import('../views/dashboard/index.vue')
+    ,
     meta: {
       title: '仪表盘',
-      requireAuth: false
+      requireAuth: true
     },
     children: [
       {
@@ -89,7 +90,7 @@ const routes = [
         name: 'dashboard',
         meta: {
           title: '仪表盘',
-          requireAuth: false,
+          requireAuth: true,
           scrollToTop: true
         },
       },
@@ -99,7 +100,7 @@ const routes = [
         name: 'announcementManager',
         meta: {
           title: '公告管理',
-          requireAuth: false,
+          requireAuth: true,
           parentAction: {
             doNotScrollToTop: true
           },
@@ -116,7 +117,7 @@ const routes = [
         name: 'articleManager',
         meta: {
           title: '文章管理',
-          requireAuth: false,
+          requireAuth: true,
           parentAction: {
             doNotScrollToTop: true
           },
@@ -133,7 +134,7 @@ const routes = [
         name: 'videoManager',
         meta: {
           title: '视频管理',
-          requireAuth: false,
+          requireAuth: true,
           parentAction: {
             doNotScrollToTop: true
           },
@@ -150,7 +151,7 @@ const routes = [
         name: 'interview',
         meta: {
           title: '面试',
-          requireAuth: false,
+          requireAuth: true,
           parentAction: {
             doNotScrollToTop: true
           }
@@ -162,7 +163,7 @@ const routes = [
             name: 'interviewNode',
             meta: {
               title: '面试节点',
-              requireAuth: false,
+              requireAuth: true,
               parentAction: {
                 doNotScrollToTop: true
               }

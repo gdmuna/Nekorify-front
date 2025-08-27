@@ -34,7 +34,7 @@
                             <FormControl class="flex space-x-2">
                                 <div class="flex space-x-2">
                                     <Input type="email" placeholder="请输入您的新邮箱" v-bind="componentField" />
-                                    <primaryButton text="发送验证码"
+                                    <primaryButton text="发送验证码" type="button"
                                         class="dark:bg-emerald-500 dark:text-[#0E100F] md:text-base"
                                         mask1-color="#1aa0c2" mask2-color="#7de3f3" />
                                 </div>
@@ -45,7 +45,7 @@
                     <FormField v-slot="{ value }" name="emailVerificationCode">
                         <FormItem>
                             <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                验证码
+                                邮箱验证码
                             </FormLabel>
                             <FormControl>
                                 <PinInput :model-value="value" placeholder="○" inputmode="numeric"

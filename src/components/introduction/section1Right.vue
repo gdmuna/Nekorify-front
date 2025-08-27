@@ -130,12 +130,12 @@ onMounted(() => {
     })
     const height = (hiddenMacWindow.value as any)!.$el.offsetHeight
     nextTick(() => {
-        gsap.to((visibleMacWindow.value as any)!.$el, {
-            height: height,
-            ease: "power3.out",
-            duration: 1.5,
-            transformOrigin: "bottom 50%"
-        })
+        // gsap.to((visibleMacWindow.value as any)!.$el, {
+        //     height: height,
+        //     ease: "power3.out",
+        //     duration: 1.5,
+        //     transformOrigin: "bottom 50%"
+        // })
         helloGDMU.init()
         enterAnimate()
     })
