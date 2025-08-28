@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -147,3 +148,5 @@
 @utility font-poem {
   font-family: "Times New Roman", Times, serif;
 }
+
+@config "../article.config.js"

@@ -123,7 +123,7 @@ let codeTimer: number | null = null
 let heightObserver: ResizeObserver | null = null
 
 onMounted(() => {
-    Prism.highlightAll()
+    Prism.highlightAllUnder(root.value)
     gsap.set(logos.map(el => el.value), {
         autoAlpha: 0,
         y: '100%'

@@ -65,7 +65,7 @@
                 <div class="lg:dark:bg-transparent dark:bg-[#191a19] lg:p-0 p-3 rounded-lg">
                     <h2 v-if="!isDesktop" class="text-2xl mb-4 text-center text-[#D5C8B0]">网站导航</h2>
                     <nav class="flex lg:flex-row flex-col lg:h-full ml-0 lg:items-center whitespace-nowrap lg:p-0 px-6 lg:space-x-4 lg:space-y-0 space-y-2
-                        lg:dark:text-[#FEFCE4] dark:text-[#0E100F]e">
+                        lg:dark:text-[#FEFCE4] dark:text-[#0E100F]">
                         <template v-for="(item, index) in routeMeta" :key="index">
                             <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#FEFCE4] rounded cursor-pointer"
                                 @click="routerGoto(item.path), headerAnimate.toggle()">
@@ -73,7 +73,7 @@
                                     class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit"
                                     :class="[item.active ? 'text-blue-400' : '']" line-color="#51A2FF"
                                     transition-line-color />
-                                <div v-show="!isDesktop" class="md:text-xl flex items-center space-x-2">
+                                <div v-if="!isDesktop" class="md:text-xl flex items-center space-x-2 z-10">
                                     <component :is="item.icon" class="size-6" />
                                     <p>{{ item.label }}</p>
                                 </div>

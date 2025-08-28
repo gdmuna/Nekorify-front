@@ -341,3 +341,7 @@ export function decodeJWT(token: string) {
         return null
     }
 }
+
+export function getRandomNumber(min: number, max: number) {
+    return Math.random() * (max - min) + min
+}

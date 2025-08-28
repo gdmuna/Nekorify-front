@@ -1,0 +1,131 @@
+:deep.article-container article {
+    p {
+        margin: 0.5em 0;
+    }
+
+    img.emoji {
+        height: 1em;
+        width: 1em;
+        margin: 0 0.05em 0 0.01em;
+        vertical-align: -0.1em;
+        display: inline;
+    }
+
+    span.katex-html {
+        @apply sr-only
+    }
+
+    ul.contains-task-list {
+        label {
+            pointer-events: none;
+
+            .task-list-item-checkbox {
+                margin: 0 0.2em 0.2em 0;
+                vertical-align: middle;
+                width: 0.8em;
+                height: 0.8em;
+            }
+        }
+    }
+
+    details {
+        cursor: pointer;
+    }
+
+    code:not(pre[class*="language-"] > code) {
+        font-size: 0.9em;
+        background: #282c33;
+        border-radius: 0.2em;
+        padding: 0.3em 0.6em;
+        margin: 0.4em;
+        color: #FFF9DB;
+    }
+
+    code:before {
+        content: "";
+    }
+
+    code:after {
+        content: "";
+    }
+
+    pre[class*="language-"] {
+        position: relative;
+        font-size: 1em;
+        line-height: 1em;
+        background: #17191d;
+        border-radius: 0.25em;
+        min-height: 4rem;
+
+        code[class*="language-"] {
+            font-size: 0.8em;
+        }
+    }
+
+    blockquote {
+        font-style: normal;
+        border-radius: 0.25em;
+        background: rgba(53, 52, 51, 0.4);
+        padding-right: 1em;
+
+        p:before {
+            content: ''
+        }
+
+        p:after {
+            content: ''
+        }
+    }
+
+    .markdown-alert {
+        padding: 1em;
+        border-left: 0.25rem solid;
+        border-radius: 0.25em;
+        padding-bottom: 0.1em;
+        padding-top: 0px;
+        margin-bottom: 1em;
+        border-color: var(--border-color);
+        background: var(--background-color);
+    }
+
+    .markdown-alert>span {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: var(--border-color);
+    }
+
+    .markdown-alert .markdown-alert-icon {
+        margin-right: 0.5em;
+        fill: var(--border-color);
+    }
+
+    .markdown-alert.note {
+        --border-color: #539BF5;
+        --background-color: rgba(83, 155, 245, 0.1);
+    }
+
+    .markdown-alert.warning {
+        --border-color: #C69026;
+        --background-color: rgba(198, 144, 38, 0.1);
+    }
+
+    .markdown-alert.important {
+        --border-color: #986EE2;
+        --background-color: rgba(152, 110, 226, 0.1);
+    }
+
+    .markdown-alert.caution {
+        --border-color: #E5534B;
+        --background-color: rgba(229, 83, 75, 0.1);
+    }
+
+    .markdown-alert.tip {
+        --border-color: #57AB5A;
+        --background-color: rgba(87, 171, 90, 0.1);
+    }
+}
+
+:deep.copy-animate-pTag {
+    
+}
