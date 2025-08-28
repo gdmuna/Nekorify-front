@@ -23,6 +23,11 @@ export default defineConfig({
         target: 'http://localhost:3001', // RanaMinder后端地址
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/ranaminder/, '/api')
+      },
+      '/p/Nekorify/announcement': {
+        target: 'http://oss.gdmuna.com',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/p\/Nekorify\/announcement/, '/p/Nekorify/announcement')
       }
     }
   },

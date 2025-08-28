@@ -1,4 +1,4 @@
-:deep.article-container article {
+/* :deep.article-container article {
     p {
         margin: 0.5em 0;
     }
@@ -124,8 +124,4 @@
         --border-color: #57AB5A;
         --background-color: rgba(87, 171, 90, 0.1);
     }
-}
-
-:deep.copy-animate-pTag {
-    
-}
+} */

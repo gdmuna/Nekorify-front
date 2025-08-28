@@ -17,8 +17,6 @@ const props = defineProps<{
     onClick?: (e: any) => void
 }>();
 
-const emit = defineEmits(['click'])
-
 function handleClick(e: MouseEvent) {
     if (props.onClick) {
         props.onClick(e);

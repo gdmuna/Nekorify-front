@@ -63,3 +63,4 @@ export { nekorify, ranaMinder, casdoor };
 export { authApi } from './auth';
 export { userApi } from './user';
 export { interviewApi } from './interview';
+export { resourceApi } from './resource';

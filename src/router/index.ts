@@ -37,7 +37,18 @@ const routes = [
     meta: {
       title: '公告',
       scrollToTop: true
-    }
+    },
+    children: [
+      {
+        path: ':id',
+        component: () => import('../components/markdownContainer.vue'),
+        name: 'announcementDetail',
+        meta: {
+          title: '公告详情',
+          scrollToTop: true
+        }
+      }
+    ]
   },
   {
     path: '/articles',
@@ -206,7 +217,7 @@ router.beforeEach((to, from, next) => {
   if (minManageLevel !== undefined) {
     const maxPermission = authStore.getGroupByRank('max')
     console.log('maxPermission', maxPermission);
-    
+
     if (maxPermission === null || maxPermission.level > (minManageLevel as number)) {
       showModal({
         content: [

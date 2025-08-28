@@ -12,17 +12,7 @@ export interface Interview {
     updatedAt: string
 }
 
-export interface InterviewsData {
-    campaigns: Interview[]
-    pagination: {
-        currentPage: number
-        pageSize: number
-        totalRecords: number
-        totalPages: number
-    }
-}
-
-export interface Interviews {
+export interface InterviewData {
     message: string
     code: string
     pagination: {
@@ -34,7 +24,7 @@ export interface Interviews {
     campaigns: Interview[]
 }
 
-export type InterviewRes = baseRes<Interviews>
+export type InterviewRes = baseRes<InterviewData>
 
 export interface TimeSlot {
     id: number
