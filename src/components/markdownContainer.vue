@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="pt-28 pb-14 px-4 article-container">
+    <div ref="root" class="pb-14 px-4 article-container">
         <article v-if="markdown" v-html="sanitizedHtml"
             class="prose prose-customDark prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
         </article>
@@ -132,8 +132,11 @@ const copyAnimate = {
         const btnCenterX = btnRect.left + btnRect.width / 2
         const btnCenterY = btnRect.top + btnRect.height / 2
         const imgSize = getRemPx(isMobile.value ? 2 : 3)
-        const targetX = btnCenterX - rootRect.left - imgSize / 2
-        const targetY = btnCenterY - rootRect.top - imgSize / 2
+        const parent = root.value!.parentElement
+        const parentPaddingTop = parent ? parseFloat(getComputedStyle(parent).paddingTop || '0') : 0
+        const parentPaddingLeft = parent ? parseFloat(getComputedStyle(parent).paddingLeft || '0') : 0
+        const targetX = btnCenterX - rootRect.left - imgSize / 2 + parentPaddingLeft
+        const targetY = btnCenterY - rootRect.top - imgSize / 2 + parentPaddingTop
         const count = Math.floor(getRandomNumber(3, 7))
         const baseAngle = isMobile.value ? -180 : -90
         const spread = isMobile.value ? 180 : 270
@@ -243,7 +246,7 @@ watch(() => props.currentSourceUrl, async (newVal) => {
         }
     }
 
-    details {
+    details summary {
         cursor: pointer;
     }
 
