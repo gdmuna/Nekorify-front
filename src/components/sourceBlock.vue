@@ -1,14 +1,29 @@
 <template>
-    <div class="lg:min-h-96 xl:min-h-96 border-2 rounded-3xl rounded-br-none flex flex-col overflow-hidden">
-        <div class="flex-1/3 bg-slate-900">
-            
+    <div
+        class="min-h-72 lg:min-h-96 xl:min-h-96 rounded flex flex-col overflow-hidden cursor-pointer">
+        <div class="flex-1 bg-[#ebe7e6]">
+            <img :src="coverUrl" alt="" class="size-full object-cover" />
         </div>
-        <div class="flex-1 p-4 flex flex-col justify-between">
+        <div class="p-2 md:p-4 flex flex-col justify-between dark:bg-[#2A2A2A]">
             <div>
-                <h2 class="text-lg font-bold mb-2">{{ title || '标题未设置' }}</h2>
-                <p class="text-sm text-gray-600 mb-1">{{ author || '作者未设置' }} - {{ department || '部门未设置' }}</p>
-            </div>
-            <div class="text-xs text-gray-500 flex justify-between">
+                <img src="" alt="">
+                <h2 class="text-base md:text-lg font-bold mb-2">{{ title || '标题未设置' }}</h2>
+                <div class="flex justify-between items-center">
+                    <div class="space-x-2">
+                        <div class="space-x-2">
+                            <UserRound class="size-4 inline" />
+                            <span class="text-sm dark:text-[#D5C8B0] mb-1">{{ author || '作者未设置' }}</span>
+                        </div>
+                        <div class="space-x-2">
+                            <BadgeInfo class="size-4 inline" />
+                            <span class="text-sm dark:text-[#D5C8B0] mb-1">{{ department || '部门未设置' }}</span>
+                        </div>
+                    </div>
+                    <div class="space-x-2">
+                        <Eye class="size-4 inline -translate-y-0.5" />
+                        <span>{{ views }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -16,6 +31,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
+
+import { Eye, UserRound, BadgeInfo} from "lucide-vue-next";
 
 interface Props {
     title?: string
@@ -27,11 +44,15 @@ interface Props {
     updatedAt?: string
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+    coverUrl: 'https://oss.gdmuna.com/p/Nekorify/avatar/1756149238236_67b8e715-55fb-4eb2-a178-8172e3ea2f3f.jpg'
+});
+
+onMounted(() => {
+
+})
 
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -63,8 +63,9 @@ export const useResourceStore = defineStore('resource', () => {
                 articleDataStatus.value = 'loading';
                 ({ err, res } = await resourceApi.fetchResourcesList<ArticleRes>('/article/', params))
                 if (res) {
-                    articles.value = res.data.data.announcements
+                    articles.value = res.data.data.articles
                     articlePagination.value = res.data.data.pagination
+                    articleDataStatus.value = 'loaded'
                 } else {
                     articleDataStatus.value = 'error'
                     toast.error(err.data.message || '获取文章信息失败')
@@ -76,6 +77,7 @@ export const useResourceStore = defineStore('resource', () => {
                 if (res) {
                     videos.value = res.data.data.replays
                     videoPagination.value = res.data.data.pagination
+                    videoDataStatus.value = 'loaded'
                 } else {
                     videoDataStatus.value = 'error'
                     toast.error(err.data.message || '获取视频信息失败')

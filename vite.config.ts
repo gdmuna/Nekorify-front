@@ -15,7 +15,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/nekorify': {
-        target: 'http://localhost:3000', // Nekorify后端地址
+        target: 'http://localhost:33001', // Nekorify后端地址
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/nekorify/, '/api')
       },

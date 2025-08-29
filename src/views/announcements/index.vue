@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-20 px-4 pb-10 flex-1">
+    <div class="pt-20 px-4 md:px-7.5 lg:px-10 pb-10 flex-1 flex flex-col">
         <template v-if="!showDetail">
             <template v-if="announcementDataStatus === 'loading'">
                 <div class="size-full flex justify-center items-center">
@@ -7,14 +7,14 @@
                 </div>
             </template>
             <template v-if="announcementDataStatus === 'loaded'">
-                <div class="mb-6 ml-4">
+                <div class="mb-6">
                     <h2 class="text-3xl md:text-4xl dark:text-[#E0DEC0] font-bold mb-2">公告列表</h2>
                     <p class="text-base md:text-lg text-gray-500 dark:text-[#A0A0A0]">
                         欢迎来到 NA & ACM 公告中心！这里会第一时间发布最新动态、重要通知和活动信息。<br>
                         请随时关注，获取你关心的内容喵~
                     </p>
                 </div>
-                <liItem v-if="announcements.length > 0" v-for="(item, index) in announcements" :key="index" useSlot
+                <liItem v-if="announcements && announcements.length > 0" v-for="(item, index) in announcements" :key="index" useSlot
                     @click="routerGoto(`/announcements/${item.id}`)">
                     <div class="flex-1 flex justify-between items-center transition-colors duration-300">
                         <div>
@@ -24,6 +24,9 @@
                         <p class="date shrink-0 ml-5">{{ formatDate(item.createdAt) }}</p>
                     </div>
                 </liItem>
+                <div v-else class="flex-1 flex justify-center items-center">
+                    <p class="text-center dark:text-[#A0A0A0]">还没有公告喵... 请以后再来看看~</p>
+                </div>
             </template>
             <template v-if="announcementDataStatus === 'error'">
                 <div class="size-full flex justify-center items-center">
@@ -68,6 +71,7 @@ const showDetail = computed(() => {
 })
 
 const currentSourceUrl = computed(() => {
+    if (!announcements.value || announcements.value.length === 0) return null
     const source = announcements.value.find(item => item.id === Number(route.params.id))
     return source ? source.text_md_url : null
 })

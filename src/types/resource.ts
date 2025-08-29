@@ -43,7 +43,7 @@ export interface ArticleData {
     code: string
     data: {
         pagination: BasePagination
-        announcements: Article[]
+        articles: Article[]
     }
 }
 

@@ -35,7 +35,7 @@ const routes = [
     component: () => import('../views/announcements/index.vue'),
     name: 'announcements',
     meta: {
-      title: '公告',
+      title: '公告列表',
       scrollToTop: true
     },
     children: [
@@ -55,9 +55,20 @@ const routes = [
     component: () => import('../views/articles/index.vue'),
     name: 'articles',
     meta: {
-      title: '文章',
+      title: '文章列表',
       scrollToTop: true
-    }
+    },
+    children: [
+      {
+        path: ':id',
+        component: () => import('../components/markdownContainer.vue'),
+        name: 'articleDetail',
+        meta: {
+          title: '文章详情',
+          scrollToTop: true
+        }
+      }
+    ]
   },
   {
     path: '/videos',
@@ -188,6 +199,18 @@ const routes = [
   {
     path: '/:pathMatch(.*)/',
     redirect: (to: any) => '/' + to.params.pathMatch
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404'
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: () => import('../views/wtf/index.vue'),
+    meta: {
+      title: '404 Not Found'
+    }
   }
 ]
 
@@ -201,7 +224,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const systemStore = useSystemStore()
-  if (to.name == 'articles' || to.name == 'videos' || to.name == 'resourcesHub') {
+  if (to.name == 'videos' || to.name == 'resourcesHub') {
     showModal({
       content: [
         h('div', { class: 'flex flex-col space-y-4' }, [

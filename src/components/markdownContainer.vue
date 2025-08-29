@@ -1,8 +1,8 @@
 <template>
-    <div ref="root" class="pb-14 px-4 article-container flex-1">
+    <div ref="root" class="pb-14 px-4 article-container flex-1 flex flex-col">
         <template v-if="dataStatus === 'loading'">
-            <div class="size-full flex justify-center items-center">
-                <p class="text-center dark:text-[#A0A0A0]">正在努力加载喵~</p>
+            <div class="size-full flex-1 flex justify-center items-center">
+                <p class="dark:text-[#A0A0A0]">正在努力加载喵~</p>
             </div>
         </template>
         <template v-if="dataStatus === 'loaded'">
@@ -12,8 +12,8 @@
             </article>
         </template>
         <template v-if="dataStatus === 'error'">
-            <div class="size-full flex justify-center items-center">
-                <p class="text-center dark:text-[#A0A0A0]">加载失败喵... 请稍后再试~</p>
+            <div class="size-full flex-1 flex justify-center items-center">
+                <p class="dark:text-[#A0A0A0]">加载失败喵... 请稍后再试~</p>
             </div>
         </template>
     </div>
