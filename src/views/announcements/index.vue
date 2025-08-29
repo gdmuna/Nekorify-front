@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-20 px-4 md:px-7.5 lg:px-10 pb-10 flex-1 flex flex-col">
+    <div class="pt-20 px-1 md:px-2 lg:px-3 xl:px-4 pb-10 flex-1 flex flex-col">
         <template v-if="!showDetail">
             <template v-if="announcementDataStatus === 'loading'">
                 <div class="size-full flex justify-center items-center">
@@ -7,7 +7,7 @@
                 </div>
             </template>
             <template v-if="announcementDataStatus === 'loaded'">
-                <div class="mb-6">
+                <div class="mb-6 ml-4">
                     <h2 class="text-3xl md:text-4xl dark:text-[#E0DEC0] font-bold mb-2">公告列表</h2>
                     <p class="text-base md:text-lg text-gray-500 dark:text-[#A0A0A0]">
                         欢迎来到 NA & ACM 公告中心！这里会第一时间发布最新动态、重要通知和活动信息。<br>
