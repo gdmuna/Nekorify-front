@@ -2,7 +2,7 @@
     <div ref="root" class="md:mx-10 mx-4 mb-10">
         <template v-if="showItem">
             <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
-        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2 will-change-transform">
+        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2 will-change-transform" @click="routerGoto(`/announcements/${item.id}`)">
                 <div>
                     <div class="overflow-hidden">
                         <p class="md:text-4xl text-xl title">{{ item.title }}</p>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted, computed } from 'vue';
+import { onMounted, ref, onUnmounted, computed, watch, nextTick } from 'vue';
 
 import { outlineButton } from '@/components/ui/button'
 
@@ -31,25 +31,25 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { ArrowRight } from 'lucide-vue-next';
 
-import { getRemPx } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
-import { useSystemStore } from '@/stores/system';
 import { storeToRefs } from 'pinia';
+import { useResourceStore } from '@/stores/resource';
+import { useSystemStore } from '@/stores/system';
 const systemStore = useSystemStore();
 const { routerGoto } = systemStore
-const { isMobile } = storeToRefs(systemStore);
 
-type Item = {
-    title: string;
-    subtitle: string;
-    date: string;
-}
+const resourceStore = useResourceStore();
+const { announcements } = storeToRefs(resourceStore);
 
-const items = ref<Item[]>([
-    { title: '关于新生办理校园网的相关流程', subtitle: '[ 网络协会 ]', date: '2025.7.25' },
-    { title: '关于教育邮箱系统更新的通知', subtitle: '[ 网络协会 ]', date: '2025.7.26' },
-    { title: '关于ACM程序竞赛的报名事项', subtitle: '[ ACM协会 ]', date: '2025.7.27' }
-])
+const items = computed(() => {
+    return announcements.value.slice(0, 3).map(item => ({
+        id: item.id,
+        title: item.title,
+        subtitle: item.department,
+        date: formatDate(item.createdAt)
+    }))
+})
 
 const showItem = computed(() => {
     return items.value && items.value.length > 0
@@ -59,7 +59,6 @@ const root = ref<HTMLElement | null>(null);
 const itemsRef = ref<Array<HTMLElement>>([]);
 
 onMounted(() => {
-    animate.init()
     window.addEventListener('resize', handleResize)
 })
 
@@ -73,6 +72,12 @@ function handleResize() {
         trigger.refresh()
     })
 }
+
+watch(items, () => {
+    nextTick(() => {
+        animate.init()
+    })
+})
 
 const animate = {
     tls: [] as Array<gsap.core.Timeline>,

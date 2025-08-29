@@ -1,14 +1,26 @@
 <template>
-    <div ref="root" class="pb-14 px-4 article-container">
-        <article v-if="markdown" v-html="sanitizedHtml"
-            class="prose prose-customDark prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
-        </article>
-        <div v-else>正在努力加载喵...</div>
+    <div ref="root" class="pb-14 px-4 article-container flex-1">
+        <template v-if="dataStatus === 'loading'">
+            <div class="size-full flex justify-center items-center">
+                <p class="text-center dark:text-[#A0A0A0]">正在努力加载喵~</p>
+            </div>
+        </template>
+        <template v-if="dataStatus === 'loaded'">
+            <Navigator ref="navigatorRef" class="md:ml-8 mb-6" />
+            <article v-html="sanitizedHtml" class="prose prose-customDark prose-sm sm:prose-base
+            lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
+            </article>
+        </template>
+        <template v-if="dataStatus === 'error'">
+            <div class="size-full flex justify-center items-center">
+                <p class="text-center dark:text-[#A0A0A0]">加载失败喵... 请稍后再试~</p>
+            </div>
+        </template>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, createVNode, render, watch } from 'vue'
+import { ref, computed, onMounted, nextTick, createVNode, render, watch, useTemplateRef, onUnmounted } from 'vue'
 // @ts-ignore
 import markdownit from 'markdown-it'
 // @ts-ignore
@@ -32,21 +44,29 @@ import { gsap } from 'gsap'
 
 import { getRemPx, getRandomNumber } from '@/lib/utils'
 
-import { useRoute } from 'vue-router'
-const route = useRoute()
+import Navigator from "@/components/navigator.vue";
 
 import { storeToRefs } from 'pinia'
-import { useResourceStore } from '@/stores/resource'
 import { useSystemStore } from '@/stores/system'
 
 const systemStore = useSystemStore()
 const { isMobile } = storeToRefs(systemStore)
 
-const resourceStore = useResourceStore()
+import { resourceApi } from '@/api'
+import type { DataStatus } from '@/types/api'
+import { toast } from 'vue-sonner'
+
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 
 const root = ref<HTMLElement | null>(null)
 
-// 创建markdown解析器实例
+const dataStatus = ref<DataStatus>('idle')
+
+const navigatorRef = ref<any>(null)
+
+let navigatorTrigger: ScrollTrigger | null = null
+
 const md = new markdownit({
     html: true,
     breaks: true,
@@ -69,7 +89,11 @@ md.renderer.rules.emoji = function (token: any, idx: number) {
 
 const markdown = ref('')
 const sanitizedHtml = computed(() => {
-    if (!markdown.value) return ''
+    console.log(typeof markdown.value);
+    if (typeof markdown.value === 'object') {
+        console.log(markdown.value);
+    }
+    if (!markdown.value || typeof markdown.value !== 'string') return ''
     const html = md.render(markdown.value)
     return DOMPurify.sanitize(html)
 })
@@ -78,7 +102,75 @@ const props = defineProps<{
     currentSourceUrl: any
 }>()
 
+onMounted(() => {
+    copyAnimate.init()
+    if (props.currentSourceUrl) {
+        handleSource(props.currentSourceUrl)
+    } else {
+        dataStatus.value = 'error'
+        toast.error('无效的资源ID')
+    }
+})
 
+onUnmounted(() => {
+    if (navigatorTrigger) {
+        navigatorTrigger.kill()
+        navigatorTrigger = null
+    }
+    copyAnimate.imgtl.kill()
+})
+
+async function handleSource(url: string) {
+    dataStatus.value = 'loading'
+    const { err, res } = await resourceApi.fetchResource<string>(url)
+    if (res) {
+        markdown.value = res
+        dataStatus.value = 'loaded'
+        nextTick(() => {
+            Prism.highlightAllUnder(root.value)
+            root.value?.querySelectorAll('span .katex').forEach(el => {
+                el.classList.add('not-prose')
+            })
+            root.value?.querySelectorAll('pre[class*="language-"]').forEach(el => {
+                const container = document.createElement('div')
+                container.style.position = 'absolute'
+                container.style.top = '0.5em'
+                container.style.right = '0.7em'
+                container.style.zIndex = '10'
+                const vnode = createVNode(blockButton, {
+                    onClick: (event: MouseEvent) => {
+                        const btn = event.currentTarget as HTMLElement
+                        navigator.clipboard.writeText(el.textContent || '').then(() => {
+                            copyAnimate.play(btn)
+                        })
+                    }
+                })
+                render(vnode, container)
+                el.appendChild(container)
+            })
+            const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight
+            navigatorTrigger = ScrollTrigger.create({
+                trigger: navigatorRef.value.$el,
+                start: `top top+=${offset}`,
+                end: `+=${root.value?.offsetHeight}`,
+                pin: true,
+                pinSpacing: false
+            })
+        })
+    } else {
+        dataStatus.value = 'error'
+        toast.error('加载失败喵... 请稍后再试~')
+    }
+}
+
+watch(() => props.currentSourceUrl, (newVal) => {
+    if (newVal) {
+        handleSource(newVal)
+    } else {
+        dataStatus.value = 'error'
+        toast.error('无效的资源ID')
+    }
+})
 
 const copyAnimate = {
     tls: [] as gsap.core.Timeline[],
@@ -172,46 +264,6 @@ const copyAnimate = {
         }
     }
 }
-
-function toProxyUrl(url: string) {
-    const match = url.match(/^https?:\/\/oss\.gdmuna\.com(\/p\/Nekorify\/.+)$/)
-    if (match) return match[1]
-    return url
-}
-
-watch(() => props.currentSourceUrl, async (newVal) => {
-    try {
-        copyAnimate.init()
-        const url = newVal ? newVal : ''
-        const res = await fetch(toProxyUrl(url))
-        markdown.value = await res.text()
-        nextTick(() => {
-            Prism.highlightAllUnder(root.value)
-            root.value?.querySelectorAll('span .katex').forEach(el => {
-                el.classList.add('not-prose')
-            })
-            root.value?.querySelectorAll('pre[class*="language-"]').forEach(el => {
-                const container = document.createElement('div')
-                container.style.position = 'absolute'
-                container.style.top = '0.5em'
-                container.style.right = '0.7em'
-                container.style.zIndex = '10'
-                const vnode = createVNode(blockButton, {
-                    onClick: (event: MouseEvent) => {
-                        const btn = event.currentTarget as HTMLElement
-                        navigator.clipboard.writeText(el.textContent || '').then(() => {
-                            copyAnimate.play(btn)
-                        })
-                    }
-                })
-                render(vnode, container)
-                el.appendChild(container)
-            })
-        })
-    } catch (e) {
-        console.log(e);
-    }
-}, { immediate: true })
 
 </script>
 

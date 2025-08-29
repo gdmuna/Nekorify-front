@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <div class="relative overflow-hidden shrink-0 duration-300">
+            <div v-if="rightIcon" class="relative overflow-hidden shrink-0 duration-300">
                 <component :is="rightIcon" ref="icon1" class="size-8 will-change-transform" />
                 <component :is="rightIcon" ref="icon2" class="absolute top-0 -left-full size-8 will-change-transform" />
             </div>

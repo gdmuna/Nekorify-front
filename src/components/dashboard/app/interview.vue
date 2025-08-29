@@ -9,8 +9,8 @@
                 <section>
                     <liItem v-if="notEmptyArray(activeInterview)" useSlot v-for="(item, index) in activeInterview"
                         :key="index" :rightIcon="ArrowRight" @click="routerGoto(`/dashboard/interview/${item.id}`)">
-                        <div class="flex flex-1 justify-between items-center duration-300">
-                            <div class="md:space-y-2 space-y-1 mr-2">
+                        <div class="flex-1 grid grid-cols-3 duration-300">
+                            <div class="md:space-y-2 space-y-1 mr-2 col-span-2">
                                 <p class="md:text-2xl">{{ item.title }}</p>
                                 <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">{{ item.description }}
                                 </p>
@@ -25,7 +25,6 @@
                                     <span class="whitespace-nowrap">{{ formatTime(item.end_date) }}</span>
                                 </p>
                             </div>
-                            <div />
                         </div>
                     </liItem>
                     <p v-else class="mt-6 md:text-base text-sm text-center dark:text-[#A0A0A0]">还没有已开放的面试喵...</p>
@@ -37,8 +36,8 @@
                 <section>
                     <liItem v-if="notEmptyArray(inactiveInterview)" useSlot v-for="(item, index) in inactiveInterview"
                         :key="index" :rightIcon="ArrowRight" @click="routerGoto(`/dashboard/interview/${item.id}`)">
-                        <div class="flex flex-1 justify-between items-center duration-300">
-                            <div class="md:space-y-2 space-y-1 mr-2">
+                        <div class="flex-1 grid grid-cols-3 duration-300">
+                            <div class="md:space-y-2 space-y-1 mr-2 col-span-2">
                                 <p class="md:text-2xl">{{ item.title }}</p>
                                 <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">{{ item.description }}
                                 </p>
@@ -53,7 +52,6 @@
                                     <span class="whitespace-nowrap">{{ formatTime(item.end_date) }}</span>
                                 </p>
                             </div>
-                            <div />
                         </div>
                     </liItem>
                     <p v-else class="mt-6 md:text-base text-sm text-center dark:text-[#A0A0A0]">还没有已结束的面试喵...</p>

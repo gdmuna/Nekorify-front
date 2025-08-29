@@ -422,39 +422,10 @@ const headerAnimate = {
     }
 }
 
-watch(() => route.name, (newVal) => {
-    switch (newVal) {
-        case 'home':
-            routeMeta.value.forEach(item => {
-                item.active = item.path === '/home'
-            })
-            break
-        case 'announcements':
-            routeMeta.value.forEach(item => {
-                item.active = item.path === '/announcements'
-            })
-            break
-        case 'articles':
-            routeMeta.value.forEach(item => {
-                item.active = item.path === '/articles'
-            })
-            break
-        case 'videos':
-            routeMeta.value.forEach(item => {
-                item.active = item.path === '/videos'
-            })
-            break
-        case 'resourcesHub':
-            routeMeta.value.forEach(item => {
-                item.active = item.path === '/resourcesHub'
-            })
-            break
-        default:
-            routeMeta.value.forEach(item => {
-                item.active = false
-            })
-            break
-    }
+watch(() => route.path, (newVal) => {
+    routeMeta.value.forEach(item => {
+        item.active = newVal.startsWith(item.path)
+    })
 })
 
 function wtfman() {

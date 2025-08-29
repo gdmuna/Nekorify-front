@@ -23,18 +23,28 @@ const config = {
     responded: {
         onSuccess: async (res: any) => {
             const contentType = res.headers.get('content-type');
-            let resJson = null;
-            if (contentType && contentType.includes('application/json')) {
-                // 防止空响应体导致解析错误
-                const text = await res.text();
-                resJson = text ? JSON.parse(text) : {};
-            } else {
-                resJson = errTemplate('服务端错误', '请重试，或等待业务恢复');
-            }
+            let result: any = null;
             if (res.status >= 400) {
-                return Promise.reject(resJson);
+                // 错误响应，优先尝试解析为文本
+                const text = await res.text();
+                return Promise.reject(text || errTemplate('服务端错误', '请重试，或等待业务恢复'));
             }
-            return resJson;
+            if (contentType) {
+                if (contentType.includes('application/json')) {
+                    // JSON
+                    const text = await res.text();
+                    result = text ? JSON.parse(text) : {};
+                } else if (contentType.includes('text/')) {
+                    result = await res.text();
+                } else if (contentType.includes('image/')) {
+                    result = await res.blob();
+                } else {
+                    result = await res.text();
+                }
+            } else {
+                result = await res.text();
+            }
+            return result;
         },
         onError: async (err: any) => {
             toast.error(err.message || '请求失败，请稍后再试');
@@ -58,7 +68,12 @@ const casdoor = createAlova({
     baseURL: import.meta.env.VITE_API_CASDOOR_ENDPOINT
 })
 
-export { nekorify, ranaMinder, casdoor };
+const oss = createAlova({
+    ...config,
+    baseURL: import.meta.env.VITE_API_GDMUNA_OSS_ENDPOINT
+})
+
+export { nekorify, ranaMinder, casdoor, oss };
 
 export { authApi } from './auth';
 export { userApi } from './user';

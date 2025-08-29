@@ -1,4 +1,4 @@
-import type { baseRes, basePagination } from "./api";
+import type { BaseRes, BasePagination } from "./api";
 
 export interface Announcement {
     id: number
@@ -17,12 +17,12 @@ export interface AnnouncementData {
     message: string
     code: string
     data: {
-        pagination: basePagination
+        pagination: BasePagination
         announcements: Announcement[]
     }
 }
 
-export type AnnouncementRes = baseRes<AnnouncementData>
+export type AnnouncementRes = BaseRes<AnnouncementData>
 
 export interface Article {
     id: number
@@ -42,12 +42,12 @@ export interface ArticleData {
     message: string
     code: string
     data: {
-        pagination: basePagination
+        pagination: BasePagination
         announcements: Article[]
     }
 }
 
-export type ArticleRes = baseRes<ArticleData>
+export type ArticleRes = BaseRes<ArticleData>
 
 export interface Replay {
     id: number
@@ -65,9 +65,9 @@ export interface ReplayData {
     message: string
     code: string
     data: {
-        pagination: basePagination
+        pagination: BasePagination
         replays: Replay[]
     }
 }
 
-export type ReplayRes = baseRes<ReplayData>
+export type ReplayRes = BaseRes<ReplayData>

@@ -1,4 +1,4 @@
-export interface baseRes<T = any> {
+export interface BaseRes<T = any> {
     success: boolean
     data: T
 }
@@ -19,11 +19,16 @@ export interface ReturnTemplate<T = any> {
 export type err = ErrTemplate | any | null
 export type res = any | null
 
-export type dataStatus = 'idle' | 'loading' | 'loaded' | 'error'
+export type DataStatus = 'idle' | 'loading' | 'loaded' | 'error'
 
-export interface basePagination {
+export interface BasePagination {
     currentPage: number
     pageSize: number
     totalRecords: number
     totalPages: number
+}
+
+export interface BaseParams {
+    currerntPage?: number
+    pageSize?: number
 }

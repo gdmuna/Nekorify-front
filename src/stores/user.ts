@@ -21,7 +21,7 @@ import type {
 } from '@/types/interview';
 
 import type {
-    dataStatus
+    DataStatus
 } from '@/types/api';
 
 import { useRoute } from 'vue-router';
@@ -181,7 +181,7 @@ export const useUserStore = defineStore('user', () => {
     }
 
     const interviews = ref<Interview[]>([])
-    const interviewDataStatus = ref<dataStatus>('idle')
+    const interviewDataStatus = ref<DataStatus>('idle')
     async function getInterviewList(force: boolean = false) {
         interviewDataStatus.value = 'loading'
         const { err, res } = await interviewApi.getInterviewList(force)
@@ -232,7 +232,7 @@ export const useUserStore = defineStore('user', () => {
     )
 
     const interviewProgress = ref<InterviewProgress[]>([]);
-    const interviewProgressStatus = ref<dataStatus>('idle')
+    const interviewProgressStatus = ref<DataStatus>('idle')
     async function getUserInterviewProgress(force: boolean = false) {
         interviewProgressStatus.value = 'loading'
         const { err, res } = await interviewApi.getUserInterviewProgress(force)
@@ -270,7 +270,7 @@ export const useUserStore = defineStore('user', () => {
     })
 
     const interviewResult = ref<InterviewResult[]>([])
-    const interviewResultStatus = ref<dataStatus>('idle')
+    const interviewResultStatus = ref<DataStatus>('idle')
     async function getInterviewResult(force: boolean = false) {
         interviewResultStatus.value = 'loading'
         const { err, res } = await interviewApi.getInterviewResult(force)

@@ -24,10 +24,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/ranaminder/, '/api')
       },
-      '/p/Nekorify/announcement': {
+      '/p/Nekorify': {
         target: 'http://oss.gdmuna.com',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/p\/Nekorify\/announcement/, '/p/Nekorify/announcement')
+        rewrite: path => path.replace(/^\/p\/Nekorify/, '/p/Nekorify')
       }
     }
   },

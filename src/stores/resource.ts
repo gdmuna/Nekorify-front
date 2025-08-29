@@ -11,7 +11,7 @@ import type {
     ReplayRes
 } from '@/types/resource'
 
-import type { basePagination, dataStatus } from '@/types/api'
+import type { BasePagination, DataStatus, BaseParams } from '@/types/api'
 
 import { resourceApi } from '@/api'
 
@@ -21,35 +21,35 @@ export const useResourceStore = defineStore('resource', () => {
     const articles = ref<Article[]>([])
     const videos = ref<Replay[]>([])
 
-    const announcementPagination = ref<basePagination>({
+    const announcementPagination = ref<BasePagination>({
         currentPage: 0,
         pageSize: 0,
         totalRecords: 0,
         totalPages: 0
     })
-    const articlePagination = ref<basePagination>({
+    const articlePagination = ref<BasePagination>({
         currentPage: 0,
         pageSize: 0,
         totalRecords: 0,
         totalPages: 0
     })
-    const videoPagination = ref<basePagination>({
+    const videoPagination = ref<BasePagination>({
         currentPage: 0,
         pageSize: 0,
         totalRecords: 0,
         totalPages: 0
     })
 
-    const announcementDataStatus = ref<dataStatus>('idle')
-    const articleDataStatus = ref<dataStatus>('idle')
-    const videoDataStatus = ref<dataStatus>('idle')
+    const announcementDataStatus = ref<DataStatus>('idle')
+    const articleDataStatus = ref<DataStatus>('idle')
+    const videoDataStatus = ref<DataStatus>('idle')
 
-    async function fetchResources(type: 'announcement' | 'article' | 'course') {
+    async function fetchResourcesList(type: 'announcement' | 'article' | 'course', params: BaseParams = {}) {
         let err, res
         switch (type) {
             case 'announcement':
                 announcementDataStatus.value = 'loading';
-                ({ err, res } = await resourceApi.fetchResources<AnnouncementRes>('/announcement/'))
+                ({ err, res } = await resourceApi.fetchResourcesList<AnnouncementRes>('/announcement/', params))
                 if (res) {
                     announcements.value = res.data.data.announcements
                     announcementPagination.value = res.data.data.pagination
@@ -61,7 +61,7 @@ export const useResourceStore = defineStore('resource', () => {
                 break
             case 'article':
                 articleDataStatus.value = 'loading';
-                ({ err, res } = await resourceApi.fetchResources<ArticleRes>('/article/'))
+                ({ err, res } = await resourceApi.fetchResourcesList<ArticleRes>('/article/', params))
                 if (res) {
                     articles.value = res.data.data.announcements
                     articlePagination.value = res.data.data.pagination
@@ -72,7 +72,7 @@ export const useResourceStore = defineStore('resource', () => {
                 break
             case 'course':
                 videoDataStatus.value = 'loading';
-                ({ err, res } = await resourceApi.fetchResources<ReplayRes>('/replay/'))
+                ({ err, res } = await resourceApi.fetchResourcesList<ReplayRes>('/replay/', params))
                 if (res) {
                     videos.value = res.data.data.replays
                     videoPagination.value = res.data.data.pagination
@@ -84,6 +84,7 @@ export const useResourceStore = defineStore('resource', () => {
         }
         return { err, res }
     }
+
     return {
         announcements,
         announcementDataStatus,
@@ -94,6 +95,6 @@ export const useResourceStore = defineStore('resource', () => {
         videos,
         videoDataStatus,
         videoPagination,
-        fetchResources
+        fetchResourcesList
     }
 })

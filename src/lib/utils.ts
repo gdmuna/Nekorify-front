@@ -345,3 +345,10 @@ export function decodeJWT(token: string) {
 export function getRandomNumber(min: number, max: number) {
     return Math.random() * (max - min) + min
 }
+
+export function toProxyUrl(url: string) {
+    // 匹配 /p/Nekorify/ 路径并替换为 /d/Nekorify/
+    const match = url.match(/^https?:\/\/oss\.gdmuna\.com(\/p\/Nekorify\/.+)$/)
+    if (match) return match[1].replace(/^\/p/, '/d')
+    return url
+}

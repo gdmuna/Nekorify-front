@@ -1,4 +1,4 @@
-import type { baseRes } from './api.ts'
+import type { BaseRes } from './api.ts'
 
 export interface Interview {
     id: number
@@ -24,7 +24,7 @@ export interface InterviewData {
     campaigns: Interview[]
 }
 
-export type InterviewRes = baseRes<InterviewData>
+export type InterviewRes = BaseRes<InterviewData>
 
 export interface TimeSlot {
     id: number
@@ -71,7 +71,7 @@ export interface InterviewProgress {
     updatedAt: string
 }
 
-export type InterviewReservationRes = baseRes<InterviewProgress[]>
+export type InterviewReservationRes = BaseRes<InterviewProgress[]>
 
 export interface Step {
     step: number
@@ -97,7 +97,7 @@ export interface InterviewResult {
     updatedAt: string
 }
 
-export type InterviewResultRes = baseRes<{
+export type InterviewResultRes = BaseRes<{
     result: InterviewResult[]
 }>
 

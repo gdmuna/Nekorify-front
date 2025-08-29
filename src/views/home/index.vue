@@ -37,7 +37,24 @@ import announcement from '@/components/home/announcements.vue';
 import articles from '@/components/home/articles.vue';
 import videos from '@/components/home/videos.vue';
 
+import { useResourceStore } from '@/stores/resource';
+const resourceStore = useResourceStore();
+const { fetchResourcesList } = resourceStore;
 
+onMounted(() => {
+    fetchResourcesList('announcement', {
+        currerntPage: 1,
+        pageSize: 20
+    })
+    fetchResourcesList('article', {
+        currerntPage: 1,
+        pageSize: 20
+    })
+    fetchResourcesList('course', {
+        currerntPage: 1,
+        pageSize: 20
+    })
+})
 
 </script>
 
