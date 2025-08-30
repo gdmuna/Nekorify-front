@@ -2,16 +2,17 @@
     <div ref="root" class="md:mx-10 mx-4 mb-10">
         <template v-if="showItem">
             <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
-        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2 will-change-transform" @click="routerGoto(`/announcements/${item.id}`)">
+        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2 will-change-transform"
+                @click="routerGoto(`/announcements/${item.id}`)">
                 <div>
                     <div class="overflow-hidden">
                         <p class="md:text-4xl text-xl title">{{ item.title }}</p>
                     </div>
                     <div class="overflow-hidden">
-                        <p class="md:text-2xl text-lg subtitle">{{ item.subtitle }}</p>
+                        <p class="md:text-2xl text-lg subtitle">{{ item.department }}</p>
                     </div>
                 </div>
-                <p class="date">{{ item.date }}</p>
+                <p class="date">{{ formatDate(item.createdAt) }}</p>
             </div>
             <outlineButton text="查看更多" :icon="ArrowRight" @click="routerGoto('/announcements')" class="mt-5" />
         </template>
@@ -43,12 +44,9 @@ const resourceStore = useResourceStore();
 const { announcements } = storeToRefs(resourceStore);
 
 const items = computed(() => {
-    return announcements.value.slice(0, 3).map(item => ({
-        id: item.id,
-        title: item.title,
-        subtitle: item.department,
-        date: formatDate(item.createdAt)
-    }))
+    if (announcements.value && announcements.value.length > 0) {
+        return announcements.value.slice(0, 3)
+    }
 })
 
 const showItem = computed(() => {
@@ -60,6 +58,11 @@ const itemsRef = ref<Array<HTMLElement>>([]);
 
 onMounted(() => {
     window.addEventListener('resize', handleResize)
+    if (showItem.value && !animate.ready) {
+        nextTick(() => {
+            animate.init();
+        })
+    }
 })
 
 onUnmounted(() => {
@@ -73,15 +76,20 @@ function handleResize() {
     })
 }
 
-watch(items, () => {
-    nextTick(() => {
-        animate.init()
-    })
+watch(() => items.value, (newVal, oldVal) => {
+    if (newVal !== oldVal && showItem.value && !animate.ready) {
+        animate.triggers.forEach(trigger => trigger.kill())
+        animate.tls.forEach(tl => tl.kill())
+        nextTick(() => {
+            animate.init()
+        })
+    }
 })
 
 const animate = {
     tls: [] as Array<gsap.core.Timeline>,
     triggers: [] as Array<ScrollTrigger>,
+    ready: false,
     init() {
         itemsRef.value.forEach((el) => {
             gsap.set(el, { autoAlpha: 0 })
@@ -126,6 +134,7 @@ const animate = {
             })
             this.triggers.push(trigger);
         })
+        this.ready = true
     }
 }
 

@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, createVNode, render, watch, useTemplateRef, onUnmounted } from 'vue'
+import { ref, computed, onMounted, nextTick, createVNode, render, watch, onUnmounted } from 'vue'
 // @ts-ignore
 import markdownit from 'markdown-it'
 // @ts-ignore
