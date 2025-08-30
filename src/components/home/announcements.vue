@@ -1,19 +1,16 @@
 <template>
     <div ref="root" class="md:mx-10 mx-4 mb-10">
         <template v-if="showItem">
-            <div v-for="(item, index) in items" :key="index" ref="itemsRef" class="li-item flex relative items-center justify-between cursor-pointer
-        py-8 px-4 *:z-10 border-b-2 border-[#bbb89c] *:duration-300 space-x-2 will-change-transform"
-                @click="routerGoto(`/announcements/${item.id}`)">
-                <div>
-                    <div class="overflow-hidden">
-                        <p class="md:text-4xl text-xl title">{{ item.title }}</p>
+            <liItem ref="itemsRef" v-for="(item, index) in items" :key="index" useSlot
+                    @click="routerGoto(`/announcements/${item.id}`)">
+                    <div class="flex-1 flex justify-between items-center transition-colors duration-300">
+                        <div>
+                            <p class="md:text-3xl text-2xl title">{{ item.title }}</p>
+                            <p class="md:text-xl text-lg dark:text-[#D5C8B0] subtitle mt-2">{{ item.department }}</p>
+                        </div>
+                        <p class="date shrink-0 ml-5">{{ formatDate(item.createdAt) }}</p>
                     </div>
-                    <div class="overflow-hidden">
-                        <p class="md:text-2xl text-lg subtitle">{{ item.department }}</p>
-                    </div>
-                </div>
-                <p class="date">{{ formatDate(item.createdAt) }}</p>
-            </div>
+                </liItem>
             <outlineButton text="查看更多" :icon="ArrowRight" @click="routerGoto('/announcements')" class="mt-5" />
         </template>
         <h2 v-else class="text-center text-2xl md:text-3xl dark:text-[#A0A0A0] mt-10">
@@ -26,6 +23,7 @@
 import { onMounted, ref, onUnmounted, computed, watch, nextTick } from 'vue';
 
 import { outlineButton } from '@/components/ui/button'
+import { liItem } from '@/components/dashboard';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -54,7 +52,7 @@ const showItem = computed(() => {
 })
 
 const root = ref<HTMLElement | null>(null);
-const itemsRef = ref<Array<HTMLElement>>([]);
+const itemsRef = ref<Array<any>>([]);
 
 onMounted(() => {
     window.addEventListener('resize', handleResize)
@@ -92,13 +90,14 @@ const animate = {
     ready: false,
     init() {
         itemsRef.value.forEach((el) => {
-            gsap.set(el, { autoAlpha: 0 })
+            let El = el.$el
+            gsap.set(El, { autoAlpha: 0 })
             const trigger = ScrollTrigger.create({
-                trigger: el,
+                trigger: El,
                 start: 'top bottom',
                 end: `bottom top`,
                 onEnter: () => {
-                    gsap.fromTo(el,
+                    gsap.fromTo(El,
                         {
                             x: '-20%',
                             autoAlpha: 0
@@ -112,10 +111,10 @@ const animate = {
                     )
                 },
                 onLeave: () => {
-                    gsap.set(el, { autoAlpha: 0 })
+                    gsap.set(El, { autoAlpha: 0 })
                 },
                 onEnterBack: () => {
-                    gsap.fromTo(el,
+                    gsap.fromTo(El,
                         {
                             x: '20%',
                             autoAlpha: 0
@@ -129,7 +128,7 @@ const animate = {
                     )
                 },
                 onLeaveBack: () => {
-                    gsap.set(el, { autoAlpha: 0 })
+                    gsap.set(El, { autoAlpha: 0 })
                 }
             })
             this.triggers.push(trigger);

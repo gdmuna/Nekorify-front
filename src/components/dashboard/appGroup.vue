@@ -99,21 +99,6 @@ function handleClick(path: { type: string; to: string }) {
             break
         }
         case 'route': {
-            const routerObj = router.resolve(path.to);
-            const meta = routerObj.meta
-            if (meta.minManageLevel === undefined) return routerGoto(path.to);
-            const maxPermission = getGroupByRank('max')
-            if (maxPermission === null || maxPermission.level > (meta.minManageLevel as number)) {
-                showModal({
-                    content: [
-                        h('div', { class: 'flex flex-col space-y-4' }, [
-                            h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
-                            h('p', { class: 'dark:text-[#A0A0A0]' }, '您当前的权限等级不足，无法访问该页面。')
-                        ])
-                    ]
-                })
-                return
-            }
             routerGoto(path.to);
             break
         }

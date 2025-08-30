@@ -5,12 +5,13 @@ import type {
     ErrTemplate,
     ReturnTemplate,
     err,
-    res
+    res,
+    DataStatus
 } from '@/types/api'
 
 import type { InterviewFormJSON } from '@/types/interview'
 
-import type { ModalOptions } from '@/types/utils'
+import type { ModalOptions, UseFetchOptions } from '@/types/utils'
 
 import type { Method } from 'alova'
 
@@ -18,7 +19,7 @@ import z from "zod";
 
 import dayjs from 'dayjs'
 
-import { createVNode, render } from 'vue'
+import { createVNode, render, ref } from 'vue'
 
 import { baseModal } from '@/components/ui/modal'
 
@@ -301,6 +302,10 @@ export function formatTime(dateString: string) {
     return dayjs(dateString).format('HH:mm')
 }
 
+export function formatDateTime(dateString: string) {
+    return dayjs(dateString).format('YYYY年M月D日 HH:mm')
+}
+
 export function showModal(options: ModalOptions) {
     const container = document.createElement('div')
     document.body.appendChild(container)
@@ -351,4 +356,20 @@ export function toProxyUrl(url: string) {
     const match = url.match(/^https?:\/\/oss\.gdmuna\.com(\/p\/Nekorify\/.+)$/)
     if (match) return match[1].replace(/^\/p/, '/d')
     return url
+}
+
+export function useFetch<T = any>(options: UseFetchOptions<T>) {
+    const { method, immediate = true } = options
+    const dataStatus = ref<DataStatus>('idle')
+    const err = ref<any>(null)
+    const res = ref<T | null>(null)
+    async function start() {
+        if (dataStatus.value !== 'idle') return
+        const { err: e, res: r } = await method()
+        err.value = e
+        res.value = r
+        dataStatus.value = r ? 'loaded' : 'error'
+    }
+    if (immediate) start()
+    return { err, res, dataStatus, start }
 }

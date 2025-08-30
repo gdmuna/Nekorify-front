@@ -228,31 +228,16 @@ router.beforeEach((to, from, next) => {
     showModal({
       content: [
         h('div', { class: 'flex flex-col space-y-4' }, [
-          h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
-          h('p', { class: 'dark:text-[#A0A0A0]' }, '该功能尚未完工，正在紧急施工中喵...'),
+          h('h2', { class: 'md:text-3xl text-2xl px-6 mx-auto font-bold dark:text-red-400 text-center' }, '501 Not Implemented'),
+          h('p', { class: 'md:text-2xl text-xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
+          h('p', { class: 'dark:text-[#A0A0A0]' }, '该功能尚未完工，正在紧急施工中喵...')
         ])
       ]
     })
     return systemStore.routerBack()
   }
   const authStore = useAuthStore()
-  const minManageLevel = to.meta.minManageLevel
-  if (minManageLevel !== undefined) {
-    const maxPermission = authStore.getGroupByRank('max')
-    console.log('maxPermission', maxPermission);
-
-    if (maxPermission === null || maxPermission.level > (minManageLevel as number)) {
-      showModal({
-        content: [
-          h('div', { class: 'flex flex-col space-y-4' }, [
-            h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
-            h('p', { class: 'dark:text-[#A0A0A0]' }, '您当前的权限等级不足，无法访问该页面。')
-          ])
-        ]
-      })
-      return systemStore.routerBack()
-    }
-  }
+  
   document.title = title + ' - ' + (to.meta.title || 'Nekorify')
   // 只有在不是子路由跳转时，且目标路由配置了 scrollToTop 时，才滚动到顶部
   const isChildRoute = from.matched.length > 0 && to.path === from.matched[0].path
@@ -266,6 +251,23 @@ router.beforeEach((to, from, next) => {
     return next(false)
   } else if (to.meta.guest && authStore.isAuthenticated) {
     return next({ name: 'home' })
+  }
+  const minManageLevel = to.meta.minManageLevel
+  if (minManageLevel !== undefined) {
+    const maxPermission = authStore.getGroupByRank('max')
+    console.log('maxPermission', maxPermission);
+    if (maxPermission === null || maxPermission.level > Number(minManageLevel)) {
+      showModal({
+        content: [
+          h('div', { class: 'flex flex-col space-y-4' }, [
+            h('h2', { class: 'md:text-3xl text-2xl px-6 mx-auto font-bold dark:text-red-400 text-center' }, '403 Forbidden'),
+            h('p', { class: 'md:text-2xl text-xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
+            h('p', { class: 'dark:text-[#A0A0A0]' }, '您当前的权限等级不足，无法访问该页面。')
+          ])
+        ]
+      })
+      return systemStore.routerBack()
+    }
   }
   nextTick(() => {
     next()

@@ -1,6 +1,6 @@
 <template>
     <div class="rounded flex flex-col overflow-hidden cursor-pointer">
-        <img :src="coverUrl" alt="" :class="[imgClass, 'md:h-72 h-64 bg-[#ebe7e6] object-cover size-full']" />
+        <img :src="coverUrl" alt="图片加载不出来喵..." :class="[imgClass, 'md:h-72 h-64 bg-[#ebe7e6] object-cover size-full dark:text-[#A0A0A0]']" />
         <div class="p-2 md:p-4 flex flex-col justify-center items-start dark:bg-[#2A2A2A]">
             <img src="" alt="">
             <h2 class="text-base md:text-lg font-bold mb-2">{{ title || '标题未设置' }}</h2>

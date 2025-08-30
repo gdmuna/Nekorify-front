@@ -1,6 +1,6 @@
 <template>
     <div class="flex-1 flex flex-col">
-        <div v-if="!showDetails" class="space-y-4 flex-1 mb-10">
+        <div v-if="!showDetail" class="space-y-4 flex-1 mb-10">
             <template v-if="interviewDataStatus === 'loaded'">
                 <section class="space-y-2">
                     <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">开放中</h2>
@@ -97,7 +97,7 @@ onMounted(async () => {
     await initInterviewData()
 })
 
-const showDetails = computed(() => route.name !== 'interview' && interviewDataStatus.value === 'loaded');
+const showDetail = computed(() => route.name !== 'interview' && interviewDataStatus.value === 'loaded');
 
 </script>
 
