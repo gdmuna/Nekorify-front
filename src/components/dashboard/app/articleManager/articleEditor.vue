@@ -35,7 +35,7 @@
                                         class="size-30 flex items-center justify-center cursor-pointer border-2 upload-container-dashed [data-error=false]:dark:border-[#B0B0B0]"
                                         @click="triggerFileInput">
                                         <img v-if="!!CoverPreviewURL" :src="CoverPreviewURL" alt="预览"
-                                            class="size-full object-fit" />
+                                            class="size-full object-cover" />
                                         <div v-else
                                             class="text-sm text-center dark:text-[#D5C8B0] flex flex-col items-center">
                                             <ImageUp class="size-6" />
@@ -69,7 +69,7 @@
                     <FormItem class="flex">
                         <div class="aspect-16/9 flex-1 mx-auto max-w-[32rem] border-2 upload-container-dashed dark:border-[#B0B0B0]
                         dark:text-[#D5C8B0] md:text-2xl flex justify-center items-center">
-                            <img v-if="!!value" :src="value" alt="预览" class="size-full object-fit" />
+                            <img v-if="!!value" :src="value" alt="预览" class="size-full object-cover" />
                             <p v-else class="select-none">预览</p>
                         </div>
                     </FormItem>
