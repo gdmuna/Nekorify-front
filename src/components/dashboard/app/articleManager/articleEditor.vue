@@ -1,6 +1,6 @@
 <template>
     <div id="articleEdit" class="flex flex-1 flex-col mb-10">
-        <Form v-slot="{ handleSubmit }" @invalid-submit="onInvalidSubmit" keep-values :validation-schema="formSchema"
+        <Form v-slot="{ handleSubmit, meta }" @invalid-submit="onInvalidSubmit" keep-values :validation-schema="formSchema"
             class="flex flex-col space-y-4" :initial-values="initVal">
             <form id="form" ref="formRef" @submit.prevent="handleSubmit($event, onSubmit)" class="space-y-8">
                 <FormField v-slot="{ componentField, value }" name="title">
@@ -303,18 +303,33 @@ const underSubmit = ref(false)
 
 async function onSubmit(values: any) {
     if (underSubmit.value) return
+    if (!isFormChanged(initVal.value, values)) {
+        toast.error('文章内容未修改，无需提交')
+        return
+    }
     underSubmit.value = true
     console.log(values);
-    toast.promise(async () => {
-        const { err, res } = await resourceApi.uploadArticle(values)
-        if (res) {
-            return res
-        } else {
-            throw err
-        }
+    const id = Number(route.params.id)
+    const method = type.value === 'edit'
+    ? () => resourceApi.updateArticle(id, values)
+    : () => resourceApi.uploadArticle(values)
+    toast.promise(() => {
+        return new Promise(async (resolve, reject) => {
+            const { err, res } = await method()
+            if (res) {
+                resolve(res)
+            } else {
+                reject(err)
+            }
+        })
     }, {
         loading: '发布中...',
-        success: '文章发布成功',
+        success: async () => {
+            underSubmit.value = false
+            routerGoto('/dashboard/article-manager')
+            await props.fetchInst.send(props.params, true)
+            return '成功发布文章'
+        },
         error: (err: any) => `发布失败: ${err}`
     })
     underSubmit.value = false
@@ -325,23 +340,29 @@ async function onDelete() {
     if (type.value !== 'edit') return
     underSubmit.value = true
     const id = Number(route.params.id)
-    toast.promise(async () => {
-        const { err, res } = await resourceApi.deleteArticle(id)
-        if (res) {
-            return res
-        } else {
-            throw err
-        }
+    toast.promise(() => {
+        return new Promise(async (resolve, reject) => {
+            const { err, res } = await resourceApi.deleteArticle(id)
+            if (res) {
+                resolve(res)
+            } else {
+                reject(err)
+            }
+        })
     }, {
         loading: '删除中...',
         success: async () => {
             underSubmit.value = false
             routerGoto('/dashboard/article-manager')
             await props.fetchInst.send(props.params, true)
-            return '文章删除成功'
+            return '成功删除文章'
         },
         error: (err: any) => `删除失败: ${err}`
     })
+}
+
+function isFormChanged(originalValues: any, currentValues: any) {
+    return JSON.stringify(originalValues) !== JSON.stringify(currentValues);
 }
 
 </script>

@@ -326,18 +326,34 @@ const underSubmit = ref(false)
 
 async function onSubmit(values: any) {
     if (underSubmit.value) return
+    if (!isFormChanged(initVal.value, values)) {
+        toast.error('公告内容未修改，无需提交')
+        return
+    }
     underSubmit.value = true
     console.log(values);
-    toast.promise(async () => {
-        const { err, res } = await resourceApi.uploadAnnouncement(values)
-        if (res) {
-            return res
-        } else {
-            throw err
-        }
+    const id = Number(route.params.id)
+    const method = type.value === 'edit'
+    ? () => resourceApi.updateAnnouncement(id, values)
+    : () => resourceApi.uploadAnnouncement(values)
+    toast.promise(() => {
+        return new Promise(async (resolve, reject) => {
+            const { err, res } = await method()
+            if (res) {
+                console.log(res);
+                resolve(res)
+            } else {
+                reject(err)
+            }
+        })
     }, {
         loading: '发布中...',
-        success: '公告发布成功',
+        success: async () => {
+            underSubmit.value = false
+            routerGoto('/dashboard/announcement-manager')
+            await props.fetchInst.send(props.params, true)
+            return '成功发布公告'
+        },
         error: (err: any) => `发布失败: ${err}`
     })
     underSubmit.value = false
@@ -348,23 +364,29 @@ async function onDelete() {
     if (type.value !== 'edit') return
     underSubmit.value = true
     const id = Number(route.params.id)
-    toast.promise(async () => {
-        const { err, res } = await resourceApi.deleteAnnouncement(id)
-        if (res) {
-            return res
-        } else {
-            throw err
-        }
+    toast.promise(() => {
+        return new Promise(async (resolve, reject) => {
+            const { err, res } = await resourceApi.deleteAnnouncement(id)
+            if (res) {
+                resolve(res)
+            } else {
+                reject(err)
+            }
+        })
     }, {
         loading: '删除中...',
         success: async () => {
             underSubmit.value = false
             routerGoto('/dashboard/announcement-manager')
             await props.fetchInst.send(props.params, true)
-            return '公告删除成功'
+            return '成功删除公告'
         },
         error: (err: any) => `删除失败: ${err}`
     })
+}
+
+function isFormChanged(originalValues: any, currentValues: any) {
+    return JSON.stringify(originalValues) !== JSON.stringify(currentValues);
 }
 
 </script>

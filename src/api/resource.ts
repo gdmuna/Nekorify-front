@@ -55,5 +55,22 @@ export const resourceApi = {
     async deleteArticle(id: number) {
         const inst = nekorify.Delete(`/article/${id}`)
         return await to<UploadArticleRes>(inst)
+    },
+    async updateAnnouncement(id: number, data: {
+        title: string
+        department: string
+        coverUrl?: string
+        textUrl: string
+    }) {
+        const inst = nekorify.Put(`/announcement/${id}`, data)
+        return await to<UploadAnnouncementRes>(inst)
+    },
+    async updateArticle(id: number, data: {
+        title: string
+        coverUrl?: string
+        textUrl: string
+    }) {
+        const inst = nekorify.Put(`/article/${id}`, data)
+        return await to<UploadArticleRes>(inst)
     }
 }

@@ -20,7 +20,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/nekorify/, '/api')
       },
       '/ranaminder': {
-        target: 'http://localhost:3001', // RanaMinder后端地址
+        target: 'http://localhost:33002', // RanaMinder后端地址
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/ranaminder/, '/api')
       },
