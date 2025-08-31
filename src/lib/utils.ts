@@ -358,18 +358,43 @@ export function toProxyUrl(url: string) {
     return url
 }
 
-export function useFetch<T = any>(options: UseFetchOptions<T>) {
-    const { method, immediate = true } = options
+export function useFetch<T = any, U = any, P = any>(options: UseFetchOptions<T, P>) {
+    const { method, immediate = true, dataExtractor, append = true } = options
+
     const dataStatus = ref<DataStatus>('idle')
     const err = ref<any>(null)
     const res = ref<T | null>(null)
-    async function start() {
-        if (dataStatus.value !== 'idle') return
-        const { err: e, res: r } = await method()
+    const data = ref<U | U[] | null>(null)
+
+    async function send(params?: P, force = false) {
+        if (dataStatus.value === 'loading' || typeof method !== 'function') return
+        dataStatus.value = 'loading'
+        const { err: e, res: r } = await method(params, force)
+        console.log('useFetch', e, r);
+        
         err.value = e
         res.value = r
         dataStatus.value = r ? 'loaded' : 'error'
+
+        if (r && dataExtractor && typeof dataExtractor === 'function') {
+            const newData = dataExtractor(r)
+            if (Array.isArray(newData) && append) {
+                data.value = data.value.concat(newData)
+            } else {
+                data.value = newData
+            }
+        }
+
+        return { err: err.value, res: res.value }
     }
-    if (immediate) start()
-    return { err, res, dataStatus, start }
+
+    if (immediate) send()
+
+    return {
+        err,
+        res,
+        data,
+        dataStatus,
+        send
+    }
 }

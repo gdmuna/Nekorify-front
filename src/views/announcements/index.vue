@@ -18,7 +18,7 @@
                     @click="routerGoto(`/announcements/${item.id}`)">
                     <div class="flex-1 flex justify-between items-center transition-colors duration-300">
                         <div>
-                            <p class="md:text-3xl text-2xl title">{{ item.title }}</p>
+                            <p class="md:text-3xl text-2xl">{{ item.title }}</p>
                             <p class="md:text-xl text-lg dark:text-[#D5C8B0] subtitle mt-2">{{ item.department }}</p>
                         </div>
                         <p class="date shrink-0 ml-5">{{ formatDate(item.createdAt) }}</p>

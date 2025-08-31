@@ -10,7 +10,9 @@ export interface ModalOptions {
     showCancelBtn?: boolean
 }
 
-export interface UseFetchOptions<T> {
-    method: () => Promise<ReturnTemplate<T>>
+export interface UseFetchOptions<T, P> {
+    method: (params?: P, force?: boolean) => Promise<ReturnTemplate<T>>
     immediate?: boolean
+    dataExtractor?: (res: T) => any | any[]
+    append?: boolean
 }

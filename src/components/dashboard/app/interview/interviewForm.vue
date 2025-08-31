@@ -53,9 +53,9 @@
                                 </SelectContent>
                             </Select>
                             <div v-if="item.type === 'upload'" :data-error="!meta.valid && meta.touched ? 'true' : 'false'" @blur="componentField.onBlur"
-                                class="size-30 flex items-center justify-center cursor-pointer border-2 upload-container-dashed dark:border-[#B0B0B0]"
+                                class="size-30 flex items-center justify-center cursor-pointer border-2 upload-container-dashed [data-error=false]:dark:border-[#B0B0B0]"
                                 @click="triggerFileInput(index)">
-                                <img v-if="!!previewUrl" :src="previewUrl" alt="预览" class="size-full object-fit" />
+                                <img v-if="!!previewUrl" :src="previewUrl" alt="预览" class="size-full object-cover" />
                                 <div v-else class="text-sm text-center dark:text-[#D5C8B0] flex flex-col items-center">
                                     <ImageUp class="size-6" />
                                     <p>点击上传图片</p>

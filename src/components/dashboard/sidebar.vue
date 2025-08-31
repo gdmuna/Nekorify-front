@@ -12,7 +12,8 @@
                         <p class="text-xs md:text-sm">上传新的头像</p>
                     </div>
                 </transition>
-                <input type="file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" ref="fileInput" class="hidden" @change="handleAvatarUpload" />
+                <input type="file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" ref="fileInput"
+                    class="hidden" @change="handleAvatarUpload" />
             </div>
             <div class="text-3xl">
                 <p class="font-bold">{{ userInfo.nickname }}</p>
@@ -58,10 +59,12 @@
                 <Mail class="size-5 inline dark:text-[#FEFCE4]/80 shrink-0 -translate-y-0.5" />
                 <p class="inline break-all">{{ userInfo.email }}</p>
             </div>
-            <div v-if="userInfo.links" class="space-x-2 shrink-0 -translate-y-0.5" v-for="(item, index) in userInfo.links" :key="index">
+            <div v-if="userInfo.links" class="space-x-2 shrink-0 -translate-y-0.5"
+                v-for="(item, index) in userInfo.links" :key="index">
                 <Link class="size-5 inline dark:text-[#FEFCE4]/80" />
-                <outlineText :text="item" lineColor="#53B7DE" class="hover:text-[#53B7DE] duration-200 inline-block will-change-transform"
-                    transitionLineColor @click="openInNewTab(item)" />
+                <outlineText :text="item" lineColor="#53B7DE"
+                    class="hover:text-[#53B7DE] duration-200 inline-block will-change-transform" transitionLineColor
+                    @click="openInNewTab(item)" />
             </div>
         </div>
         <secondaryButton text="登出" :icon="LogOut"
@@ -111,7 +114,8 @@ const modalConfig = [
     {
         content: [
             h('div', { class: 'flex flex-col space-y-4' }, [
-                h('p', { class: 'text-2xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
+                h('h2', { class: 'md:text-3xl text-2xl px-6 mx-auto font-bold dark:text-red-400 text-center' }, '501 Not Implemented'),
+                h('p', { class: 'md:text-2xl text-xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
                 h('p', { class: 'dark:text-[#A0A0A0]' }, '该功能尚未完工，正在紧急施工中喵...')
             ])
         ]
@@ -133,7 +137,7 @@ function handleAvatarUpload(event: Event) {
     const file = target.files ? target.files[0] : null;
     if (file) {
         userStore.uploadAvatar(file).then(() => {
-            target.value = ''; 
+            target.value = '';
         });
     }
 }

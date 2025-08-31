@@ -8,7 +8,6 @@ export interface Announcement {
     department: string
     text_md_url: string
     views: number
-    deletedAt: string
     createdAt: string
     updatedAt: string
 }
@@ -22,7 +21,15 @@ export interface AnnouncementData {
     }
 }
 
+export interface UploadAnnouncementResData {
+    message: string
+    code: string
+    data: Announcement
+}
+
 export type AnnouncementRes = BaseRes<AnnouncementData>
+
+export type UploadAnnouncementRes = BaseRes<UploadAnnouncementResData>
 
 export interface Article {
     id: number
@@ -33,7 +40,6 @@ export interface Article {
     department: string
     text_md_url: string
     views: number
-    deletedAt: string
     createdAt: string
     updatedAt: string
 }
@@ -47,7 +53,15 @@ export interface ArticleData {
     }
 }
 
+export interface UploadArticleResData {
+    message: string
+    code: string
+    data: Article
+}
+
 export type ArticleRes = BaseRes<ArticleData>
+
+export type UploadArticleRes = BaseRes<UploadArticleResData>
 
 export interface Replay {
     id: number
@@ -56,7 +70,6 @@ export interface Replay {
     video_url: string
     cover_url: string
     views: number
-    deletedAt: string
     createdAt: string
     updatedAt: string
 }
@@ -71,3 +84,11 @@ export interface ReplayData {
 }
 
 export type ReplayRes = BaseRes<ReplayData>
+
+export interface UploadSourceData {
+    message: string
+    code: string
+    url: string
+}
+
+export type UploadSourceRes = BaseRes<UploadSourceData>

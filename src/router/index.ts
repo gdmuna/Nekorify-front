@@ -99,8 +99,7 @@ const routes = [
   },
   {
     path: '/dashboard',
-    component: () => import('../views/dashboard/index.vue')
-    ,
+    component: () => import('../views/dashboard/index.vue'),
     meta: {
       title: '仪表盘',
       requireAuth: true
@@ -131,7 +130,29 @@ const routes = [
             onlySelfFrom: 2,
             all: 1
           }
-        }
+        },
+        children: [
+          {
+            path: ':id',
+            component: () => import('../components/dashboard/app/announcementManager/announcementEdit.vue'),
+            name: 'announcementEdit',
+            meta: {
+              title: '公告编辑',
+              requireAuth: true,
+              scrollToTop: true
+            }
+          },
+          {
+            path: 'create',
+            component: () => import('../components/dashboard/app/announcementManager/announcementEdit.vue'),
+            name: 'announcementCreate',
+            meta: {
+              title: '新增公告',
+              requireAuth: true,
+              scrollToTop: true
+            }
+          }
+        ]
       },
       {
         path: 'article-manager',
@@ -236,8 +257,8 @@ router.beforeEach((to, from, next) => {
     })
     return systemStore.routerBack()
   }
+
   const authStore = useAuthStore()
-  
   document.title = title + ' - ' + (to.meta.title || 'Nekorify')
   // 只有在不是子路由跳转时，且目标路由配置了 scrollToTop 时，才滚动到顶部
   const isChildRoute = from.matched.length > 0 && to.path === from.matched[0].path
@@ -266,7 +287,7 @@ router.beforeEach((to, from, next) => {
           ])
         ]
       })
-      return systemStore.routerBack()
+      return next({ name: 'dashboard' })
     }
   }
   nextTick(() => {

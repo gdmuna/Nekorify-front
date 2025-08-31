@@ -6,7 +6,7 @@
             </div>
         </template>
         <template v-if="dataStatus === 'loaded'">
-            <Navigator ref="navigatorRef" class="md:ml-8 mb-6" />
+            <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
             <article v-html="sanitizedHtml" class="prose prose-customDark prose-sm sm:prose-base
             lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
             </article>
@@ -98,9 +98,12 @@ const sanitizedHtml = computed(() => {
     return DOMPurify.sanitize(html)
 })
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     currentSourceUrl: any
-}>()
+    enableNavigator?: boolean
+}>(), {
+    enableNavigator: true
+})
 
 onMounted(() => {
     copyAnimate.init()
@@ -148,14 +151,16 @@ async function handleSource(url: string) {
                 render(vnode, container)
                 el.appendChild(container)
             })
-            const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight
-            navigatorTrigger = ScrollTrigger.create({
-                trigger: navigatorRef.value.$el,
-                start: `top top+=${offset}`,
-                end: `+=${root.value?.offsetHeight}`,
-                pin: true,
-                pinSpacing: false
-            })
+            if (props.enableNavigator) {
+                const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight
+                navigatorTrigger = ScrollTrigger.create({
+                    trigger: navigatorRef.value.$el,
+                    start: `top top+=${offset}`,
+                    end: `+=${root.value?.offsetHeight}`,
+                    pin: true,
+                    pinSpacing: false
+                })
+            }
         })
     } else {
         dataStatus.value = 'error'
@@ -164,6 +169,7 @@ async function handleSource(url: string) {
 }
 
 watch(() => props.currentSourceUrl, (newVal) => {
+    console.log('currentSourceUrl changed', newVal);
     if (newVal) {
         handleSource(newVal)
     } else {
