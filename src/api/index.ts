@@ -24,11 +24,6 @@ const config = {
         onSuccess: async (res: any) => {
             const contentType = res.headers.get('content-type');
             let result: any = null;
-            if (res.status >= 400) {
-                // 错误响应，优先尝试解析为文本
-                const text = await res.text();
-                return Promise.reject(text || errTemplate('服务端错误', '请重试，或等待业务恢复'));
-            }
             if (contentType) {
                 if (contentType.includes('application/json')) {
                     // JSON
@@ -43,6 +38,9 @@ const config = {
                 }
             } else {
                 result = await res.text();
+            }
+            if (res.status >= 400) {
+                return Promise.reject(result || errTemplate('服务端错误', '请重试，或等待业务恢复'));
             }
             return result;
         },

@@ -290,6 +290,18 @@ router.beforeEach((to, from, next) => {
       return next({ name: 'dashboard' })
     }
   }
+  if (to.name === 'videoManager') {
+    showModal({
+      content: [
+        h('div', { class: 'flex flex-col space-y-4' }, [
+          h('h2', { class: 'md:text-3xl text-2xl px-6 mx-auto font-bold dark:text-red-400 text-center' }, '501 Not Implemented'),
+          h('p', { class: 'md:text-2xl text-xl font-bold dark:text-amber-100' }, '喵呜...撞头了喵...'),
+          h('p', { class: 'dark:text-[#A0A0A0]' }, '该功能尚未完工，正在紧急施工中喵...')
+        ])
+      ]
+    })
+    return next({ name: 'dashboard' })
+  }
   nextTick(() => {
     next()
   })

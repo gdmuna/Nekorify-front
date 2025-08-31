@@ -21,7 +21,7 @@
                     class="flex flex-col space-y-4">
                     <h2 class="flex items-center space-x-2 md:text-2xl text-xl dark:text-[#dbd7aa]">
                         <Mail class="size-5" />
-                        <p>换绑邮箱</p>
+                        <p class="line-through">换绑邮箱</p><span>（还没做完）</span>
                     </h2>
                     <FormField v-slot="{ componentField }" name="email">
                         <FormItem>

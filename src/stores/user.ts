@@ -278,13 +278,17 @@ export const useUserStore = defineStore('user', () => {
             const data = res.data.result
             interviewResult.value = data || []
             console.log('interviewResult', interviewResult.value);
-
             interviewResultStatus.value = 'loaded'
             return res
         } else {
-            // toast.error(err.data.message || '获取面试结果失败')
-            interviewResultStatus.value = 'error'
-            throw err
+            if (err.data.code === 'RESULT_NOT_FOUND') {
+                interviewResultStatus.value = 'loaded'
+                interviewResult.value = []
+            } else {
+                interviewResultStatus.value = 'error'
+                toast.error(err.data.message || '获取面试结果失败')
+                throw err
+            }
         }
     }
 
