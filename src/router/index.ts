@@ -134,8 +134,8 @@ const routes = [
         children: [
           {
             path: ':id',
-            component: () => import('../components/dashboard/app/announcementManager/announcementEdit.vue'),
-            name: 'announcementEdit',
+            component: () => import('../components/dashboard/app/announcementManager/announcementEditor.vue'),
+            name: 'announcementEditor',
             meta: {
               title: '公告编辑',
               requireAuth: true,
@@ -144,7 +144,7 @@ const routes = [
           },
           {
             path: 'create',
-            component: () => import('../components/dashboard/app/announcementManager/announcementEdit.vue'),
+            component: () => import('../components/dashboard/app/announcementManager/announcementEditor.vue'),
             name: 'announcementCreate',
             meta: {
               title: '新增公告',
@@ -169,7 +169,29 @@ const routes = [
             onlySelfFrom: 1,
             all: 0
           }
-        }
+        },
+        children: [
+          {
+            path: ':id',
+            component: () => import('../components/dashboard/app/articleManager/articleEditor.vue'),
+            name: 'articleEditor',
+            meta: {
+              title: '文章编辑',
+              requireAuth: true,
+              scrollToTop: true
+            }
+          },
+          {
+            path: 'create',
+            component: () => import('../components/dashboard/app/articleManager/articleEditor.vue'),
+            name: 'articleCreate',
+            meta: {
+              title: '新增文章',
+              requireAuth: true,
+              scrollToTop: true
+            }
+          }
+        ]
       },
       {
         path: 'video-manager',

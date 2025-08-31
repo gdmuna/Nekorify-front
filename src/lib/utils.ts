@@ -359,7 +359,7 @@ export function toProxyUrl(url: string) {
 }
 
 export function useFetch<T = any, U = any, P = any>(options: UseFetchOptions<T, P>) {
-    const { method, immediate = true, dataExtractor, append = true } = options
+    const { method, immediate = true, dataExtractor, append = true, filterErr } = options
 
     const dataStatus = ref<DataStatus>('idle')
     const err = ref<any>(null)
@@ -371,10 +371,16 @@ export function useFetch<T = any, U = any, P = any>(options: UseFetchOptions<T, 
         dataStatus.value = 'loading'
         const { err: e, res: r } = await method(params, force)
         console.log('useFetch', e, r);
-        
         err.value = e
         res.value = r
-        dataStatus.value = r ? 'loaded' : 'error'
+        if (r) {
+            dataStatus.value = 'loaded'
+        } else if (filterErr && typeof filterErr === 'function') {
+            const isFiltered = filterErr(e)
+            dataStatus.value = isFiltered ? 'loaded' : 'error'
+        } else {
+            dataStatus.value = 'error'
+        }
 
         if (r && dataExtractor && typeof dataExtractor === 'function') {
             const newData = dataExtractor(r)

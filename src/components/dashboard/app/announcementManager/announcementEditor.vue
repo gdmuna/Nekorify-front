@@ -328,7 +328,14 @@ async function onSubmit(values: any) {
     if (underSubmit.value) return
     underSubmit.value = true
     console.log(values);
-    toast.promise(() => resourceApi.uploadAnnouncement(values), {
+    toast.promise(async () => {
+        const { err, res } = await resourceApi.uploadAnnouncement(values)
+        if (res) {
+            return res
+        } else {
+            throw err
+        }
+    }, {
         loading: '发布中...',
         success: '公告发布成功',
         error: (err: any) => `发布失败: ${err}`
@@ -341,7 +348,14 @@ async function onDelete() {
     if (type.value !== 'edit') return
     underSubmit.value = true
     const id = Number(route.params.id)
-    toast.promise(() => resourceApi.deleteAnnouncement(id), {
+    toast.promise(async () => {
+        const { err, res } = await resourceApi.deleteAnnouncement(id)
+        if (res) {
+            return res
+        } else {
+            throw err
+        }
+    }, {
         loading: '删除中...',
         success: async () => {
             underSubmit.value = false

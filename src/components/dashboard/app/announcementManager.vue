@@ -28,7 +28,7 @@
                         </liItem>
                     </div>
                     <div v-else class="flex-1 flex justify-center items-center">
-                        <p class="text-center dark:text-[#A0A0A0]">还没有公告喵... 请以后再来看看~</p>
+                        <p class="text-center dark:text-[#A0A0A0]">现在还没有公告喵...点击上方按钮创建新公告~</p>
                     </div>
                 </template>
                 <template v-if="announcementFetch.dataStatus.value === 'error'">
@@ -60,7 +60,7 @@
                         </liItem>
                     </div>
                     <div v-else class="flex-1 flex justify-center items-center">
-                        <p class="text-center dark:text-[#A0A0A0]">还没有公告喵... 请以后再来看看~</p>
+                        <p class="text-center dark:text-[#A0A0A0]">现在还没有公告喵...点击上方按钮创建新公告~</p>
                     </div>
                 </template>
                 <template v-if="announcementFetch.dataStatus.value === 'error'">
@@ -102,9 +102,12 @@ const announcementFetch = useFetch<AnnouncementRes, Announcement>({
     method: (params, force) => resourceApi.fetchResourcesList<AnnouncementRes>('/announcement/self', params, force),
     immediate: false,
     dataExtractor: (res) => {
-        return res.data.data
+        return res.data.data.announcements
     },
-    append: false
+    append: false,
+    filterErr: (err) => {
+        return err.data.code === 'ANNOUNCEMENT_NOT_FOUND'
+    }
 })
 
 const params = ref({

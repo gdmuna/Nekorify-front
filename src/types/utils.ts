@@ -15,4 +15,5 @@ export interface UseFetchOptions<T, P> {
     immediate?: boolean
     dataExtractor?: (res: T) => any | any[]
     append?: boolean
+    filterErr?: (err: any) => boolean
 }
