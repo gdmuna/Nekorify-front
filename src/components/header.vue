@@ -196,8 +196,8 @@ import {
     CalendarFold,
     ChartNoAxesGantt,
     House,
-    Megaphone,
     Newspaper,
+    Notebook,
     Youtube,
     Database
 } from 'lucide-vue-next'
@@ -261,13 +261,13 @@ const routeMeta = ref([
         label: '公告',
         path: '/announcements',
         active: false,
-        icon: Megaphone
+        icon: Newspaper
     },
     {
         label: '文章',
         path: '/articles',
         active: false,
-        icon: Newspaper
+        icon: Notebook
     },
     {
         label: '视频',

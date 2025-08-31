@@ -22,7 +22,7 @@ import { onMounted, ref, h } from 'vue';
 
 import { liItem } from '@/components/dashboard';
 
-import { ShieldUser, ArrowRight, Newspaper, Notebook, Video, Info } from 'lucide-vue-next';
+import { ShieldUser, ArrowRight, Newspaper, Notebook, Youtube, Info } from 'lucide-vue-next';
 
 import { openInNewTab, showModal } from '@/lib/utils';
 
@@ -73,7 +73,7 @@ const items = ref([
     {
         title: '视频管理',
         subtitle: '管理您或他人发布的视频',
-        leftIcon: Video,
+        leftIcon: Youtube,
         rightIcon: ArrowRight,
         path: {
             type: 'route',

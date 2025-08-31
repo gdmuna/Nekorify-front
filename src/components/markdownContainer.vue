@@ -7,7 +7,7 @@
         </template>
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
-            <article v-html="sanitizedHtml" class="prose prose-customDark prose-sm sm:prose-base
+            <article v-html="sanitizedHtml" ref="articleRef" class="prose prose-customDark prose-sm sm:prose-base
             lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
             </article>
         </template>
@@ -64,6 +64,8 @@ const root = ref<HTMLElement | null>(null)
 const dataStatus = ref<DataStatus>('idle')
 
 const navigatorRef = ref<any>(null)
+
+const articleRef = ref<HTMLElement | null>(null)
 
 let navigatorTrigger: ScrollTrigger | null = null
 
@@ -226,15 +228,12 @@ const copyAnimate = {
     imgtl: gsap.timeline(),
     imgAnimateStart(target: HTMLElement) {
         const btnRect = target.getBoundingClientRect()
-        const rootRect = root.value!.getBoundingClientRect()
+        const rootRect = document.body.getBoundingClientRect()
         const btnCenterX = btnRect.left + btnRect.width / 2
         const btnCenterY = btnRect.top + btnRect.height / 2
         const imgSize = getRemPx(isMobile.value ? 2 : 3)
-        const parent = root.value!.parentElement
-        const parentPaddingTop = parent ? parseFloat(getComputedStyle(parent).paddingTop || '0') : 0
-        const parentPaddingLeft = parent ? parseFloat(getComputedStyle(parent).paddingLeft || '0') : 0
-        const targetX = btnCenterX - rootRect.left - imgSize / 2 + parentPaddingLeft
-        const targetY = btnCenterY - rootRect.top - imgSize / 2 + parentPaddingTop
+        const targetX = btnCenterX - rootRect.left - imgSize / 2
+        const targetY = btnCenterY - rootRect.top - imgSize / 2
         const count = Math.floor(getRandomNumber(3, 7))
         const baseAngle = isMobile.value ? -180 : -90
         const spread = isMobile.value ? 180 : 270
@@ -253,7 +252,10 @@ const copyAnimate = {
             img.style.top = `${targetY}px`
             img.style.width = `${imgSize}px`
             img.style.height = `${imgSize}px`
-            root.value?.appendChild(img)
+            img.style.pointerEvents = 'none'
+            img.style.userSelect = 'none'
+            const appContent = document.getElementById('content')
+            appContent!.appendChild(img)
             gsap.to(img, {
                 x: dx,
                 y: dy,
