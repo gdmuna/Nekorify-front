@@ -35,6 +35,8 @@
             </template>
         </template>
         <template v-else>
+            <h2 class="md:text-3xl text-2xl text-center">{{ currentAnnouncement?.title }}</h2>
+            <div class="h-[1px] w-full bg-[#424242] my-5"></div>
             <router-view :currentSourceUrl />
         </template>
     </div>
@@ -74,6 +76,11 @@ const currentSourceUrl = computed(() => {
     if (!announcements.value || announcements.value.length === 0) return null
     const source = announcements.value.find(item => item.id === Number(route.params.id))
     return source ? source.text_md_url : null
+})
+
+const currentAnnouncement = computed(() => {
+    if (!announcements.value || announcements.value.length === 0) return null
+    return announcements.value.find(item => item.id === Number(route.params.id))
 })
 
 </script>

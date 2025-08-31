@@ -153,7 +153,7 @@ async function handleSource(url: string) {
                 render(vnode, container)
                 el.appendChild(container)
             })
-            if (props.enableNavigator) {
+            if (props.enableNavigator && !isMobile.value) {
                 const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight
                 navigatorTrigger = ScrollTrigger.create({
                     trigger: navigatorRef.value.$el,
@@ -179,6 +179,24 @@ watch(() => props.currentSourceUrl, (newVal) => {
         toast.error('无效的资源ID')
     }
 })
+
+watch([() => props.enableNavigator, isMobile], ([newEnableNavigator, newIsMobile]) => {
+    if (!newEnableNavigator || newIsMobile) {
+        if (navigatorTrigger) {
+            navigatorTrigger.kill()
+            navigatorTrigger = null
+        }
+    } else if (newEnableNavigator && !newIsMobile && !navigatorTrigger && navigatorRef.value?.$el) {
+        const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight
+        navigatorTrigger = ScrollTrigger.create({
+            trigger: navigatorRef.value.$el,
+            start: `top top+=${offset}`,
+            end: `+=${root.value?.offsetHeight}`,
+            pin: true,
+            pinSpacing: false
+        })
+    }
+}, { immediate: true })
 
 const copyAnimate = {
     tls: [] as gsap.core.Timeline[],
