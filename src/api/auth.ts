@@ -2,12 +2,12 @@ import { nekorify, ranaMinder} from './index';
 
 import { errTemplate, returnTemplate, to } from '@/lib/utils';
 
-const baseUrl = import.meta.env.VITE_API_NEKORIFY_BASE_URL
+const baseURL = import.meta.env.VITE_API_NEKORIFY_BASE_URL
 
 export const authApi = {
     // 用户登录
     login() {
-        window.location.href = `${baseUrl}/auth/login`;
+        window.location.href = `${baseURL}/auth/login`;
     },
 
     async loginCallback() {
@@ -27,7 +27,7 @@ export const authApi = {
 
     // 刷新令牌
     async refresh(refreshToken: string) {
-        const inst = nekorify.Post('auth/refresh-token', {
+        const inst = nekorify.Post('/auth/refresh-token', {
             refreshToken
         })
         return await to<any>(inst)

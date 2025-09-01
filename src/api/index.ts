@@ -12,7 +12,7 @@ const baseURL = window.API_BASE_URL || import.meta.env.VITE_API_BASE_URL;
 
 const config = {
     requestAdapter: adapterFetch(),
-    timeout: 10000,
+    timeout: 5000,
     beforeRequest(method: any) {
         const authStore = useAuthStore();
         const { accessToken } = storeToRefs(authStore);
@@ -47,7 +47,6 @@ const config = {
             return result;
         },
         onError: async (err: any) => {
-            toast.error(err.message || '请求失败，请稍后再试');
             Promise.reject(err);
         }
     }
