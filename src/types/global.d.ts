@@ -18,6 +18,12 @@ interface MyRouteMeta {
     }
 }
 
+declare global {
+    interface Window {
+        API_BASE_URL: string
+    }
+}
+
 declare module 'vue-router' {
     interface RouteMeta extends MyRouteMeta {}
 }

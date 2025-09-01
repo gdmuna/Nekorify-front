@@ -8,6 +8,8 @@ import { storeToRefs } from 'pinia';
 
 import { errTemplate } from '@/lib/utils';
 
+const baseURL = window.API_BASE_URL || import.meta.env.VITE_API_BASE_URL;
+
 const config = {
     requestAdapter: adapterFetch(),
     timeout: 10000,
