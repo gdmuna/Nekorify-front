@@ -125,10 +125,10 @@ const routes = [
           parentAction: {
             doNotScrollToTop: true
           },
-          minManageLevel: 3,
+          minManageLevel: 1,
           manageRange: {
-            onlySelfFrom: 2,
-            all: 1
+            onlySelfFrom: 1,
+            all: 0
           }
         },
         children: [
@@ -164,7 +164,7 @@ const routes = [
           parentAction: {
             doNotScrollToTop: true
           },
-          minManageLevel: 3,
+          minManageLevel: 2,
           manageRange: {
             onlySelfFrom: 1,
             all: 0
@@ -203,7 +203,7 @@ const routes = [
           parentAction: {
             doNotScrollToTop: true
           },
-          minManageLevel: 3,
+          minManageLevel: 2,
           manageRange: {
             onlySelfFrom: 1,
             all: 0
@@ -295,7 +295,14 @@ router.beforeEach((to, from, next) => {
   } else if (to.meta.guest && authStore.isAuthenticated) {
     return next({ name: 'home' })
   }
-  const minManageLevel = to.meta.minManageLevel
+  let minManageLevel;
+  // 从最具体的路由记录开始检查（从后向前）
+  for (let i = to.matched.length - 1; i >= 0; i--) {
+    if (to.matched[i].meta.minManageLevel !== undefined) {
+      minManageLevel = to.matched[i].meta.minManageLevel;
+      break;
+    }
+  }
   if (minManageLevel !== undefined) {
     const maxPermission = authStore.getGroupByRank('max')
     console.log('maxPermission', maxPermission);
