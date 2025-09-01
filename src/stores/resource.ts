@@ -56,7 +56,7 @@ export const useResourceStore = defineStore('resource', () => {
                     announcementDataStatus.value = 'loaded'
                 } else {
                     announcementDataStatus.value = 'error'
-                    toast.error(err.data.message || '获取公告信息失败')
+                    toast.error(err?.data?.message || '获取公告信息失败')
                 }
                 break
             case 'article':
@@ -68,7 +68,7 @@ export const useResourceStore = defineStore('resource', () => {
                     articleDataStatus.value = 'loaded'
                 } else {
                     articleDataStatus.value = 'error'
-                    toast.error(err.data.message || '获取文章信息失败')
+                    toast.error(err?.data?.message || '获取文章信息失败')
                 }
                 break
             case 'course':
@@ -80,7 +80,7 @@ export const useResourceStore = defineStore('resource', () => {
                     videoDataStatus.value = 'loaded'
                 } else {
                     videoDataStatus.value = 'error'
-                    toast.error(err.data.message || '获取视频信息失败')
+                    toast.error(err?.data?.message || '获取视频信息失败')
                 }
                 break
         }

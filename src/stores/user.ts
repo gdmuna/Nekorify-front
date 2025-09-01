@@ -37,7 +37,9 @@ export const useUserStore = defineStore('user', () => {
             handleUserInfo(info)
             return res
         } else {
-            toast.error(err.data.message || '获取用户信息失败')
+            console.log('getUserInfo', err);
+            
+            // toast.error(err.data.message || '获取用户信息失败')
             throw err
         }
     }
@@ -68,6 +70,8 @@ export const useUserStore = defineStore('user', () => {
                                 })
                             }, 1000)
                         })
+                    }).catch(() => {
+                        reject(false)
                     })
                 })
             })

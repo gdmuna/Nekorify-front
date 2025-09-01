@@ -12,9 +12,6 @@ import { toast } from 'vue-sonner';
 
 import type { Token, GroupMeta } from '@/types/auth';
 
-import { decodeJWT } from '@/lib/utils';
-
-
 export const useAuthStore = defineStore('auth', () => {
     const router = useRouter();
     const accessToken = ref<string | null>(localStorage.getItem('accessToken'))
@@ -66,7 +63,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function refresh() {
         if (!refreshToken.value) {
-            return Promise.reject()
+            return Promise.reject('缺失refresh_token')
         }
         const { err, res } = await authApi.refresh(refreshToken.value)
         if (res) {
