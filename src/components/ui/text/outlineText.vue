@@ -1,7 +1,12 @@
 <template>
     <div ref="root" class="cursor-pointer relative select-none" @mouseenter="animate.play('enter')"
         @mouseleave="animate.play('leave')">
-        <p :class="cn(props.textClass, 'text-center')">{{ text }}</p>
+        <p :class="cn(props.textClass, 'text-center')">
+            <span v-if="$slots.default" class="inline-block">
+                <slot />
+            </span>
+            {{ text }}
+        </p>
         <div ref="bottomLine" :class="cn(props.bottomLineClass, 'w-full h-[1px] mt-[0.1rem] absolute will-change-transform pointer-events-none')" :style="{ backgroundColor: props.lineColor }" />
     </div>
 </template>
@@ -26,7 +31,7 @@ onMounted(() => {
 })
 
 const props = withDefaults(defineProps<{
-    text: string
+    text?: string
     lineColor?: string
     transitionLineColor?: boolean
     keepInEnd?: boolean
@@ -76,7 +81,7 @@ const animate = {
                     },
                     {
                         backgroundColor: props.lineColor,
-                        duration: 0.01,
+                        duration: 0.3,
                         ease: 'power3.out'
                     },
                     '<'

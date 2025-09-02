@@ -26,6 +26,11 @@ import { baseModal } from '@/components/ui/modal'
 import { jwtDecode } from "jwt-decode";
 import { toast } from 'vue-sonner'
 
+import { gsap } from 'gsap'
+
+import { storeToRefs } from 'pinia'
+import { useSystemStore } from '@/stores/system'
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
@@ -404,3 +409,76 @@ export function useFetch<T = any, U = any, P = any>(options: UseFetchOptions<T, 
         send
     }
 }
+
+const imgFirework = {
+    key: new Image(),
+    moden: new Image(),
+    imgIsOk: false,
+    isMobile: ref(false),
+    init() {
+        const systemStore = useSystemStore()
+        const { isMobile } = storeToRefs(systemStore)
+        this.isMobile = isMobile
+        this.key.src = '/新春猫mini.png'
+        this.moden.src = '/新春鱼mini.png'
+        this.key.onload = () => {
+            if (this.moden.complete) this.imgIsOk = true
+        }
+        this.moden.onload = () => {
+            if (this.key.complete) this.imgIsOk = true
+        }
+    },
+    imgFireworkStart(target: HTMLElement, zIndex: number = 9999, baseAngle?: number, spread?: number) {
+        const btnRect = target.getBoundingClientRect()
+        const rootRect = document.body.getBoundingClientRect()
+        const btnCenterX = btnRect.left + btnRect.width / 2
+        const btnCenterY = btnRect.top + btnRect.height / 2
+        const imgSize = getRemPx(this.isMobile.value ? 2 : 3)
+        const targetX = btnCenterX - rootRect.left - imgSize / 2
+        const targetY = btnCenterY - rootRect.top - imgSize / 2
+        const count = Math.floor(getRandomNumber(3, 7))
+        if (!baseAngle) baseAngle = this.isMobile.value ? -180 : -90
+        if (!spread) spread = this.isMobile.value ? 180 : 270
+        for (let i = 0; i < count; i++) {
+            const isModen = Math.random() < 0.5
+            const targetImg = isModen ? this.moden : this.key
+            const angle = baseAngle - spread / 2 + (spread / (count - 1)) * i + getRandomNumber(-20, 20)
+            const rad = angle * Math.PI / 180
+            const distance = getRemPx(getRandomNumber(4, 6))
+            const dx = Math.cos(rad) * distance
+            const dy = Math.sin(rad) * distance
+            const img = document.createElement('img')
+            img.src = targetImg.src
+            img.style.position = 'absolute'
+            img.style.left = `${targetX}px`
+            img.style.top = `${targetY}px`
+            img.style.width = `${imgSize}px`
+            img.style.height = `${imgSize}px`
+            img.style.pointerEvents = 'none'
+            img.style.userSelect = 'none'
+            img.style.zIndex = `${zIndex}`
+            const appContent = document.getElementById('content')
+            appContent!.appendChild(img)
+            gsap.to(img, {
+                x: dx,
+                y: dy,
+                duration: 0.8,
+                ease: 'power2.out',
+                onComplete: () => img.remove()
+            })
+            gsap.to(img, {
+                opacity: 0,
+                duration: 0.5,
+                delay: 0.3,
+                ease: 'power2.out'
+            })
+        }
+    }
+}
+
+export const imgFireworkStart = (target: HTMLElement, zIndex: number = 9999, baseAngle?: number, spread?: number) => {
+    if (!imgFirework.imgIsOk) imgFirework.init()
+    return imgFirework.imgFireworkStart(target, zIndex, baseAngle, spread)
+}
+
+export const imgFireworkInit = imgFirework.init.bind(imgFirework)

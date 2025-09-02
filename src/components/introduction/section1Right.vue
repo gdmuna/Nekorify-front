@@ -1,6 +1,6 @@
 <template>
     <div ref="root" class="relative h-auto mb-20">
-        <macWindow ref="visibleMacWindow" class="lg:!w-120 md:!w-108 md:h-100 h-80 !w-96 z-1 will-change-transform">
+        <macWindow ref="visibleMacWindow" class="lg:!w-120 md:!w-108 md:h-100 h-80 !w-96 will-change-transform">
             <template #TR>
                 <div class="relative flex-1 overflow-hidden *:will-change-transform">
                     <div ref="logo_cpp" class="flex items-center space-x-2 justify-end">

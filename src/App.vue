@@ -51,7 +51,7 @@ import { outlineText } from './components/ui/text'
 
 import { onMounted, onBeforeMount, ref } from 'vue'
 
-import { openInNewTab } from './lib/utils'
+import { openInNewTab, imgFireworkInit } from './lib/utils'
 
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
@@ -120,6 +120,7 @@ onMounted(async () => {
     if (!isXlDesktop.value) {
         toast.info('建议在大屏设备上使用本网站以获得最佳体验喵~', { duration: 5000 });
     }
+    imgFireworkInit()
     await initUserInfo()
 })
 

@@ -6,7 +6,7 @@
         <teleport to='body'>
             <transition name="bg">
                 <div v-if="imgOpened" class="fixed top-1/2 left-1/2 bg-[#0E100F]/25 -translate-1/2 z-50 size-full"
-                    @click="imgOpened = false" @keyup.tab="imgOpened = false">
+                    @click="imgOpened = false">
                     <CircleX class="absolute top-14 right-6 size-8 text-[#FEFCE4] cursor-pointer" />
                 </div>
             </transition>

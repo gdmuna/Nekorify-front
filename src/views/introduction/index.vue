@@ -390,59 +390,109 @@
         <section class="bg-gray-100 dark:bg-[#0E100F]">
             <div class="xl:pt-36 md:pt-24 pt-16">
                 <!-- section 主内容 -->
-                <h1 class="md:text-8xl text-6xl text-center font-bold">贡献者</h1>
+                <h1 class="md:text-8xl text-6xl text-center font-bold">开发者</h1>
                 <!-- 贡献者名单 -->
-                <div
-                    class="w-full grid xl:grid-cols-3 grid-cols-1 md:gap-20 gap-10 justify-items-center mt-24 px-4 pr-8">
-                    <macWindow border class="md:!h-78 h-64">
+                <div class="w-full grid md:grid-cols-2 grid-cols-1 xl:gap-20 gap-10 justify-items-center
+                mt-24 xl:pl-14 xl:pr-16 md:pl-4 md:pr-8 pl-2 pr-8">
+                    <macWindow border class="md:!h-78 h-64 w-full">
                         <template #TR>
-                            <div class="size-7"></div>
+                            <div class="flex-1" />
+                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
+                            class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
+                            transition-colors duration-300 pb-2 md:pb-0"
+                            lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
+                            @click="openInNewTab('https://github.com/kz2006a')">
+                                <ExternalLink class="size-4 translate-y-0.5" />
+                            </outlineText>
                         </template>
                         <template #main>
                             <div class="flex-1 flex items-center">
-                                <div
-                                    class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/xl-xlxl.jpg" alt="" class="md:size-24 size-16 rounded-full">
-                                    <p class="md:text-2xl text-lg">xl-xlxl</p>
-                                </div>
-                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。
-                                    </p>
-                                </div>
-                            </div>
-                        </template>
-                    </macWindow>
-                    <macWindow border class="md:!h-78 h-64">
-                        <template #TR>
-                            <div class="size-7"></div>
-                        </template>
-                        <template #main>
-                            <div class="flex-1 flex items-center">
-                                <div
-                                    class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
+                                <div class="flex h-full flex-col items-center justify-center
+                                space-y-4 border-r-1 border-r-[#595959] px-4">
                                     <img src="/src/assets/Almighty.jpg" alt="" class="md:size-24 size-16 rounded-full">
-                                    <p class="md:text-2xl text-lg">Almighty</p>
+                                    <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Almighty</p>
                                 </div>
-                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
+                                    <p class="md:text-lg whitespace-pre-wrap">
+                                        GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
                                     </p>
                                 </div>
                             </div>
                         </template>
                     </macWindow>
-                    <macWindow border class="md:!h-78 h-64">
+                    <macWindow border class="md:!h-78 h-64 w-full">
                         <template #TR>
-                            <div class="size-7"></div>
+                            <div class="flex-1" />
+                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
+                            class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
+                            transition-colors duration-300 pb-2 md:pb-0"
+                            lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
+                            @click="openInNewTab('https://github.com/FOV-RGT')">
+                                <ExternalLink class="size-4 translate-y-0.5" />
+                            </outlineText>
                         </template>
                         <template #main>
                             <div class="flex-1 flex items-center">
-                                <div
-                                    class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
+                                <div class="flex h-full flex-col items-center justify-center
+                                space-y-4 border-r-1 border-r-[#595959] px-4">
                                     <img src="/src/assets/FOV-RGT.jpg" alt="" class="md:size-24 size-16 rounded-full">
-                                    <p class="md:text-2xl text-lg">FOV-RGT</p>
+                                    <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">FOV-RGT</p>
                                 </div>
-                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/2">
-                                    <p class="md:text-lg whitespace-pre-wrap">GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
+                                    <p class="md:text-lg whitespace-pre-wrap">
+                                        GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                    </p>
+                                </div>
+                            </div>
+                        </template>
+                    </macWindow>
+                    <macWindow border class="md:!h-78 h-64 w-full">
+                        <template #TR>
+                            <div class="flex-1" />
+                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
+                            class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
+                            transition-colors duration-300 pb-2 md:pb-0"
+                            lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
+                            @click="openInNewTab('https://github.com/seeleclover')">
+                                <ExternalLink class="size-4 translate-y-0.5" />
+                            </outlineText>
+                        </template>
+                        <template #main>
+                            <div class="flex-1 flex items-center">
+                                <div class="flex h-full flex-col items-center justify-center
+                                space-y-4 border-r-1 border-r-[#595959] px-4">
+                                    <img src="/src/assets/Seele.Clover.png" alt="" class="md:size-24 size-16 rounded-full">
+                                    <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Seele.Clover</p>
+                                </div>
+                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
+                                    <p class="md:text-lg whitespace-pre-wrap">
+                                        老祖老祖老祖老祖老祖老祖
+                                    </p>
+                                </div>
+                            </div>
+                        </template>
+                    </macWindow>
+                    <macWindow border class="md:!h-78 h-64 w-full">
+                        <template #TR>
+                            <div class="flex-1" />
+                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
+                            class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
+                            transition-colors duration-300 pb-2 md:pb-0"
+                            lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
+                            @click="openInNewTab('https://github.com/xl-xlxl')">
+                                <ExternalLink class="size-4 translate-y-0.5" />
+                            </outlineText>
+                        </template>
+                        <template #main>
+                            <div class="flex-1 flex items-center">
+                                <div class="flex h-full flex-col items-center justify-center
+                                space-y-4 border-r-1 border-r-[#595959] px-4">
+                                    <img src="/src/assets/xl-xlxl.jpg" alt="" class="md:size-24 size-16 rounded-full">
+                                    <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">xl-xlxl</p>
+                                </div>
+                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
+                                    <p class="md:text-lg whitespace-pre-wrap">
+                                        GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。
                                     </p>
                                 </div>
                             </div>
@@ -474,12 +524,18 @@ import section1Left from '@/components/introduction/section1Left.vue';
 import section1Right from '@/components/introduction/section1Right.vue';
 import scrollHint from '@/components/scrollHint.vue';
 
+import { outlineText } from '@/components/ui/text';
+
 // 导入图标
-import { BrainCircuit } from 'lucide-vue-next';
-import { Puzzle } from 'lucide-vue-next';
-import { Satellite } from 'lucide-vue-next';
-import { ChevronsUp } from 'lucide-vue-next';
-import { ChevronsDown } from 'lucide-vue-next';
+import {
+    BrainCircuit,
+    Puzzle,
+    Satellite,
+    ChevronsUp,
+    ChevronsDown,
+    Github,
+    ExternalLink
+} from 'lucide-vue-next';
 
 // 导入 Lottie 动画库
 import lottie from 'lottie-web'
@@ -494,6 +550,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // 导入动画服务
 import { Animation } from '@/services'
+
+import { openInNewTab } from '@/lib/utils';
 
 import { useSystemStore } from '@/stores/system';
 import { storeToRefs } from 'pinia';

@@ -4,17 +4,20 @@
             class="relative w-full h-full border-0 rounded-lg shadow-lg dark:bg-[#040711] p-4 pt-0 flex flex-col items-between z-10">
             <!-- 窗口顶部内容 -->
             <div class="flex items-center justify-between md:my-2">
-                <div class="flex items-center justify-between space-x-4">
-                    <div class="size-4 bg-[#FF5F56] rounded-full"></div>
-                    <div class="size-4 bg-[#FFBD2E] rounded-full"></div>
-                    <div class="size-4 bg-[#27C93F] rounded-full"></div>
+                <div class="flex items-center justify-between space-x-4 *:cursor-pointer *:select-none">
+                    <div class="size-4 bg-[#FF5F56] rounded-full"
+                    @click="imgFireworkStart($event.currentTarget as HTMLElement, undefined, undefined, 270)"></div>
+                    <div class="size-4 bg-[#FFBD2E] rounded-full"
+                    @click="imgFireworkStart($event.currentTarget as HTMLElement, undefined, undefined, 270)"></div>
+                    <div class="size-4 bg-[#27C93F] rounded-full"
+                    @click="imgFireworkStart($event.currentTarget as HTMLElement, undefined, undefined, 270)"></div>
                 </div>
                 <div class="flex flex-1 items-center space-x-2">
                     <slot name="TR" />
                 </div>
             </div>
             <!-- 窗口内容区域 -->
-            <div class="border-0 rounded-lg shadow-lg dark:bg-[#16191D] min-w-[20rem] min-h-[10rem] flex-1
+            <div class="border-0 rounded-lg shadow-lg dark:bg-[#16191D] min-h-[10rem] flex-1
         flex flex-col items-start justify-between p-2">
                 <slot name="main" />
             </div>
@@ -32,6 +35,8 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 
+import { imgFireworkStart } from '@/lib/utils'
+
 
 const { border = false, enterAnimate = false, enableSplitText = false, customFn = null } = defineProps<{
     border?: boolean
@@ -43,7 +48,7 @@ const { border = false, enterAnimate = false, enableSplitText = false, customFn 
 const root = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)
 
-const triggers = []
+const triggers: ScrollTrigger[] = []
 
 onMounted(() => {
     const rootHeight = root.value!.offsetHeight
@@ -79,7 +84,7 @@ onMounted(() => {
     if (enableSplitText) {
         root.value!.querySelectorAll('.split-text').forEach(el => {
             const split = new SplitText(el, { type: "chars", ignore: ".no-split" });
-            ScrollTrigger.create({
+            const trigger = ScrollTrigger.create({
                 trigger: el,
                 start: `top-=${offset} bottom`,
                 end: "bottom top",
@@ -105,21 +110,23 @@ onMounted(() => {
                     )
                 }
             })
+            triggers.push(trigger)
         })
     }
     if (customFn) {
-        ScrollTrigger.create({
+        const trigger = ScrollTrigger.create({
             trigger: root.value!,
             start: `top bottom`,
             end: "bottom top",
             once: true,
             onEnter: () => customFn()
         })
+        triggers.push(trigger)
     }
 })
 
 onUnmounted(() => {
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    triggers.forEach(trigger => trigger.kill());
 })
 
 </script>

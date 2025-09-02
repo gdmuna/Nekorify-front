@@ -42,7 +42,7 @@ import { blockButton } from '@/components/ui/button'
 
 import { gsap } from 'gsap'
 
-import { getRemPx, getRandomNumber } from '@/lib/utils'
+import { getRemPx, getRandomNumber, imgFireworkStart } from '@/lib/utils'
 
 import Navigator from "@/components/navigator.vue";
 
@@ -108,7 +108,6 @@ const props = withDefaults(defineProps<{
 })
 
 onMounted(() => {
-    copyAnimate.init()
     if (props.currentSourceUrl) {
         handleSource(props.currentSourceUrl)
     } else {
@@ -122,7 +121,6 @@ onUnmounted(() => {
         navigatorTrigger.kill()
         navigatorTrigger = null
     }
-    copyAnimate.imgtl.kill()
 })
 
 async function handleSource(url: string) {
@@ -200,19 +198,6 @@ watch([() => props.enableNavigator, isMobile], ([newEnableNavigator, newIsMobile
 
 const copyAnimate = {
     tls: [] as gsap.core.Timeline[],
-    key: new Image(),
-    moden: new Image(),
-    imgIsOk: false,
-    init() {
-        this.key.src = '/新春猫mini.png'
-        this.moden.src = '/新春鱼mini.png'
-        this.key.onload = () => {
-            if (this.moden.complete) this.imgIsOk = true
-        }
-        this.moden.onload = () => {
-            if (this.key.complete) this.imgIsOk = true
-        }
-    },
     play(target: HTMLElement) {
         const tl = gsap.timeline()
         const pTag = document.createElement('p')
@@ -225,7 +210,7 @@ const copyAnimate = {
         pTag.style.transform = `translate(-120%) rotate(${getRandomNumber(-20, 20)}deg)`
         pTag.style.whiteSpace = 'nowrap'
         // root.value?.appendChild(pTag)
-        if (this.imgIsOk) this.imgAnimateStart(target)
+        imgFireworkStart(target, 0)
         // tl.to(pTag, {
         //     opacity: 1,
         //     y: '-100%',
@@ -242,52 +227,6 @@ const copyAnimate = {
         //     }
         // })
         this.tls.push(tl)
-    },
-    imgtl: gsap.timeline(),
-    imgAnimateStart(target: HTMLElement) {
-        const btnRect = target.getBoundingClientRect()
-        const rootRect = document.body.getBoundingClientRect()
-        const btnCenterX = btnRect.left + btnRect.width / 2
-        const btnCenterY = btnRect.top + btnRect.height / 2
-        const imgSize = getRemPx(isMobile.value ? 2 : 3)
-        const targetX = btnCenterX - rootRect.left - imgSize / 2
-        const targetY = btnCenterY - rootRect.top - imgSize / 2
-        const count = Math.floor(getRandomNumber(3, 7))
-        const baseAngle = isMobile.value ? -180 : -90
-        const spread = isMobile.value ? 180 : 270
-        for (let i = 0; i < count; i++) {
-            const isModen = Math.random() < 0.5
-            const targetImg = isModen ? this.moden : this.key
-            const angle = baseAngle - spread / 2 + (spread / (count - 1)) * i + getRandomNumber(-20, 20)
-            const rad = angle * Math.PI / 180
-            const distance = getRemPx(getRandomNumber(4, 6))
-            const dx = Math.cos(rad) * distance
-            const dy = Math.sin(rad) * distance
-            const img = document.createElement('img')
-            img.src = targetImg.src
-            img.style.position = 'absolute'
-            img.style.left = `${targetX}px`
-            img.style.top = `${targetY}px`
-            img.style.width = `${imgSize}px`
-            img.style.height = `${imgSize}px`
-            img.style.pointerEvents = 'none'
-            img.style.userSelect = 'none'
-            const appContent = document.getElementById('content')
-            appContent!.appendChild(img)
-            gsap.to(img, {
-                x: dx,
-                y: dy,
-                duration: 0.8,
-                ease: 'power2.out',
-                onComplete: () => img.remove()
-            })
-            gsap.to(img, {
-                opacity: 0,
-                duration: 0.5,
-                delay: 0.3,
-                ease: 'power2.out'
-            })
-        }
     }
 }
 
