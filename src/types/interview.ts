@@ -71,7 +71,11 @@ export interface InterviewProgress {
     updatedAt: string
 }
 
-export type InterviewReservationRes = BaseRes<InterviewProgress[]>
+export type InterviewReservationRes = BaseRes<{
+    message: string
+    code: string
+    user_selections: InterviewProgress[]
+}>
 
 export interface Step {
     step: number
@@ -98,6 +102,8 @@ export interface InterviewResult {
 }
 
 export type InterviewResultRes = BaseRes<{
+    message: string
+    code: string
     result: InterviewResult[]
 }>
 

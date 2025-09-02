@@ -241,7 +241,7 @@ export const useUserStore = defineStore('user', () => {
         interviewProgressStatus.value = 'loading'
         const { err, res } = await interviewApi.getUserInterviewProgress(force)
         if (res) {
-            const data = res.data
+            const data = res.data.user_selections
             interviewProgress.value = data || []
             interviewProgressStatus.value = 'loaded'
             return res
@@ -266,6 +266,7 @@ export const useUserStore = defineStore('user', () => {
 
     const currentInterviewProgress = computed(() => {
         if (currentInterviewNode.value === null) return null
+        console.log('interviewProgress', interviewProgress.value);
         const result = interviewProgress.value.filter(item =>
             item.campaign.id === currentInterviewNode.value
         )

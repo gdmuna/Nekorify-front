@@ -4,7 +4,7 @@
             <template v-if="interviewDataStatus === 'loaded'">
                 <section class="space-y-2">
                     <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">开放中</h2>
-                    <p class="md:text-lg  dark:text-[#A0A0A0]">以下是当前开放的面试列表，点击查看详情</p>
+                    <p class="md:text-lg  dark:text-[#A0A0A0]">以下是当前开放报名的面试列表，点击查看详情</p>
                 </section>
                 <section>
                     <liItem v-if="notEmptyArray(activeInterview)" useSlot v-for="(item, index) in activeInterview"
@@ -31,7 +31,7 @@
                 </section>
                 <section class="space-y-2">
                     <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">已结束</h2>
-                    <p class="md:text-lg dark:text-[#A0A0A0]">以下是已结束的面试列表，点击查看详情</p>
+                    <p class="md:text-lg dark:text-[#A0A0A0]">以下是已结束报名的面试列表，点击查看详情</p>
                 </section>
                 <section>
                     <liItem v-if="notEmptyArray(inactiveInterview)" useSlot v-for="(item, index) in inactiveInterview"
