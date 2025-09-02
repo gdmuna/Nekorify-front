@@ -56,7 +56,8 @@
                     <!-- card-1 -->
                     <div class="relative">
                         <div ref="lottieContainerA" v-if="isXlDesktop" class="size-[42rem] absolute top-0 left-0"></div>
-                        <macWindow border enterAnimate :enableSplitText="!isMobile" class="xl:!w-128 xl:mr-20 xl:ml-auto md:mx-auto">
+                        <macWindow border enterAnimate :enableSplitText="!isMobile"
+                            class="xl:!w-128 xl:mr-20 xl:ml-auto md:mx-auto">
                             <template #TR>
                                 <div class="flex-1"></div>
                                 <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
@@ -394,14 +395,12 @@
                 <!-- 贡献者名单 -->
                 <div class="w-full grid md:grid-cols-2 grid-cols-1 xl:gap-20 gap-10 justify-items-center
                 mt-24 xl:pl-14 xl:pr-16 md:pl-4 md:pr-8 pl-2 pr-8">
-                    <macWindow border class="md:!h-78 h-64 w-full">
+                    <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
-                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
-                            class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
-                            transition-colors duration-300 pb-2 md:pb-0"
-                            lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
-                            @click="openInNewTab('https://github.com/kz2006a')">
+                            <outlineText text="GitHub主页" bottomLineClass="!mt-0" class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
+                            transition-colors duration-300 pb-2 md:pb-0" lineColor="#119DEC" transitionLineColor
+                                :keepInEnd="isMobile" @click="openInNewTab('https://github.com/kz2006a')">
                                 <ExternalLink class="size-4 translate-y-0.5" />
                             </outlineText>
                         </template>
@@ -413,21 +412,19 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Almighty</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
                                         GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
                                     </p>
                                 </div>
                             </div>
                         </template>
                     </macWindow>
-                    <macWindow border class="md:!h-78 h-64 w-full">
+                    <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
-                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
-                            class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
-                            transition-colors duration-300 pb-2 md:pb-0"
-                            lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
-                            @click="openInNewTab('https://github.com/FOV-RGT')">
+                            <outlineText text="GitHub主页" bottomLineClass="!mt-0" class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
+                            transition-colors duration-300 pb-2 md:pb-0" lineColor="#119DEC" transitionLineColor
+                                :keepInEnd="isMobile" @click="openInNewTab('https://github.com/FOV-RGT')">
                                 <ExternalLink class="size-4 translate-y-0.5" />
                             </outlineText>
                         </template>
@@ -439,21 +436,25 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">FOV-RGT</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg whitespace-pre-wrap">
-                                        GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                        24届 GDMU-NA BI部 部长，
+                                        <span class="line-through">全栈开发者，精通前端 Vue.js (Vue 3 + TypeScript) 开发，熟练使用 Vite
+                                            构建工具和 Tailwind CSS 进行现代化 UI 开发。后端方面熟练掌握 Node.js 与 Express.js 构建 RESTful API，具备 MySQL\Redis
+                                            数据库设计经验。精通 JavaScript/TypeScript 全生态系统，能独立完成从数据库设计、API构建到前端交互的完整应用开发流程，具备
+                                            Web 应用架构设计、性能优化和云服务部署能力。
+                                        </span>
+                                        傻逼二次元。
                                     </p>
                                 </div>
                             </div>
                         </template>
                     </macWindow>
-                    <macWindow border class="md:!h-78 h-64 w-full">
+                    <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
-                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
-                            class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
-                            transition-colors duration-300 pb-2 md:pb-0"
-                            lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
-                            @click="openInNewTab('https://github.com/seeleclover')">
+                            <outlineText text="GitHub主页" bottomLineClass="!mt-0" class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
+                            transition-colors duration-300 pb-2 md:pb-0" lineColor="#119DEC" transitionLineColor
+                                :keepInEnd="isMobile" @click="openInNewTab('https://github.com/seeleclover')">
                                 <ExternalLink class="size-4 translate-y-0.5" />
                             </outlineText>
                         </template>
@@ -461,25 +462,24 @@
                             <div class="flex-1 flex items-center">
                                 <div class="flex h-full flex-col items-center justify-center
                                 space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/Seele.Clover.png" alt="" class="md:size-24 size-16 rounded-full">
+                                    <img src="/src/assets/Seele.Clover.png" alt=""
+                                        class="md:size-24 size-16 rounded-full">
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Seele.Clover</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
                                         老祖老祖老祖老祖老祖老祖
                                     </p>
                                 </div>
                             </div>
                         </template>
                     </macWindow>
-                    <macWindow border class="md:!h-78 h-64 w-full">
+                    <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
-                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
-                            class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
-                            transition-colors duration-300 pb-2 md:pb-0"
-                            lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
-                            @click="openInNewTab('https://github.com/xl-xlxl')">
+                            <outlineText text="GitHub主页" bottomLineClass="!mt-0" class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC]
+                            transition-colors duration-300 pb-2 md:pb-0" lineColor="#119DEC" transitionLineColor
+                                :keepInEnd="isMobile" @click="openInNewTab('https://github.com/xl-xlxl')">
                                 <ExternalLink class="size-4 translate-y-0.5" />
                             </outlineText>
                         </template>
@@ -491,7 +491,7 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">xl-xlxl</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
                                         GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。
                                     </p>
                                 </div>
