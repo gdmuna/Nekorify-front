@@ -412,7 +412,7 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Almighty</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap break-all">
+                                    <p class="md:text-lg text-sm break-all">
                                         第22届 GDMU-NA
                                         副会长。摄影、无线电（BG7MQU可换卡），会一点小电焊，前后端开发一把抓（现在头发还很多）。原本学生物，结果一不小心掉进了代码的坑（别问，问就是生物太难）。
                                         兴趣广泛，什么都想玩，无一精通。
@@ -478,7 +478,7 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Seele.Clover</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         老祖老祖老祖老祖老祖老祖
                                     </p>
                                 </div>
@@ -503,7 +503,7 @@
                                 </div>
                                 <div class="flex-1 h-full flex flex-col ml-4 min-w-1/3">
                                     <p class="md:text-lg text-sm ">
-                                        第4届 GDMU-ACM 副会长，全栈鼠鼠😨，敲代码是被迫的，
+                                        第4届 GDMU-ACM 副会长，全栈鼠鼠😨 敲代码是被迫的，
                                     </p>
                                     <p class="md:text-lg text-sm">
                                         写文档是摆烂的，搭博客是停滞的🫡 功能不断迭代，bug层出不穷😆
