@@ -146,7 +146,7 @@
                         </div>
                     </FormItem>
                     <div class="flex flex-col gap-2">
-                        <secondaryButton :text="type === 'edit' ? '保存编辑' : '发布文章'" type="submit" form="form"
+                        <secondaryButton text="保存编辑" type="submit" form="form"
                             :icon="useIcon"
                             :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] w-fit', { 'cursor-progress': underSubmit }]" />
                         <secondaryButton v-if="type === 'edit'" text="删除文章" :icon="Trash2" type="button"

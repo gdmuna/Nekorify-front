@@ -413,7 +413,9 @@
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
                                     <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        24届 GDMU-NA 副会长。摄影、无线电（BG7MQU可换卡），会一点小电焊，前后端开发一把抓（现在头发还很多）。原本学生物，结果一不小心掉进了代码的坑（别问，问就是生物太难）。兴趣广泛，什么都想玩，无一精通。“😋人生得意须尽欢，莫使金樽空对月😋”
+                                        24届 GDMU-NA
+                                        副会长。摄影、无线电（BG7MQU可换卡），会一点小电焊，前后端开发一把抓（现在头发还很多）。原本学生物，结果一不小心掉进了代码的坑（别问，问就是生物太难）。
+                                        兴趣广泛，什么都想玩，无一精通。“😋人生得意须尽欢，莫使金樽空对月😋”
                                     </p>
                                 </div>
                             </div>
@@ -439,7 +441,8 @@
                                     <p class="md:text-lg text-sm whitespace-pre-wrap">
                                         24届 GDMU-NA BI部 部长，
                                         <span class="line-through">全栈开发者，精通前端 Vue.js (Vue 3 + TypeScript) 开发，熟练使用 Vite
-                                            构建工具和 Tailwind CSS 进行现代化 UI 开发。后端方面熟练掌握 Node.js 与 Express.js 构建 RESTful API，具备 MySQL\Redis
+                                            构建工具和 Tailwind CSS 进行现代化 UI 开发。后端方面熟练掌握 Node.js 与 Express.js 构建 RESTful
+                                            API，具备 MySQL\Redis
                                             数据库设计经验。精通 JavaScript/TypeScript 全生态系统，能独立完成从数据库设计、API构建到前端交互的完整应用开发流程，具备
                                             Web 应用架构设计、性能优化和云服务部署能力。
                                         </span>
