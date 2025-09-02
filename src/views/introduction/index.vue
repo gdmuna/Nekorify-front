@@ -412,7 +412,7 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Almighty</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap break-all">
+                                    <p class="md:text-lg text-sm break-all">
                                         第22届 GDMU-NA
                                         副会长。摄影、无线电（BG7MQU可换卡），会一点小电焊，前后端开发一把抓（现在头发还很多）。原本学生物，结果一不小心掉进了代码的坑（别问，问就是生物太难）。
                                         兴趣广泛，什么都想玩，无一精通。
@@ -439,22 +439,22 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">FOV-RGT</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-start ml-4 min-w-1/3 flex-col">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         Ciallo～(∠・ω< )⌒☆
                                     </p>
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         第22届 GDMU-NA BI部部长，全栈开发者，目前头发还很多🤓
                                     </p>
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         喜欢看番打游戏，还会点电吉他，只可惜染上蓝色原神（VSCode）后就很少空闲时间了😭
                                     </p>
-                                    <!-- <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <!-- <p class="md:text-lg text-sm">
                                         前端常用 Vue 3 + TypeScript，搭配 Shadcn 和 Tailwind 写界面；后端也能整，Express + Sequelize 写 API，MySQL、Redis 都摸过🧐
                                     </p> -->
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         啥都想做：前后端、组乐队、嵌入式、无线电、摄影、视频剪辑、3D建模、游戏开发……😋
                                     </p>
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         愿有志者不负少年时，你所热爱的，就是你的生活🤓
                                     </p>
                                 </div>
@@ -479,7 +479,7 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Seele.Clover</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         老祖老祖老祖老祖老祖老祖
                                     </p>
                                 </div>
@@ -503,7 +503,7 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">xl-xlxl</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。
                                     </p>
                                 </div>
