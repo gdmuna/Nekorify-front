@@ -54,9 +54,9 @@ type Item = {
 }
 
 const items = ref<Item[]>([
-    { title: 'VSCode环境配置', subtitle: '[ 网络协会 · 学术部 ]', date: '2025.7.25' },
-    { title: 'Vue核心语法课', subtitle: '[ 网络协会 · 学术部 ]', date: '2025.7.26' },
-    { title: 'Express入门课', subtitle: '[ ACM协会 · 学术部 ]', date: '2025.7.27' }
+    // { title: 'VSCode环境配置', subtitle: '[ 网络协会 · 学术部 ]', date: '2025.7.25' },
+    // { title: 'Vue核心语法课', subtitle: '[ 网络协会 · 学术部 ]', date: '2025.7.26' },
+    // { title: 'Express入门课', subtitle: '[ ACM协会 · 学术部 ]', date: '2025.7.27' }
 ]);
 
 const showItem = computed(() => {

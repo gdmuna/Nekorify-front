@@ -121,23 +121,57 @@
                             <FormMessage />
                         </div>
                     </FormItem>
-                    <div class="flex flex-col gap-2">
-                        <secondaryButton :text="type === 'edit' ? '保存编辑' : '发布公告'" type="submit" form="form"
-                            :icon="useIcon"
-                            :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] w-fit', { 'cursor-progress': underSubmit }]" />
-                        <secondaryButton v-if="type === 'edit'" text="删除公告" :icon="Trash2" type="button"
-                            class="dark:bg-[#f19180] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] md:mt-4 mt-2 w-fit"
-                            @click="onDelete" />
-                    </div>
                     <teleport defer to='#announcementEdit'>
                         <div class="text-center mt-5 space-y-4">
                             <h3 class="md:text-3xl text-2xl">内容预览</h3>
                             <div class="w-full h-[1px] bg-[#5f5f5f]" />
-                            <p v-if="!value" class="dark:text-[#A0A0A0] mt-10">请上传或填写 markdown 文件URL 以预览公告内容</p>
+                            <p v-if="!value" class="dark:text-[#A0A0A0] mt-10">请上传或填写 markdown 文件URL 以预览文章内容</p>
                         </div>
                         <markdownContainer v-if="value" :current-source-url="value" :enableNavigator="false"
                             class="mt-10" />
                     </teleport>
+                </FormField>
+                <FormField v-slot="{ componentField }" name="status">
+                    <FormItem class="flex md:flex-row flex-col gap-4">
+                        <div class="flex-1 space-y-2">
+                            <FormLabel>资源状态</FormLabel>
+                            <FormControl>
+                                <Select v-bind="componentField">
+                                    <SelectTrigger class="cursor-pointer">
+                                        <SelectValue placeholder="请选择一个资源状态" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectItem v-for="(option, optionIndex) in resourceStatus"
+                                                :key="optionIndex" :value="String(option.value)" class="cursor-pointer">
+                                                {{ option.label }}
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </FormControl>
+                            <FormDescription>
+                                <p>
+                                    文章的当前状态，选择已发布后，文章将对外公开展示
+                                </p>
+                                <p>
+                                    选择草稿箱后，文章仅在后台保存，不会对外展示
+                                </p>
+                                <p>
+                                    选择已归档后，文章仍对外开放，但对外表示该资源不再维护
+                                </p>
+                            </FormDescription>
+                            <FormMessage />
+                        </div>
+                    </FormItem>
+                    <div class="flex flex-col gap-2">
+                        <secondaryButton :text="type === 'edit' ? '保存编辑' : '发布文章'" type="submit" form="form"
+                            :icon="useIcon"
+                            :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] w-fit', { 'cursor-progress': underSubmit }]" />
+                        <secondaryButton v-if="type === 'edit'" text="删除文章" :icon="Trash2" type="button"
+                            class="dark:bg-[#f19180] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] md:mt-4 mt-2 w-fit"
+                            @click="onDelete" />
+                    </div>
                 </FormField>
             </form>
         </Form>
@@ -165,6 +199,15 @@ import {
     FormMessage,
     FormDescription
 } from "@/components/ui/form"
+
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 
 import { secondaryButton } from '@/components/ui/button'
 
@@ -196,6 +239,12 @@ const props = defineProps<{
 const type = computed(() => {
     return route.name === 'announcementCreate' ? 'create' : 'edit'
 })
+
+const resourceStatus = ref([
+    { label: '已发布', value: 'published' },
+    { label: '草稿箱', value: 'draft' },
+    { label: '已归档', value: 'archived' }
+])
 
 const initVal = computed(() => {
     if (type.value === 'edit' && props.fetchInst.data.value) {
@@ -232,7 +281,8 @@ const formSchema = toTypedSchema(z.object({
     title: z.string({ required_error: `标题 不能为空` }).min(1, "标题 不能为空").max(20, "标题 不能超过 20 个字符"),
     department: z.string({ required_error: `部门 不能为空` }).min(1, "部门 不能为空").max(20, "部门 不能超过 20 个字符"),
     coverUrl: z.string().url("封面图片 URL 格式不正确").optional(),
-    textUrl: z.string({ required_error: `markdown 文件URL 不能为空` }).url("markdown 文件URL 格式不正确")
+    textUrl: z.string({ required_error: `markdown 文件URL 不能为空` }).url("markdown 文件URL 格式不正确"),
+    status: z.enum(['published', 'draft', 'archived'], { required_error: `资源状态 不能为空` })
 }))
 
 const iconMap = ref({
@@ -334,8 +384,8 @@ async function onSubmit(values: any) {
     console.log(values);
     const id = Number(route.params.id)
     const method = type.value === 'edit'
-    ? () => resourceApi.updateAnnouncement(id, values)
-    : () => resourceApi.uploadAnnouncement(values)
+        ? () => resourceApi.updateAnnouncement(id, values)
+        : () => resourceApi.uploadAnnouncement(values)
     toast.promise(() => {
         return new Promise(async (resolve, reject) => {
             const { err, res } = await method()

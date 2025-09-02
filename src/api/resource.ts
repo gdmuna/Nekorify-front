@@ -61,6 +61,7 @@ export const resourceApi = {
         department: string
         coverUrl?: string
         textUrl: string
+        status?: 'published' | 'draft' | 'archived' | 'deleted' | 'banned'
     }) {
         const inst = nekorify.Put(`/announcement/${id}`, data)
         return await to<UploadAnnouncementRes>(inst)
@@ -69,6 +70,7 @@ export const resourceApi = {
         title: string
         coverUrl?: string
         textUrl: string
+        status?: 'published' | 'draft' | 'archived' | 'deleted' | 'banned'
     }) {
         const inst = nekorify.Put(`/article/${id}`, data)
         return await to<UploadArticleRes>(inst)

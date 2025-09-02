@@ -4,12 +4,18 @@ export interface Announcement {
     id: number
     title: string
     cover_url: string
+    cover_width: number
+    cover_height: number
+    author_id: number
     author: string
     department: string
     text_md_url: string
     views: number
+    status: 'published' | 'draft' | 'archived' | 'deleted' | 'banned'
+    is_top: boolean
     createdAt: string
     updatedAt: string
+    author_avatar_url: string
 }
 
 export interface AnnouncementData {
@@ -40,8 +46,11 @@ export interface Article {
     department: string
     text_md_url: string
     views: number
+    status: 'published' | 'draft' | 'archived' | 'deleted' | 'banned'
+    is_top: boolean
     createdAt: string
     updatedAt: string
+    author_avatar_url: string
 }
 
 export interface ArticleData {
@@ -70,8 +79,11 @@ export interface Replay {
     video_url: string
     cover_url: string
     views: number
+    status: 'published' | 'draft' | 'archived' | 'deleted' | 'banned'
+    is_top: boolean
     createdAt: string
     updatedAt: string
+    author_avatar_url: string
 }
 
 export interface ReplayData {

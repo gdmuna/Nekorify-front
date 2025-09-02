@@ -9,8 +9,8 @@
                 <section>
                     <liItem v-if="notEmptyArray(activeInterview)" useSlot v-for="(item, index) in activeInterview"
                         :key="index" :rightIcon="ArrowRight" @click="routerGoto(`/dashboard/interview/${item.id}`)">
-                        <div class="flex-1 grid grid-cols-3 duration-300">
-                            <div class="md:space-y-2 space-y-1 mr-2 col-span-2">
+                        <div class="flex-1 grid grid-cols-2 duration-300">
+                            <div class="md:space-y-2 space-y-1 mr-2">
                                 <p class="md:text-2xl">{{ item.title }}</p>
                                 <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">{{ item.description }}
                                 </p>
@@ -18,11 +18,11 @@
                             <div class="md:space-y-2 space-y-1">
                                 <p class="md:text-base text-xs">
                                     <span>开始时间: </span>
-                                    <span class="whitespace-nowrap">{{ formatTime(item.start_date) }}</span>
+                                    <span class="whitespace-nowrap">{{ formatDateTime(item.start_date) }}</span>
                                 </p>
                                 <p class="md:text-base text-xs">
                                     <span>结束时间: </span>
-                                    <span class="whitespace-nowrap">{{ formatTime(item.end_date) }}</span>
+                                    <span class="whitespace-nowrap">{{ formatDateTime(item.end_date) }}</span>
                                 </p>
                             </div>
                         </div>
@@ -36,8 +36,8 @@
                 <section>
                     <liItem v-if="notEmptyArray(inactiveInterview)" useSlot v-for="(item, index) in inactiveInterview"
                         :key="index" :rightIcon="ArrowRight" @click="routerGoto(`/dashboard/interview/${item.id}`)">
-                        <div class="flex-1 grid grid-cols-3 duration-300">
-                            <div class="md:space-y-2 space-y-1 mr-2 col-span-2">
+                        <div class="flex-1 grid grid-cols-2 duration-300">
+                            <div class="md:space-y-2 space-y-1 mr-2">
                                 <p class="md:text-2xl">{{ item.title }}</p>
                                 <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">{{ item.description }}
                                 </p>
@@ -45,11 +45,11 @@
                             <div class="md:space-y-2 space-y-1">
                                 <p class="md:text-base text-xs">
                                     <span>开始时间: </span>
-                                    <span class="whitespace-nowrap">{{ formatTime(item.start_date) }}</span>
+                                    <span class="whitespace-nowrap">{{ formatDateTime(item.start_date) }}</span>
                                 </p>
                                 <p class="md:text-base text-xs">
                                     <span>结束时间: </span>
-                                    <span class="whitespace-nowrap">{{ formatTime(item.end_date) }}</span>
+                                    <span class="whitespace-nowrap">{{ formatDateTime(item.end_date) }}</span>
                                 </p>
                             </div>
                         </div>
@@ -78,7 +78,7 @@ import { liItem } from '..';
 
 import { ArrowRight } from 'lucide-vue-next';
 
-import { formatTime, notEmptyArray } from '@/lib/utils'
+import { formatDateTime, notEmptyArray } from '@/lib/utils'
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';

@@ -14,8 +14,8 @@
                         @click="routerGoto('/dashboard/announcement-manager/create')" />
                     <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">已发布</h2>
                     <p class="md:text-lg dark:text-[#A0A0A0]">以下是您已发布，且对外公开的公告，点击查看详情</p>
-                    <div v-if="activateAnnouncement.data.value && activateAnnouncement.data.value.length > 0">
-                        <liItem v-for="(item, index) in activateAnnouncement.data.value" :key="index" useSlot
+                    <div v-if="publishedAnnouncement.data.value && publishedAnnouncement.data.value.length > 0">
+                        <liItem v-for="(item, index) in publishedAnnouncement.data.value" :key="index" useSlot
                             @click="routerGoto(`/dashboard/announcement-manager/${item.id}`)">
                             <div class="flex-1 flex justify-between items-center transition-colors duration-300">
                                 <div>
@@ -46,8 +46,8 @@
                 <template v-if="announcementFetch.dataStatus.value === 'loaded'">
                     <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">未发布</h2>
                     <p class="md:text-lg dark:text-[#A0A0A0]">以下是您未发布，但已保存的公告，点击查看详情</p>
-                    <div v-if="activateAnnouncement.data.value && activateAnnouncement.data.value.length > 0">
-                        <liItem v-for="(item, index) in activateAnnouncement.data.value" :key="index" useSlot
+                    <div v-if="draftAnnouncement.data.value && draftAnnouncement.data.value.length > 0">
+                        <liItem v-for="(item, index) in draftAnnouncement.data.value" :key="index" useSlot
                             @click="routerGoto(`/dashboard/announcement-manager/${item.id}`)">
                             <div class="flex-1 flex justify-between items-center transition-colors duration-300">
                                 <div>
@@ -115,11 +115,11 @@ const params = ref({
     pageSize: 20
 })
 
-const activateAnnouncement = {
+const publishedAnnouncement = {
     data: computed(() => {
-        if (announcementFetch.data.value) {
-            const val = announcementFetch.data.value
-            return Array.isArray(val) ? val : [val]
+        if (Array.isArray(announcementFetch.data.value)) {
+            const val = announcementFetch.data.value.filter(item => item.status === 'published')
+            return val
         }
         return []
     }),
@@ -135,6 +135,28 @@ const activateAnnouncement = {
         }
     })
 }
+
+const draftAnnouncement = {
+    data: computed(() => {
+        if (Array.isArray(announcementFetch.data.value)) {
+            const val = announcementFetch.data.value.filter(item => item.status === 'draft')
+            return val
+        }
+        return []
+    }),
+    pagination: computed(() => {
+        if (announcementFetch.res.value) {
+            return announcementFetch.res.value.data.data.pagination
+        }
+        return {
+            currentPage: 1,
+            pageSize: 10,
+            totalRecords: 0,
+            totalPages: 0
+        }
+    })
+}
+
 
 onMounted(() => {
     announcementFetch.send(params.value)
