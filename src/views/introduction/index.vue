@@ -440,23 +440,22 @@
                                 </div>
                                 <div class="flex-1 h-full flex items-start ml-4 min-w-1/3 flex-col">
                                     <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        Ciallo～(∠・ω< )⌒☆
-                                    </p>
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        第22届 GDMU-NA BI部部长，全栈开发者，目前头发还很多🤓
-                                    </p>
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        喜欢看番打游戏，还会点电吉他，只可惜染上蓝色原神（VSCode）后就很少空闲时间了😭
-                                    </p>
-                                    <!-- <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                        Ciallo～(∠・ω< )⌒☆ </p>
+                                            <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                                第22届 GDMU-NA BI部部长，全栈开发者，目前头发还很多🤓
+                                            </p>
+                                            <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                                喜欢看番打游戏，还会点电吉他，只可惜染上蓝色原神（VSCode）后就很少空闲时间了😭
+                                            </p>
+                                            <!-- <p class="md:text-lg text-sm whitespace-pre-wrap">
                                         前端常用 Vue 3 + TypeScript，搭配 Shadcn 和 Tailwind 写界面；后端也能整，Express + Sequelize 写 API，MySQL、Redis 都摸过🧐
                                     </p> -->
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        啥都想做：前后端、组乐队、嵌入式、无线电、摄影、视频剪辑、3D建模、游戏开发……😋
-                                    </p>
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        愿有志者不负少年时，你所热爱的，就是你的生活🤓
-                                    </p>
+                                            <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                                啥都想做：前后端、组乐队、嵌入式、无线电、摄影、视频剪辑、3D建模、游戏开发……😋
+                                            </p>
+                                            <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                                愿有志者不负少年时，你所热爱的，就是你的生活🤓
+                                            </p>
                                 </div>
                             </div>
                         </template>
@@ -502,9 +501,17 @@
                                     <img src="/src/assets/xl-xlxl.jpg" alt="" class="md:size-24 size-16 rounded-full">
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">xl-xlxl</p>
                                 </div>
-                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        GDMU-ACM 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                <div class="flex-1 h-full flex flex-col ml-4 min-w-1/3">
+                                    <p class="md:text-lg text-sm ">
+                                        第4届 GDMU-ACM 副会长，全栈鼠鼠😨，敲代码是被迫的，
+                                    </p>
+                                    <p class="md:text-lg text-sm">
+                                        写文档是摆烂的，搭博客是停滞的🫡 功能不断迭代，bug层出不穷😆
+                                        人生在世，不过咖啡因续命☕ 好在头发还在，还能再熬一晚🎇 
+                                        # 谷子 # 周边 # 爱门 # 大胃袋
+                                    </p>
+                                    <p class="md:text-lg text-sm">
+                                        游云拂风，花染湛空 ~ ♪ ♥ 
                                     </p>
                                 </div>
                             </div>
