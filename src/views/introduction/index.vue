@@ -412,10 +412,11 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Almighty</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        24届 GDMU-NA
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap break-all">
+                                        第22届 GDMU-NA
                                         副会长。摄影、无线电（BG7MQU可换卡），会一点小电焊，前后端开发一把抓（现在头发还很多）。原本学生物，结果一不小心掉进了代码的坑（别问，问就是生物太难）。
-                                        兴趣广泛，什么都想玩，无一精通。“😋人生得意须尽欢，莫使金樽空对月😋”
+                                        兴趣广泛，什么都想玩，无一精通。
+                                        <span class="block text-center">“😋人生得意须尽欢，莫使金樽空对月😋”</span>
                                     </p>
                                 </div>
                             </div>
@@ -437,16 +438,24 @@
                                     <img src="/src/assets/FOV-RGT.jpg" alt="" class="md:size-24 size-16 rounded-full">
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">FOV-RGT</p>
                                 </div>
-                                <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
+                                <div class="flex-1 h-full flex items-start ml-4 min-w-1/3 flex-col">
                                     <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        24届 GDMU-NA BI部 部长，
-                                        <span class="line-through">全栈开发者，精通前端 Vue.js (Vue 3 + TypeScript) 开发，熟练使用 Vite
-                                            构建工具和 Tailwind CSS 进行现代化 UI 开发。后端方面熟练掌握 Node.js 与 Express.js 构建 RESTful
-                                            API，具备 MySQL\Redis
-                                            数据库设计经验。精通 JavaScript/TypeScript 全生态系统，能独立完成从数据库设计、API构建到前端交互的完整应用开发流程，具备
-                                            Web 应用架构设计、性能优化和云服务部署能力。
-                                        </span>
-                                        傻逼二次元。
+                                        Ciallo～(∠・ω< )⌒☆
+                                    </p>
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                        第22届 GDMU-NA BI部部长，全栈开发者，目前头发还很多🤓
+                                    </p>
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                        喜欢看番打游戏，还会点电吉他，只可惜染上蓝色原神（VSCode）后就很少空闲时间了😭
+                                    </p>
+                                    <!-- <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                        前端常用 Vue 3 + TypeScript，搭配 Shadcn 和 Tailwind 写界面；后端也能整，Express + Sequelize 写 API，MySQL、Redis 都摸过🧐
+                                    </p> -->
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                        啥都想做：前后端、组乐队、嵌入式、无线电、摄影、视频剪辑、3D建模、游戏开发……😋
+                                    </p>
+                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                        愿有志者不负少年时，你所热爱的，就是你的生活🤓
                                     </p>
                                 </div>
                             </div>
