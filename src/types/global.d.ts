@@ -20,7 +20,10 @@ interface MyRouteMeta {
 
 declare global {
     interface Window {
-        API_BASE_URL: string
+        NEKORIFY_BASE_URL: string
+        RANAMINDER_BASE_URL: string
+        CASDOOR_ENDPOINT: string
+        GDMUNA_OSS_ENDPOINT: string
     }
 }
 

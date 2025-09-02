@@ -6,8 +6,6 @@ import { storeToRefs } from 'pinia';
 
 import { errTemplate } from '@/lib/utils';
 
-const baseURL = window.API_BASE_URL || import.meta.env.VITE_API_BASE_URL;
-
 const config = {
     requestAdapter: adapterFetch(),
     timeout: 5000,
@@ -52,22 +50,22 @@ const config = {
 
 const nekorify = createAlova({
     ...config,
-    baseURL: import.meta.env.VITE_API_NEKORIFY_BASE_URL
+    baseURL: window.NEKORIFY_BASE_URL ||import.meta.env.VITE_API_NEKORIFY_BASE_URL
 });
 
 const ranaMinder = createAlova({
     ...config,
-    baseURL: import.meta.env.VITE_API_RANAMINDER_BASE_URL
+    baseURL: window.RANAMINDER_BASE_URL ||  import.meta.env.VITE_API_RANAMINDER_BASE_URL
 })
 
 const casdoor = createAlova({
     ...config,
-    baseURL: import.meta.env.VITE_API_CASDOOR_ENDPOINT
+    baseURL: window.CASDOOR_ENDPOINT ||import.meta.env.VITE_API_CASDOOR_ENDPOINT
 })
 
 const oss = createAlova({
     ...config,
-    baseURL: import.meta.env.VITE_API_GDMUNA_OSS_ENDPOINT
+    baseURL: window.GDMUNA_OSS_ENDPOINT || import.meta.env.VITE_API_GDMUNA_OSS_ENDPOINT
 })
 
 export { nekorify, ranaMinder, casdoor, oss };
