@@ -2,12 +2,6 @@ import 'vue-router'
 
 export { }
 
-declare global {
-    interface Window {
-        lenis?: Lenis
-    }
-}
-
 interface MyRouteMeta {
     title?: string
     scrollToTop?: boolean
