@@ -69,14 +69,14 @@ const prevIdx = ref(0);
 const titles = ref<HTMLElement | null>(null);
 const indicator = ref<HTMLElement | null>(null);
 
-onMounted(() => {
-    nextTick(() => enterAnimate.start('next'));
-})
+// onMounted(() => {
+//     nextTick(() => enterAnimate.start('next'));
+// })
 
-onUnmounted(() => {
-    enterAnimate.tl.kill();
-    backAnimate.tl.kill();
-})
+// onUnmounted(() => {
+//     enterAnimate.tl.kill();
+//     backAnimate.tl.kill();
+// })
 
 const enterAnimate = {
     tl: gsap.timeline(),
