@@ -413,7 +413,7 @@
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
                                     <p class="md:text-lg text-sm whitespace-pre-wrap">
-                                        GDMU-NA 干部，前端开发者，擅长 Vue.js 和 JavaScript。
+                                        24届 GDMU-NA 副会长。摄影、无线电（BG7MQU可换卡），会一点小电焊，前后端开发一把抓（现在头发还很多）。原本学生物，结果一不小心掉进了代码的坑（别问，问就是生物太难）。兴趣广泛，什么都想玩，无一精通。“😋人生得意须尽欢，莫使金樽空对月😋”
                                     </p>
                                 </div>
                             </div>
