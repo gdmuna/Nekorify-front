@@ -7,6 +7,8 @@ body {
     /* IE 10+ */
     background-color: #0E100F;
     scroll-behavior: auto;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
 }
 
 body::-webkit-scrollbar {

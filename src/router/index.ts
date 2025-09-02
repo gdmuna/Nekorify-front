@@ -11,6 +11,8 @@ import { nextTick, h } from 'vue';
 
 import { showModal } from '@/lib/utils';
 
+import { toast } from 'vue-sonner'
+
 const routes = [
   {
     path: '/',
@@ -293,6 +295,7 @@ router.beforeEach((to, from, next) => {
     authStore.login()
     return next(false)
   } else if (to.meta.guest && authStore.isAuthenticated) {
+    toast.warning('？来这干啥')
     return next({ name: 'home' })
   }
   let minManageLevel;

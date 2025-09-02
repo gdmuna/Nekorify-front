@@ -130,7 +130,10 @@ import { storeToRefs } from "pinia"
 import { useUserStore } from "@/stores/user"
 const userStore = useUserStore()
 const { interviewFormJSON, currentInterviewNode } = storeToRefs(userStore)
-const { uploadInterviewForm } = userStore
+const { uploadInterviewForm, getInterviewResult } = userStore
+import { useSystemStore } from "@/stores/system"
+const systemStore = useSystemStore()
+const { routerGoto } = systemStore
 
 import { generateZodSchema, getRemPx } from "@/lib/utils"
 
@@ -169,7 +172,10 @@ async function onSubmit(values: any) {
     formData.append('information', JSON.stringify(jsonObj));
     toast.promise(() => uploadInterviewForm(formData), {
         loading: '上传中...',
-        success: '面试报名表上传成功',
+        success: () => {
+            getInterviewResult(true)
+            return '面试报名表上传成功'
+        },
         error: (err: any) => `上传失败: ${err}`
     })
     underSubmit.value = false

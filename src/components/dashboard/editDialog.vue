@@ -21,7 +21,7 @@
                     class="flex flex-col space-y-4">
                     <h2 class="flex items-center space-x-2 md:text-2xl text-xl dark:text-[#dbd7aa]">
                         <Mail class="size-5" />
-                        <p class="line-through">换绑邮箱</p><span>（还没做完）</span>
+                        <p class="line-through">换绑邮箱</p><span>（还没做完喵...）</span>
                     </h2>
                     <FormField v-slot="{ componentField }" name="email">
                         <FormItem>
@@ -315,14 +315,14 @@ const passwordFormSchema = toTypedSchema(z.object({
 
 const emailFormSchema = toTypedSchema(z.object({
     email: z.string({ invalid_type_error: `新邮箱 必须是字符串`, required_error: `新邮箱 不能为空` })
-        .email()
+        .email({ message: "新邮箱 格式不正确" })
         .nonempty({ message: `新邮箱 不能为空` }),
     emailVerificationCode: z.preprocess(val => {
         if (Array.isArray(val)) {
             return Number(val.join(''))
         }
         return undefined;
-    }, z.number({ invalid_type_error: `邮箱验证码 必须是字符串`, required_error: `邮箱验证码 不能为空` })
+    }, z.number({ invalid_type_error: `邮箱验证码 必须是数字`, required_error: `邮箱验证码 不能为空` })
         .refine(val => String(Math.abs(val)).length === 6, { message: "邮箱验证码 必须是6位数字" }))
 }))
 
@@ -398,6 +398,7 @@ async function onSubmitEmailForm(values: any) {
     emailUnderSubmit.value = true
     console.log(values);
     const formData = new FormData()
+    toast.warning('？都说没做完了')
     dialogOpen.value = false
     emailUnderSubmit.value = false
 }
