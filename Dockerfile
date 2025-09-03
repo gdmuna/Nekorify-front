@@ -7,9 +7,10 @@ RUN npm ci --only=production && npm prune --production && npm run build
 
 FROM nginx:alpine
 EXPOSE 80
-ENV NODE_ENV=production
 WORKDIR /app
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
