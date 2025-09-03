@@ -3,7 +3,7 @@ ARG VERSION="22-slim"
 FROM node:${VERSION} AS builder
 WORKDIR /app
 COPY . .
-RUN npm ci --only=production && npm prune --production && npm run build
+RUN npm ci && npm run build
 
 FROM nginx:alpine
 EXPOSE 80
