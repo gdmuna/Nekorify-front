@@ -38,7 +38,6 @@ export const useUserStore = defineStore('user', () => {
             return res
         } else {
             console.log('getUserInfo', err);
-            
             // toast.error(err.data.message || '获取用户信息失败')
             throw err
         }
@@ -110,7 +109,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.createdAt = info.createdTime
         userInfo.lastLogin = info.lastSigninTime
         userInfo.groups = info.groups
-        userInfo.links = info.properties.links.split(',').filter(Boolean)
+        userInfo.links = Array.isArray(info.properties.links) ? info.properties.links.split(',').filter(Boolean) : null
     }
 
     function cleanUserInfo() {

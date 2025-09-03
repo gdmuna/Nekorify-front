@@ -255,7 +255,8 @@ const initVal = computed(() => {
                 title: '',
                 department: '',
                 coverUrl: '',
-                textUrl: ''
+                textUrl: '',
+                status: ''
             }
         }
         const deepCloneData = structuredClone<Announcement>(toRaw(data))
@@ -263,14 +264,16 @@ const initVal = computed(() => {
             title: deepCloneData.title,
             department: deepCloneData.department,
             coverUrl: deepCloneData.cover_url,
-            textUrl: deepCloneData.text_md_url
+            textUrl: deepCloneData.text_md_url,
+            status: deepCloneData.status
         }
     } else {
         return {
             title: '',
             department: '',
             coverUrl: '',
-            textUrl: ''
+            textUrl: '',
+            status: ''
         }
     }
 })
@@ -383,6 +386,8 @@ async function onSubmit(values: any) {
     underSubmit.value = true
     console.log(values);
     const id = Number(route.params.id)
+    console.log('values', values);
+    
     const method = type.value === 'edit'
         ? () => resourceApi.updateAnnouncement(id, values)
         : () => resourceApi.uploadAnnouncement(values)

@@ -203,7 +203,7 @@ const photobox = {
             let line_index = Math.floor(i / this.row_max);
             let x = col_index * (this.img_width + this.img_margin);
             let y = line_index * (this.img_height + this.img_margin);
-            const src = `/picture/${i}.jpg`;
+            const src = `/picture/${i}.webp`;
             // 使用现有图片对象(如果有)
             const img = preserveImages ? existingImgs[src] || null : null;
             this.img_data.push({ img, x, y, src });
