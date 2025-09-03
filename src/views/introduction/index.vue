@@ -501,13 +501,13 @@
                                     <img src="/src/assets/xl-xlxl.jpg" alt="" class="md:size-24 size-16 rounded-full">
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">xl-xlxl</p>
                                 </div>
-                                <div class="flex-1 h-full flex flex-col ml-4 min-w-1/3">
-                                    <p class="md:text-lg text-sm ">
-                                        第4届 GDMU-ACM 副会长，全栈鼠鼠😨 敲代码是被迫的，
+                                <div class="flex-1 h-full flex flex-col justify-center ml-4 min-w-1/3">
+                                    <p class="md:text-lg text-sm break-all">
+                                        第4届 GDMU-ACM 副会长，全栈鼠鼠😨 
+                                        敲代码是被迫的，写文档是摆烂的，搭博客是停滞的🫡 功能不断迭代，bug层出不穷😆
+                                        人生在世，不过咖啡因续命☕ 好在头发还在，还能再熬一晚🎇 
                                     </p>
                                     <p class="md:text-lg text-sm">
-                                        写文档是摆烂的，搭博客是停滞的🫡 功能不断迭代，bug层出不穷😆
-                                        人生在世，不过咖啡因续命☕ 好在头发还在，还能再熬一晚🎇 
                                         # 谷子 # 周边 # 爱门 # 大胃袋
                                     </p>
                                     <p class="md:text-lg text-sm">
