@@ -1,5 +1,5 @@
 <template>
-    <div ref="introPageRoot" class="dark:bg-[#0E100F] w-[100dvw]">
+    <div ref="introPageRoot" class="dark:bg-[#0E100F] w-[100dvw] mb-10">
         <scrollHint />
         <!-- Section 1 -->
         <section ref="section1" class="relative h-[100dvh] flex items-center justify-center pt-14

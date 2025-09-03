@@ -19,7 +19,7 @@ const config = {
         }
     },
     responded: {
-        onSuccess: async (res: any) => {
+        onSuccess: async (res: any, method: any) => {
             const contentType = res.headers.get('content-type');
             let result: any = null;
             if (contentType) {
@@ -38,6 +38,7 @@ const config = {
                 result = await res.text();
             }
             if (res.status >= 400) {
+                console.log('API Error:', res.status, result, '\nmethod:', method);
                 return Promise.reject(result || errTemplate('服务端错误', '请重试，或等待业务恢复'));
             }
             return result;

@@ -1,7 +1,7 @@
 <template>
     <div id="articleEdit" class="flex flex-1 flex-col mb-10">
-        <Form v-slot="{ handleSubmit, meta }" @invalid-submit="onInvalidSubmit" keep-values :validation-schema="formSchema"
-            class="flex flex-col space-y-4" :initial-values="initVal">
+        <Form v-slot="{ handleSubmit, meta }" @invalid-submit="onInvalidSubmit" keep-values
+            :validation-schema="formSchema" class="flex flex-col space-y-4" :initial-values="initVal">
             <form id="form" ref="formRef" @submit.prevent="handleSubmit($event, onSubmit)" class="space-y-8">
                 <FormField v-slot="{ componentField, value }" name="title">
                     <FormItem class="flex md:flex-row flex-col gap-4">
@@ -118,18 +118,18 @@
                             <FormLabel>资源状态</FormLabel>
                             <FormControl>
                                 <Select v-bind="componentField">
-                                <SelectTrigger class="cursor-pointer">
-                                    <SelectValue placeholder="请选择一个资源状态" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectItem v-for="(option, optionIndex) in resourceStatus"
-                                            :key="optionIndex" :value="String(option.value)" class="cursor-pointer">
-                                            {{ option.label }}
-                                        </SelectItem>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
+                                    <SelectTrigger class="cursor-pointer">
+                                        <SelectValue placeholder="请选择一个资源状态" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectItem v-for="(option, optionIndex) in resourceStatus"
+                                                :key="optionIndex" :value="String(option.value)" class="cursor-pointer">
+                                                {{ option.label }}
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
                             </FormControl>
                             <FormDescription>
                                 <p>
@@ -146,8 +146,7 @@
                         </div>
                     </FormItem>
                     <div class="flex flex-col gap-2">
-                        <secondaryButton text="保存编辑" type="submit" form="form"
-                            :icon="useIcon"
+                        <secondaryButton text="保存编辑" type="submit" form="form" :icon="useIcon"
                             :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] w-fit', { 'cursor-progress': underSubmit }]" />
                         <secondaryButton v-if="type === 'edit'" text="删除文章" :icon="Trash2" type="button"
                             class="dark:bg-[#f19180] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] md:mt-4 mt-2 w-fit"
@@ -235,20 +234,23 @@ const initVal = computed(() => {
             return {
                 title: '',
                 coverUrl: '',
-                textUrl: ''
+                textUrl: '',
+                status: ''
             }
         }
         const deepCloneData = structuredClone<Article>(toRaw(data))
         return {
             title: deepCloneData.title,
             coverUrl: deepCloneData.cover_url,
-            textUrl: deepCloneData.text_md_url
+            textUrl: deepCloneData.text_md_url,
+            status: deepCloneData.status
         }
     } else {
         return {
             title: '',
             coverUrl: '',
-            textUrl: ''
+            textUrl: '',
+            status: ''
         }
     }
 })
@@ -361,8 +363,8 @@ async function onSubmit(values: any) {
     console.log(values);
     const id = Number(route.params.id)
     const method = type.value === 'edit'
-    ? () => resourceApi.updateArticle(id, values)
-    : () => resourceApi.uploadArticle(values)
+        ? () => resourceApi.updateArticle(id, values)
+        : () => resourceApi.uploadArticle(values)
     toast.promise(() => {
         return new Promise(async (resolve, reject) => {
             const { err, res } = await method()
