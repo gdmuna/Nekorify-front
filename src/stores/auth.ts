@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
             const token = data.data.token
             toast.success(data.message)
             setToken(token)
-            userStore.generateCasdoorUserInfo(token.access_token)
+            await userStore.getCasdoorUserInfo(true)
             userStore.handleUserInfo(data.data.userInfo)
             initUserPermission()
         } else {
@@ -70,7 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
             const token = res.data.data
             setToken(token)
             const userStore = useUserStore();
-            userStore.generateCasdoorUserInfo(token.access_token)
+            await userStore.getCasdoorUserInfo(true)
             return Promise.resolve()
         } else {
             console.log('err1', err);
@@ -196,6 +196,27 @@ export const useAuthStore = defineStore('auth', () => {
         return userPermissions.value.filter(meta => meta.level === level);
     }
 
+    async function sendVerificationCode(email: string) {
+        const userStore = useUserStore();
+        const formData = new FormData()
+        formData.append('dest', email)
+        formData.append('type', 'email')
+        formData.append('method', 'reset')
+        formData.append('applicationId', `Nekorify/${userStore.casdoorUserInfo.value.signupApplication}`)
+        formData.append('captchaType', 'Default')
+        formData.append('captchaToken', '455329')
+        formData.append('clientSecret', 'Nekorify')
+        const { err, res } = await authApi.sendVerificationCode(formData)
+        console.log('sendVerificationCode', { err, res });
+        if (res.status !== 'error') {
+            toast.success('验证码已发送，请注意查收')
+            return res
+        } else {
+            toast.error('发送验证码失败')
+            return false
+        }
+    }
+
     return {
         login,
         loginCallback,
@@ -208,6 +229,7 @@ export const useAuthStore = defineStore('auth', () => {
         getGroupByRank,
         getGroupByLevel,
         initUserPermission,
-        userPermissions
+        userPermissions,
+        sendVerificationCode
     }
 })

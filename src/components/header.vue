@@ -68,7 +68,7 @@
                         lg:dark:text-[#FEFCE4] dark:text-[#0E100F]">
                         <template v-for="(item, index) in routeMeta" :key="index">
                             <div class="lg:p-0 p-2 lg:dark:bg-transparent dark:bg-[#FEFCE4] rounded cursor-pointer"
-                                @click="routerGoto(item.path), headerAnimate.toggle()">
+                                @click="item.type === 'path' ? routerGoto(item.path) : openInNewTab(item.path), headerAnimate.toggle()">
                                 <outlineText v-show="isDesktop" :text="item.label" :keep-in-end="item.active"
                                     class="md:text-xl nav-item hover:text-blue-400 duration-300 w-fit"
                                     :class="[item.active ? 'text-blue-400' : '']" line-color="#51A2FF"
@@ -252,32 +252,37 @@ const disableSwitchTheme = computed(() => {
 
 const routeMeta = ref([
     {
+        type: 'path',
         label: '首页',
         path: '/home',
         active: false,
         icon: House
     },
     {
+        type: 'path',
         label: '公告',
         path: '/announcements',
         active: false,
         icon: Newspaper
     },
     {
+        type: 'path',
         label: '文章',
         path: '/articles',
         active: false,
         icon: Notebook
     },
     {
+        type: 'path',
         label: '视频',
         path: '/videos',
         active: false,
         icon: Youtube
     },
     {
+        type: 'link',
         label: '资源站',
-        path: '/resourcesHub',
+        path: 'https://share.gdmuna.com/',
         active: false,
         icon: Database
     }

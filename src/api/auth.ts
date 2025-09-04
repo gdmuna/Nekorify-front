@@ -1,4 +1,4 @@
-import { nekorify, ranaMinder} from './index';
+import { nekorify, ranaMinder, casdoor } from './index';
 
 import { errTemplate, returnTemplate, to } from '@/lib/utils';
 
@@ -7,7 +7,7 @@ const baseURL = import.meta.env.VITE_API_NEKORIFY_BASE_URL || window.NEKORIFY_BA
 export const authApi = {
     // 用户登录
     login() {
-        window.location.href = `${baseURL}/auth/login`;
+        window.location.href = `${baseURL}/auth/login?target=${encodeURIComponent(window.location.href)}`;
     },
 
     async loginCallback() {
@@ -30,6 +30,11 @@ export const authApi = {
         const inst = nekorify.Post('/auth/refresh-token', {
             refreshToken
         })
+        return await to<any>(inst)
+    },
+
+    async sendVerificationCode(formData: FormData) {
+        const inst = casdoor.Post('/api/send-verification-code', formData)
         return await to<any>(inst)
     }
 }

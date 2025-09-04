@@ -152,23 +152,22 @@
                             </FormControl>
                             <FormDescription>
                                 <p>
-                                    文章的当前状态，选择已发布后，文章将对外公开展示
+                                    公告的当前状态，选择已发布后，公告将对外公开展示
                                 </p>
                                 <p>
-                                    选择草稿箱后，文章仅在后台保存，不会对外展示
+                                    选择草稿箱后，公告仅在后台保存，不会对外展示
                                 </p>
                                 <p>
-                                    选择已归档后，文章仍对外开放，但对外表示该资源不再维护
+                                    选择已归档后，公告仍对外开放，但对外表示该资源不再维护
                                 </p>
                             </FormDescription>
                             <FormMessage />
                         </div>
                     </FormItem>
                     <div class="flex flex-col gap-2">
-                        <secondaryButton text="保存编辑" type="submit" form="form"
-                            :icon="useIcon"
+                        <secondaryButton text="保存编辑" type="submit" form="form" :icon="useIcon"
                             :class="['dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] w-fit', { 'cursor-progress': underSubmit }]" />
-                        <secondaryButton v-if="type === 'edit'" text="删除文章" :icon="Trash2" type="button"
+                        <secondaryButton v-if="type === 'edit'" text="删除公告" :icon="Trash2" type="button"
                             class="dark:bg-[#f19180] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] md:mt-4 mt-2 w-fit"
                             @click="onDelete" />
                     </div>
@@ -225,6 +224,10 @@ const route = useRoute()
 import { useSystemStore } from '@/stores/system'
 const systemStore = useSystemStore()
 const { routerGoto } = systemStore
+
+import { useResourceStore } from '@/stores/resource';
+const resourceStore = useResourceStore();
+const { fetchResourcesList } = resourceStore;
 
 import type { Announcement } from '@/types/resource'
 
@@ -387,7 +390,7 @@ async function onSubmit(values: any) {
     console.log(values);
     const id = Number(route.params.id)
     console.log('values', values);
-    
+
     const method = type.value === 'edit'
         ? () => resourceApi.updateAnnouncement(id, values)
         : () => resourceApi.uploadAnnouncement(values)
@@ -407,6 +410,10 @@ async function onSubmit(values: any) {
             underSubmit.value = false
             routerGoto('/dashboard/announcement-manager')
             await props.fetchInst.send(props.params, true)
+            fetchResourcesList('announcement', {
+                currerntPage: 1,
+                pageSize: 20
+            }, true)
             return '成功发布公告'
         },
         error: (err: any) => `发布失败: ${err}`

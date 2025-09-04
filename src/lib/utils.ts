@@ -30,6 +30,10 @@ import { gsap } from 'gsap'
 
 import { storeToRefs } from 'pinia'
 import { useSystemStore } from '@/stores/system'
+import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
+
+import { authApi } from '@/api'
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -437,8 +441,8 @@ const imgFirework = {
         const targetX = btnCenterX - rootRect.left - imgSize / 2
         const targetY = btnCenterY - rootRect.top - imgSize / 2
         const count = Math.floor(getRandomNumber(3, 7))
-        if (!baseAngle) baseAngle = this.isMobile.value ? -180 : -90
-        if (!spread) spread = this.isMobile.value ? 180 : 270
+        if (!baseAngle) baseAngle = -90
+        if (!spread) spread = 270
         for (let i = 0; i < count; i++) {
             const isModen = Math.random() < 0.5
             const targetImg = isModen ? this.moden : this.key
@@ -457,8 +461,8 @@ const imgFirework = {
             img.style.pointerEvents = 'none'
             img.style.userSelect = 'none'
             img.style.zIndex = `${zIndex}`
-            const appContent = document.getElementById('content')
-            appContent!.appendChild(img)
+            const appMainContent = document.getElementById('content_main')
+            appMainContent!.appendChild(img)
             gsap.to(img, {
                 x: dx,
                 y: dy,
@@ -482,3 +486,48 @@ export const imgFireworkStart = (target: HTMLElement, zIndex: number = 9999, bas
 }
 
 export const imgFireworkInit = imgFirework.init.bind(imgFirework)
+
+export function useVerificationCodeService() {
+    const countdown = ref(0)
+    let timer: ReturnType<typeof setInterval> | null = null
+    const userStore = useUserStore();
+    const authStore = useAuthStore();
+
+    function startCountdown(seconds: number) {
+        if (timer) clearInterval(timer)
+        countdown.value = seconds
+        timer = setInterval(() => {
+            countdown.value--
+            if (countdown.value <= 0) {
+                clearInterval(timer!)
+                timer = null
+            }
+        }, 1000)
+    }
+
+    function stopCountdown() {
+        if (timer) {
+            clearInterval(timer)
+            timer = null
+        }
+        countdown.value = 0
+    }
+
+    async function sendVerificationCode(formData: FormData) {
+            const { err, res } = await authApi.sendVerificationCode(formData)
+            console.log('sendVerificationCode', { err, res })
+            if (res.status !== 'error') {
+                toast.success('验证码已发送，请注意查收')
+                return res
+            } else {
+                toast.error('发送验证码失败')
+                return false
+            }
+        }
+
+    return {
+        countdown,
+        startCountdown,
+        stopCountdown
+    }
+}

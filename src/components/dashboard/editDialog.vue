@@ -1,13 +1,13 @@
 <template>
     <Dialog v-model:open="dialogOpen">
         <DialogTrigger as-child>
-            <secondaryButton text="编辑个人资料" :icon="PenLine"
-                class="dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem]" />
+            <secondaryButton text="编辑账户信息" :icon="PenLine"
+                class="dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded md:text-xl" />
         </DialogTrigger>
         <DialogScrollContent class="max-w-[90%] md:max-w-[680px] xl:max-w-[750px] 2xl:max-w-[950px]">
             <DialogHeader>
                 <DialogTitle class="dark:text-[#CFCBA0] md:text-3xl text-2xl">
-                    <p v-if="!isAdvanced">编辑个人资料</p>
+                    <p v-if="!isAdvanced">个人资料</p>
                     <p v-else>账户安全</p>
                 </DialogTitle>
                 <DialogDescription class="dark:text-[#D5C8B0] md:text-lg">
@@ -23,7 +23,7 @@
                         <Mail class="size-5" />
                         <p class="line-through">换绑邮箱</p><span>（还没做完喵...）</span>
                     </h2>
-                    <FormField v-slot="{ componentField }" name="email">
+                    <FormField v-slot="{ componentField, value }" name="email">
                         <FormItem>
                             <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
                                 新邮箱
@@ -34,7 +34,7 @@
                             <FormControl class="flex space-x-2">
                                 <div class="flex space-x-2">
                                     <Input type="email" placeholder="请输入您的新邮箱" v-bind="componentField" />
-                                    <primaryButton text="发送验证码" type="button"
+                                    <primaryButton text="发送验证码" type="button" @click="onSendVerificationCode(value)"
                                         class="dark:bg-emerald-500 dark:text-[#0E100F] md:text-base"
                                         mask1-color="#1aa0c2" mask2-color="#7de3f3" />
                                 </div>
@@ -137,6 +137,24 @@
                         <input type="text" name="username" :value="userInfo.studentNumber" autocomplete="username"
                             tabindex="-1" class="hidden" />
                     </h2>
+                    <FormField v-slot="{ componentField }" name="oldPassword">
+                        <FormItem>
+                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                原密码
+                            </FormLabel>
+                            <FormControl>
+                                <div class="relative w-full">
+                                    <Input :type="showPassword ? 'text' : 'password'" placeholder="原密码"
+                                        v-bind="componentField" autocomplete="old-password" />
+                                    <button type="button" @click="showPassword = !showPassword"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                        <component :is="showPassword ? Eye : EyeOff" class="size-5" />
+                                    </button>
+                                </div>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
                     <FormField v-slot="{ componentField }" name="newPassword">
                         <FormItem>
                             <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
@@ -244,8 +262,9 @@ import { useSystemStore } from "@/stores/system"
 import { useAuthStore } from "@/stores/auth"
 import { storeToRefs } from "pinia";
 import { toast } from "vue-sonner"
+import { casdoor } from "@/api"
 const userStore = useUserStore();
-const { userInfo } = storeToRefs(userStore);
+const { userInfo, casdoorUserInfo } = storeToRefs(userStore);
 const { updateCasdoorUserInfo, setPassword, getUserInfo } = userStore;
 
 const systemStore = useSystemStore();
@@ -300,6 +319,10 @@ const normalFormSchema = toTypedSchema(z.object({
 }))
 
 const passwordFormSchema = toTypedSchema(z.object({
+    oldPassword: z.string({ invalid_type_error: `原密码 必须是字符串`, required_error: `原密码 不能为空` })
+        .min(6, { message: "原密码 长度需大于等于 8" })
+        .max(50, { message: `原密码 长度需小于等于 50` })
+        .nonempty({ message: `原密码 不能为空` }),
     newPassword: z.string({ invalid_type_error: `新密码 必须是字符串`, required_error: `新密码 不能为空` })
         .min(6, { message: "新密码 长度需大于等于 8" })
         .max(50, { message: `新密码 长度需小于等于 50` })
@@ -350,11 +373,10 @@ async function onSubmitNormalForm(values: any, setFieldValue: (field: string, va
     normalUnderSubmit.value = true
     const info = {
         bio: values.bio,
-        properties: {
-            nickname: values.nickname,
-            links: Array.isArray(values.links) ? values.links.join(',') : values.links
-        }
+        tag: values.nickname,
+        homepage: Array.isArray(values.links) ? values.links.join(',') : values.links
     }
+    console.log('info:', info)
     const ok = await updateCasdoorUserInfo(info)
     if (ok) {
         await refresh()
@@ -379,8 +401,10 @@ async function onSubmitPasswordForm(values: any) {
     if (passwordUnderSubmit.value) return
     passwordUnderSubmit.value = true
     const formData = new FormData()
+    console.log('formValues:', values);
     formData.append('userOwner', String(userInfo.value.owner))
     formData.append('userName', String(userInfo.value.studentNumber))
+    formData.append('oldPassword', values.oldPassword)
     formData.append('newPassword', values.newPassword)
     await setPassword(formData)
     dialogOpen.value = false
@@ -391,14 +415,41 @@ const emailUseIcon = computed(() => {
     return emailUnderSubmit.value ? iconMap.value['loading'] : iconMap.value['submit']
 })
 
+const verificationCodeUnderSend = ref(false);
+//casdoor文档过于答辩 暂时搞不定
+async function onSendVerificationCode(values: any) {
+    if (verificationCodeUnderSend.value) return
+    verificationCodeUnderSend.value = true
+    console.log(values);
+    // const formData = new FormData()
+    // formData.append('dest', email)
+    // formData.append('type', 'email')
+    // formData.append('method', 'reset')
+    // formData.append('applicationId', `Nekorify/${userStore.casdoorUserInfo.value.signupApplication}`)
+    // formData.append('captchaType', 'Default')
+    // formData.append('captchaToken', '455329')
+    // formData.append('clientSecret', 'Nekorify')
+    toast.warning('？都说没做完了')
+    // const ok = await authStore.sendVerificationCode(values)
+    // if (!ok) return
+    dialogOpen.value = false
+    emailUnderSubmit.value = false
+}
+
 const emailUnderSubmit = ref(false);
 //casdoor文档过于答辩 暂时搞不定
 async function onSubmitEmailForm(values: any) {
     if (emailUnderSubmit.value) return
     emailUnderSubmit.value = true
     console.log(values);
-    const formData = new FormData()
+    // const formData = new FormData()
+    // formData.append('dest', values.emailVerificationCode)
+    // formData.append('type', 'email')
+    // formData.append('method', 'reset')
+    // formData.append('applicationId', 'admin/Nekorify')
     toast.warning('？都说没做完了')
+    // const ok = await authStore.sendVerificationCode(formData)
+    // if (!ok) return
     dialogOpen.value = false
     emailUnderSubmit.value = false
 }

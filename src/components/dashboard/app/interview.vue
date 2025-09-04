@@ -56,6 +56,10 @@
                     </liItem>
                     <p v-else class="mt-6 md:text-base text-sm text-center dark:text-[#A0A0A0]">还没有已结束的面试喵...</p>
                 </section>
+                <section class="flex flex-col items-center space-y-4 md:mt-10 mt-5">
+                    <h3 class="text-amber-100 md:text-3xl text-2xl">招新咨询群二维码</h3>
+                    <img src="/src/assets/招新群活码.jpg" alt="NA-ACM招新咨询群二维码" class="w-48 h-48 mt-2" />
+                </section>
             </template>
             <template v-else-if="interviewDataStatus === 'loading'">
                 <div class="size-full flex justify-center items-center">

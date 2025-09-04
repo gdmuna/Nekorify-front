@@ -47,31 +47,16 @@ export const useUserStore = defineStore('user', () => {
         try {
             const authStore = useAuthStore()
             await new Promise((resolve, reject) => {
-                getUserInfo(true).then(() => {
-                    authStore.refresh().then(() => {
+                authStore.refresh().then(() => {
+                    getUserInfo(true).then(() => {
                         resolve(true)
                         toast.success('自动登录成功')
                     }).catch(() => {
-                        toast.info('登录成功，但刷新access_token失败')
-                        resolve(true)
-                    })
-                }).catch(() => {
-                    authStore.refresh().then(() => {
-                        new Promise((res, rej) => {
-                            setTimeout(() => {
-                                getUserInfo(true).then(() => {
-                                    toast.success('自动登录成功')
-                                    res(true)
-                                }).catch(() => {
-                                    toast.error('自动登录失败，请重新登录')
-                                    rej(false)
-                                    reject(false)
-                                })
-                            }, 1000)
-                        })
-                    }).catch(() => {
+                        toast.info('自动登录失败，请重新登录')
                         reject(false)
                     })
+                }).catch(() => {
+                    reject(false)
                 })
             })
             authStore.initUserPermission()
@@ -101,7 +86,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.owner = info.owner
         userInfo.studentNumber = info.name
         userInfo.username = info.displayName
-        userInfo.nickname = info.properties.nickname
+        userInfo.nickname = info.tag
         userInfo.bio = info.bio
         userInfo.email = info.email
         userInfo.avatar = info.avatar
@@ -109,7 +94,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.createdAt = info.createdTime
         userInfo.lastLogin = info.lastSigninTime
         userInfo.groups = info.groups
-        userInfo.links = info.properties.links ? info.properties.links.split(',').filter(Boolean) : null
+        userInfo.links = info.homepage ? info.homepage.split(',').filter(Boolean) : null
     }
 
     function cleanUserInfo() {
@@ -127,28 +112,28 @@ export const useUserStore = defineStore('user', () => {
         userInfo.links = []
     }
 
-    async function updateUserInfo(info: any) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                userInfo.nickname = info.nickname
-                userInfo.bio = info.bio
-                userInfo.email = info.email
-                userInfo.links = info.links
-                const random = Math.random()
-                random < 0.5 ? resolve(true) : resolve(false)
-            }, 1000);
-        })
-    }
-
     const casdoorUserInfo = ref<any>(null)
-    function generateCasdoorUserInfo(token: string) {
-        const payload = decodeJWT(token)
-        if (!payload) {
-            toast.error("无效的JWT")
-            return
+    // function generateCasdoorUserInfo(token: string) {
+    //     const payload = decodeJWT(token)
+    //     if (!payload) {
+    //         toast.error("无效的JWT")
+    //         return
+    //     }
+    //     console.log('payload', payload);
+    //     casdoorUserInfo.value = payload
+    // }
+
+    async function getCasdoorUserInfo(force: boolean = false) {
+        const { err, res } = await userApi.getCasdoorUserInfo(force)
+        if (res) {
+            const info = res.data
+            casdoorUserInfo.value = info
+            console.log('casdoorUserInfo', casdoorUserInfo.value);
+            return res
+        } else {
+            toast.error(err.data.message || '获取用户信息失败')
+            throw err
         }
-        console.log('payload', payload);
-        casdoorUserInfo.value = payload
     }
 
     async function updateCasdoorUserInfo(info: object) {
@@ -164,7 +149,6 @@ export const useUserStore = defineStore('user', () => {
             const authStore = useAuthStore()
             await authStore.refresh()
             console.log('updateCasdoorUserInfo', res);
-
             return true
         } else {
             throw err
@@ -193,6 +177,9 @@ export const useUserStore = defineStore('user', () => {
             interviews.value = res.data.campaigns || []
             interviewDataStatus.value = 'loaded'
             return res
+        } else if (err.data.code === 'USER_NOT_FOUND') {
+            interviews.value = []
+            interviewDataStatus.value = 'loaded'
         } else {
             toast.error(err.data.message || '获取面试列表失败')
             interviewDataStatus.value = 'error'
@@ -244,6 +231,9 @@ export const useUserStore = defineStore('user', () => {
             interviewProgress.value = data || []
             interviewProgressStatus.value = 'loaded'
             return res
+        } else if (err.data.code === 'USER_NOT_FOUND') {
+            interviewProgress.value = []
+            interviewProgressStatus.value = 'loaded'
         } else {
             // toast.error(err.data.message || '获取面试进度信息失败')
             interviewProgressStatus.value = 'error'
@@ -284,15 +274,14 @@ export const useUserStore = defineStore('user', () => {
             console.log('interviewResult', interviewResult.value);
             interviewResultStatus.value = 'loaded'
             return res
-        } else {
-            if (err.data.code === 'RESULT_NOT_FOUND') {
-                interviewResultStatus.value = 'loaded'
-                interviewResult.value = []
-            } else {
-                interviewResultStatus.value = 'error'
-                toast.error(err.data.message || '获取面试结果失败')
-                throw err
-            }
+        } else if (err.data.code === 'RESULT_NOT_FOUND' || err.data.code === 'USER_NOT_FOUND') {
+            interviewResult.value = []
+            interviewResultStatus.value = 'loaded'
+        }
+        else {
+            interviewResultStatus.value = 'error'
+            toast.error(err.data.message || '获取面试结果失败')
+            throw err
         }
     }
 
@@ -300,7 +289,6 @@ export const useUserStore = defineStore('user', () => {
         if (currentInterviewNode.value === null) return null
         return interviewResult.value.find(item => item.campaign_id === currentInterviewNode.value) ?? null
     })
-
 
     const isUnderWay = computed(() => {
         return currentInterviewResult.value?.status === 'pending'
@@ -460,7 +448,6 @@ export const useUserStore = defineStore('user', () => {
         userInfo,
         handleUserInfo,
         cleanUserInfo,
-        updateUserInfo,
         checkHasInterview,
         interviews,
         currentTitle,
@@ -480,11 +467,11 @@ export const useUserStore = defineStore('user', () => {
         activeInterview,
         inactiveInterview,
         interviewResultStatus,
-        generateCasdoorUserInfo,
         uploadAvatar,
         setPassword,
         updateCasdoorUserInfo,
         casdoorUserInfo,
-        loadInterviewFormJSON
+        loadInterviewFormJSON,
+        getCasdoorUserInfo
     }
 })

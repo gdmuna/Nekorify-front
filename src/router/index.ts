@@ -9,9 +9,10 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 import { nextTick, h } from 'vue';
 
-import { showModal } from '@/lib/utils';
+import { showModal, openInNewTab } from '@/lib/utils';
 
 import { toast } from 'vue-sonner'
+
 
 const routes = [
   {
@@ -81,15 +82,14 @@ const routes = [
       scrollToTop: true
     }
   },
-  {
-    path: '/resourcesHub',
-    component: () => import('../views/resourcesHub/index.vue'),
-    name: 'resourcesHub',
-    meta: {
-      title: '资源站',
-      scrollToTop: true
-    }
-  },
+  // {
+  //   path: '/resourcesHub',
+  //   component: () => import('@/views/resourcesHub/index.vue'),
+  //   name: 'resourcesHub',
+  //   meta: {
+  //     title: '资源站'
+  //   }
+  // },
   {
     path: '/loginCallback',
     component: () => import('../views/loginCallback/index.vue'),
@@ -247,10 +247,6 @@ const routes = [
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/404'
-  },
-  {
-    path: '/404',
     name: 'NotFound',
     component: () => import('../views/wtf/index.vue'),
     meta: {
@@ -269,7 +265,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const systemStore = useSystemStore()
-  if (to.name == 'videos' || to.name == 'resourcesHub') {
+  if (to.name == 'videos') {
     showModal({
       content: [
         h('div', { class: 'flex flex-col space-y-4' }, [

@@ -43,8 +43,8 @@ const config = {
             }
             return result;
         },
-        onError: async (err: any) => {
-            Promise.reject(err);
+        onError: (err: any) => {
+            throw err
         }
     }
 }
