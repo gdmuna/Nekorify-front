@@ -206,6 +206,10 @@ import { useSystemStore } from '@/stores/system'
 const systemStore = useSystemStore()
 const { routerGoto } = systemStore
 
+import { useResourceStore } from '@/stores/resource';
+const resourceStore = useResourceStore();
+const { fetchResourcesList } = resourceStore;
+
 import type { Article } from '@/types/resource'
 
 const props = defineProps<{
@@ -380,6 +384,10 @@ async function onSubmit(values: any) {
             underSubmit.value = false
             routerGoto('/dashboard/article-manager')
             await props.fetchInst.send(props.params, true)
+            fetchResourcesList('article', {
+                currerntPage: 1,
+                pageSize: 20
+            }, true)
             return '成功发布文章'
         },
         error: (err: any) => `发布失败: ${err}`

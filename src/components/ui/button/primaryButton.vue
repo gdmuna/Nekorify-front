@@ -58,7 +58,7 @@ const animate = {
         })
     },
     updateLocation(e: MouseEvent) {
-        if (!mask1.value) return
+        if (!mask1.value || !e) return
         this.e = e
         gsap.set(mask1.value, {
             x: e.offsetX - (mask1.value?.offsetWidth || 0) / 2,

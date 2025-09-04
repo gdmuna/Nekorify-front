@@ -118,7 +118,7 @@ const params = ref({
 const publishedAnnouncement = {
     data: computed(() => {
         if (Array.isArray(announcementFetch.data.value)) {
-            const val = announcementFetch.data.value.filter(item => item.status === 'published')
+            const val = announcementFetch.data.value.filter(item => item.status === 'published' || item.status === 'archived')
             return val
         }
         return []

@@ -44,12 +44,12 @@ export const useResourceStore = defineStore('resource', () => {
     const articleDataStatus = ref<DataStatus>('idle')
     const videoDataStatus = ref<DataStatus>('idle')
 
-    async function fetchResourcesList(type: 'announcement' | 'article' | 'course', params: BaseParams = {}) {
+    async function fetchResourcesList(type: 'announcement' | 'article' | 'course', params: BaseParams = {}, force?: boolean) {
         let err, res
         switch (type) {
             case 'announcement':
                 announcementDataStatus.value = 'loading';
-                ({ err, res } = await resourceApi.fetchResourcesList<AnnouncementRes>('/announcement/', params))
+                ({ err, res } = await resourceApi.fetchResourcesList<AnnouncementRes>('/announcement/', params, force))
                 if (res) {
                     announcements.value = res.data.data.announcements
                     announcementPagination.value = res.data.data.pagination
@@ -61,7 +61,7 @@ export const useResourceStore = defineStore('resource', () => {
                 break
             case 'article':
                 articleDataStatus.value = 'loading';
-                ({ err, res } = await resourceApi.fetchResourcesList<ArticleRes>('/article/', params))
+                ({ err, res } = await resourceApi.fetchResourcesList<ArticleRes>('/article/', params, force))
                 if (res) {
                     articles.value = res.data.data.articles
                     articlePagination.value = res.data.data.pagination
@@ -73,7 +73,7 @@ export const useResourceStore = defineStore('resource', () => {
                 break
             case 'course':
                 videoDataStatus.value = 'loading';
-                ({ err, res } = await resourceApi.fetchResourcesList<ReplayRes>('/replay/', params))
+                ({ err, res } = await resourceApi.fetchResourcesList<ReplayRes>('/replay/', params, force))
                 if (res) {
                     videos.value = res.data.data.replays
                     videoPagination.value = res.data.data.pagination

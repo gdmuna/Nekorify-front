@@ -1,13 +1,13 @@
 <template>
     <Dialog v-model:open="dialogOpen">
         <DialogTrigger as-child>
-            <secondaryButton text="编辑个人资料" :icon="PenLine"
+            <secondaryButton text="编辑账户信息" :icon="PenLine"
                 class="dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded md:text-xl" />
         </DialogTrigger>
         <DialogScrollContent class="max-w-[90%] md:max-w-[680px] xl:max-w-[750px] 2xl:max-w-[950px]">
             <DialogHeader>
                 <DialogTitle class="dark:text-[#CFCBA0] md:text-3xl text-2xl">
-                    <p v-if="!isAdvanced">编辑个人资料</p>
+                    <p v-if="!isAdvanced">个人资料</p>
                     <p v-else>账户安全</p>
                 </DialogTitle>
                 <DialogDescription class="dark:text-[#D5C8B0] md:text-lg">

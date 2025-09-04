@@ -13,7 +13,6 @@ import type {
 export const resourceApi = {
     async fetchResourcesList<T>(path: string, params: BaseParams = {}, force = false) {
         console.log('fetchResourcesList', path, params, force);
-        
         const inst = nekorify.Get<any>(path, {
             params
         }).send(force)

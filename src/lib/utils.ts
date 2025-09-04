@@ -457,8 +457,8 @@ const imgFirework = {
             img.style.pointerEvents = 'none'
             img.style.userSelect = 'none'
             img.style.zIndex = `${zIndex}`
-            const appContent = document.getElementById('content')
-            appContent!.appendChild(img)
+            const appMainContent = document.getElementById('content_main')
+            appMainContent!.appendChild(img)
             gsap.to(img, {
                 x: dx,
                 y: dy,
