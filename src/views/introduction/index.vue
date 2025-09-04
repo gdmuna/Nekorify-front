@@ -389,12 +389,12 @@
         </section>
         <!-- Section 5 -->
         <section class="bg-gray-100 dark:bg-[#0E100F]">
-            <div class="xl:pt-36 md:pt-24 pt-16">
+            <div class="xl:pt-24 md:pt-16 pt-8">
                 <!-- section 主内容 -->
                 <h1 class="md:text-6xl text-4xl text-center font-bold">开发者</h1>
                 <!-- 贡献者名单 -->
                 <div class="w-full grid md:grid-cols-2 grid-cols-1 xl:gap-20 gap-10 justify-items-center
-                mt-24 xl:pl-14 xl:pr-16 md:pl-4 md:pr-8 pl-2 pr-8">
+                md:mt-24 mt-8 xl:pl-14 xl:pr-16 md:pl-4 md:pr-8 pl-2 pr-8">
                     <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
@@ -528,6 +528,7 @@
                 <div class="md:space-y-8 space-y-4 md:mt-10 mt-5 md:mx-6 mx-4 text-center md:text-3xl text-lg font-bold text-emerald-400">
                     <p>感谢 网协传奇老祖 提供的服务器与域名支持✨</p>
                     <p>感谢 网协“画之执政”蛋总 提供的吉祥物素材✨</p>
+                    <p>感谢 黎大会长 提供的协调保障服务✨</p>
                     <p>感谢 宣传部烁煊同学 提供的新版ACM LOGO✨</p>
                     <p>感谢所有为协会事务默默付出的成员，以及所有为本项目提供技术支持的开源项目贡献者✨</p>
                 </div>
