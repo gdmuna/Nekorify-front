@@ -43,8 +43,9 @@ export const useAuthStore = defineStore('auth', () => {
             toast.error(err.data.message || '登录失败')
             setToken()
         }
-        const systemStore = useSystemStore();
-        systemStore.routerBack()
+        const searchParams = new URLSearchParams(window.location.search);
+        const path = searchParams.get('state')
+        router.push(path || '/dashboard')
     }
 
     function setToken(token?: Token) {

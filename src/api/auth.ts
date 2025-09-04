@@ -2,12 +2,17 @@ import { nekorify, ranaMinder, casdoor } from './index';
 
 import { errTemplate, returnTemplate, to } from '@/lib/utils';
 
+import { useSystemStore } from '@/stores/system';
+
 const baseURL = import.meta.env.VITE_API_NEKORIFY_BASE_URL || window.NEKORIFY_BASE_URL;
 
 export const authApi = {
     // 用户登录
     login() {
-        window.location.href = `${baseURL}/auth/login?target=${encodeURIComponent(window.location.href)}`;
+        const systemStore = useSystemStore();
+        let targetPath
+        if (systemStore.targetPath) targetPath = encodeURIComponent(systemStore.targetPath)
+        window.location.href = `${baseURL}/auth/login?target=${targetPath ?? '/dashboard'}`
     },
 
     async loginCallback() {

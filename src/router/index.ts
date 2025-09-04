@@ -288,6 +288,8 @@ router.beforeEach((to, from, next) => {
     smoother?.scrollTo(0, false)
   }
   if (to.meta.requireAuth && !authStore.isAuthenticated) {
+    systemStore.targetPath = to.fullPath
+    console.log('目标路径', systemStore.targetPath);
     authStore.login()
     return next(false)
   } else if (to.meta.guest && authStore.isAuthenticated) {

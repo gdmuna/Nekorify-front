@@ -47,7 +47,7 @@ const items = ref([
         rightIcon: ArrowRight,
         path: {
             type: 'link',
-            to: 'https://na-acm.org/admin'
+            to: 'https://hrm.apps.gdmuna.com'
         }
     },
     {
