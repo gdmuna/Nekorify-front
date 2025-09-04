@@ -479,7 +479,7 @@
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
                                     <p class="md:text-lg text-sm">
-                                        老祖老祖老祖老祖老祖老祖
+                                        他不只是说故事的人，也是故事。而且这个故事充满活力，千变万化，永垂不朽。
                                     </p>
                                 </div>
                             </div>
