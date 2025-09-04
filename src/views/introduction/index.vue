@@ -668,6 +668,7 @@ onMounted(() => {
     if (isMobile.value) {
         section3CardsManager.init()
     }
+    nextTick(() => ScrollTrigger.refresh())
 })
 
 let horizontalScrollTrigger: ScrollTrigger | null = null

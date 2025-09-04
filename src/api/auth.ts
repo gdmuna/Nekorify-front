@@ -2,7 +2,7 @@ import { nekorify, ranaMinder} from './index';
 
 import { errTemplate, returnTemplate, to } from '@/lib/utils';
 
-const baseURL = import.meta.env.VITE_API_NEKORIFY_BASE_URL
+const baseURL = import.meta.env.VITE_API_NEKORIFY_BASE_URL || window.NEKORIFY_BASE_URL;
 
 export const authApi = {
     // 用户登录
