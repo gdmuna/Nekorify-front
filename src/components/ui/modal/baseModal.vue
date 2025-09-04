@@ -3,7 +3,7 @@
         <div v-if="visible" class="inset-0 fixed bg-black/60 size-full z-50 flex items-center justify-center"
             @click="onCancel">
             <div ref="container" class="max-w-[90%] md:max-w-[550px] xl:max-w-[800px] 2xl:max-w-[900px] flex flex-col
-            p-6 dark:bg-[#181818] rounded-lg" @click.stop>
+            p-6 dark:bg-[#181818] rounded-lg items-center" @click.stop>
                 <slot />
                 <div class="mt-6 flex justify-center">
                     <primaryButton class="dark:bg-sky-600 bg-emerald-500 dark:text-[#0E100F] md:py-4 py-3 md:px-6 px-5 w-fit self-center text-lg select-none"

@@ -109,7 +109,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.createdAt = info.createdTime
         userInfo.lastLogin = info.lastSigninTime
         userInfo.groups = info.groups
-        userInfo.links = Array.isArray(info.properties.links) ? info.properties.links.split(',').filter(Boolean) : null
+        userInfo.links = info.properties.links ? info.properties.links.split(',').filter(Boolean) : null
     }
 
     function cleanUserInfo() {

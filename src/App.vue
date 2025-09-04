@@ -26,7 +26,7 @@
                         &
                         &nbsp;
                         <outlineText text="MyGO!!!" lineColor="#B0B0B0" keepInEnd bottomLineClass="!mt-0"
-                            @click="openInNewTab('https://github.com/orgs/gdmuna/teams/mygo')" />&nbsp;.&nbsp;
+                            @click="openInNewTab('https://github.com/gdmuna')" />&nbsp;.&nbsp;
                         <span>All Rights Reserved.</span>
                     </p>
                     <p>

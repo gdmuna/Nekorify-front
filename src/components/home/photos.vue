@@ -31,7 +31,7 @@ const imgOpened = ref(false);
 const imgOpenedSrc = ref('');
 
 onMounted(() => {
-    photobox.init()
+    nextTick(() => requestAnimationFrame(photobox.init.bind(photobox)));
     document.addEventListener('keyup', handleKeyup);
 })
 
@@ -134,7 +134,7 @@ const photobox = {
             requestAnimationFrame(() => this.init());
             return
         }
-        this.content = this.canvas!.getContext("2d");
+        this.content = this.canvas.getContext("2d");
         // 计算适应当前屏幕的尺寸
         this.calculateResponsiveSizes();
         // 计算总宽高

@@ -391,7 +391,7 @@
         <section class="bg-gray-100 dark:bg-[#0E100F]">
             <div class="xl:pt-36 md:pt-24 pt-16">
                 <!-- section 主内容 -->
-                <h1 class="md:text-8xl text-6xl text-center font-bold">开发者</h1>
+                <h1 class="md:text-6xl text-4xl text-center font-bold">开发者</h1>
                 <!-- 贡献者名单 -->
                 <div class="w-full grid md:grid-cols-2 grid-cols-1 xl:gap-20 gap-10 justify-items-center
                 mt-24 xl:pl-14 xl:pr-16 md:pl-4 md:pr-8 pl-2 pr-8">
@@ -439,21 +439,21 @@
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">FOV-RGT</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-start ml-4 min-w-1/3 flex-col">
-                                    <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                    <p class="md:text-lg text-sm">
                                         Ciallo～(∠・ω< )⌒☆ </p>
-                                            <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                            <p class="md:text-lg text-sm">
                                                 第22届 GDMU-NA BI部部长，全栈开发者，目前头发还很多🤓
                                             </p>
-                                            <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                            <p class="md:text-lg text-sm">
                                                 喜欢看番打游戏，还会点电吉他，只可惜染上蓝色原神（VSCode）后就很少空闲时间了😭
                                             </p>
-                                            <!-- <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                            <!-- <p class="md:text-lg text-sm">
                                         前端常用 Vue 3 + TypeScript，搭配 Shadcn 和 Tailwind 写界面；后端也能整，Express + Sequelize 写 API，MySQL、Redis 都摸过🧐
                                     </p> -->
-                                            <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                            <p class="md:text-lg text-sm">
                                                 啥都想做：前后端、组乐队、嵌入式、无线电、摄影、视频剪辑、3D建模、游戏开发……😋
                                             </p>
-                                            <p class="md:text-lg text-sm whitespace-pre-wrap">
+                                            <p class="md:text-lg text-sm">
                                                 愿有志者不负少年时，你所热爱的，就是你的生活🤓
                                             </p>
                                 </div>
@@ -479,7 +479,7 @@
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
                                     <p class="md:text-lg text-sm">
-                                        老祖老祖老祖老祖老祖老祖
+                                        他不只是说故事的人，也是故事。而且这个故事充满活力，千变万化，永垂不朽。
                                     </p>
                                 </div>
                             </div>
@@ -521,10 +521,16 @@
             </div>
         </section>
         <!-- Section 6 -->
-        <section class="min-h-[100dvh] bg-gray-200 dark:bg-[#0E100F]">
+        <section class="bg-gray-200 dark:bg-[#0E100F]">
             <div class="xl:pt-36 md:pt-24 pt-16">
                 <!-- section 主内容 -->
-                <h1 class="md:text-8xl text-6xl text-center font-bold">致谢名单</h1>
+                <h1 class="md:text-6xl text-4xl text-center font-bold">致谢名单</h1>
+                <div class="md:space-y-8 space-y-4 md:mt-10 mt-5 md:mx-6 mx-4 text-center md:text-3xl text-lg font-bold text-emerald-400">
+                    <p>感谢 网协传奇老祖 提供的服务器与域名支持✨</p>
+                    <p>感谢 网协“画之执政”蛋总 提供的吉祥物素材✨</p>
+                    <p>感谢 宣传部烁煊同学 提供的新版ACM LOGO✨</p>
+                    <p>感谢所有为协会事务默默付出的成员，以及所有为本项目提供技术支持的开源项目贡献者✨</p>
+                </div>
             </div>
         </section>
     </div>
@@ -662,6 +668,7 @@ onMounted(() => {
     if (isMobile.value) {
         section3CardsManager.init()
     }
+    nextTick(() => ScrollTrigger.refresh())
 })
 
 let horizontalScrollTrigger: ScrollTrigger | null = null
