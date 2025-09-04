@@ -23,5 +23,9 @@ export const userApi = {
     async setPassword(formData: FormData) {
         const inst = casdoor.Post('/api/set-password', formData)
         return await to<any>(inst)
+    },
+    async getCasdoorUserInfo(force: boolean = false) {
+        const inst = casdoor.Get('/api/get-account').send(force)
+        return await to<any>(inst)
     }
 }

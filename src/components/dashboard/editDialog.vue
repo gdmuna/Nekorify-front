@@ -23,7 +23,7 @@
                         <Mail class="size-5" />
                         <p class="line-through">换绑邮箱</p><span>（还没做完喵...）</span>
                     </h2>
-                    <FormField v-slot="{ componentField }" name="email">
+                    <FormField v-slot="{ componentField, value }" name="email">
                         <FormItem>
                             <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
                                 新邮箱
@@ -34,7 +34,7 @@
                             <FormControl class="flex space-x-2">
                                 <div class="flex space-x-2">
                                     <Input type="email" placeholder="请输入您的新邮箱" v-bind="componentField" />
-                                    <primaryButton text="发送验证码" type="button"
+                                    <primaryButton text="发送验证码" type="button" @click="onSendVerificationCode(value)"
                                         class="dark:bg-emerald-500 dark:text-[#0E100F] md:text-base"
                                         mask1-color="#1aa0c2" mask2-color="#7de3f3" />
                                 </div>
@@ -262,8 +262,9 @@ import { useSystemStore } from "@/stores/system"
 import { useAuthStore } from "@/stores/auth"
 import { storeToRefs } from "pinia";
 import { toast } from "vue-sonner"
+import { casdoor } from "@/api"
 const userStore = useUserStore();
-const { userInfo } = storeToRefs(userStore);
+const { userInfo, casdoorUserInfo } = storeToRefs(userStore);
 const { updateCasdoorUserInfo, setPassword, getUserInfo } = userStore;
 
 const systemStore = useSystemStore();
@@ -414,14 +415,41 @@ const emailUseIcon = computed(() => {
     return emailUnderSubmit.value ? iconMap.value['loading'] : iconMap.value['submit']
 })
 
+const verificationCodeUnderSend = ref(false);
+//casdoor文档过于答辩 暂时搞不定
+async function onSendVerificationCode(values: any) {
+    if (verificationCodeUnderSend.value) return
+    verificationCodeUnderSend.value = true
+    console.log(values);
+    // const formData = new FormData()
+    // formData.append('dest', email)
+    // formData.append('type', 'email')
+    // formData.append('method', 'reset')
+    // formData.append('applicationId', `Nekorify/${userStore.casdoorUserInfo.value.signupApplication}`)
+    // formData.append('captchaType', 'Default')
+    // formData.append('captchaToken', '455329')
+    // formData.append('clientSecret', 'Nekorify')
+    toast.warning('？都说没做完了')
+    // const ok = await authStore.sendVerificationCode(values)
+    // if (!ok) return
+    dialogOpen.value = false
+    emailUnderSubmit.value = false
+}
+
 const emailUnderSubmit = ref(false);
 //casdoor文档过于答辩 暂时搞不定
 async function onSubmitEmailForm(values: any) {
     if (emailUnderSubmit.value) return
     emailUnderSubmit.value = true
     console.log(values);
-    const formData = new FormData()
+    // const formData = new FormData()
+    // formData.append('dest', values.emailVerificationCode)
+    // formData.append('type', 'email')
+    // formData.append('method', 'reset')
+    // formData.append('applicationId', 'admin/Nekorify')
     toast.warning('？都说没做完了')
+    // const ok = await authStore.sendVerificationCode(formData)
+    // if (!ok) return
     dialogOpen.value = false
     emailUnderSubmit.value = false
 }

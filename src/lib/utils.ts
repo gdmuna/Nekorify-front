@@ -30,6 +30,10 @@ import { gsap } from 'gsap'
 
 import { storeToRefs } from 'pinia'
 import { useSystemStore } from '@/stores/system'
+import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
+
+import { authApi } from '@/api'
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -482,3 +486,48 @@ export const imgFireworkStart = (target: HTMLElement, zIndex: number = 9999, bas
 }
 
 export const imgFireworkInit = imgFirework.init.bind(imgFirework)
+
+export function useVerificationCodeService() {
+    const countdown = ref(0)
+    let timer: ReturnType<typeof setInterval> | null = null
+    const userStore = useUserStore();
+    const authStore = useAuthStore();
+
+    function startCountdown(seconds: number) {
+        if (timer) clearInterval(timer)
+        countdown.value = seconds
+        timer = setInterval(() => {
+            countdown.value--
+            if (countdown.value <= 0) {
+                clearInterval(timer!)
+                timer = null
+            }
+        }, 1000)
+    }
+
+    function stopCountdown() {
+        if (timer) {
+            clearInterval(timer)
+            timer = null
+        }
+        countdown.value = 0
+    }
+
+    async function sendVerificationCode(formData: FormData) {
+            const { err, res } = await authApi.sendVerificationCode(formData)
+            console.log('sendVerificationCode', { err, res })
+            if (res.status !== 'error') {
+                toast.success('验证码已发送，请注意查收')
+                return res
+            } else {
+                toast.error('发送验证码失败')
+                return false
+            }
+        }
+
+    return {
+        countdown,
+        startCountdown,
+        stopCountdown
+    }
+}
