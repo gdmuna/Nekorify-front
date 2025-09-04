@@ -47,31 +47,16 @@ export const useUserStore = defineStore('user', () => {
         try {
             const authStore = useAuthStore()
             await new Promise((resolve, reject) => {
-                getUserInfo(true).then(() => {
-                    authStore.refresh().then(() => {
+                authStore.refresh().then(() => {
+                    getUserInfo(true).then(() => {
                         resolve(true)
                         toast.success('自动登录成功')
                     }).catch(() => {
-                        toast.info('登录成功，但刷新access_token失败')
-                        resolve(true)
-                    })
-                }).catch(() => {
-                    authStore.refresh().then(() => {
-                        new Promise((res, rej) => {
-                            setTimeout(() => {
-                                getUserInfo(true).then(() => {
-                                    toast.success('自动登录成功')
-                                    res(true)
-                                }).catch(() => {
-                                    toast.error('自动登录失败，请重新登录')
-                                    rej(false)
-                                    reject(false)
-                                })
-                            }, 1000)
-                        })
-                    }).catch(() => {
+                        toast.info('自动登录失败，请重新登录')
                         reject(false)
                     })
+                }).catch(() => {
+                    reject(false)
                 })
             })
             authStore.initUserPermission()
@@ -101,7 +86,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.owner = info.owner
         userInfo.studentNumber = info.name
         userInfo.username = info.displayName
-        userInfo.nickname = info.properties.nickname
+        userInfo.nickname = info.tag
         userInfo.bio = info.bio
         userInfo.email = info.email
         userInfo.avatar = info.avatar
@@ -109,7 +94,7 @@ export const useUserStore = defineStore('user', () => {
         userInfo.createdAt = info.createdTime
         userInfo.lastLogin = info.lastSigninTime
         userInfo.groups = info.groups
-        userInfo.links = info.properties.links ? info.properties.links.split(',').filter(Boolean) : null
+        userInfo.links = info.homepage ? info.homepage.split(',').filter(Boolean) : null
     }
 
     function cleanUserInfo() {
@@ -125,19 +110,6 @@ export const useUserStore = defineStore('user', () => {
         userInfo.lastLogin = ''
         userInfo.groups = []
         userInfo.links = []
-    }
-
-    async function updateUserInfo(info: any) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                userInfo.nickname = info.nickname
-                userInfo.bio = info.bio
-                userInfo.email = info.email
-                userInfo.links = info.links
-                const random = Math.random()
-                random < 0.5 ? resolve(true) : resolve(false)
-            }, 1000);
-        })
     }
 
     const casdoorUserInfo = ref<any>(null)
@@ -460,7 +432,6 @@ export const useUserStore = defineStore('user', () => {
         userInfo,
         handleUserInfo,
         cleanUserInfo,
-        updateUserInfo,
         checkHasInterview,
         interviews,
         currentTitle,

@@ -68,7 +68,7 @@
             </div>
         </div>
         <secondaryButton text="登出" :icon="LogOut"
-            class="dark:bg-[#f19180] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] md:mt-4 mt-2 w-fit"
+            class="dark:bg-[#f19180] dark:text-[#0E100F] rounded md:text-xl md:mt-4 mt-2 w-fit"
             @click="logout" />
     </div>
 </template>

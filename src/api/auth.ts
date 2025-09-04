@@ -1,4 +1,4 @@
-import { nekorify, ranaMinder} from './index';
+import { nekorify, ranaMinder } from './index';
 
 import { errTemplate, returnTemplate, to } from '@/lib/utils';
 

@@ -1,11 +1,11 @@
 <template>
-    <div ref="container" class="text-[#0E100F] md:text-4xl text-xl font-extrabold flex flex-col
-    items-start will-change-transform md:*:px-8 md:*:py-3 *:px-4 *:py-1">
+    <div ref="container" class="text-[#0E100F] md:text-4xl text-3xl font-extrabold flex flex-col
+    items-start will-change-transform md:*:px-8 md:*:py-3 *:px-6 *:py-2">
         <p ref="titleA_block" class="title rounded-lg z-10 whitespace-nowrap"
             :style="{ backgroundColor: titleA_color }">
             {{ titleA }}
         </p>
-        <p ref="titleB_block" class="rounded-lg md:ml-8 ml-4 md:-translate-y-1.5 -translate-y-1 whitespace-nowrap"
+        <p ref="titleB_block" class="rounded-lg md:ml-8 ml-6 md:-translate-y-1.5 -translate-y-1 whitespace-nowrap"
             :style="{ backgroundColor: titleB_color }">
             {{ titleB }}
         </p>
