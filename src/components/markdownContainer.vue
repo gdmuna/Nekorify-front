@@ -290,7 +290,6 @@ const copyAnimate = {
         line-height: 1em;
         background: #17191d;
         border-radius: 0.25em;
-        min-height: 4rem;
 
         code[class*="language-"] {
             font-size: 0.8em;
