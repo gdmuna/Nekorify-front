@@ -262,7 +262,7 @@ import { useSystemStore } from "@/stores/system"
 import { useAuthStore } from "@/stores/auth"
 import { storeToRefs } from "pinia";
 import { toast } from "vue-sonner"
-import { casdoor } from "@/api"
+
 const userStore = useUserStore();
 const { userInfo, casdoorUserInfo } = storeToRefs(userStore);
 const { updateCasdoorUserInfo, setPassword, getUserInfo } = userStore;

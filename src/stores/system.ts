@@ -52,6 +52,7 @@ export const useSystemStore = defineStore('system', () => {
     }
 
     const prevPath = ref<string | null>(null)
+    const targetPath = ref<string | null>(null)
 
     function routerGoto(path: string) {
         const currentPath = router.currentRoute.value.path
@@ -92,6 +93,7 @@ export const useSystemStore = defineStore('system', () => {
         routerGoto,
         routerBack,
         prevPath,
-        setPrevPath
+        setPrevPath,
+        targetPath
     }
 })
