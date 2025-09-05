@@ -8,7 +8,7 @@ import { errTemplate } from '@/lib/utils';
 
 const config = {
     requestAdapter: adapterFetch(),
-    timeout: 5000,
+    timeout: 30000,
     beforeRequest(method: any) {
         const authStore = useAuthStore();
         const { accessToken } = storeToRefs(authStore);
