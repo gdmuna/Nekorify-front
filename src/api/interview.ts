@@ -22,7 +22,7 @@ export const interviewApi = {
         return await to<InterviewResultRes>(inst)
     },
     async uploadInterviewForm(formData: FormData) {
-        const inst = ranaMinder.Post('/application/', formData)
+        const inst = ranaMinder.Post<any>('/application/', formData)
         return await to(inst)
         // console.log('formData', JSON.stringify(formData.get('information')));
         // return to(new Promise<any>((resolve, reject) => {
