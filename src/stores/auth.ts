@@ -32,6 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
         if (res) {
             const userStore = useUserStore();
             await userStore.loadInterviewFormJSON()
+            await userStore.loadInterviewFormJSON2()
             const data = res.data
             const token = data.data.token
             toast.success(data.message)

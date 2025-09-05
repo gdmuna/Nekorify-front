@@ -60,7 +60,8 @@ export const useUserStore = defineStore('user', () => {
                 })
             })
             authStore.initUserPermission()
-            await loadInterviewFormJSON();
+            await loadInterviewFormJSON()
+            await loadInterviewFormJSON2()
             return true
         } catch (e) {
             return false
@@ -315,6 +316,23 @@ export const useUserStore = defineStore('user', () => {
         interviewFormJSON.value = data;
     }
     const interviewFormJSON = ref<InterviewFormJSON[]>([])
+    async function loadInterviewFormJSON2() {
+        const res = await fetch('/template2.json');
+        if (!res.ok) {
+            throw new Error('加载表单配置失败');
+        }
+        const data = await res.json();
+        interviewFormJSON2.value = data;
+    }
+    const interviewFormJSON2 = ref<InterviewFormJSON[]>([])
+
+    const currentInterviewFormJSON = computed(() => {
+        if (currentTitle.value.startsWith('NA')) {
+            return interviewFormJSON.value
+        } else if (currentTitle.value.startsWith('ACM')) {
+            return interviewFormJSON2.value
+        }
+    })
     const steps = computed(() => {
         let Steps: Step[] = [
             {
@@ -472,6 +490,8 @@ export const useUserStore = defineStore('user', () => {
         updateCasdoorUserInfo,
         casdoorUserInfo,
         loadInterviewFormJSON,
-        getCasdoorUserInfo
+        getCasdoorUserInfo,
+        loadInterviewFormJSON2,
+        currentInterviewFormJSON
     }
 })

@@ -9,7 +9,7 @@
             <form id="form" ref="formRef" @submit.prevent="handleSubmit($event, onSubmit)"
                 class="flex flex-col space-y-4 md:px-0 px-4">
                 <!-- 昵称 -->
-                <FormField v-slot="{ componentField, value, setValue, meta }" v-for="(item, index) in interviewFormJSON"
+                <FormField v-slot="{ componentField, value, setValue, meta }" v-for="(item, index) in currentInterviewFormJSON"
                     :key="index" :name="item.fieldName">
                     <FormItem>
                         <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-xl text-lg cursor-pointer" :data-index="`formLabel-${index}`" @click="scrollTo(`formLabel-${index}`)">
@@ -129,7 +129,7 @@ import { toast } from 'vue-sonner'
 import { storeToRefs } from "pinia"
 import { useUserStore } from "@/stores/user"
 const userStore = useUserStore()
-const { interviewFormJSON, currentInterviewNode } = storeToRefs(userStore)
+const { currentInterviewFormJSON, currentInterviewNode } = storeToRefs(userStore)
 const { uploadInterviewForm, getInterviewResult } = userStore
 import { useSystemStore } from "@/stores/system"
 const systemStore = useSystemStore()
@@ -153,7 +153,7 @@ const useIcon = computed(() => {
 const formRef = ref<HTMLFormElement | null>(null)
 
 // 校验规则
-const formSchema = toTypedSchema(generateZodSchema(interviewFormJSON.value))
+const formSchema = toTypedSchema(generateZodSchema(currentInterviewFormJSON.value!))
 
 async function onSubmit(values: any) {
     if (underSubmit.value) return
@@ -186,7 +186,7 @@ const previewUrl = ref<string | null>(null)
 
 function triggerFileInput(index: number) {
     fileInput.value.find(input => input.dataset.index === String(index))?.click()
-    // console.log(JSON.stringify(interviewFormJSON.value, null, 1));
+    // console.log(JSON.stringify(currentInterviewFormJSON.value, null, 1));
 }
 
 function onFileChange(e: Event, setValue: (v: File) => void) {
