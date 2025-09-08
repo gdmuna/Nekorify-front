@@ -134,7 +134,7 @@
                                             <span class="text-xl">
                                                 <Lightbulb class="size-6 text-amber-200" />
                                             </span>
-                                            <p class="text-sm text-[#bbb3a4]">请根据您的面试时间，提前15分钟到达面试地点。</p>
+                                            <p class="text-sm text-[#bbb3a4]">请根据您的面试时间，提前10分钟到达面试地点。</p>
                                         </div>
                                     </div>
                                 </div>
