@@ -60,12 +60,12 @@
                             class="xl:!w-128 xl:mr-20 xl:ml-auto md:mx-auto">
                             <template #TR>
                                 <div class="flex-1"></div>
-                                <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                 <span class="text-lg Association-NA">GDMU-NA</span>
                             </template>
                             <template #main>
                                 <div class="flex-1 flex justify-between items-center w-full h-full">
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt=""
+                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt=""
                                         class="xl:size-32 md:size-36 size-20">
                                     <div class="bg-[#595959] w-[1px] self-stretch mr-4" />
                                     <div class="flex-1 xl:text-lg md:text-2xl split-text">
@@ -80,12 +80,12 @@
                         <macWindow border enterAnimate :enableSplitText="!isMobile" class="xl:!w-128 xl:ml-20">
                             <template #TR>
                                 <div class="flex-1"></div>
-                                <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-8">
+                                <img src="/src/assets/ACM-LOGO/ACM-LOGO 1.svg" alt="" class="size-8">
                                 <span class="text-lg Association-ACM">GDMU-ACM</span>
                             </template>
                             <template #main>
                                 <div class="flex-1 flex justify-between items-center w-full h-full">
-                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="xl:size-32 md:size-36 size-20">
+                                    <img src="/src/assets/ACM-LOGO/ACM-LOGO 1.svg" alt="" class="xl:size-32 md:size-36 size-20">
                                     <div class="bg-[#595959] w-[1px] self-stretch mr-4" />
                                     <div class="flex-1 xl:text-lg md:text-2xl split-text">
                                         ​​ACM协会（GDMU-ACM）​​主攻​​算法与AI应用​​，除系统训练数据结构和竞赛编程外，更深化​​深度学习与计算机视觉领域​​（含目标检测模型如YOLO的实战训练），培养前沿技术研究能力。
@@ -103,9 +103,9 @@
                         <macWindow border enterAnimate :enableSplitText="!isMobile" class="xl:!w-128">
                             <template #TR>
                                 <div class="flex-1"></div>
-                                <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="size-8">
+                                <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt="" class="size-8">
                                 <div class="bg-[#595959] w-[1px] self-stretch" />
-                                <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="size-7">
+                                <img src="/src/assets/ACM-LOGO/ACM-LOGO 1.svg" alt="" class="size-7">
                             </template>
                             <template #main>
                                 <div class="flex-1 flex items-center w-full h-full xl:text-xl md:text-2xl">
@@ -179,14 +179,14 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
+                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] mx-16 w-full">
-                                            <img src="/src/assets/C++-logo.svg" alt="" class="xl:size-20 size-16">
+                                            <img src="/src/assets/技术栈LOGO/C++-logo.svg" alt="" class="xl:size-20 size-16">
                                             <span class="code-cpp xl:text-3xl text-xl font-bold">C++</span>
                                         </div>
                                         <p
@@ -199,14 +199,14 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
+                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/javascript.svg" alt="" class="xl:size-16 size-12">
+                                            <img src="/src/assets/技术栈LOGO/javascript.svg" alt="" class="xl:size-16 size-12">
                                             <span class="code-JS xl:text-3xl text-xl font-bold">JavaScript</span>
                                         </div>
                                         <p
@@ -219,14 +219,14 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
+                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/vue-js.svg" alt="" class="xl:size-16 size-12">
+                                            <img src="/src/assets/技术栈LOGO/vue-js.svg" alt="" class="xl:size-16 size-12">
                                             <span class="brand-vue xl:text-3xl text-xl font-bold">VUE</span>
                                         </div>
                                         <p
@@ -239,14 +239,14 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
+                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 space-x-2 w-full">
-                                            <img src="/src/assets/express-js.svg" alt="" class="xl:size-20 size-16">
+                                            <img src="/src/assets/技术栈LOGO/express-js.svg" alt="" class="xl:size-20 size-16">
                                             <span class="brand-express xl:text-3xl text-xl font-bold">Express</span>
                                         </div>
                                         <p
@@ -259,14 +259,14 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
+                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt="" class="md:size-8 size-6">
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 space-x-4 w-full">
-                                            <img src="/src/assets/mysql-logo.svg" alt="" class="xl:size-20 size-16">
+                                            <img src="/src/assets/技术栈LOGO/mysql-logo.svg" alt="" class="xl:size-20 size-16">
                                             <span class="brand-mysql xl:text-3xl text-xl font-bold">MySQL</span>
                                         </div>
                                         <p
@@ -279,14 +279,14 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
+                                    <img src="/src/assets/ACM-LOGO/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
                                     <span class="text-lg Association-ACM">GDMU-ACM</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/python.svg" alt="" class="xl:size-16 size-12">
+                                            <img src="/src/assets/技术栈LOGO/python.svg" alt="" class="xl:size-16 size-12">
                                             <span class="code-python xl:text-3xl text-xl font-bold">Python</span>
                                         </div>
                                         <p
@@ -299,14 +299,14 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
+                                    <img src="/src/assets/ACM-LOGO/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
                                     <span class="text-lg Association-ACM">GDMU-ACM</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/pytorch.svg" alt="" class="xl:size-16 size-12">
+                                            <img src="/src/assets/技术栈LOGO/pytorch.svg" alt="" class="xl:size-16 size-12">
                                             <span class="brand-pytorch xl:text-3xl text-xl font-bold">PyTorch</span>
                                         </div>
                                         <p
@@ -319,14 +319,14 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
+                                    <img src="/src/assets/ACM-LOGO/ACM-LOGO 1.svg" alt="" class="md:size-8 size-5">
                                     <span class="text-lg Association-ACM">GDMU-ACM</span>
                                 </template>
                                 <template #main>
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-4 w-full">
-                                            <img src="/src/assets/yolo.svg" alt="" class="xl:size-16 size-12">
+                                            <img src="/src/assets/技术栈LOGO/yolo.svg" alt="" class="xl:size-16 size-12">
                                             <span class="brand-yolo xl:text-3xl text-xl font-bold">YOLO</span>
                                         </div>
                                         <p
@@ -408,7 +408,7 @@
                             <div class="flex-1 flex items-center">
                                 <div class="flex h-full flex-col items-center justify-center
                                 space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/Almighty.jpg" alt="" class="md:size-24 size-16 rounded-full">
+                                    <img src="/src/assets/开发者头像/Almighty.jpg" alt="" class="md:size-24 size-16 rounded-full">
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Almighty</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-center ml-4 min-w-1/3">
@@ -435,7 +435,7 @@
                             <div class="flex-1 flex items-center">
                                 <div class="flex h-full flex-col items-center justify-center
                                 space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/FOV-RGT.jpg" alt="" class="md:size-24 size-16 rounded-full">
+                                    <img src="/src/assets/开发者头像/FOV-RGT.jpg" alt="" class="md:size-24 size-16 rounded-full">
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">FOV-RGT</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-start ml-4 min-w-1/3 flex-col">
@@ -473,7 +473,7 @@
                             <div class="flex-1 flex items-center">
                                 <div class="flex h-full flex-col items-center justify-center
                                 space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/Seele.Clover.png" alt=""
+                                    <img src="/src/assets/开发者头像/Seele.Clover.png" alt=""
                                         class="md:size-24 size-16 rounded-full">
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Seele.Clover</p>
                                 </div>
@@ -498,7 +498,7 @@
                             <div class="flex-1 flex items-center">
                                 <div class="flex h-full flex-col items-center justify-center
                                 space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/xl-xlxl.jpg" alt="" class="md:size-24 size-16 rounded-full">
+                                    <img src="/src/assets/开发者头像/xl-xlxl.jpg" alt="" class="md:size-24 size-16 rounded-full">
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">xl-xlxl</p>
                                 </div>
                                 <div class="flex-1 h-full flex flex-col justify-center ml-4 min-w-1/3">
@@ -559,7 +559,6 @@ import {
     Satellite,
     ChevronsUp,
     ChevronsDown,
-    Github,
     ExternalLink
 } from 'lucide-vue-next';
 
@@ -567,8 +566,8 @@ import {
 import lottie from 'lottie-web'
 
 // 导入动画数据
-import Webdesign from '@/assets/Webdesign.json';
-import programmingLottie from '@/assets/programming.json';
+import Webdesign from '@/assets/MG动画文件/Webdesign.json';
+import programmingLottie from '@/assets/MG动画文件/programming.json';
 
 // 导入 GSAP 及其插件
 import { gsap } from "gsap"

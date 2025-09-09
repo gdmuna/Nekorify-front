@@ -4,23 +4,23 @@
             <template #TR>
                 <div class="relative flex-1 overflow-hidden *:will-change-transform">
                     <div ref="logo_cpp" class="flex items-center space-x-2 justify-end">
-                        <img src="@/assets/C++-LOGO.svg" class="size-8">
+                        <img src="@/assets/技术栈LOGO/C++-LOGO.svg" class="size-8">
                         <span class="text-lg code-cpp">C++</span>
                     </div>
                     <div ref="logo_JS" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/icons8-javascript.svg" class="size-6">
+                        <img src="@/assets/技术栈LOGO/icons8-javascript.svg" class="size-6">
                         <span class="text-lg code-JS">JavaScript</span>
                     </div>
                     <div ref="logo_python" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/python.svg" class="size-7">
+                        <img src="@/assets/技术栈LOGO/python.svg" class="size-7">
                         <span class="text-lg code-python">Python</span>
                     </div>
                     <div ref="logo_java" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/java-logo.svg" class="size-8">
+                        <img src="@/assets/技术栈LOGO/java-logo.svg" class="size-8">
                         <span class="text-lg code-java">Java</span>
                     </div>
                     <div ref="logo_golang" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/golang.svg" class="size-6">
+                        <img src="@/assets/技术栈LOGO/golang.svg" class="size-6">
                         <span class="text-lg code-golang">Golang</span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
             <template #TR>
                 <div class="relative flex-1 overflow-hidden">
                     <div class="flex items-center space-x-2 justify-end">
-                        <img src="@/assets/C++-LOGO.svg" class="size-8">
+                        <img src="@/assets/技术栈LOGO/C++-LOGO.svg" class="size-8">
                         <span class="text-lg code-cpp">C++</span>
                     </div>
                 </div>

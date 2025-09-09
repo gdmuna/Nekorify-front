@@ -46,13 +46,13 @@
                     <div class="relative overflow-hidden cursor-pointer shrink-0 text-lg font-bold"
                         @click="routerGoto('/'), headerAnimate.toggle()">
                         <div ref="logo1" class="space-x-2 flex items-center will-change-transform mr-7">
-                            <img src="/src/assets/gdmuna-logo_gradient.svg" alt=""
+                            <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt=""
                                 class="lg:size-10 size-12 will-change-transform">
                             <p class="Association-NA">GDMU-NA</p>
                         </div>
                         <div ref="logo2"
                             class="absolute top-0 left-0 whitespace-nowrap space-x-1 flex items-center will-change-transform">
-                            <img src="/src/assets/ACM-LOGO 1.svg" alt=""
+                            <img src="/src/assets/ACM-LOGO/ACM-LOGO 1.svg" alt=""
                                 class="lg:size-10 size-12 will-change-transform">
                             <p class="whitespace-nowrap Association-ACM">GDMU-ACM</p>
                         </div>
