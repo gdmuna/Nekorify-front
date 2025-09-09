@@ -35,7 +35,7 @@
                 </primaryButton>
             </div>
         </div>
-        <header ref="headerRef" class="flex lg:flex-row flex-col lg:h-full h-[100dvh] lg:w-full w-[min(24rem,70dvw)] -translate-x-full lg:-translate-x-0 relative
+        <header ref="headerRef" class="flex lg:flex-row flex-col lg:h-full h-screen lg:w-full w-[min(24rem,70dvw)] -translate-x-full lg:-translate-x-0 relative
         lg:items-center items-start lg:justify-between justify-start *:shrink-0 z-60 space-y-4 lg:space-y-0 will-change-transform overscroll-contain
         overflow-x-auto *:pointer-events-auto -top-14 lg:-top-0 -left-4 lg:-left-0 lg:bg-transparent bg-[#0E100F]">
             <!-- 页眉左侧内容 -->
