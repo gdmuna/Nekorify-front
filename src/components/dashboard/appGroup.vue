@@ -6,8 +6,14 @@
             <div class="flex flex-col space-y-6">
                 <p class="dark:text-[#E0DEC0] md:text-4xl text-2xl font-bold">社团相关</p>
                 <div class="flex flex-col">
-                    <liItem v-for="(item, index) in items" :key="index" class="flex-1" @click="handleClick(item.path)"
-                        :title="item.title" :subtitle="item.subtitle" :leftIcon="item.leftIcon"
+                    <liItem
+                        v-for="(item, index) in items"
+                        :key="index"
+                        class="flex-1"
+                        @click="handleClick(item.path)"
+                        :title="item.title"
+                        :subtitle="item.subtitle"
+                        :leftIcon="item.leftIcon"
                         :rightIcon="item.rightIcon" />
                 </div>
                 <p class="dark:text-[#E0DEC0] md:text-4xl text-2xl font-bold">创意工坊</p>
@@ -26,8 +32,8 @@ import { ShieldUser, ArrowRight, Newspaper, Notebook, Youtube, Info } from 'luci
 
 import { openInNewTab, showModal } from '@/lib/utils';
 
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 import { useSystemStore } from '@/stores/system';
 const systemStore = useSystemStore();
@@ -36,8 +42,6 @@ const { routerGoto } = systemStore;
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 const { getGroupByRank } = authStore;
-
-
 
 const items = ref([
     {
@@ -96,15 +100,14 @@ function handleClick(path: { type: string; to: string }) {
     switch (path.type) {
         case 'link': {
             openInNewTab(path.to);
-            break
+            break;
         }
         case 'route': {
             routerGoto(path.to);
-            break
+            break;
         }
     }
 }
-
 </script>
 
 <style scoped></style>

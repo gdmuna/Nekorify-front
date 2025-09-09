@@ -1,19 +1,19 @@
-import type { ReturnTemplate } from '@/types/api'
+import type { ReturnTemplate } from '@/types/api';
 
 export interface ModalOptions {
-    content: any
-    onOk?: () => void
-    onCancel?: () => void
-    okBtnText?: string
-    cancelBtnText?: string
-    showOkBtn?: boolean
-    showCancelBtn?: boolean
+    content: any;
+    onOk?: () => void;
+    onCancel?: () => void;
+    okBtnText?: string;
+    cancelBtnText?: string;
+    showOkBtn?: boolean;
+    showCancelBtn?: boolean;
 }
 
 export interface UseFetchOptions<T, P> {
-    method: (params?: P, force?: boolean) => Promise<ReturnTemplate<T>>
-    immediate?: boolean
-    dataExtractor?: (res: T) => any | any[]
-    append?: boolean
-    filterErr?: (err: any) => boolean
+    method: (params?: P, force?: boolean) => Promise<ReturnTemplate<T>>;
+    immediate?: boolean;
+    dataExtractor?: (res: T) => any | any[];
+    append?: boolean;
+    filterErr?: (err: any) => boolean;
 }

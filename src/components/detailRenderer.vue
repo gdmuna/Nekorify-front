@@ -9,7 +9,5 @@
 </template>
 
 <script setup lang="ts">
-
-
 defineProps<{ detail: any }>();
 </script>

@@ -39,7 +39,7 @@ module.exports = {
                         // 暗色模式下的引导段落颜色
                         '--tw-prose-invert-lead': '#F7C9B6',
                         // 暗色模式下的链接颜色
-                        '--tw-prose-invert-links': 'var(--color-blue-400)', 
+                        '--tw-prose-invert-links': 'var(--color-blue-400)',
                         // 暗色模式下的粗体文本颜色
                         '--tw-prose-invert-bold': '#FFF3BF',
                         // 暗色模式下的有序列表数字颜色
@@ -59,8 +59,8 @@ module.exports = {
                         // 暗色模式下的表头单元格边框颜色
                         '--tw-prose-invert-th-borders': '#bbb89c',
                         // 暗色模式下的表格数据单元格边框颜色
-                        '--tw-prose-invert-td-borders': '#bbb89c',
-                    },
+                        '--tw-prose-invert-td-borders': '#bbb89c'
+                    }
                 },
                 customOrange: {
                     css: {
@@ -116,10 +116,10 @@ module.exports = {
                         // 暗色模式下的表头单元格边框颜色
                         '--tw-prose-invert-th-borders': '#E0B7A0', // 暖米色
                         // 暗色模式下的表格数据单元格边框颜色
-                        '--tw-prose-invert-td-borders': '#F7A8A0', // 偏橙粉
+                        '--tw-prose-invert-td-borders': '#F7A8A0' // 偏橙粉
                     }
                 }
-            }),
-        },
-    },
-}
+            })
+        }
+    }
+};

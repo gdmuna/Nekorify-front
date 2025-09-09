@@ -2,8 +2,9 @@
     <div class="w-full">
         <scrollHint />
         <!-- Section 1 -->
-        <section ref="section1" class="md:h-[calc(100dvh-7.5rem)] h-[75dvh] bg-gray-200 dark:bg-[#0E100F]
-        flex flex-col justify-between relative">
+        <section
+            ref="section1"
+            class="md:h-[calc(100dvh-7.5rem)] h-[75dvh] bg-gray-200 dark:bg-[#0E100F] flex flex-col justify-between relative">
             <photobox />
         </section>
         <!-- Section 2 -->
@@ -45,17 +46,16 @@ onMounted(() => {
     fetchResourcesList('announcement', {
         currerntPage: 1,
         pageSize: 20
-    })
+    });
     fetchResourcesList('article', {
         currerntPage: 1,
         pageSize: 20
-    })
+    });
     fetchResourcesList('course', {
         currerntPage: 1,
         pageSize: 20
-    })
-})
-
+    });
+});
 </script>
 
 <style scoped>

@@ -4,23 +4,23 @@
             <template #TR>
                 <div class="relative flex-1 overflow-hidden *:will-change-transform">
                     <div ref="logo_cpp" class="flex items-center space-x-2 justify-end">
-                        <img src="@/assets/技术栈LOGO/C++-LOGO.svg" class="size-8">
+                        <img src="@/assets/tech-stack-logos/cpp.svg" class="size-8" />
                         <span class="text-lg code-cpp">C++</span>
                     </div>
                     <div ref="logo_JS" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/技术栈LOGO/icons8-javascript.svg" class="size-6">
+                        <img src="@/assets/tech-stack-logos/icons8-javascript.svg" class="size-6" />
                         <span class="text-lg code-JS">JavaScript</span>
                     </div>
                     <div ref="logo_python" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/技术栈LOGO/python.svg" class="size-7">
+                        <img src="@/assets/tech-stack-logos/python.svg" class="size-7" />
                         <span class="text-lg code-python">Python</span>
                     </div>
                     <div ref="logo_java" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/技术栈LOGO/java-logo.svg" class="size-8">
+                        <img src="@/assets/tech-stack-logos/java-logo.svg" class="size-8" />
                         <span class="text-lg code-java">Java</span>
                     </div>
                     <div ref="logo_golang" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/技术栈LOGO/golang.svg" class="size-6">
+                        <img src="@/assets/tech-stack-logos/golang.svg" class="size-6" />
                         <span class="text-lg code-golang">Golang</span>
                     </div>
                 </div>
@@ -28,7 +28,11 @@
             <template #main>
                 <!-- 代码块 -->
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre :class="['!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 !overflow-hidden', !isMobile ? 'line-numbers' : '!pb-0']"
+                    <pre
+                        :class="[
+                            '!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 !overflow-hidden',
+                            !isMobile ? 'line-numbers' : '!pb-0'
+                        ]"
                         tabindex="-1">
 <code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.675rem] will-change-contents', codeClass[codesIndex], isMobile ? '!leading-3.5' : '']" ></code><span ref="cursor" class="cursor">▌</span>
 </pre>
@@ -41,12 +45,13 @@
             </template>
         </macWindow>
         <!-- 用于为可视窗口赋值高度 -->
-        <macWindow ref="hiddenMacWindow"
+        <macWindow
+            ref="hiddenMacWindow"
             class="lg:!w-120 md:!w-108 !w-96 !absolute top-0 left-0 !h-auto invisible pointer-events-none">
             <template #TR>
                 <div class="relative flex-1 overflow-hidden">
                     <div class="flex items-center space-x-2 justify-end">
-                        <img src="@/assets/技术栈LOGO/C++-LOGO.svg" class="size-8">
+                        <img src="@/assets/tech-stack-logos/cpp.svg" class="size-8" />
                         <span class="text-lg code-cpp">C++</span>
                     </div>
                 </div>
@@ -54,7 +59,11 @@
             <template #main>
                 <!-- 代码块 -->
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre :class="['!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 pointer-events-none', !isMobile ? 'line-numbers' : '!pb-0']"
+                    <pre
+                        :class="[
+                            '!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 pointer-events-none',
+                            !isMobile ? 'line-numbers' : '!pb-0'
+                        ]"
                         tabindex="-1">
 <code :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.675rem]', codeClass[codesIndex], isMobile ? '!leading-3.5' : '']" >{{ codes[codesIndex] }}</code>
 </pre>
@@ -70,65 +79,61 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, onUnmounted } from 'vue'
+import { ref, onMounted, nextTick, onUnmounted } from 'vue';
 
-import { ChevronRight } from 'lucide-vue-next'
+import { ChevronRight } from 'lucide-vue-next';
 
-import macWindow from '@/components/introduction/macWindow.vue'
+import macWindow from '@/components/introduction/macWindow.vue';
 
-import { toast } from 'vue-sonner'
+import { toast } from 'vue-sonner';
 
 // @ts-ignore
-import Prism from 'prismjs'
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css'
-import 'prismjs/plugins/line-numbers/prism-line-numbers.js'
+import Prism from 'prismjs';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 
-import { gsap } from "gsap"
-import { SplitText } from "gsap/SplitText";
+import { gsap } from 'gsap';
+import { SplitText } from 'gsap/SplitText';
 
-import { useSystemStore } from '@/stores/system'
-import { storeToRefs } from 'pinia'
+import { useSystemStore } from '@/stores/system';
+import { storeToRefs } from 'pinia';
 
-const systemStore = useSystemStore()
-const { isMobile } = storeToRefs(systemStore)
+const systemStore = useSystemStore();
+const { isMobile } = storeToRefs(systemStore);
 
+const codeBlock = ref<HTMLElement | null>(null);
+const hiddenMacWindow = ref<HTMLElement | null>(null);
+const visibleMacWindow = ref<HTMLElement | null>(null);
 
-const codeBlock = ref<HTMLElement | null>(null)
-const hiddenMacWindow = ref<HTMLElement | null>(null)
-const visibleMacWindow = ref<HTMLElement | null>(null)
+const codesIndex = ref(0);
 
-const codesIndex = ref(0)
+const logo_cpp = ref<HTMLElement | null>(null);
+const logo_JS = ref<HTMLElement | null>(null);
+const logo_python = ref<HTMLElement | null>(null);
+const logo_java = ref<HTMLElement | null>(null);
+const logo_golang = ref<HTMLElement | null>(null);
+const logos = [logo_cpp, logo_JS, logo_python, logo_java, logo_golang];
 
-const logo_cpp = ref<HTMLElement | null>(null)
-const logo_JS = ref<HTMLElement | null>(null)
-const logo_python = ref<HTMLElement | null>(null)
-const logo_java = ref<HTMLElement | null>(null)
-const logo_golang = ref<HTMLElement | null>(null)
-const logos = [
-    logo_cpp,
-    logo_JS,
-    logo_python,
-    logo_java,
-    logo_golang
-]
+const output = ref<HTMLElement | null>(null);
 
-const output = ref<HTMLElement | null>(null)
+const cursor = ref<HTMLElement | null>(null);
 
-const cursor = ref<HTMLElement | null>(null)
+const root = ref<HTMLElement | null>(null);
 
-const root = ref<HTMLElement | null>(null)
+let codeTimer: number | null = null;
 
-let codeTimer: number | null = null
-
-let heightObserver: ResizeObserver | null = null
+let heightObserver: ResizeObserver | null = null;
 
 onMounted(() => {
-    Prism.highlightAllUnder(root.value)
-    gsap.set(logos.map(el => el.value), {
-        autoAlpha: 0,
-        y: '100%'
-    })
-    const height = (hiddenMacWindow.value as any)!.$el.offsetHeight
+    Prism.highlightAllUnder(root.value);
+    gsap.set(
+        logos.map((el) => el.value),
+        {
+            autoAlpha: 0,
+            y: '100%'
+        }
+    );
+    const height = (hiddenMacWindow.value as any)!.$el.offsetHeight;
     nextTick(() => {
         // gsap.to((visibleMacWindow.value as any)!.$el, {
         //     height: height,
@@ -136,57 +141,56 @@ onMounted(() => {
         //     duration: 1.5,
         //     transformOrigin: "bottom 50%"
         // })
-        helloGDMU.init()
-        enterAnimate()
-    })
+        helloGDMU.init();
+        enterAnimate();
+    });
     // 初始化高度观察器
-    initHeightObserver()
-})
+    initHeightObserver();
+});
 
 onUnmounted(() => {
     if (codeTimer) {
-        cancelAnimationFrame(codeTimer)
-        codeTimer = null
+        cancelAnimationFrame(codeTimer);
+        codeTimer = null;
     }
-    helloGDMU.splitGDMU?.revert()
-    helloGDMU.splitGDMU = null
+    helloGDMU.splitGDMU?.revert();
+    helloGDMU.splitGDMU = null;
     if (helloGDMU.tl) {
-        helloGDMU.tl.kill()
-        helloGDMU.tl = null
+        helloGDMU.tl.kill();
+        helloGDMU.tl = null;
     }
     // 清理 ResizeObserver
     if (heightObserver) {
-        heightObserver.disconnect()
-        heightObserver = null
+        heightObserver.disconnect();
+        heightObserver = null;
     }
-})
+});
 
 function enterAnimate() {
-    const tl = gsap.timeline()
+    const tl = gsap.timeline();
     tl.to(logos[codesIndex.value]!.value, {
         autoAlpha: 1,
         y: 0,
-        ease: "power2.out",
+        ease: 'power2.out',
         duration: 1
-    })
-    splitCode()
-
+    });
+    splitCode();
 }
 
 function backAnimate() {
-    const el = logos[codesIndex.value]!.value
+    const el = logos[codesIndex.value]!.value;
     gsap.to(el, {
         autoAlpha: 0,
         y: '-100%',
-        ease: "power2.in",
+        ease: 'power2.in',
         duration: 0.5,
         onComplete: () => {
             gsap.set(el, {
                 y: '100%'
-            })
+            });
         }
-    })
-    eraseCode()
+    });
+    eraseCode();
 }
 
 const helloGDMU = {
@@ -194,48 +198,46 @@ const helloGDMU = {
     tl: null as gsap.core.Timeline | null,
     init() {
         this.splitGDMU = new SplitText(output.value!, {
-            type: "chars,lines",
+            type: 'chars,lines',
             mask: 'lines'
-        })
+        });
         this.tl = gsap.timeline({
             paused: true
-        })
-        this.animate()
+        });
+        this.animate();
     },
     animate() {
-        this.tl!.from(this.splitGDMU!.chars,
-            {
-                autoAlpha: 0,
-                y: '100%',
-                ease: "power3.out",
-                duration: 1.25,
-                delay: 1,
-                stagger: {
-                    amount: 0.5
-                }
+        this.tl!.from(this.splitGDMU!.chars, {
+            autoAlpha: 0,
+            y: '100%',
+            ease: 'power3.out',
+            duration: 1.25,
+            delay: 1,
+            stagger: {
+                amount: 0.5
             }
-        )
+        });
         this.tl!.to(this.splitGDMU!.chars, {
             autoAlpha: 0,
             y: '-100%',
-            ease: "power2.in",
+            ease: 'power2.in',
             duration: 0.75,
             delay: 5,
             stagger: {
                 amount: 0.25
             },
             onStart: () => {
-                cursor.value!.classList.remove('animate')
-                backAnimate()
-            },
-        })
+                cursor.value!.classList.remove('animate');
+                backAnimate();
+            }
+        });
     },
     restart() {
         if (this.tl) {
-            this.tl.restart()
+            this.tl.restart();
         }
     }
-}
+};
 
 const codes = [
     `#include <iostream>
@@ -317,7 +319,7 @@ func helloGDMU(text string) {
 func main() {
     helloGDMU("Hello GDMU!")
 }`
-]
+];
 
 const codeClass = ref([
     'language-javascript',
@@ -325,80 +327,79 @@ const codeClass = ref([
     'language-python',
     'language-java',
     'language-go'
-])
+]);
 
 function splitCode() {
-    const text = codes[codesIndex.value]
+    const text = codes[codesIndex.value];
     if (text) {
-        let index = 0
+        let index = 0;
         function frame() {
-            if (!codeBlock.value) return // 组件已卸载
-            codeBlock.value.textContent += text[index++]
-            Prism.highlightAllUnder(root.value)
+            if (!codeBlock.value) return; // 组件已卸载
+            codeBlock.value.textContent += text[index++];
+            Prism.highlightAllUnder(root.value);
             if (index < text.length) {
-                codeTimer = requestAnimationFrame(frame)
+                codeTimer = requestAnimationFrame(frame);
             } else {
-                helloGDMU.restart()
-                cursor.value!.classList.add('animate')
+                helloGDMU.restart();
+                cursor.value!.classList.add('animate');
             }
         }
-        frame()
+        frame();
     }
 }
 
 function eraseCode() {
-    const text = codeBlock.value?.textContent ?? ""
-    let index = text.length
+    const text = codeBlock.value?.textContent ?? '';
+    let index = text.length;
     if (text) {
         function frame() {
-            if (!codeBlock.value) return
+            if (!codeBlock.value) return;
             if (index > 0) {
-                codeBlock.value.textContent = text.slice(0, --index)
-                Prism.highlightAllUnder(root.value)
-                codeTimer = requestAnimationFrame(frame)
+                codeBlock.value.textContent = text.slice(0, --index);
+                Prism.highlightAllUnder(root.value);
+                codeTimer = requestAnimationFrame(frame);
             } else {
-                codesIndex.value = (codesIndex.value + 1) % codes.length
+                codesIndex.value = (codesIndex.value + 1) % codes.length;
                 nextTick(() => {
-                    const height = (hiddenMacWindow.value as any)!.$el.offsetHeight
+                    const height = (hiddenMacWindow.value as any)!.$el.offsetHeight;
                     gsap.to((visibleMacWindow.value as any)!.$el, {
                         height: height,
-                        ease: "power3.out",
+                        ease: 'power3.out',
                         duration: 1.5,
-                        transformOrigin: "bottom 50%"
-                    })
-                    enterAnimate()
-                })
+                        transformOrigin: 'bottom 50%'
+                    });
+                    enterAnimate();
+                });
             }
         }
-        frame()
+        frame();
     }
 }
 
 // 初始化高度观察器
 function initHeightObserver() {
-    if (!hiddenMacWindow.value) return
-    heightObserver = new ResizeObserver(entries => {
-        Prism.highlightAllUnder(root.value)
+    if (!hiddenMacWindow.value) return;
+    heightObserver = new ResizeObserver((entries) => {
+        Prism.highlightAllUnder(root.value);
         for (const entry of entries) {
-            const el = (hiddenMacWindow.value as any)?.$el || hiddenMacWindow.value
-            const newHeight = entry.contentRect.height
+            const el = (hiddenMacWindow.value as any)?.$el || hiddenMacWindow.value;
+            const newHeight = entry.contentRect.height;
             gsap.to((visibleMacWindow.value as any)!.$el, {
                 height: newHeight,
-                ease: "power3.out",
+                ease: 'power3.out',
                 duration: 1.5,
-                transformOrigin: "bottom 50%"
-            })
+                transformOrigin: 'bottom 50%'
+            });
         }
-    })
-    const el = (hiddenMacWindow.value as any)?.$el || hiddenMacWindow.value
-    heightObserver.observe(el)
+    });
+    const el = (hiddenMacWindow.value as any)?.$el || hiddenMacWindow.value;
+    heightObserver.observe(el);
 }
-
 </script>
 
 <style scoped>
 .code-cpp {
-    background: linear-gradient(90.00deg, rgba(0, 68, 130, 1), rgba(101, 154, 210, 1) 50%, rgba(0, 89, 156, 1) 100%);
+    background: linear-gradient(90deg, rgba(0, 68, 130, 1), rgba(101, 154, 210, 1) 50%, rgba(0, 89, 156, 1) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -412,7 +413,7 @@ function initHeightObserver() {
 }
 
 .code-python {
-    background: linear-gradient(90.00deg, rgba(2, 119, 189, 1), rgba(255, 193, 7, 1) 100%);
+    background: linear-gradient(90deg, rgba(2, 119, 189, 1), rgba(255, 193, 7, 1) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -434,7 +435,7 @@ function initHeightObserver() {
 
 .cursor {
     margin-left: 0.25rem;
-    color: #FEFCE4;
+    color: #fefce4;
 }
 
 .cursor :deep.animate {
@@ -442,7 +443,6 @@ function initHeightObserver() {
 }
 
 @keyframes blink {
-
     0%,
     100% {
         opacity: 1;

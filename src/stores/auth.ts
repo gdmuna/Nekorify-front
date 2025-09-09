@@ -4,7 +4,7 @@ import { ref, computed } from 'vue';
 import { authApi } from '@/api';
 
 import { useSystemStore } from '@/stores/system';
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user';
 
 import { useRouter } from 'vue-router';
 
@@ -14,80 +14,80 @@ import type { Token, GroupMeta } from '@/types/auth';
 
 export const useAuthStore = defineStore('auth', () => {
     const router = useRouter();
-    const accessToken = ref<string | null>(localStorage.getItem('accessToken'))
-    const refreshToken = ref<string | null>(localStorage.getItem('refreshToken'))
+    const accessToken = ref<string | null>(localStorage.getItem('accessToken'));
+    const refreshToken = ref<string | null>(localStorage.getItem('refreshToken'));
     const isAuthenticated = computed(() => {
-        return !!accessToken.value
-    })
+        return !!accessToken.value;
+    });
 
     function login() {
         const prevPath = router.currentRoute.value.path;
         const systemStore = useSystemStore();
         systemStore.setPrevPath(prevPath);
-        authApi.login()
+        authApi.login();
     }
 
     async function loginCallback() {
         const { err, res } = await authApi.loginCallback();
         if (res) {
             const userStore = useUserStore();
-            await userStore.loadInterviewFormJSON()
-            await userStore.loadInterviewFormJSON2()
-            const data = res.data
-            const token = data.data.token
-            toast.success(data.message)
-            setToken(token)
-            await userStore.getCasdoorUserInfo(true)
-            userStore.handleUserInfo(data.data.userInfo)
-            initUserPermission()
+            await userStore.loadInterviewFormJSON();
+            await userStore.loadInterviewFormJSON2();
+            const data = res.data;
+            const token = data.data.token;
+            toast.success(data.message);
+            setToken(token);
+            await userStore.getCasdoorUserInfo(true);
+            userStore.handleUserInfo(data.data.userInfo);
+            initUserPermission();
         } else {
-            toast.error(err.data.message || '登录失败')
-            setToken()
+            toast.error(err.data.message || '登录失败');
+            setToken();
         }
         const searchParams = new URLSearchParams(window.location.search);
-        const path = searchParams.get('state')
-        router.push(path || '/dashboard')
+        const path = searchParams.get('state');
+        router.push(path || '/dashboard');
     }
 
     function setToken(token?: Token) {
         if (token) {
-            accessToken.value = token.access_token
-            localStorage.setItem('accessToken', token.access_token)
-            refreshToken.value = token.refresh_token
-            localStorage.setItem('refreshToken', token.refresh_token)
+            accessToken.value = token.access_token;
+            localStorage.setItem('accessToken', token.access_token);
+            refreshToken.value = token.refresh_token;
+            localStorage.setItem('refreshToken', token.refresh_token);
         } else {
-            accessToken.value = null
-            localStorage.removeItem('accessToken')
-            refreshToken.value = null
-            localStorage.removeItem('refreshToken')
+            accessToken.value = null;
+            localStorage.removeItem('accessToken');
+            refreshToken.value = null;
+            localStorage.removeItem('refreshToken');
         }
     }
 
     async function refresh() {
         if (!refreshToken.value) {
-            return Promise.reject('缺失refresh_token')
+            return Promise.reject('缺失refresh_token');
         }
-        const { err, res } = await authApi.refresh(refreshToken.value)
+        const { err, res } = await authApi.refresh(refreshToken.value);
         if (res) {
-            const token = res.data.data
-            setToken(token)
+            const token = res.data.data;
+            setToken(token);
             const userStore = useUserStore();
-            await userStore.getCasdoorUserInfo(true)
-            return Promise.resolve()
+            await userStore.getCasdoorUserInfo(true);
+            return Promise.resolve();
         } else {
             console.log('err1', err);
-            setToken()
-            return Promise.reject('登录态已过期，请重新登录')
+            setToken();
+            return Promise.reject('登录态已过期，请重新登录');
         }
     }
 
     function logout() {
-        setToken()
+        setToken();
         const userStore = useUserStore();
-        userStore.cleanUserInfo()
+        userStore.cleanUserInfo();
         const systemStore = useSystemStore();
-        systemStore.routerGoto('/home')
-        toast.info('已登出')
+        systemStore.routerGoto('/home');
+        toast.info('已登出');
     }
 
     const groupMeta: Record<string, GroupMeta> = {
@@ -165,20 +165,18 @@ export const useAuthStore = defineStore('auth', () => {
             label: 'Nekorify管理员',
             level: 0
         }
-    }
+    };
 
-    const userPermissions = ref<GroupMeta[]>([])
+    const userPermissions = ref<GroupMeta[]>([]);
     function initUserPermission() {
         const userStore = useUserStore();
-        userPermissions.value = userStore.userInfo.groups
-            .map(key => groupMeta[key])
-            .filter(Boolean);
+        userPermissions.value = userStore.userInfo.groups.map((key) => groupMeta[key]).filter(Boolean);
         console.log('userPermissions', userPermissions.value);
     }
 
     function getGroupByKey(group: string) {
         const userStore = useUserStore();
-        const metas = userStore.userInfo.groups
+        const metas = userStore.userInfo.groups;
         return metas.includes(group) ? groupMeta[group] : null;
     }
 
@@ -195,27 +193,27 @@ export const useAuthStore = defineStore('auth', () => {
 
     function getGroupByLevel(level: number) {
         if (userPermissions.value.length === 0) return null;
-        return userPermissions.value.filter(meta => meta.level === level);
+        return userPermissions.value.filter((meta) => meta.level === level);
     }
 
     async function sendVerificationCode(email: string) {
         const userStore = useUserStore();
-        const formData = new FormData()
-        formData.append('dest', email)
-        formData.append('type', 'email')
-        formData.append('method', 'reset')
-        formData.append('applicationId', `Nekorify/${userStore.casdoorUserInfo.value.signupApplication}`)
-        formData.append('captchaType', 'Default')
-        formData.append('captchaToken', '455329')
-        formData.append('clientSecret', 'Nekorify')
-        const { err, res } = await authApi.sendVerificationCode(formData)
+        const formData = new FormData();
+        formData.append('dest', email);
+        formData.append('type', 'email');
+        formData.append('method', 'reset');
+        formData.append('applicationId', `Nekorify/${userStore.casdoorUserInfo.value.signupApplication}`);
+        formData.append('captchaType', 'Default');
+        formData.append('captchaToken', '455329');
+        formData.append('clientSecret', 'Nekorify');
+        const { err, res } = await authApi.sendVerificationCode(formData);
         console.log('sendVerificationCode', { err, res });
         if (res.status !== 'error') {
-            toast.success('验证码已发送，请注意查收')
-            return res
+            toast.success('验证码已发送，请注意查收');
+            return res;
         } else {
-            toast.error('发送验证码失败')
-            return false
+            toast.error('发送验证码失败');
+            return false;
         }
     }
 
@@ -233,5 +231,5 @@ export const useAuthStore = defineStore('auth', () => {
         initUserPermission,
         userPermissions,
         sendVerificationCode
-    }
-})
+    };
+});

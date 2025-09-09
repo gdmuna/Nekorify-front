@@ -1,13 +1,7 @@
 <template>
-    <div>
-        video manager
-    </div>
+    <div>video manager</div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

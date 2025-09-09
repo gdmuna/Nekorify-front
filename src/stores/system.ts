@@ -1,16 +1,16 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-import { h, ref, computed } from 'vue'
+import { h, ref, computed } from 'vue';
 
-import { toast } from 'vue-sonner'
+import { toast } from 'vue-sonner';
 
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
-import { useMediaQuery } from '@vueuse/core'
+import { useMediaQuery } from '@vueuse/core';
 
 export const useSystemStore = defineStore('system', () => {
-    const router = useRouter()
-    const isDark = ref<boolean>(true)
+    const router = useRouter();
+    const isDark = ref<boolean>(true);
     function initTheme(): void {
         // if (localStorage.getItem('isDark') === 'true') {
         //     document.documentElement.classList.add('dark')
@@ -24,61 +24,60 @@ export const useSystemStore = defineStore('system', () => {
         //     isDark.value = true
         //     localStorage.setItem('isDark', 'true')
         // }
-        document.documentElement.classList.add('dark')
-        isDark.value = true
-        localStorage.setItem('isDark', 'true')
+        document.documentElement.classList.add('dark');
+        isDark.value = true;
+        localStorage.setItem('isDark', 'true');
     }
     // 切换主题
     function toggleTheme(): void {
         if (isDark.value == false) {
-            document.documentElement.classList.add('dark')
-            isDark.value = true
-            localStorage.setItem('isDark', 'true')
+            document.documentElement.classList.add('dark');
+            isDark.value = true;
+            localStorage.setItem('isDark', 'true');
         } else {
-            document.documentElement.classList.remove('dark')
-            isDark.value = false
-            localStorage.setItem('isDark', 'false')
+            document.documentElement.classList.remove('dark');
+            isDark.value = false;
+            localStorage.setItem('isDark', 'false');
         }
     }
     // 强制切换主题
     function forceToggleTheme(theme: string): void {
         if (theme === 'dark') {
-            document.documentElement.classList.add('dark')
-            isDark.value = true
+            document.documentElement.classList.add('dark');
+            isDark.value = true;
         } else {
-            document.documentElement.classList.remove('dark')
-            isDark.value = false
+            document.documentElement.classList.remove('dark');
+            isDark.value = false;
         }
     }
 
-    const prevPath = ref<string | null>(null)
-    const targetPath = ref<string | null>(null)
+    const prevPath = ref<string | null>(null);
+    const targetPath = ref<string | null>(null);
 
     function routerGoto(path: string) {
-        const currentPath = router.currentRoute.value.path
-        setPrevPath(currentPath)
-        router.push(path)
+        const currentPath = router.currentRoute.value.path;
+        setPrevPath(currentPath);
+        router.push(path);
     }
 
     function routerBack() {
-        const toPath = localStorage.getItem('prevPath') || prevPath.value || '/'
-        router.push(toPath)
-    }
-    
-    function setPrevPath(path: string | null) {
-        localStorage.setItem('prevPath', path || '/')
-        prevPath.value = path
+        const toPath = localStorage.getItem('prevPath') || prevPath.value || '/';
+        router.push(toPath);
     }
 
-    const isMobile = useMediaQuery('(max-width: 767px)')
-    const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)')
-    const isDesktop = useMediaQuery('(min-width: 1024px)')
-    const isXlDesktop = useMediaQuery('(min-width: 1280px)')
+    function setPrevPath(path: string | null) {
+        localStorage.setItem('prevPath', path || '/');
+        prevPath.value = path;
+    }
+
+    const isMobile = useMediaQuery('(max-width: 767px)');
+    const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+    const isDesktop = useMediaQuery('(min-width: 1024px)');
+    const isXlDesktop = useMediaQuery('(min-width: 1280px)');
 
     const isLoginCallback = computed(() => {
-        return router.currentRoute.value.path === '/loginCallback'
-    })
-
+        return router.currentRoute.value.path === '/loginCallback';
+    });
 
     return {
         isDark,
@@ -95,5 +94,5 @@ export const useSystemStore = defineStore('system', () => {
         prevPath,
         setPrevPath,
         targetPath
-    }
-})
+    };
+});

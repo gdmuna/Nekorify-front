@@ -109,13 +109,7 @@
         "value": {
             "type": "file",
             "maxSize": 10485760,
-            "accept": [
-                "image/png",
-                "image/jpeg",
-                "image/jpg",
-                "image/webp",
-                "image/gif"
-            ]
+            "accept": ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/gif"]
         }
     },
     {

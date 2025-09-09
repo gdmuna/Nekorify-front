@@ -29,21 +29,20 @@
                             <DrawerContent>
                                 <DrawerHeader class="text-left">
                                     <DrawerTitle>Navigate to</DrawerTitle>
-                                    <DrawerDescription>
-                                        Select a page to navigate to.
-                                    </DrawerDescription>
+                                    <DrawerDescription>Select a page to navigate to.</DrawerDescription>
                                 </DrawerHeader>
                                 <div class="grid gap-1 px-4">
-                                    <a v-for="item of allButLastTwoItems" :key="item.label"
-                                        @click="routerGoto(item.path)" class="py-1 text-sm cursor-pointer">
+                                    <a
+                                        v-for="item of allButLastTwoItems"
+                                        :key="item.label"
+                                        @click="routerGoto(item.path)"
+                                        class="py-1 text-sm cursor-pointer">
                                         {{ item.label }}
                                     </a>
                                 </div>
                                 <DrawerFooter class="pt-4">
                                     <DrawerClose as-child>
-                                        <Button variant="outline">
-                                            Close
-                                        </Button>
+                                        <Button variant="outline">Close</Button>
                                     </DrawerClose>
                                 </DrawerFooter>
                             </DrawerContent>
@@ -70,7 +69,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue"
+import { computed, ref } from 'vue';
 import {
     Breadcrumb,
     BreadcrumbEllipsis,
@@ -78,9 +77,9 @@ import {
     BreadcrumbLink,
     BreadcrumbList,
     BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Button } from "@/components/ui/button"
+    BreadcrumbSeparator
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
 import {
     Drawer,
     DrawerClose,
@@ -89,56 +88,55 @@ import {
     DrawerFooter,
     DrawerHeader,
     DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
+    DrawerTrigger
+} from '@/components/ui/drawer';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 
-import { storeToRefs } from "pinia"
-import { useSystemStore } from "@/stores/system"
-const systemStore = useSystemStore()
-const { routerGoto } = systemStore
-const { isDesktop } = storeToRefs(systemStore)
+import { storeToRefs } from 'pinia';
+import { useSystemStore } from '@/stores/system';
+const systemStore = useSystemStore();
+const { routerGoto } = systemStore;
+const { isDesktop } = storeToRefs(systemStore);
 
-import { useUserStore } from "@/stores/user"
-const userStore = useUserStore()
-const { currentTitle } = storeToRefs(userStore)
+import { useUserStore } from '@/stores/user';
+const userStore = useUserStore();
+const { currentTitle } = storeToRefs(userStore);
 
-import { useRoute } from "vue-router"
-const route = useRoute()
+import { useRoute } from 'vue-router';
+const route = useRoute();
 
-const isOpen = ref(false)
+const isOpen = ref(false);
 
 const items = computed(() => {
     // 路由链，去掉没有meta.title的（比如根路由）
     return route.matched
-        .filter(r => r.meta && r.meta.title)
-        .map(r => {
+        .filter((r) => r.meta && r.meta.title)
+        .map((r) => {
             if (r.meta.title === '面试节点') {
                 return {
                     label: currentTitle.value,
                     path: r.path
-                }
+                };
             }
             return {
                 label: r.meta.title,
                 path: r.path
-            }
-        })
-})
+            };
+        });
+});
 
-const itemsToDisplay = 3
-const firstLabel = computed(() => items.value[0]?.label)
+const itemsToDisplay = 3;
+const firstLabel = computed(() => items.value[0]?.label);
 
-const allButLastTwoItems = computed(() => items.value.slice(1, -2))
-const remainingItems = computed(() => items.value.slice(-Math.min(itemsToDisplay, items.value.length) + 1))
+const allButLastTwoItems = computed(() => items.value.slice(1, -2));
+const remainingItems = computed(() => items.value.slice(-Math.min(itemsToDisplay, items.value.length) + 1));
 
 const root = ref<HTMLElement | null>(null);
 
-defineExpose({ root })
-
+defineExpose({ root });
 </script>

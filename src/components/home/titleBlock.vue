@@ -34,12 +34,12 @@ const titleBRef = ref<HTMLElement | null>(null);
 onMounted(() => {
     animate.init();
     window.addEventListener('resize', handleResize);
-})
+});
 
 onUnmounted(() => {
     animate.tl?.kill();
     window.removeEventListener('resize', handleResize);
-})
+});
 
 function handleResize() {
     animate.tl?.scrollTrigger?.refresh();
@@ -53,35 +53,43 @@ const animate = {
                 trigger: root.value,
                 start: 'top bottom',
                 end: `bottom top`,
-                toggleActions: 'restart none restart none',
+                toggleActions: 'restart none restart none'
             }
-        })
-        this.tl.fromTo(titleARef.value, {
-            y: '100%',
-            opacity: 0
-        }, {
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: 'circ.out'
-        })
-        this.tl.fromTo(titleBRef.value, {
-            y: '-100%',
-            opacity: 0
-        }, {
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: 'circ.out'
-        }, '<');
+        });
+        this.tl.fromTo(
+            titleARef.value,
+            {
+                y: '100%',
+                opacity: 0
+            },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                ease: 'circ.out'
+            }
+        );
+        this.tl.fromTo(
+            titleBRef.value,
+            {
+                y: '-100%',
+                opacity: 0
+            },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                ease: 'circ.out'
+            },
+            '<'
+        );
     }
-}
-
+};
 </script>
 
 <style scoped>
 .bg {
-    background: linear-gradient(90.00deg, rgb(204, 168, 127), rgb(168, 173, 155) 100%);
+    background: linear-gradient(90deg, rgb(204, 168, 127), rgb(168, 173, 155) 100%);
 }
 
 .clip-l {

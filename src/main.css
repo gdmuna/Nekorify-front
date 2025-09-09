@@ -5,7 +5,7 @@ body {
     /* Firefox */
     -ms-overflow-style: none;
     /* IE 10+ */
-    background-color: #0E100F;
+    background-color: #0e100f;
     scroll-behavior: auto;
     text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
@@ -16,7 +16,7 @@ body::-webkit-scrollbar {
     /* Chrome/Safari/Webkit */
 }
 
-body>* {
+body > * {
     scrollbar-width: none;
     /* Firefox */
     -ms-overflow-style: none;
@@ -24,6 +24,6 @@ body>* {
     scroll-behavior: auto;
 }
 
-body>*::-webkit-scrollbar {
+body > *::-webkit-scrollbar {
     display: none;
 }

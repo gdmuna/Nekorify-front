@@ -10,11 +10,16 @@
                 <div class="mb-6 ml-4">
                     <h2 class="text-3xl md:text-4xl dark:text-[#E0DEC0] font-bold mb-2">公告列表</h2>
                     <p class="text-base md:text-lg text-gray-500 dark:text-[#A0A0A0]">
-                        欢迎来到 NA & ACM 公告中心！这里会第一时间发布最新动态、重要通知和活动信息。<br>
+                        欢迎来到 NA & ACM 公告中心！这里会第一时间发布最新动态、重要通知和活动信息。
+                        <br />
                         请随时关注，获取你关心的内容喵~
                     </p>
                 </div>
-                <liItem v-if="announcements && announcements.length > 0" v-for="(item, index) in announcements" :key="index" useSlot
+                <liItem
+                    v-if="announcements && announcements.length > 0"
+                    v-for="(item, index) in announcements"
+                    :key="index"
+                    useSlot
                     @click="routerGoto(`/announcements/${item.id}`)">
                     <div class="flex-1 flex justify-between items-center transition-colors duration-300">
                         <div>
@@ -43,20 +48,20 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed } from 'vue';
 
-import { liItem } from "@/components/dashboard";
+import { liItem } from '@/components/dashboard';
 
-import { formatDate } from "@/lib/utils";
+import { formatDate } from '@/lib/utils';
 
-import { storeToRefs } from "pinia";
-import { useSystemStore } from "@/stores/system";
-import { useResourceStore } from "@/stores/resource";
+import { storeToRefs } from 'pinia';
+import { useSystemStore } from '@/stores/system';
+import { useResourceStore } from '@/stores/resource';
 const resourceStore = useResourceStore();
 const { announcements, announcementDataStatus, announcementPagination } = storeToRefs(resourceStore);
 
 const systemStore = useSystemStore();
-const { routerGoto } = systemStore
+const { routerGoto } = systemStore;
 
 import { useRoute } from 'vue-router';
 const route = useRoute();
@@ -65,24 +70,23 @@ onMounted(async () => {
     await resourceStore.fetchResourcesList('announcement', {
         currerntPage: 1,
         pageSize: 20
-    })
-})
+    });
+});
 
 const showDetail = computed(() => {
-    return route.name !== 'announcements' && announcementDataStatus.value === 'loaded'
-})
+    return route.name !== 'announcements' && announcementDataStatus.value === 'loaded';
+});
 
 const currentSourceUrl = computed(() => {
-    if (!announcements.value || announcements.value.length === 0) return null
-    const source = announcements.value.find(item => item.id === Number(route.params.id))
-    return source ? source.text_md_url : null
-})
+    if (!announcements.value || announcements.value.length === 0) return null;
+    const source = announcements.value.find((item) => item.id === Number(route.params.id));
+    return source ? source.text_md_url : null;
+});
 
 const currentAnnouncement = computed(() => {
-    if (!announcements.value || announcements.value.length === 0) return null
-    return announcements.value.find(item => item.id === Number(route.params.id))
-})
-
+    if (!announcements.value || announcements.value.length === 0) return null;
+    return announcements.value.find((item) => item.id === Number(route.params.id));
+});
 </script>
 
 <style scoped></style>

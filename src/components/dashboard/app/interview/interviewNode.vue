@@ -30,7 +30,8 @@
                 </div>
             </template>
             <template v-else>
-                <div v-if="!checkHasInterview(Number(nodeId)) && checkActiveInterviewId(Number(nodeId)) && !editForm"
+                <div
+                    v-if="!checkHasInterview(Number(nodeId)) && checkActiveInterviewId(Number(nodeId)) && !editForm"
                     class="w-full h-full flex flex-col justify-between">
                     <div class="inline-flex space-x-2 items-center text-[#53B7DE]">
                         <Info class="size-6" />
@@ -44,7 +45,8 @@
                             <div ref="buttonRef">
                                 <primaryButton
                                     class="dark:bg-sky-600 bg-emerald-500 dark:text-[#0E100F] md:py-7 py-6 md:px-8 px-6"
-                                    @click="editForm = true" mask1-color="oklch(69.6% 0.17 162.48 / 0.5)"
+                                    @click="editForm = true"
+                                    mask1-color="oklch(69.6% 0.17 162.48 / 0.5)"
                                     mask2-color="oklch(69.6% 0.17 162.48 / 0.5)">
                                     <p class="md:text-4xl text-3xl">我要报名!</p>
                                 </primaryButton>
@@ -54,7 +56,9 @@
                     <div />
                 </div>
                 <interviewForm
-                    v-else-if="!checkHasInterview(Number(nodeId)) && checkActiveInterviewId(Number(nodeId)) && editForm" />
+                    v-else-if="
+                        !checkHasInterview(Number(nodeId)) && checkActiveInterviewId(Number(nodeId)) && editForm
+                    " />
                 <interviewStatus v-else-if="checkHasInterview(Number(nodeId))" />
             </template>
         </template>
@@ -62,9 +66,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onBeforeMount } from 'vue'
+import { onMounted, ref, onBeforeMount } from 'vue';
 
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
 
 import { primaryButton } from '@/components/ui/button';
 
@@ -78,40 +82,37 @@ import { SplitText } from 'gsap/SplitText';
 
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
-const userStore = useUserStore()
-const { checkHasInterview, checkActiveInterviewId, checkInactiveInterviewId } = userStore
-const { interviewResultStatus, currentTitle, currentInterview } = storeToRefs(userStore)
+const userStore = useUserStore();
+const { checkHasInterview, checkActiveInterviewId, checkInactiveInterviewId } = userStore;
+const { interviewResultStatus, currentTitle, currentInterview } = storeToRefs(userStore);
 
+const route = useRoute();
 
-const route = useRoute()
+const nodeId = route.params.nodeId;
 
-const nodeId = route.params.nodeId
+const editForm = ref(false);
 
-const editForm = ref(false)
+const title = ref<HTMLElement | null>(null);
 
-const title = ref<HTMLElement | null>(null)
+const buttonRef = ref<HTMLElement | null>(null);
 
-const buttonRef = ref<HTMLElement | null>(null)
-
-onBeforeMount(() => {
-
-})
+onBeforeMount(() => {});
 
 onMounted(() => {
-    animate.start()
+    animate.start();
     if (currentInterview.value) {
-        document.title = '面试 - ' + currentTitle.value
+        document.title = '面试 - ' + currentTitle.value;
     }
-})
+});
 
 const animate = {
     tl: gsap.timeline(),
     start() {
-        if (!title.value) return
+        if (!title.value) return;
         const split = new SplitText(title.value, {
             type: 'chars',
-            linesClass: 'lineChildren',
-        })
+            linesClass: 'lineChildren'
+        });
         this.tl.from(split.chars, {
             y: '110%',
             duration: 0.75,
@@ -119,21 +120,21 @@ const animate = {
             stagger: {
                 amount: 0.5
             }
-        })
-        this.tl.fromTo(buttonRef.value,
+        });
+        this.tl.fromTo(
+            buttonRef.value,
             {
-                y: '-110%',
+                y: '-110%'
             },
             {
                 y: 0,
                 duration: 0.75,
-                ease: 'power2.out',
+                ease: 'power2.out'
             },
             '-=0.25'
-        )
+        );
     }
-}
-
+};
 </script>
 
 <style scoped></style>

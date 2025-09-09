@@ -3,15 +3,19 @@
         <div ref="container" class="w-full h-full">
             <canvas ref="canvas" class="cursor-pointer" />
         </div>
-        <teleport to='body'>
+        <teleport to="body">
             <transition name="bg">
-                <div v-if="imgOpened" class="fixed top-1/2 left-1/2 bg-[#0E100F]/25 -translate-1/2 z-50 size-full"
+                <div
+                    v-if="imgOpened"
+                    class="fixed top-1/2 left-1/2 bg-[#0E100F]/25 -translate-1/2 z-50 size-full"
                     @click="imgOpened = false">
                     <CircleX class="absolute top-14 right-6 size-8 text-[#FEFCE4] cursor-pointer" />
                 </div>
             </transition>
             <transition name="picture">
-                <img v-if="imgOpened" :src="imgOpenedSrc"
+                <img
+                    v-if="imgOpened"
+                    :src="imgOpenedSrc"
                     class="fixed top-1/2 left-1/2 -translate-1/2 z-50 bg-[#0E100F]/50 max-h-[90%] max-w-[90%] select-none" />
             </transition>
         </teleport>
@@ -25,7 +29,7 @@ import { gsap } from 'gsap';
 
 import { CircleX } from 'lucide-vue-next';
 
-import { toast } from 'vue-sonner'
+import { toast } from 'vue-sonner';
 
 const imgOpened = ref(false);
 const imgOpenedSrc = ref('');
@@ -33,15 +37,15 @@ const imgOpenedSrc = ref('');
 onMounted(() => {
     nextTick(() => requestAnimationFrame(photobox.init.bind(photobox)));
     document.addEventListener('keyup', handleKeyup);
-})
+});
 
 onBeforeUnmount(() => {
     if (photobox.canvas) {
-        photobox.remove_events()
+        photobox.remove_events();
     }
     if (animateId) cancelAnimationFrame(animateId);
     document.removeEventListener('keyup', handleKeyup);
-})
+});
 
 function handleKeyup(e: KeyboardEvent) {
     if (e.key === 'Escape' && imgOpened.value) {
@@ -55,7 +59,7 @@ const container = ref<HTMLDivElement | null>(null);
 const velocity = ref({
     vx: 0,
     vy: 0
-})
+});
 
 const position = ref({
     x: 0,
@@ -82,7 +86,7 @@ function animate() {
     animateId = requestAnimationFrame(animate);
 }
 
-type handleFn = ((e: any) => void) | null
+type handleFn = ((e: any) => void) | null;
 
 // 以下代码魔改自B站UP主@JIEJOE_轻敲代码
 // B站主页：https://space.bilibili.com/3546390319860710
@@ -102,11 +106,11 @@ const photobox = {
     total_width: 0,
     total_height: 0,
     // 图片数据，用以储存每张图片的源以及xy坐标位置
-    img_data: [] as { img: HTMLImageElement | null, x: number, y: number, src: string }[],
+    img_data: [] as { img: HTMLImageElement | null; x: number; y: number; src: string }[],
     // 当前画布是否可以移动
     if_movable: false,
     if_dragging: false,
-    _touchStart: null as { x: number, y: number } | null,
+    _touchStart: null as { x: number; y: number } | null,
     img_opened: ref(false),
     img_opened_src: ref(''),
     baseWidth: 1024,
@@ -132,9 +136,9 @@ const photobox = {
         this.canvas = canvas.value;
         if (!this.canvas) {
             requestAnimationFrame(() => this.init());
-            return
+            return;
         }
-        this.content = this.canvas.getContext("2d");
+        this.content = this.canvas.getContext('2d');
         // 计算适应当前屏幕的尺寸
         this.calculateResponsiveSizes();
         // 计算总宽高
@@ -143,9 +147,9 @@ const photobox = {
         this.resize();
         this.creat_events();
         this.creat_img_data(true);
-        animate()
-        toast.info('点击图片可查看大图，按Esc键或点击空白处关闭')
-        this.success = true
+        animate();
+        toast.info('点击图片可查看大图，按Esc键或点击空白处关闭');
+        this.success = true;
     },
     // 计算响应式尺寸的方法
     calculateResponsiveSizes() {
@@ -156,12 +160,12 @@ const photobox = {
         // 2. 根据屏幕方向动态调整行列数
         if (aspectRatio < 1) {
             // 竖屏模式
-            this.row_max = 6
-            this.line_max = 7
+            this.row_max = 6;
+            this.line_max = 7;
         } else {
             // 横屏模式
-            this.row_max = 7
-            this.line_max = 6
+            this.row_max = 7;
+            this.line_max = 6;
         }
         // 3. 计算缩放比例
         const scale = Math.max(0.6, Math.min(1.5, containerWidth / this.baseWidth));
@@ -178,10 +182,10 @@ const photobox = {
         const dpr = window.devicePixelRatio || 1;
         const width = container.value!.clientWidth;
         const height = container.value!.clientHeight;
-        this.canvas!.width = width * dpr;     // 画布尺寸按 DPR 放大
+        this.canvas!.width = width * dpr; // 画布尺寸按 DPR 放大
         this.canvas!.height = height * dpr;
-        this.canvas!.style.width = width + "px";   // CSS 尺寸和容器一致
-        this.canvas!.style.height = height + "px";
+        this.canvas!.style.width = width + 'px'; // CSS 尺寸和容器一致
+        this.canvas!.style.height = height + 'px';
         // 让 2d context 也适配 DPR
         this.content!.setTransform(1, 0, 0, 1, 0, 0); // 重置 transform
         this.content!.scale(dpr, dpr);
@@ -191,11 +195,15 @@ const photobox = {
     // 布局函数
     relayoutImages(preserveImages = true, refresh = true) {
         // 保存现有图片对象引用(如果需要)
-        const existingImgs = preserveImages ?
-            this.img_data.reduce((map, item) => {
-                map[item.src] = item.img;
-                return map;
-            }, {} as Record<string, HTMLImageElement | null>) : {};
+        const existingImgs = preserveImages
+            ? this.img_data.reduce(
+                  (map, item) => {
+                      map[item.src] = item.img;
+                      return map;
+                  },
+                  {} as Record<string, HTMLImageElement | null>
+              )
+            : {};
         // 重新计算每张图片的位置
         this.img_data = [];
         for (let i = 0; i < this.img_total; i++) {
@@ -218,7 +226,8 @@ const photobox = {
     // 图片加载逻辑
     loadImages() {
         this.img_data.forEach((item) => {
-            if (!item.img) { // 只加载未加载的图片
+            if (!item.img) {
+                // 只加载未加载的图片
                 const img = new Image();
                 img.src = item.src;
                 img.onload = () => {
@@ -340,12 +349,12 @@ const photobox = {
         this._boundEvents.handleTouchmove = this.handleTouchmove.bind(this);
         this._boundEvents.handleTouchend = this.handleTouchend.bind(this);
         // 使用存储的引用添加事件监听器
-        window.addEventListener("resize", this._boundEvents.handleResize);
-        window.addEventListener("orientationchange", this._boundEvents.handleResize);
-        this.canvas!.addEventListener("mousedown", this._boundEvents.handleMousedown);
-        this.canvas!.addEventListener("mouseup", this._boundEvents.handleMouseup);
-        this.canvas!.addEventListener("mouseleave", this._boundEvents.handleMouseleave);
-        this.canvas!.addEventListener("mousemove", this._boundEvents.handleMousemove);
+        window.addEventListener('resize', this._boundEvents.handleResize);
+        window.addEventListener('orientationchange', this._boundEvents.handleResize);
+        this.canvas!.addEventListener('mousedown', this._boundEvents.handleMousedown);
+        this.canvas!.addEventListener('mouseup', this._boundEvents.handleMouseup);
+        this.canvas!.addEventListener('mouseleave', this._boundEvents.handleMouseleave);
+        this.canvas!.addEventListener('mousemove', this._boundEvents.handleMousemove);
         this.canvas!.addEventListener('touchstart', this._boundEvents.handleTouchstart, { passive: false });
         this.canvas!.addEventListener('touchmove', this._boundEvents.handleTouchmove, { passive: false });
         this.canvas!.addEventListener('touchend', this._boundEvents.handleTouchend, { passive: false });
@@ -353,12 +362,12 @@ const photobox = {
     // 修改事件移除方法
     remove_events() {
         // 使用相同的引用移除事件监听器
-        window.removeEventListener("resize", this._boundEvents.handleResize!);
-        window.removeEventListener("orientationchange", this._boundEvents.handleResize!);
-        this.canvas!.removeEventListener("mousedown", this._boundEvents.handleMousedown!);
-        this.canvas!.removeEventListener("mouseup", this._boundEvents.handleMouseup!);
-        this.canvas!.removeEventListener("mouseleave", this._boundEvents.handleMouseleave!);
-        this.canvas!.removeEventListener("mousemove", this._boundEvents.handleMousemove!);
+        window.removeEventListener('resize', this._boundEvents.handleResize!);
+        window.removeEventListener('orientationchange', this._boundEvents.handleResize!);
+        this.canvas!.removeEventListener('mousedown', this._boundEvents.handleMousedown!);
+        this.canvas!.removeEventListener('mouseup', this._boundEvents.handleMouseup!);
+        this.canvas!.removeEventListener('mouseleave', this._boundEvents.handleMouseleave!);
+        this.canvas!.removeEventListener('mousemove', this._boundEvents.handleMousemove!);
         this.canvas!.removeEventListener('touchstart', this._boundEvents.handleTouchstart!);
         this.canvas!.removeEventListener('touchmove', this._boundEvents.handleTouchmove!);
         this.canvas!.removeEventListener('touchend', this._boundEvents.handleTouchend!);
@@ -384,18 +393,15 @@ const photobox = {
             img.x += x;
             // 当图片超出总宽度范围时，将图片移动到最右侧，
             // 注意这里减去一个图片宽度是为了让图片提前位移，防止最左侧的图片出现空白行
-            if (img.x > (this.total_width - this.img_width))
-                img.x -= this.total_width + this.img_margin;
+            if (img.x > this.total_width - this.img_width) img.x -= this.total_width + this.img_margin;
             // 当图片小于一个负的图片宽度，即向左超出总宽度范围时，将图片移动到最右侧
-            if (img.x < -this.img_width)
-                img.x += this.total_width + this.img_margin;
+            if (img.x < -this.img_width) img.x += this.total_width + this.img_margin;
             // 竖向同上
             img.y += y;
-            if (img.y > (this.total_height - this.img_height))
-                img.y -= this.total_height + this.img_margin;
-            if (img.y < -this.img_height)
-                img.y += this.total_height + this.img_margin;
-            if (img.img) { // 只绘制已加载的图片
+            if (img.y > this.total_height - this.img_height) img.y -= this.total_height + this.img_margin;
+            if (img.y < -this.img_height) img.y += this.total_height + this.img_margin;
+            if (img.img) {
+                // 只绘制已加载的图片
                 this.content!.drawImage(img.img, img.x, img.y, this.img_width, this.img_height);
             }
         });
@@ -406,17 +412,16 @@ const photobox = {
         const scaleX = canvas.value!.width / rect.width;
         const scaleY = canvas.value!.height / rect.height;
         const dpr = window.devicePixelRatio || 1;
-        let x = (e.clientX - rect.left) * scaleX / dpr;
-        let y = (e.clientY - rect.top) * scaleY / dpr;
+        let x = ((e.clientX - rect.left) * scaleX) / dpr;
+        let y = ((e.clientY - rect.top) * scaleY) / dpr;
         // 遍历所有图片，找出鼠标xy坐标处于图片内部的那张图片
-        let img = this.img_data.find(img =>
-            x >= img.x && x < img.x + this.img_width &&
-            y >= img.y && y < img.y + this.img_height
+        let img = this.img_data.find(
+            (img) => x >= img.x && x < img.x + this.img_width && y >= img.y && y < img.y + this.img_height
         );
         if (img) {
-            imgOpened.value = true
+            imgOpened.value = true;
             imgOpenedSrc.value = img.src;
-        };
+        }
     }
 };
 
@@ -445,10 +450,9 @@ function getFakeMouseEvent(e: TouchEvent) {
     const pos = getTouchPos(e, false);
     return {
         clientX: pos.x,
-        clientY: pos.y,
+        clientY: pos.y
     };
 }
-
 </script>
 
 <style scoped>

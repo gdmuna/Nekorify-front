@@ -1,1 +1,1 @@
-export { default as baseModal } from './baseModal.vue'
+export { default as baseModal } from './baseModal.vue';

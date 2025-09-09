@@ -4,63 +4,79 @@
             <template v-if="interviewDataStatus === 'loaded'">
                 <section class="space-y-2">
                     <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">开放中</h2>
-                    <p class="md:text-lg  dark:text-[#A0A0A0]">以下是当前开放报名的面试列表，点击查看详情</p>
+                    <p class="md:text-lg dark:text-[#A0A0A0]">以下是当前开放报名的面试列表，点击查看详情</p>
                 </section>
                 <section>
-                    <liItem v-if="notEmptyArray(activeInterview)" useSlot v-for="(item, index) in activeInterview"
-                        :key="index" :rightIcon="ArrowRight" @click="routerGoto(`/dashboard/interview/${item.id}`)">
+                    <liItem
+                        v-if="notEmptyArray(activeInterview)"
+                        useSlot
+                        v-for="(item, index) in activeInterview"
+                        :key="index"
+                        :rightIcon="ArrowRight"
+                        @click="routerGoto(`/dashboard/interview/${item.id}`)">
                         <div class="flex-1 grid grid-cols-2 duration-300">
                             <div class="md:space-y-2 space-y-1 mr-2">
                                 <p class="md:text-2xl">{{ item.title }}</p>
-                                <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">{{ item.description }}
+                                <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">
+                                    {{ item.description }}
                                 </p>
                             </div>
                             <div class="md:space-y-2 space-y-1">
                                 <p class="md:text-base text-xs">
-                                    <span>开始时间: </span>
+                                    <span>开始时间:</span>
                                     <span class="whitespace-nowrap">{{ formatDateTime(item.start_date) }}</span>
                                 </p>
                                 <p class="md:text-base text-xs">
-                                    <span>结束时间: </span>
+                                    <span>结束时间:</span>
                                     <span class="whitespace-nowrap">{{ formatDateTime(item.end_date) }}</span>
                                 </p>
                             </div>
                         </div>
                     </liItem>
-                    <p v-else class="mt-6 md:text-base text-sm text-center dark:text-[#A0A0A0]">还没有已开放的面试喵...</p>
+                    <p v-else class="mt-6 md:text-base text-sm text-center dark:text-[#A0A0A0]">
+                        还没有已开放的面试喵...
+                    </p>
                 </section>
                 <section class="space-y-2">
                     <h2 class="md:text-4xl text-2xl dark:text-[#E0DEC0]">已结束</h2>
                     <p class="md:text-lg dark:text-[#A0A0A0]">以下是已结束报名的面试列表，点击查看详情</p>
                 </section>
                 <section>
-                    <liItem v-if="notEmptyArray(inactiveInterview)" useSlot v-for="(item, index) in inactiveInterview"
-                        :key="index" :rightIcon="ArrowRight" @click="routerGoto(`/dashboard/interview/${item.id}`)">
+                    <liItem
+                        v-if="notEmptyArray(inactiveInterview)"
+                        useSlot
+                        v-for="(item, index) in inactiveInterview"
+                        :key="index"
+                        :rightIcon="ArrowRight"
+                        @click="routerGoto(`/dashboard/interview/${item.id}`)">
                         <div class="flex-1 grid grid-cols-2 duration-300">
                             <div class="md:space-y-2 space-y-1 mr-2">
                                 <p class="md:text-2xl">{{ item.title }}</p>
-                                <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">{{ item.description }}
+                                <p class="dark:text-[#D5C8B0] md:text-[1rem] text-sm subtitle">
+                                    {{ item.description }}
                                 </p>
                             </div>
                             <div class="md:space-y-2 space-y-1">
                                 <p class="md:text-base text-xs">
-                                    <span>开始时间: </span>
+                                    <span>开始时间:</span>
                                     <span class="whitespace-nowrap">{{ formatDateTime(item.start_date) }}</span>
                                 </p>
                                 <p class="md:text-base text-xs">
-                                    <span>结束时间: </span>
+                                    <span>结束时间:</span>
                                     <span class="whitespace-nowrap">{{ formatDateTime(item.end_date) }}</span>
                                 </p>
                             </div>
                         </div>
                     </liItem>
-                    <p v-else class="mt-6 md:text-base text-sm text-center dark:text-[#A0A0A0]">还没有已结束的面试喵...</p>
+                    <p v-else class="mt-6 md:text-base text-sm text-center dark:text-[#A0A0A0]">
+                        还没有已结束的面试喵...
+                    </p>
                 </section>
                 <section class="flex flex-col items-center space-y-4 md:mt-10 mt-5">
                     <h3 class="text-amber-100 md:text-3xl text-2xl">招新咨询群二维码</h3>
-                    <img src="/src/assets/招新群活码.jpg" alt="NA-ACM招新咨询群二维码" class="w-48 h-48 mt-2" />
+                    <img src="/src/assets/QR-code.jpg" alt="NA-ACM招新咨询群二维码" class="w-48 h-48 mt-2" />
                 </section>
-                <footer style="text-align: center;color: #A0A0A0;">
+                <footer style="text-align: center; color: #a0a0a0">
                     <h2>登录该网站时，新用户请使用网办大厅的OAuth - GDMU SSO登录</h2>
                     <p>网办大厅学生初始账号为学号，初始密码为身份证后六位</p>
                 </footer>
@@ -86,7 +102,7 @@ import { liItem } from '..';
 
 import { ArrowRight } from 'lucide-vue-next';
 
-import { formatDateTime, notEmptyArray } from '@/lib/utils'
+import { formatDateTime, notEmptyArray } from '@/lib/utils';
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
@@ -96,17 +112,16 @@ const { routerGoto } = systemStore;
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore();
 const { initInterviewData } = userStore;
-const { activeInterview, inactiveInterview, interviewDataStatus } = storeToRefs(userStore)
+const { activeInterview, inactiveInterview, interviewDataStatus } = storeToRefs(userStore);
 
 import { useRoute } from 'vue-router';
 const route = useRoute();
 
 onMounted(async () => {
-    await initInterviewData()
-})
+    await initInterviewData();
+});
 
 const showDetail = computed(() => route.name !== 'interview' && interviewDataStatus.value === 'loaded');
-
 </script>
 
 <style scoped></style>

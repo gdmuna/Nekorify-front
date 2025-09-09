@@ -52,6 +52,6 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/nekorify:web-latest
             ${{ secrets.DOCKERHUB_USERNAME }}/nekorify:web-${{ env.VERSION }}
-      
+
       - name: Push Summary
         run: echo "### Build ${{ secrets.DOCKERHUB_USERNAME }}/nekorify:web-${{ env.VERSION }} Successfully :rocket:" >> $GITHUB_STEP_SUMMARY

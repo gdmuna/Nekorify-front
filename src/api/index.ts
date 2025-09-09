@@ -14,7 +14,7 @@ const config = {
         const { accessToken } = storeToRefs(authStore);
         if (!method.config.meta?.ignoreToken) {
             if (accessToken.value) {
-                method.config.headers.Authorization = `Bearer ${accessToken.value}`
+                method.config.headers.Authorization = `Bearer ${accessToken.value}`;
             }
         }
     },
@@ -44,10 +44,10 @@ const config = {
             return result;
         },
         onError: (err: any) => {
-            throw err
+            throw err;
         }
     }
-}
+};
 
 const nekorify = createAlova({
     ...config,
@@ -57,17 +57,17 @@ const nekorify = createAlova({
 const ranaMinder = createAlova({
     ...config,
     baseURL: import.meta.env.VITE_API_RANAMINDER_BASE_URL || window.RANAMINDER_BASE_URL
-})
+});
 
 const casdoor = createAlova({
     ...config,
     baseURL: import.meta.env.VITE_API_CASDOOR_ENDPOINT || window.CASDOOR_ENDPOINT
-})
+});
 
 const oss = createAlova({
     ...config,
     baseURL: import.meta.env.VITE_API_GDMUNA_OSS_ENDPOINT || window.GDMUNA_OSS_ENDPOINT
-})
+});
 
 export { nekorify, ranaMinder, casdoor, oss };
 

@@ -1,23 +1,23 @@
-import 'vue-router'
+import 'vue-router';
 
-export { }
+export {};
 
 interface MyRouteMeta {
-    title?: string
-    scrollToTop?: boolean
-    requireAuth?: boolean
-    guest?: boolean
+    title?: string;
+    scrollToTop?: boolean;
+    requireAuth?: boolean;
+    guest?: boolean;
     parentAction?: {
-        doNotScrollToTop?: boolean
-    }
+        doNotScrollToTop?: boolean;
+    };
 }
 
 declare global {
     interface Window {
-        NEKORIFY_BASE_URL: string
-        RANAMINDER_BASE_URL: string
-        CASDOOR_ENDPOINT: string
-        GDMUNA_OSS_ENDPOINT: string
+        NEKORIFY_BASE_URL: string;
+        RANAMINDER_BASE_URL: string;
+        CASDOOR_ENDPOINT: string;
+        GDMUNA_OSS_ENDPOINT: string;
     }
 }
 

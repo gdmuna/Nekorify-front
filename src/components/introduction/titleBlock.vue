@@ -1,11 +1,16 @@
 <template>
-    <div ref="container" class="text-[#0E100F] md:text-4xl text-3xl font-extrabold flex flex-col
-    items-start will-change-transform md:*:px-8 md:*:py-3 *:px-6 *:py-2">
-        <p ref="titleA_block" class="title rounded-lg z-10 whitespace-nowrap"
+    <div
+        ref="container"
+        class="text-[#0E100F] md:text-4xl text-3xl font-extrabold flex flex-col items-start will-change-transform md:*:px-8 md:*:py-3 *:px-6 *:py-2">
+        <p
+            ref="titleA_block"
+            class="title rounded-lg z-10 whitespace-nowrap"
             :style="{ backgroundColor: titleA_color }">
             {{ titleA }}
         </p>
-        <p ref="titleB_block" class="rounded-lg md:ml-8 ml-6 md:-translate-y-1.5 -translate-y-1 whitespace-nowrap"
+        <p
+            ref="titleB_block"
+            class="rounded-lg md:ml-8 ml-6 md:-translate-y-1.5 -translate-y-1 whitespace-nowrap"
             :style="{ backgroundColor: titleB_color }">
             {{ titleB }}
         </p>
@@ -29,32 +34,32 @@ const container = ref<HTMLElement | null>(null);
 const titleA_block = ref<HTMLElement | null>(null);
 const titleB_block = ref<HTMLElement | null>(null);
 
-const triggers: ScrollTrigger[] = []
+const triggers: ScrollTrigger[] = [];
 
 onMounted(() => {
     // 先设置初始状态
     if (container.value && titleB_block.value) {
         gsap.set(container.value, { x: -titleB_block.value.getBoundingClientRect().right });
-        gsap.set(titleB_block.value, { rotateX: 90, transformOrigin: "top center" });
-        const tl = gsap.timeline()
+        gsap.set(titleB_block.value, { rotateX: 90, transformOrigin: 'top center' });
+        const tl = gsap.timeline();
         let trigger = ScrollTrigger.create({
             trigger: container.value,
-            start: "top 90%",
-            end: "bottom top",
+            start: 'top 90%',
+            end: 'bottom top',
             once: true,
             onEnter: () => {
                 tl.to(container.value, {
                     x: 0,
                     duration: 0.75,
-                    ease: "power3.out"
+                    ease: 'power3.out'
                 });
             }
-        })
-        triggers.push(trigger)
+        });
+        triggers.push(trigger);
         trigger = ScrollTrigger.create({
             trigger: titleB_block.value,
-            start: "top 80%",
-            end: "bottom top",
+            start: 'top 80%',
+            end: 'bottom top',
             once: true,
             onEnter: () => {
                 if (tl.progress() * 0.75 < 0.35) {
@@ -62,27 +67,26 @@ onMounted(() => {
                         gsap.to(titleB_block.value, {
                             rotateX: 0,
                             duration: 3,
-                            ease: "elastic.out(1.25,0.35)"
+                            ease: 'elastic.out(1.25,0.35)'
                         }),
-                        "-=0.4"
+                        '-=0.4'
                     );
                 } else {
                     gsap.to(titleB_block.value, {
                         rotateX: 0,
                         duration: 3,
-                        ease: "elastic.out(1.25,0.35)"
-                    })
+                        ease: 'elastic.out(1.25,0.35)'
+                    });
                 }
             }
-        })
-        triggers.push(trigger)
+        });
+        triggers.push(trigger);
     }
-})
+});
 
 onUnmounted(() => {
-    triggers.forEach(trigger => trigger.kill())
-})
-
+    triggers.forEach((trigger) => trigger.kill());
+});
 </script>
 
 <style scoped>

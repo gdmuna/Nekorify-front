@@ -7,9 +7,10 @@
         </template>
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
-            <article v-html="sanitizedHtml" ref="articleRef" class="prose prose-customDark prose-sm sm:prose-base
-            lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
-            </article>
+            <article
+                v-html="sanitizedHtml"
+                ref="articleRef"
+                class="prose prose-customDark prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto"></article>
         </template>
         <template v-if="dataStatus === 'error'">
             <div class="size-full flex-1 flex justify-center items-center">
@@ -20,197 +21,207 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, createVNode, render, watch, onUnmounted } from 'vue'
+import { ref, computed, onMounted, nextTick, createVNode, render, watch, onUnmounted } from 'vue';
 // @ts-ignore
-import markdownit from 'markdown-it'
+import markdownit from 'markdown-it';
 // @ts-ignore
-import { full as emoji } from 'markdown-it-emoji'
-import twemoji from 'twemoji'
+import { full as emoji } from 'markdown-it-emoji';
+import twemoji from 'twemoji';
 // @ts-ignore
-import markdownIK from 'markdown-it-katex'
-import markdownIMT from 'markdown-it-multimd-table'
+import markdownIK from 'markdown-it-katex';
+import markdownIMT from 'markdown-it-multimd-table';
 // @ts-ignore
-import markdownITL from 'markdown-it-task-lists'
-import { alertPlugin } from 'markdown-it-github-alert'
+import markdownITL from 'markdown-it-task-lists';
+import { alertPlugin } from 'markdown-it-github-alert';
 
 // @ts-ignore
-import Prism from 'prismjs'
+import Prism from 'prismjs';
 
-import DOMPurify from 'dompurify'
+import DOMPurify from 'dompurify';
 
-import { blockButton } from '@/components/ui/button'
+import { blockButton } from '@/components/ui/button';
 
-import { gsap } from 'gsap'
+import { gsap } from 'gsap';
 
-import { getRemPx, getRandomNumber, imgFireworkStart } from '@/lib/utils'
+import { getRemPx, getRandomNumber, imgFireworkStart } from '@/lib/utils';
 
-import Navigator from "@/components/navigator.vue";
+import Navigator from '@/components/navigator.vue';
 
-import { storeToRefs } from 'pinia'
-import { useSystemStore } from '@/stores/system'
+import { storeToRefs } from 'pinia';
+import { useSystemStore } from '@/stores/system';
 
-const systemStore = useSystemStore()
-const { isMobile } = storeToRefs(systemStore)
+const systemStore = useSystemStore();
+const { isMobile } = storeToRefs(systemStore);
 
-import { resourceApi } from '@/api'
-import type { DataStatus } from '@/types/api'
-import { toast } from 'vue-sonner'
+import { resourceApi } from '@/api';
+import type { DataStatus } from '@/types/api';
+import { toast } from 'vue-sonner';
 
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+const root = ref<HTMLElement | null>(null);
 
-const root = ref<HTMLElement | null>(null)
+const dataStatus = ref<DataStatus>('idle');
 
-const dataStatus = ref<DataStatus>('idle')
+const navigatorRef = ref<any>(null);
 
-const navigatorRef = ref<any>(null)
+const articleRef = ref<HTMLElement | null>(null);
 
-const articleRef = ref<HTMLElement | null>(null)
-
-let navigatorTrigger: ScrollTrigger | null = null
+let navigatorTrigger: ScrollTrigger | null = null;
 
 const md = new markdownit({
     html: true,
     breaks: true,
     linkify: true
-}).use(emoji)
+})
+    .use(emoji)
     .use(markdownIK)
     .use(markdownIMT)
     .use(markdownITL, { label: true, enabled: true })
-    .use(alertPlugin)
+    .use(alertPlugin);
 
 md.renderer.rules.emoji = function (token: any, idx: number) {
-    const emojiChar = token[idx].content
-    const codePoint = twemoji.convert.toCodePoint(emojiChar)
+    const emojiChar = token[idx].content;
+    const codePoint = twemoji.convert.toCodePoint(emojiChar);
     const imgHtml = twemoji.parse(emojiChar, {
         folder: 'svg',
         ext: '.svg'
-    })
-    return `<span class="emoji emoji-${codePoint}">${imgHtml}</span>`
-}
+    });
+    return `<span class="emoji emoji-${codePoint}">${imgHtml}</span>`;
+};
 
-const markdown = ref('')
+const markdown = ref('');
 const sanitizedHtml = computed(() => {
     console.log(typeof markdown.value);
     if (typeof markdown.value === 'object') {
         console.log(markdown.value);
     }
-    if (!markdown.value || typeof markdown.value !== 'string') return ''
-    const html = md.render(markdown.value)
-    return DOMPurify.sanitize(html)
-})
+    if (!markdown.value || typeof markdown.value !== 'string') return '';
+    const html = md.render(markdown.value);
+    return DOMPurify.sanitize(html);
+});
 
-const props = withDefaults(defineProps<{
-    currentSourceUrl: any
-    enableNavigator?: boolean
-}>(), {
-    enableNavigator: true
-})
+const props = withDefaults(
+    defineProps<{
+        currentSourceUrl: any;
+        enableNavigator?: boolean;
+    }>(),
+    {
+        enableNavigator: true
+    }
+);
 
 onMounted(() => {
     if (props.currentSourceUrl) {
-        handleSource(props.currentSourceUrl)
+        handleSource(props.currentSourceUrl);
     } else {
-        dataStatus.value = 'error'
-        toast.error('无效的资源ID')
+        dataStatus.value = 'error';
+        toast.error('无效的资源ID');
     }
-})
+});
 
 onUnmounted(() => {
     if (navigatorTrigger) {
-        navigatorTrigger.kill()
-        navigatorTrigger = null
+        navigatorTrigger.kill();
+        navigatorTrigger = null;
     }
-})
+});
 
 async function handleSource(url: string) {
-    dataStatus.value = 'loading'
-    const { err, res } = await resourceApi.fetchResource<string>(url)
+    dataStatus.value = 'loading';
+    const { err, res } = await resourceApi.fetchResource<string>(url);
     if (res) {
-        markdown.value = res
-        dataStatus.value = 'loaded'
+        markdown.value = res;
+        dataStatus.value = 'loaded';
         nextTick(() => {
-            Prism.highlightAllUnder(root.value)
-            root.value?.querySelectorAll('span .katex').forEach(el => {
-                el.classList.add('not-prose')
-            })
-            root.value?.querySelectorAll('pre[class*="language-"]').forEach(el => {
-                const container = document.createElement('div')
-                container.style.position = 'absolute'
-                container.style.top = '0.5em'
-                container.style.right = '0.7em'
-                container.style.zIndex = '10'
+            Prism.highlightAllUnder(root.value);
+            root.value?.querySelectorAll('span .katex').forEach((el) => {
+                el.classList.add('not-prose');
+            });
+            root.value?.querySelectorAll('pre[class*="language-"]').forEach((el) => {
+                const container = document.createElement('div');
+                container.style.position = 'absolute';
+                container.style.top = '0.5em';
+                container.style.right = '0.7em';
+                container.style.zIndex = '10';
                 const vnode = createVNode(blockButton, {
                     onClick: (event: MouseEvent) => {
-                        const btn = event.currentTarget as HTMLElement
+                        const btn = event.currentTarget as HTMLElement;
                         navigator.clipboard.writeText(el.textContent || '').then(() => {
-                            copyAnimate.play(btn)
-                        })
+                            copyAnimate.play(btn);
+                        });
                     }
-                })
-                render(vnode, container)
-                el.appendChild(container)
-            })
+                });
+                render(vnode, container);
+                el.appendChild(container);
+            });
             if (props.enableNavigator && !isMobile.value) {
-                const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight
+                const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight;
                 navigatorTrigger = ScrollTrigger.create({
                     trigger: navigatorRef.value.$el,
                     start: `top top+=${offset}`,
                     end: `+=${root.value?.offsetHeight}`,
                     pin: true,
                     pinSpacing: false
-                })
+                });
             }
-        })
+        });
     } else {
-        dataStatus.value = 'error'
-        toast.error('加载失败喵... 请稍后再试~')
+        dataStatus.value = 'error';
+        toast.error('加载失败喵... 请稍后再试~');
     }
 }
 
-watch(() => props.currentSourceUrl, (newVal) => {
-    console.log('currentSourceUrl changed', newVal);
-    if (newVal) {
-        handleSource(newVal)
-    } else {
-        dataStatus.value = 'error'
-        toast.error('无效的资源ID')
-    }
-})
-
-watch([() => props.enableNavigator, isMobile], ([newEnableNavigator, newIsMobile]) => {
-    if (!newEnableNavigator || newIsMobile) {
-        if (navigatorTrigger) {
-            navigatorTrigger.kill()
-            navigatorTrigger = null
+watch(
+    () => props.currentSourceUrl,
+    (newVal) => {
+        console.log('currentSourceUrl changed', newVal);
+        if (newVal) {
+            handleSource(newVal);
+        } else {
+            dataStatus.value = 'error';
+            toast.error('无效的资源ID');
         }
-    } else if (newEnableNavigator && !newIsMobile && !navigatorTrigger && navigatorRef.value?.$el) {
-        const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight
-        navigatorTrigger = ScrollTrigger.create({
-            trigger: navigatorRef.value.$el,
-            start: `top top+=${offset}`,
-            end: `+=${root.value?.offsetHeight}`,
-            pin: true,
-            pinSpacing: false
-        })
     }
-}, { immediate: true })
+);
+
+watch(
+    [() => props.enableNavigator, isMobile],
+    ([newEnableNavigator, newIsMobile]) => {
+        if (!newEnableNavigator || newIsMobile) {
+            if (navigatorTrigger) {
+                navigatorTrigger.kill();
+                navigatorTrigger = null;
+            }
+        } else if (newEnableNavigator && !newIsMobile && !navigatorTrigger && navigatorRef.value?.$el) {
+            const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight;
+            navigatorTrigger = ScrollTrigger.create({
+                trigger: navigatorRef.value.$el,
+                start: `top top+=${offset}`,
+                end: `+=${root.value?.offsetHeight}`,
+                pin: true,
+                pinSpacing: false
+            });
+        }
+    },
+    { immediate: true }
+);
 
 const copyAnimate = {
     tls: [] as gsap.core.Timeline[],
     play(target: HTMLElement) {
-        const tl = gsap.timeline()
-        const pTag = document.createElement('p')
-        pTag.textContent = '已复制喵~'
-        const btnRect = target.getBoundingClientRect()
-        const rootRect = root.value!.getBoundingClientRect()
-        pTag.style.position = 'absolute'
-        pTag.style.left = `${btnRect.left - rootRect.left + getRemPx(getRandomNumber(-1, 1))}px`
-        pTag.style.top = `${btnRect.bottom - rootRect.top + getRemPx(getRandomNumber(-1, 1))}px`
-        pTag.style.transform = `translate(-120%) rotate(${getRandomNumber(-20, 20)}deg)`
-        pTag.style.whiteSpace = 'nowrap'
+        const tl = gsap.timeline();
+        const pTag = document.createElement('p');
+        pTag.textContent = '已复制喵~';
+        const btnRect = target.getBoundingClientRect();
+        const rootRect = root.value!.getBoundingClientRect();
+        pTag.style.position = 'absolute';
+        pTag.style.left = `${btnRect.left - rootRect.left + getRemPx(getRandomNumber(-1, 1))}px`;
+        pTag.style.top = `${btnRect.bottom - rootRect.top + getRemPx(getRandomNumber(-1, 1))}px`;
+        pTag.style.transform = `translate(-120%) rotate(${getRandomNumber(-20, 20)}deg)`;
+        pTag.style.whiteSpace = 'nowrap';
         // root.value?.appendChild(pTag)
-        imgFireworkStart(target, 0)
+        imgFireworkStart(target, 0);
         // tl.to(pTag, {
         //     opacity: 1,
         //     y: '-100%',
@@ -226,10 +237,9 @@ const copyAnimate = {
         //         this.tls = this.tls.filter(t => t !== tl)
         //     }
         // })
-        this.tls.push(tl)
+        this.tls.push(tl);
     }
-}
-
+};
 </script>
 
 <style scoped>
@@ -247,7 +257,7 @@ const copyAnimate = {
     }
 
     span.katex-html {
-        @apply sr-only
+        @apply sr-only;
     }
 
     ul.contains-task-list {
@@ -267,31 +277,31 @@ const copyAnimate = {
         cursor: pointer;
     }
 
-    code:not(pre[class*="language-"] > code) {
+    code:not(pre[class*='language-'] > code) {
         font-size: 0.9em;
         background: #282c33;
         border-radius: 0.2em;
         padding: 0.3em 0.6em;
         margin: 0.4em;
-        color: #FFF9DB;
+        color: #fff9db;
     }
 
     code:before {
-        content: "";
+        content: '';
     }
 
     code:after {
-        content: "";
+        content: '';
     }
 
-    pre[class*="language-"] {
+    pre[class*='language-'] {
         position: relative;
         font-size: 1em;
         line-height: 1em;
         background: #17191d;
         border-radius: 0.25em;
 
-        code[class*="language-"] {
+        code[class*='language-'] {
             font-size: 0.8em;
         }
     }
@@ -303,11 +313,11 @@ const copyAnimate = {
         padding-right: 1em;
 
         p:before {
-            content: ''
+            content: '';
         }
 
         p:after {
-            content: ''
+            content: '';
         }
     }
 
@@ -322,7 +332,7 @@ const copyAnimate = {
         background: var(--background-color);
     }
 
-    .markdown-alert>span {
+    .markdown-alert > span {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -335,27 +345,27 @@ const copyAnimate = {
     }
 
     .markdown-alert.note {
-        --border-color: #539BF5;
+        --border-color: #539bf5;
         --background-color: rgba(83, 155, 245, 0.1);
     }
 
     .markdown-alert.warning {
-        --border-color: #C69026;
+        --border-color: #c69026;
         --background-color: rgba(198, 144, 38, 0.1);
     }
 
     .markdown-alert.important {
-        --border-color: #986EE2;
+        --border-color: #986ee2;
         --background-color: rgba(152, 110, 226, 0.1);
     }
 
     .markdown-alert.caution {
-        --border-color: #E5534B;
+        --border-color: #e5534b;
         --background-color: rgba(229, 83, 75, 0.1);
     }
 
     .markdown-alert.tip {
-        --border-color: #57AB5A;
+        --border-color: #57ab5a;
         --background-color: rgba(87, 171, 90, 0.1);
     }
 }
