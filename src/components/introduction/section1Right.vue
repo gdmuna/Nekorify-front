@@ -20,7 +20,7 @@
                         <span class="text-lg code-java">Java</span>
                     </div>
                     <div ref="logo_golang" class="absolute overflow-hidden flex items-center space-x-2 top-0 right-0">
-                        <img src="@/assets/tech-stack-logos/golang.svg" class="size-6" />
+                        <img src="@/assets/tech-stack-logos/golang.svg" class="size-8" />
                         <span class="text-lg code-golang">Golang</span>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                         '!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 !overflow-hidden',
                         !isMobile ? 'line-numbers' : '!pb-0'
                     ]" tabindex="-1">
-<code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.675rem] will-change-contents', codeClass[codesIndex], isMobile ? '!leading-3.5' : '']" ></code><span ref="cursor" class="cursor">▌</span>
+<code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.675rem] will-change-contents', codeClass[codesIndex], isMobile ? '!leading-3.5' : '']" ></code><span ref="cursor" class="cursor text-xs">▌</span>
 </pre>
                 </div>
                 <!-- 底部输出 -->
