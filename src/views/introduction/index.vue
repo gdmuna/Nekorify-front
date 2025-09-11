@@ -831,7 +831,7 @@ function initAnimate() {
             y: '-100%',
             autoAlpha: 0
         });
-        const section3_scrollListenLength = section3_scrollLength.value - section3_PTag.value!.clientWidth;
+        const section3_scrollListenLength = section3_scrollLength.value - section3_PTag.value!.clientWidth - 192;
         ScrollTrigger.create({
             trigger: section3_scrollMain.value,
             start: 'top top',
