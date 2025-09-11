@@ -182,7 +182,12 @@
                                         <span class="self-end">”</span>
                                     </div>
                                     <h3 class="text-2xl md:text-3xl font-bold text-emerald-500 mb-2">
-                                        🎉 恭喜通过面试！
+                                        <span @click="firework.baseConfettiFirework" class="cursor-pointer">
+                                            🎉
+                                        </span>
+                                        <span>
+                                            恭喜通过面试！
+                                        </span>
                                     </h3>
                                     <p class="text-lg md:text-2xl text-amber-100">
                                         {{ userInfo.username }}同学，见信欢愉，谨以为贺！
@@ -191,20 +196,14 @@
                                         恭喜你成功通过
                                         <span
                                             v-if="currentAssociation"
-                                            v-for="(item, index) in currentAssociation"
-                                            :key="index"
                                             class="font-bold text-emerald-500">
-                                            {{ item.label }}
-                                            <span v-if="index < currentAssociation.length - 1">&</span>
+                                            {{ currentAssociation }}
                                         </span>
-                                        的干事招新面试，成为
+                                        的干事招新面试，正式进入考核期，成为
                                         <span
                                             v-if="currentDepartment"
-                                            v-for="(item, index) in currentDepartment"
-                                            :key="index"
                                             class="font-bold text-emerald-500">
-                                            {{ item.label }}
-                                            <span v-if="index < currentDepartment.length - 1">&</span>
+                                            {{ currentDepartment }}
                                         </span>
                                         中的一员，感谢你选择我们，愿这里成为你梦想启航的地方。
                                     </p>
@@ -225,11 +224,8 @@
                                     <p>
                                         <span
                                             v-if="currentAssociation"
-                                            v-for="(item, index) in currentAssociation"
-                                            :key="index"
                                             class="font-bold text-emerald-500">
-                                            {{ item.label }}
-                                            <span v-if="index < currentAssociation.length - 1">&</span>
+                                            {{ currentAssociation }}
                                         </span>
                                         期待与你并肩，见证更多可能。
                                     </p>
@@ -311,7 +307,7 @@ import { Badge } from '@/components/ui/badge';
 
 import detailRenderer from '@/components/detailRenderer.vue';
 
-import { formatDate, formatTime } from '@/lib/utils';
+import { formatDate, formatTime, firework } from '@/lib/utils';
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
@@ -320,9 +316,6 @@ const { isMobile } = storeToRefs(systemStore);
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore();
 const { steps, currentInterviewResult, userInfo } = storeToRefs(userStore);
-import { useAuthStore } from '@/stores/auth';
-const authStore = useAuthStore();
-const { getGroupByLevel } = authStore;
 
 const currentStep = ref();
 
@@ -342,11 +335,11 @@ function teleportTo(index: number, type: string) {
 }
 
 const currentAssociation = computed(() => {
-    return getGroupByLevel(3);
+    return currentInterviewResult.value?.association
 });
 
 const currentDepartment = computed(() => {
-    return getGroupByLevel(2);
+    return currentInterviewResult.value?.department
 });
 
 const stepRoot = ref<HTMLElement | null>(null);
@@ -354,6 +347,14 @@ const stepRoot = ref<HTMLElement | null>(null);
 function goto(index: number) {
     currentStep.value = index + 1;
 }
+
+watch(() => currentStep.value, (newVal) => {
+    if (newVal === undefined) newVal = activeStepIndex.value + 1
+    console.log('Current step changed to:', newVal, steps.value.length);
+    if (newVal === steps.value.length && currentInterviewResult.value?.status === 'approved') {
+        firework.baseConfettiFirework()
+    }
+}, { immediate: true });
 </script>
 
 <style scoped>

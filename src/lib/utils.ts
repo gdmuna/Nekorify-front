@@ -10,7 +10,6 @@ import type { ModalOptions, UseFetchOptions } from '@/types/utils';
 import type { Method } from 'alova';
 
 import z from 'zod';
-
 import dayjs from 'dayjs';
 
 import { createVNode, render, ref } from 'vue';
@@ -19,8 +18,9 @@ import { baseModal } from '@/components/ui/modal';
 
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'vue-sonner';
-
 import { gsap } from 'gsap';
+// @ts-ignore
+import confetti from 'canvas-confetti';
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
@@ -534,4 +534,40 @@ export function useVerificationCodeService() {
         startCountdown,
         stopCountdown
     };
+}
+
+export const firework = {
+    fire(particleRatio: number, opts: any) {
+        confetti({
+            origin: {
+                y: 1
+            },
+            particleCount: Math.floor(200 * particleRatio),
+            ...opts
+        })
+    },
+    baseConfettiFirework() {
+        this.fire(0.25, {
+            spread: 26,
+            startVelocity: 55,
+        });
+        this.fire(0.2, {
+            spread: 60,
+        });
+        this.fire(0.35, {
+            spread: 100,
+            decay: 0.91,
+            scalar: 0.8
+        });
+        this.fire(0.1, {
+            spread: 120,
+            startVelocity: 25,
+            decay: 0.92,
+            scalar: 1.2
+        });
+        this.fire(0.1, {
+            spread: 120,
+            startVelocity: 45
+        })
+    }
 }

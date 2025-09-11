@@ -47,6 +47,7 @@ export const useUserStore = defineStore('user', () => {
                             })
                             .catch(() => {
                                 toast.info('自动登录失败，请重新登录');
+                                authStore.setToken();
                                 reject(false);
                             });
                     })

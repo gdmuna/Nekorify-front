@@ -40,13 +40,17 @@ export const useAuthStore = defineStore('auth', () => {
             await userStore.getCasdoorUserInfo(true);
             userStore.handleUserInfo(data.data.userInfo);
             initUserPermission();
+            const searchParams = new URLSearchParams(window.location.search);
+            const path = searchParams.get('state');
+            router.push(path || '/dashboard');
         } else {
             toast.error(err.data.message || '登录失败');
             setToken();
+            const systemStore = useSystemStore();
+            systemStore.routerBack();
+            console.log('loginCallback error', err);
+            return Promise.reject(err);
         }
-        const searchParams = new URLSearchParams(window.location.search);
-        const path = searchParams.get('state');
-        router.push(path || '/dashboard');
     }
 
     function setToken(token?: Token) {
@@ -230,6 +234,7 @@ export const useAuthStore = defineStore('auth', () => {
         getGroupByLevel,
         initUserPermission,
         userPermissions,
-        sendVerificationCode
+        sendVerificationCode,
+        setToken
     };
 });
