@@ -28,7 +28,15 @@ import { onMounted, ref, h } from 'vue';
 
 import { liItem } from '@/components/dashboard';
 
-import { ShieldUser, ArrowRight, Newspaper, Notebook, Youtube, Info } from 'lucide-vue-next';
+import {
+    ShieldUser,
+    ArrowRight,
+    Newspaper,
+    Notebook,
+    Youtube,
+    Info,
+    BookOpenText
+} from 'lucide-vue-next';
 
 import { openInNewTab, showModal } from '@/lib/utils';
 
@@ -92,6 +100,16 @@ const items = ref([
         path: {
             type: 'route',
             to: '/dashboard/interview'
+        }
+    },
+    {
+        title: 'Classwork',
+        subtitle: '社团作业提交平台（暂不可用）',
+        leftIcon: BookOpenText,
+        rightIcon: ArrowRight,
+        path: {
+            type: 'link',
+            to: 'https://iam.gdmuna.com/login/oauth/authorize?client_id=95c6f42185fe769ca68c&redirect_uri=https%3A%2F%2Fclasswork.gdmuna.com%2Fapi%2Fauth%2Fsso_get_token&response_type=code&scope=profile&state=https%3A%2F%2Fiam.gdmuna.com'
         }
     }
 ]);

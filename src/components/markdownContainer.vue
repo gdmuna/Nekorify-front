@@ -50,7 +50,7 @@ import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
 
 const systemStore = useSystemStore();
-const { isMobile } = storeToRefs(systemStore);
+const { isMobile, isDesktop } = storeToRefs(systemStore);
 
 import { resourceApi } from '@/api';
 import type { DataStatus } from '@/types/api';
@@ -158,7 +158,7 @@ async function handleSource(url: string) {
                 render(vnode, container);
                 el.appendChild(container);
             });
-            if (props.enableNavigator && !isMobile.value) {
+            if (props.enableNavigator && !isDesktop.value) {
                 const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight;
                 navigatorTrigger = ScrollTrigger.create({
                     trigger: navigatorRef.value.$el,
