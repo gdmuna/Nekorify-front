@@ -171,7 +171,7 @@
                             <div
                                 v-else-if="step.type === 'result'"
                                 class="bg-[#f7f3ed] dark:bg-[#181818] rounded-xl md:p-8 p-6 max-w-2xl col-span-5 md:col-span-3 mx-auto shadow-lg space-y-6 my-auto md:text-lg">
-                                <template v-if="step.result === 'approved'">
+                                <template v-if="step.result === 'approved' && currentInterviewAssociation === 'NA'">
                                     <div
                                         class="title font-poem text-3xl md:text-3xl font-bold flex flex-col w-fit mx-auto">
                                         <span class="self-start">“</span>
@@ -182,7 +182,66 @@
                                         <span class="self-end">”</span>
                                     </div>
                                     <h3 class="text-2xl md:text-3xl font-bold text-emerald-500 mb-2">
-                                        <span @click="firework.baseConfettiFirework" class="cursor-pointer">
+                                        <span @click="firework.baseConfettiFirework" class="cursor-pointer select-none">
+                                            🎉
+                                        </span>
+                                        <span>
+                                            恭喜通过面试！
+                                        </span>
+                                    </h3>
+                                    <p class="text-lg md:text-2xl text-amber-100">
+                                        {{ userInfo.username }}同学，展信安好，特此致贺！
+                                    </p>
+                                    <p>
+                                        你已顺利通过
+                                        <span
+                                            v-if="currentAssociation"
+                                            class="font-bold text-emerald-500">
+                                            {{ currentAssociation }}
+                                        </span>
+                                        的干事招新面试，正式进入为期25天的考察期，加入
+                                        <span
+                                            v-if="currentDepartment"
+                                            class="font-bold text-emerald-500">
+                                            {{ currentDepartment }}
+                                        </span>
+                                        预备干事的行列。感谢你的到来，愿这一方天地成为你成长与创造的起点。
+                                    </p>
+                                    <p>
+                                        这里聚集着对技术怀抱热情的灵魂，项目与想法在此汇聚并生长。每一次构思都承载着探索，每一次协作都孕育着突破。我们相信，认真打磨的每个细节，都能汇聚成改变与光亮。
+                                    </p>
+                                    <p>
+                                        前路或有波澜与挑战，亦有良机与收获相随。
+                                        <span class="font-bold text-emerald-500">
+                                            愿你怀抱好奇与坚持，投身实践，积蓄力量，拓展视野，终能抵达心之所向 。
+                                        </span>
+                                    </p>
+                                    <p>谨以此句共勉：</p>
+                                    <blockquote
+                                        class="border-l-4 border-emerald-400 pl-4 italic rounded font-poem dark:text-amber-300 bg-amber-50 dark:bg-[#23221c]">
+                                        “ 行之力则知愈进，知之深则行愈达 。”
+                                    </blockquote>
+                                    <p>
+                                        <span
+                                            v-if="currentAssociation"
+                                            class="font-bold text-emerald-500">
+                                            {{ currentAssociation }}
+                                        </span>
+                                        ，期待与你并肩，书写新的篇章。
+                                    </p>
+                                </template>
+                                <template v-if="step.result === 'approved' && currentInterviewAssociation === 'ACM'">
+                                    <div
+                                        class="title font-poem text-3xl md:text-3xl font-bold flex flex-col w-fit mx-auto">
+                                        <span class="self-start">“</span>
+                                        <h2 class="flex flex-wrap">
+                                            <span class="pl-8">我见青山多妩媚，</span>
+                                            <span class="whitespace-nowrap ml-auto pr-8">料青山见我应如是</span>
+                                        </h2>
+                                        <span class="self-end">”</span>
+                                    </div>
+                                    <h3 class="text-2xl md:text-3xl font-bold text-emerald-500 mb-2">
+                                        <span @click="firework.baseConfettiFirework" class="cursor-pointer select-none">
                                             🎉
                                         </span>
                                         <span>
@@ -199,13 +258,13 @@
                                             class="font-bold text-emerald-500">
                                             {{ currentAssociation }}
                                         </span>
-                                        的干事招新面试，正式进入考核期，成为
+                                        的干事招新面试，正式进入为期25天的考核期，成为
                                         <span
                                             v-if="currentDepartment"
                                             class="font-bold text-emerald-500">
                                             {{ currentDepartment }}
                                         </span>
-                                        中的一员，感谢你选择我们，愿这里成为你梦想启航的地方。
+                                        预备干事中的一员，感谢你选择我们，愿这里成为你梦想启航的地方。
                                     </p>
                                     <p>
                                         我们由衷欢迎你加入这个充满活力的大家庭。在这里，代码不止是代码，更是我们对话未来的语言；算法不仅是算法，也是思维碰撞的火花。期待你与志同道合的伙伴们一起，热烈地探索、自由地创造、坚定地成长。
@@ -227,7 +286,7 @@
                                             class="font-bold text-emerald-500">
                                             {{ currentAssociation }}
                                         </span>
-                                        期待与你并肩，见证更多可能。
+                                        ，期待与你并肩，见证更多可能。
                                     </p>
                                 </template>
                                 <template v-if="step.result === 'rejected'">
@@ -315,7 +374,7 @@ const systemStore = useSystemStore();
 const { isMobile } = storeToRefs(systemStore);
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore();
-const { steps, currentInterviewResult, userInfo } = storeToRefs(userStore);
+const { steps, currentInterviewResult, userInfo, currentInterviewAssociation } = storeToRefs(userStore);
 
 const currentStep = ref();
 

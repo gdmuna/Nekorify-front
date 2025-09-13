@@ -676,7 +676,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // 导入动画服务
 import { Animation } from '@/services';
 
-import { openInNewTab } from '@/lib/utils';
+import { getRemPx, openInNewTab } from '@/lib/utils';
 
 import { useSystemStore } from '@/stores/system';
 import { storeToRefs } from 'pinia';
@@ -831,7 +831,7 @@ function initAnimate() {
             y: '-100%',
             autoAlpha: 0
         });
-        const section3_scrollListenLength = section3_scrollLength.value - section3_PTag.value!.clientWidth - 192;
+        const section3_scrollListenLength = section3_scrollLength.value - section3_PTag.value!.clientWidth - getRemPx(8);
         ScrollTrigger.create({
             trigger: section3_scrollMain.value,
             start: 'top top',

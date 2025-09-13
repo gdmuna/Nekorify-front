@@ -329,6 +329,11 @@ export const useUserStore = defineStore('user', () => {
             return interviewFormJSON2.value;
         }
     });
+
+    const currentInterviewAssociation = computed(() => {
+        return currentInterview.value?.title.startsWith('NA') ? 'NA' : 'ACM';
+    })
+
     const steps = computed(() => {
         let Steps: Step[] = [
             {
@@ -487,6 +492,7 @@ export const useUserStore = defineStore('user', () => {
         loadInterviewFormJSON,
         getCasdoorUserInfo,
         loadInterviewFormJSON2,
-        currentInterviewFormJSON
+        currentInterviewFormJSON,
+        currentInterviewAssociation
     };
 });
