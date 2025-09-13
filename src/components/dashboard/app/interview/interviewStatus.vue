@@ -235,12 +235,10 @@
                                 <template v-if="step.result === 'approved' && currentInterviewAssociation === 'ACM'">
                                     <div
                                         class="title font-poem text-3xl md:text-3xl font-bold flex flex-col w-fit mx-auto">
-                                        <span class="self-start">“</span>
                                         <h2 class="flex flex-wrap">
-                                            <span class="pl-8">我见青山多妩媚，</span>
-                                            <span class="whitespace-nowrap ml-auto pr-8">料青山见我应如是</span>
+                                            <span class="pl-4">『 我见青山多妩媚，</span>
+                                            <span class="whitespace-nowrap ml-auto pr-4">料青山见我应如是 』</span>
                                         </h2>
-                                        <span class="self-end">”</span>
                                     </div>
                                     <h3 class="text-2xl md:text-3xl font-bold text-emerald-500 mb-2">
                                         <span @click="firework.baseConfettiFirework" class="cursor-pointer select-none">
