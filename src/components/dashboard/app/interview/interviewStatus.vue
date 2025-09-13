@@ -229,6 +229,8 @@
                                         </span>
                                         ，期待与你并肩，书写新的篇章。
                                     </p>
+                                    <img src="@/assets/Examine-QR-code.png" alt="" style="width: 10rem; height: 10rem; margin: auto;" />
+                                    <p class="text-center mt-2">扫码进入干事考核群</p>
                                 </template>
                                 <template v-if="step.result === 'approved' && currentInterviewAssociation === 'ACM'">
                                     <div
@@ -288,6 +290,8 @@
                                         </span>
                                         ，期待与你并肩，见证更多可能。
                                     </p>
+                                    <img src="@/assets/Examine-QR-code.png" alt="" style="width: 10rem; height: 10rem; margin: auto;" />
+                                    <p class="text-center mt-2">扫码进入干事考核群</p>
                                 </template>
                                 <template v-if="step.result === 'rejected'">
                                     <div
