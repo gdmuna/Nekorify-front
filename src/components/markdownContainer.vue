@@ -335,8 +335,8 @@ const copyAnimate = {
         padding: 1em;
         border-left: 0.25rem solid;
         border-radius: 0.25em;
-        padding-bottom: 0.1em;
-        padding-top: 0px;
+        padding-bottom: 0.5em;
+        padding-top: 0.5em;
         margin-top: 1em;
         margin-bottom: 1em;
         border-color: var(--border-color);
