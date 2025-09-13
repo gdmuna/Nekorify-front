@@ -7,10 +7,9 @@
         </template>
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
-            <article
-                v-html="sanitizedHtml"
-                ref="articleRef"
-                class="prose prose-customDark prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto"></article>
+            <article v-html="sanitizedHtml" ref="articleRef"
+                class="prose prose-customDark prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
+            </article>
         </template>
         <template v-if="dataStatus === 'error'">
             <div class="size-full flex-1 flex justify-center items-center">
@@ -134,11 +133,15 @@ async function handleSource(url: string) {
         markdown.value = res;
         dataStatus.value = 'loaded';
         nextTick(() => {
-            Prism.highlightAllUnder(root.value);
-            root.value?.querySelectorAll('span .katex').forEach((el) => {
+            Prism.highlightAllUnder(articleRef.value);
+            articleRef.value?.querySelectorAll('span .katex').forEach((el) => {
                 el.classList.add('not-prose');
             });
-            root.value?.querySelectorAll('pre[class*="language-"]').forEach((el) => {
+            articleRef.value?.querySelectorAll('a').forEach((link) => {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            });
+            articleRef.value?.querySelectorAll('pre[class*="language-"]').forEach((el) => {
                 const container = document.createElement('div');
                 container.style.position = 'absolute';
                 container.style.top = '0.5em';
@@ -248,6 +251,10 @@ const copyAnimate = {
         margin: 0.5em 0;
     }
 
+    h2 {
+        margin-top: 0;
+    }
+
     img.emoji {
         height: 1em;
         width: 1em;
@@ -275,6 +282,7 @@ const copyAnimate = {
 
     details summary {
         cursor: pointer;
+        margin: 0.5em 0;
     }
 
     code:not(pre[class*='language-'] > code) {
@@ -327,12 +335,13 @@ const copyAnimate = {
         border-radius: 0.25em;
         padding-bottom: 0.1em;
         padding-top: 0px;
+        margin-top: 1em;
         margin-bottom: 1em;
         border-color: var(--border-color);
         background: var(--background-color);
     }
 
-    .markdown-alert > span {
+    .markdown-alert>span {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -342,6 +351,8 @@ const copyAnimate = {
     .markdown-alert .markdown-alert-icon {
         margin-right: 0.5em;
         fill: var(--border-color);
+        width: 1rem;
+        height: 1rem;
     }
 
     .markdown-alert.note {
