@@ -8,7 +8,7 @@
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
             <article v-html="sanitizedHtml" ref="articleRef"
-                class="prose prose-customDark prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
+                class="prose prose-customDark prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
             </article>
         </template>
         <template v-if="dataStatus === 'error'">
@@ -247,12 +247,11 @@ const copyAnimate = {
 
 <style scoped>
 :deep.article-container article {
-    p {
+    p,
+    h2,
+    h3,
+    h4 {
         margin: 0.5em 0;
-    }
-
-    h2 {
-        margin-top: 0;
     }
 
     img.emoji {
@@ -283,6 +282,9 @@ const copyAnimate = {
     details summary {
         cursor: pointer;
         margin: 0.5em 0;
+        border-bottom: 1px solid #FEFCE4;
+        width: fit-content;
+        user-select: none;
     }
 
     code:not(pre[class*='language-'] > code) {
