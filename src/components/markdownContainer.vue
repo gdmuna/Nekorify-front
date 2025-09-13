@@ -158,7 +158,7 @@ async function handleSource(url: string) {
                 render(vnode, container);
                 el.appendChild(container);
             });
-            if (props.enableNavigator && !isDesktop.value) {
+            if (props.enableNavigator && isDesktop.value) {
                 const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight;
                 navigatorTrigger = ScrollTrigger.create({
                     trigger: navigatorRef.value.$el,
