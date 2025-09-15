@@ -215,8 +215,7 @@ async function handleSource(url: string) {
                         duration: 0.2,
                         ease: 'power2.out'
                     });
-                },
-                markers: true
+                }
             })
         });
     } else {
