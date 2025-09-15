@@ -9,7 +9,7 @@
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
             <div v-else class="md:ml-8 mb-6" />
             <Button ref="scrollToTopButton" class="absolute top-0 right-2 rounded-full size-10 cursor-pointer transition-colors duration-[200]
-            dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px] invisible" @click="scrollToTop">
+            dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px] invisible z-100" @click="scrollToTop">
                 <ArrowUpToLine class="size-6" />
             </Button>
             <article v-html="sanitizedHtml" ref="articleRef"
@@ -80,6 +80,8 @@ let navigatorTrigger: ScrollTrigger | null = null;
 let toTopButtonPinTrigger: ScrollTrigger | null = null;
 let toTopButtonShowTrigger: ScrollTrigger | null = null;
 
+let rootHeightObserver: ResizeObserver | null = null;
+
 const md = new markdownit({
     html: true,
     breaks: true,
@@ -143,6 +145,10 @@ onUnmounted(() => {
     if (toTopButtonShowTrigger) {
         toTopButtonShowTrigger.kill();
         toTopButtonShowTrigger = null;
+    }
+    if (rootHeightObserver) {
+        rootHeightObserver.disconnect();
+        rootHeightObserver = null;
     }
 });
 
@@ -228,6 +234,17 @@ async function handleSource(url: string) {
                     });
                 }
             })
+            rootHeightObserver = new ResizeObserver(() => {
+                nextTick(() => {
+                    if (toTopButtonPinTrigger) {
+                        toTopButtonPinTrigger.refresh()
+                    }
+                    if (navigatorTrigger) {
+                        navigatorTrigger.refresh()
+                    }
+                })
+            })
+            rootHeightObserver.observe(root.value!)
         });
     } else {
         dataStatus.value = 'error';
