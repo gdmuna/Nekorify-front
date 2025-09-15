@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="pb-14 px-4 article-container flex-1 flex flex-col relative">
+    <div ref="root" class="pb-14 px-4 article-container flex-1 relative">
         <template v-if="dataStatus === 'loading'">
             <div class="size-full flex-1 flex justify-center items-center">
                 <p class="dark:text-[#A0A0A0]">正在努力加载喵~</p>
@@ -7,7 +7,8 @@
         </template>
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
-            <Button ref="scrollToTopButton" class="absolute top-10 right-2 rounded-full size-10 cursor-pointer transition-colors duration-[200]
+            <div v-else class="md:ml-8 mb-6" />
+            <Button ref="scrollToTopButton" class="absolute top-0 right-2 rounded-full size-10 cursor-pointer transition-colors duration-[200]
             dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px] invisible" @click="scrollToTop">
                 <ArrowUpToLine class="size-6" />
             </Button>
@@ -76,6 +77,8 @@ const articleRef = ref<HTMLElement | null>(null);
 const scrollToTopButton = ref<any>(null);
 
 let navigatorTrigger: ScrollTrigger | null = null;
+let toTopButtonPinTrigger: ScrollTrigger | null = null;
+let toTopButtonShowTrigger: ScrollTrigger | null = null;
 
 const md = new markdownit({
     html: true,
@@ -133,6 +136,14 @@ onUnmounted(() => {
         navigatorTrigger.kill();
         navigatorTrigger = null;
     }
+    if (toTopButtonPinTrigger) {
+        toTopButtonPinTrigger.kill();
+        toTopButtonPinTrigger = null;
+    }
+    if (toTopButtonShowTrigger) {
+        toTopButtonShowTrigger.kill();
+        toTopButtonShowTrigger = null;
+    }
 });
 
 async function handleSource(url: string) {
@@ -178,14 +189,15 @@ async function handleSource(url: string) {
             //     });
             // }
             const toTopButton = scrollToTopButton.value.$el
-            ScrollTrigger.create({
+            toTopButtonPinTrigger = ScrollTrigger.create({
                 trigger: toTopButton,
                 start: `bottom bottom-=${getRemPx(2)}px`,
-                end: `+=${articleRef.value?.offsetHeight! - toTopButton.offsetHeight}`,
+                end: `+=${articleRef.value?.offsetHeight}`,
                 pin: true,
-                pinSpacing: false
+                pinSpacing: false,
+                markers: true
             })
-            ScrollTrigger.create({
+            toTopButtonShowTrigger = ScrollTrigger.create({
                 trigger: root.value,
                 start: 'top top',
                 onEnter: () => {
