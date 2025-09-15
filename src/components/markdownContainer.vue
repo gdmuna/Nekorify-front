@@ -66,7 +66,7 @@ import { toast } from 'vue-sonner';
 
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const root = ref<HTMLElement | null>(null);
+const root = ref<HTMLElement>();
 
 const dataStatus = ref<DataStatus>('idle');
 
@@ -80,7 +80,7 @@ let navigatorTrigger: ScrollTrigger | null = null;
 let toTopButtonPinTrigger: ScrollTrigger | null = null;
 let toTopButtonShowTrigger: ScrollTrigger | null = null;
 
-let rootHeightObserver: ResizeObserver | null = null;
+let articleHeightObserver: ResizeObserver | null = null;
 
 const md = new markdownit({
     html: true,
@@ -146,9 +146,9 @@ onUnmounted(() => {
         toTopButtonShowTrigger.kill();
         toTopButtonShowTrigger = null;
     }
-    if (rootHeightObserver) {
-        rootHeightObserver.disconnect();
-        rootHeightObserver = null;
+    if (articleHeightObserver) {
+        articleHeightObserver.disconnect();
+        articleHeightObserver = null;
     }
 });
 
@@ -200,7 +200,8 @@ async function handleSource(url: string) {
                 start: `bottom bottom-=${getRemPx(2)}px`,
                 end: `+=${articleRef.value?.offsetHeight}`,
                 pin: true,
-                pinSpacing: false
+                pinSpacing: false,
+                markers: true
             })
             toTopButtonShowTrigger = ScrollTrigger.create({
                 trigger: root.value,
@@ -234,22 +235,65 @@ async function handleSource(url: string) {
                     });
                 }
             })
-            rootHeightObserver = new ResizeObserver(() => {
-                nextTick(() => {
-                    if (toTopButtonPinTrigger) {
-                        toTopButtonPinTrigger.refresh()
-                    }
-                    if (navigatorTrigger) {
-                        navigatorTrigger.refresh()
-                    }
-                })
-            })
-            rootHeightObserver.observe(root.value!)
+            articleHeightObserver = new ResizeObserver(() => refreshScrollTriggers())
+            if (articleRef.value) articleHeightObserver.observe(articleRef.value!);
         });
     } else {
         dataStatus.value = 'error';
         toast.error('加载失败喵... 请稍后再试~');
     }
+}
+
+function refreshScrollTriggers() {
+    if (toTopButtonPinTrigger) {
+        toTopButtonPinTrigger.kill();
+        toTopButtonPinTrigger = null;
+    }
+    if (toTopButtonShowTrigger) {
+        toTopButtonShowTrigger.kill();
+        toTopButtonShowTrigger = null;
+    }
+    const toTopButton = scrollToTopButton.value.$el
+    toTopButtonPinTrigger = ScrollTrigger.create({
+        trigger: toTopButton,
+        start: `bottom bottom-=${getRemPx(2)}px`,
+        end: `+=${articleRef.value?.offsetHeight}`,
+        pin: true,
+        pinSpacing: false,
+        markers: true
+    })
+    toTopButtonShowTrigger = ScrollTrigger.create({
+        trigger: root.value,
+        start: 'top top',
+        onEnter: () => {
+            gsap.to(toTopButton, {
+                autoAlpha: 1,
+                duration: 0.2,
+                ease: 'power2.out'
+            });
+        },
+        onLeaveBack: () => {
+            gsap.to(toTopButton, {
+                autoAlpha: 0,
+                duration: 0.2,
+                ease: 'power2.out'
+            });
+        },
+        onLeave: () => {
+            gsap.to(toTopButton, {
+                autoAlpha: 0,
+                duration: 0.2,
+                ease: 'power2.out'
+            });
+        },
+        onEnterBack: () => {
+            gsap.to(toTopButton, {
+                autoAlpha: 1,
+                duration: 0.2,
+                ease: 'power2.out'
+            });
+        }
+    })
 }
 
 watch(
