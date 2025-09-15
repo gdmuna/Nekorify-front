@@ -460,26 +460,51 @@ function scrollToTop() {
     .markdown-alert.note {
         --border-color: #539bf5;
         --background-color: rgba(83, 155, 245, 0.1);
+        color: #7eb2f7;
+    }
+    .markdown-alert.note strong {
+        color: #539bf5;
+        font-weight: 600;
     }
 
     .markdown-alert.warning {
         --border-color: #c69026;
         --background-color: rgba(198, 144, 38, 0.1);
+        color: #dba745;
+    }
+    .markdown-alert.warning strong {
+        color: #c69026;
+        font-weight: 600;
     }
 
     .markdown-alert.important {
         --border-color: #986ee2;
         --background-color: rgba(152, 110, 226, 0.1);
+        color: #b08fe8;
+    }
+    .markdown-alert.important strong {
+        color: #986ee2;
+        font-weight: 600;
     }
 
     .markdown-alert.caution {
         --border-color: #e5534b;
         --background-color: rgba(229, 83, 75, 0.1);
+        color: #ec7972;
+    }
+    .markdown-alert.caution strong {
+        color: #e5534b;
+        font-weight: 600;
     }
 
     .markdown-alert.tip {
         --border-color: #57ab5a;
         --background-color: rgba(87, 171, 90, 0.1);
+        color: #7ac07d;
+    }
+    .markdown-alert.tip strong {
+        color: #57ab5a;
+        font-weight: 600;
     }
 }
 </style>
