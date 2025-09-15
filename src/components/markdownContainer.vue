@@ -212,7 +212,7 @@ function createScrollTrigger() {
     toTopButtonPinTrigger = ScrollTrigger.create({
         trigger: toTopButton,
         start: `bottom bottom-=${getRemPx(2)}px`,
-        end: `+=${articleRef.value?.offsetHeight}`,
+        end: `+=${root.value?.offsetHeight!-getRemPx(1)}`,
         pin: true,
         pinSpacing: false
     })
