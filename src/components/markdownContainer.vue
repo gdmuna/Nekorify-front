@@ -8,7 +8,7 @@
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
             <Button ref="scrollToTopButton" class="absolute top-10 right-2 rounded-full size-10 cursor-pointer transition-colors duration-[200]
-            dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]" @click="scrollToTop">
+            dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px] invisible" @click="scrollToTop">
                 <ArrowUpToLine class="size-6" />
             </Button>
             <article v-html="sanitizedHtml" ref="articleRef"
