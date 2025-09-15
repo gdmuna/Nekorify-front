@@ -93,11 +93,11 @@ const animate = {
                 '<'
             );
             if (props.lineColor && props.transitionLineColor) {
-                this.tl.fromTo(
+                this.tl.to(
                     bottomLine.value,
-                    {
-                        backgroundColor: '#FEF3C6'
-                    },
+                    // {
+                    //     backgroundColor: '#FEF3C6'
+                    // },
                     {
                         backgroundColor: props.lineColor,
                         duration: 0.3,
@@ -118,11 +118,11 @@ const animate = {
                 '<'
             );
             if (props.lineColor && props.transitionLineColor) {
-                this.tl.fromTo(
+                this.tl.to(
                     bottomLine.value,
-                    {
-                        backgroundColor: props.lineColor
-                    },
+                    // {
+                    //     backgroundColor: props.lineColor
+                    // },
                     {
                         backgroundColor: '#FEF3C6',
                         duration: 0.3,

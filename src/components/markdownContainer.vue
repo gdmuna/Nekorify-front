@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="pb-14 px-4 article-container flex-1 flex flex-col">
+    <div ref="root" class="pb-14 px-4 article-container flex-1 flex flex-col relative">
         <template v-if="dataStatus === 'loading'">
             <div class="size-full flex-1 flex justify-center items-center">
                 <p class="dark:text-[#A0A0A0]">正在努力加载喵~</p>
@@ -7,6 +7,10 @@
         </template>
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
+            <Button ref="scrollToTopButton" class="absolute top-10 right-2 rounded-full size-10 cursor-pointer transition-colors duration-[200]
+            dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]" @click="scrollToTop">
+                <ArrowUpToLine class="size-6" />
+            </Button>
             <article v-html="sanitizedHtml" ref="articleRef"
                 class="prose prose-customDark prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
             </article>
@@ -21,6 +25,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, createVNode, render, watch, onUnmounted } from 'vue';
+
+import { ArrowUpToLine } from 'lucide-vue-next';
+
 // @ts-ignore
 import markdownit from 'markdown-it';
 // @ts-ignore
@@ -38,7 +45,7 @@ import Prism from 'prismjs';
 
 import DOMPurify from 'dompurify';
 
-import { blockButton } from '@/components/ui/button';
+import { blockButton, Button } from '@/components/ui/button';
 
 import { gsap } from 'gsap';
 
@@ -65,6 +72,8 @@ const dataStatus = ref<DataStatus>('idle');
 const navigatorRef = ref<any>(null);
 
 const articleRef = ref<HTMLElement | null>(null);
+
+const scrollToTopButton = ref<any>(null);
 
 let navigatorTrigger: ScrollTrigger | null = null;
 
@@ -158,16 +167,57 @@ async function handleSource(url: string) {
                 render(vnode, container);
                 el.appendChild(container);
             });
-            if (props.enableNavigator && isDesktop.value) {
-                const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight;
-                navigatorTrigger = ScrollTrigger.create({
-                    trigger: navigatorRef.value.$el,
-                    start: `top top+=${offset}`,
-                    end: `+=${root.value?.offsetHeight}`,
-                    pin: true,
-                    pinSpacing: false
-                });
-            }
+            // if (props.enableNavigator && isDesktop.value) {
+            //     const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight;
+            //     navigatorTrigger = ScrollTrigger.create({
+            //         trigger: navigatorRef.value.$el,
+            //         start: `top top+=${offset}`,
+            //         end: `+=${root.value?.offsetHeight}`,
+            //         pin: true,
+            //         pinSpacing: false
+            //     });
+            // }
+            const toTopButton = scrollToTopButton.value.$el
+            ScrollTrigger.create({
+                trigger: toTopButton,
+                start: `bottom bottom-=${getRemPx(2)}px`,
+                end: `+=${articleRef.value?.offsetHeight}`,
+                pin: true,
+                pinSpacing: false
+            })
+            ScrollTrigger.create({
+                trigger: root.value,
+                start: 'top top',
+                onEnter: () => {
+                    gsap.to(toTopButton, {
+                        autoAlpha: 1,
+                        duration: 0.2,
+                        ease: 'power2.out'
+                    });
+                },
+                onLeaveBack: () => {
+                    gsap.to(toTopButton, {
+                        autoAlpha: 0,
+                        duration: 0.2,
+                        ease: 'power2.out'
+                    });
+                },
+                onLeave: () => {
+                    gsap.to(toTopButton, {
+                        autoAlpha: 0,
+                        duration: 0.2,
+                        ease: 'power2.out'
+                    });
+                },
+                onEnterBack: () => {
+                    gsap.to(toTopButton, {
+                        autoAlpha: 1,
+                        duration: 0.2,
+                        ease: 'power2.out'
+                    });
+                },
+                markers: true
+            })
         });
     } else {
         dataStatus.value = 'error';
@@ -243,10 +293,23 @@ const copyAnimate = {
         this.tls.push(tl);
     }
 };
+
+function scrollToTop() {
+    gsap.to(window, {
+        scrollTo: {
+            y: root.value!,
+            offsetY: getRemPx(3.5)
+        },
+        duration: 0.5,
+        ease: 'power2.out'
+    });
+}
+
 </script>
 
 <style scoped>
 :deep.article-container article {
+
     p,
     h2,
     h3,
