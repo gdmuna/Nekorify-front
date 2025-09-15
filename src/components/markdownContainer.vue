@@ -181,7 +181,7 @@ async function handleSource(url: string) {
             ScrollTrigger.create({
                 trigger: toTopButton,
                 start: `bottom bottom-=${getRemPx(2)}px`,
-                end: `+=${articleRef.value?.offsetHeight}`,
+                end: `+=${articleRef.value?.offsetHeight! - toTopButton.offsetHeight}`,
                 pin: true,
                 pinSpacing: false
             })
@@ -382,7 +382,7 @@ function scrollToTop() {
         font-style: normal;
         border-radius: 0.25em;
         background: rgba(53, 52, 51, 0.4);
-        padding-right: 1em;
+        padding: 0.25em 0.5em;
 
         p:before {
             content: '';
