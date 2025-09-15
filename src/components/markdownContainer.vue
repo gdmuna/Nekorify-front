@@ -194,8 +194,7 @@ async function handleSource(url: string) {
                 start: `bottom bottom-=${getRemPx(2)}px`,
                 end: `+=${articleRef.value?.offsetHeight}`,
                 pin: true,
-                pinSpacing: false,
-                markers: true
+                pinSpacing: false
             })
             toTopButtonShowTrigger = ScrollTrigger.create({
                 trigger: root.value,
