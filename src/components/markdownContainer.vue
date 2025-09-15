@@ -58,7 +58,7 @@ import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
 
 const systemStore = useSystemStore();
-const { isMobile, isDesktop } = storeToRefs(systemStore);
+const { isMobile } = storeToRefs(systemStore);
 
 import { resourceApi } from '@/api';
 import type { DataStatus } from '@/types/api';
@@ -194,49 +194,12 @@ async function handleSource(url: string) {
             //         pinSpacing: false
             //     });
             // }
-            const toTopButton = scrollToTopButton.value.$el
-            toTopButtonPinTrigger = ScrollTrigger.create({
-                trigger: toTopButton,
-                start: `bottom bottom-=${getRemPx(2)}px`,
-                end: `+=${articleRef.value?.offsetHeight}`,
-                pin: true,
-                pinSpacing: false,
-                markers: true
-            })
-            toTopButtonShowTrigger = ScrollTrigger.create({
-                trigger: root.value,
-                start: 'top top',
-                onEnter: () => {
-                    gsap.to(toTopButton, {
-                        autoAlpha: 1,
-                        duration: 0.2,
-                        ease: 'power2.out'
-                    });
-                },
-                onLeaveBack: () => {
-                    gsap.to(toTopButton, {
-                        autoAlpha: 0,
-                        duration: 0.2,
-                        ease: 'power2.out'
-                    });
-                },
-                onLeave: () => {
-                    gsap.to(toTopButton, {
-                        autoAlpha: 0,
-                        duration: 0.2,
-                        ease: 'power2.out'
-                    });
-                },
-                onEnterBack: () => {
-                    gsap.to(toTopButton, {
-                        autoAlpha: 1,
-                        duration: 0.2,
-                        ease: 'power2.out'
-                    });
-                }
-            })
-            articleHeightObserver = new ResizeObserver(() => refreshScrollTriggers())
-            if (articleRef.value) articleHeightObserver.observe(articleRef.value!);
+            if (articleRef.value) {
+                createScrollTrigger();
+                articleHeightObserver = new ResizeObserver(() => refreshScrollTriggers());
+                articleHeightObserver.observe(articleRef.value!);
+            }
+            
         });
     } else {
         dataStatus.value = 'error';
@@ -244,23 +207,14 @@ async function handleSource(url: string) {
     }
 }
 
-function refreshScrollTriggers() {
-    if (toTopButtonPinTrigger) {
-        toTopButtonPinTrigger.kill();
-        toTopButtonPinTrigger = null;
-    }
-    if (toTopButtonShowTrigger) {
-        toTopButtonShowTrigger.kill();
-        toTopButtonShowTrigger = null;
-    }
+function createScrollTrigger() {
     const toTopButton = scrollToTopButton.value.$el
     toTopButtonPinTrigger = ScrollTrigger.create({
         trigger: toTopButton,
         start: `bottom bottom-=${getRemPx(2)}px`,
         end: `+=${articleRef.value?.offsetHeight}`,
         pin: true,
-        pinSpacing: false,
-        markers: true
+        pinSpacing: false
     })
     toTopButtonShowTrigger = ScrollTrigger.create({
         trigger: root.value,
@@ -294,6 +248,18 @@ function refreshScrollTriggers() {
             });
         }
     })
+}
+
+function refreshScrollTriggers() {
+    if (toTopButtonPinTrigger) {
+        toTopButtonPinTrigger.kill();
+        toTopButtonPinTrigger = null;
+    }
+    if (toTopButtonShowTrigger) {
+        toTopButtonShowTrigger.kill();
+        toTopButtonShowTrigger = null;
+    }
+    createScrollTrigger();
 }
 
 watch(
