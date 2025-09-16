@@ -8,10 +8,12 @@
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
             <div v-else class="md:ml-8 mb-6" />
-            <Button ref="scrollToTopButton" class="absolute top-0 right-2 rounded-full size-10 cursor-pointer transition-colors duration-[200]
-            dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px] invisible z-100" @click="scrollToTop">
-                <ArrowUpToLine class="size-6" />
-            </Button>
+            <teleport to="#appContainer">
+                <Button ref="scrollToTopButton" class="fixed bottom-10 right-5 rounded-full size-10 cursor-pointer transition-colors duration-[200]
+            dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px] invisible z-1" @click="scrollToTop">
+                    <ArrowUpToLine class="size-6" />
+                </Button>
+            </teleport>
             <article v-html="sanitizedHtml" ref="articleRef"
                 class="prose prose-customDark prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
             </article>
@@ -199,7 +201,6 @@ async function handleSource(url: string) {
                 articleHeightObserver = new ResizeObserver(() => refreshScrollTriggers());
                 articleHeightObserver.observe(articleRef.value!);
             }
-            
         });
     } else {
         dataStatus.value = 'error';
@@ -209,13 +210,6 @@ async function handleSource(url: string) {
 
 function createScrollTrigger() {
     const toTopButton = scrollToTopButton.value.$el
-    toTopButtonPinTrigger = ScrollTrigger.create({
-        trigger: toTopButton,
-        start: `bottom bottom-=${getRemPx(2)}px`,
-        end: `+=${root.value?.offsetHeight!-getRemPx(1)}`,
-        pin: true,
-        pinSpacing: false
-    })
     toTopButtonShowTrigger = ScrollTrigger.create({
         trigger: root.value,
         start: 'top top',
@@ -462,6 +456,7 @@ function scrollToTop() {
         --background-color: rgba(83, 155, 245, 0.1);
         color: #7eb2f7;
     }
+
     .markdown-alert.note strong {
         color: #539bf5;
         font-weight: 600;
@@ -472,6 +467,7 @@ function scrollToTop() {
         --background-color: rgba(198, 144, 38, 0.1);
         color: #dba745;
     }
+
     .markdown-alert.warning strong {
         color: #c69026;
         font-weight: 600;
@@ -482,6 +478,7 @@ function scrollToTop() {
         --background-color: rgba(152, 110, 226, 0.1);
         color: #b08fe8;
     }
+
     .markdown-alert.important strong {
         color: #986ee2;
         font-weight: 600;
@@ -492,6 +489,7 @@ function scrollToTop() {
         --background-color: rgba(229, 83, 75, 0.1);
         color: #ec7972;
     }
+
     .markdown-alert.caution strong {
         color: #e5534b;
         font-weight: 600;
@@ -502,6 +500,7 @@ function scrollToTop() {
         --background-color: rgba(87, 171, 90, 0.1);
         color: #7ac07d;
     }
+
     .markdown-alert.tip strong {
         color: #57ab5a;
         font-weight: 600;
