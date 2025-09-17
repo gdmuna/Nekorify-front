@@ -22,7 +22,7 @@ gsap.registerPlugin(
 );
 
 // 导入 Vue 相关库和组件
-import { createApp } from 'vue';
+import { createApp, nextTick } from 'vue';
 import App from './App.vue';
 
 // 导入 vue-router
@@ -71,11 +71,16 @@ const app = createApp(App);
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css'
 
+const content = document.getElementById('app')
 const lenis = new Lenis({
+    wrapper: document.documentElement,
+    content: content!,
+    eventsTarget: content!,
     duration: 0.75,
     easing: (t) => {
         return 1 - Math.pow(1 - t, 5);
-    }
+    },
+    autoToggle: true
 });
 
 lenis.on('scroll', ScrollTrigger.update);

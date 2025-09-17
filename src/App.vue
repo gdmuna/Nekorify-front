@@ -5,7 +5,7 @@
         <!-- 消息弹窗挂载点 -->
         <Toaster theme="dark" :expand="true" position="bottom-right" richColors closeButton />
         <!-- 滚动进度条 -->
-        <div ref="scroll_progress" class="fixed z-40 top-0 left-0 w-1 md:w-2 h-[100dvh] page-scroll-progress" />
+        <!-- <div ref="scroll_progress" class="fixed z-40 top-0 left-0 w-1 md:w-2 h-[100dvh] page-scroll-progress" /> -->
         <!-- 主内容区 -->
         <div id="content" class="min-h-[100dvh] min-w-[100dvw] flex flex-col">
             <main id="content_main" class="flex flex-col flex-1">
@@ -55,6 +55,8 @@ import { useSystemStore } from '@/stores/system';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 
+import Lenis from 'lenis';
+
 const scroll_progress = ref<HTMLElement | null>(null);
 
 const systemStore = useSystemStore();
@@ -99,24 +101,10 @@ onMounted(async () => {
     //         scroll_progress.value!.style.clipPath = `inset(0 0 ${100 - progress * 100}% 0)`;
     //     }
     // });
-    window.lenis.on('scroll', (self) => {
-        const progress = self.progress;
-        scroll_progress.value!.style.clipPath = `inset(0 0 ${100 - progress * 100}% 0)`;
-    });
-    // 路由跳转后重置滚动进度
-    // router.beforeEach(() => {
-    //     // 立即滚动到顶部
-    //     smoother.scrollTo(0, false)
-    //     // if (from.path !== '/') {
-    //     //     previousIsDark.value = isDark.value
-    //     // }
-    //     // if (from.path === '/' && previousIsDark.value === false) {
-    //     //     forceToggleTheme(`${previousIsDark.value}`)
-    //     // }
-    //     nextTick(() => {
-    //         return true
-    //     })
-    // })
+    // window.lenis.on('scroll', (self) => {
+    //     const progress = self.progress;
+    //     scroll_progress.value!.style.clipPath = `inset(0 0 ${100 - progress * 100}% 0)`;
+    // });
     if (!isXlDesktop.value) {
         toast.info('建议在大屏设备上使用本网站以获得最佳体验喵~', { duration: 5000 });
     }
