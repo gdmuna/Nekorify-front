@@ -1,282 +1,216 @@
 <template>
     <Dialog v-model:open="dialogOpen">
         <DialogTrigger as-child>
-            <secondaryButton
-                text="编辑账户信息"
-                :icon="PenLine"
+            <secondaryButton text="编辑账户信息" :icon="PenLine"
                 class="dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded md:text-xl" />
         </DialogTrigger>
         <DialogScrollContent class="max-w-[90%] md:max-w-[680px] xl:max-w-[750px] 2xl:max-w-[950px]">
-            <DialogHeader>
-                <DialogTitle class="dark:text-[#CFCBA0] md:text-3xl text-2xl">
-                    <p v-if="!isAdvanced">个人资料</p>
-                    <p v-else>账户安全</p>
-                </DialogTitle>
-                <DialogDescription class="dark:text-[#D5C8B0] md:text-lg">
-                    <p v-if="!isAdvanced">于此编辑您用以对外展示的个人资料</p>
-                    <p v-else>您可以在这里更改账户安全信息</p>
-                </DialogDescription>
-            </DialogHeader>
-            <Form
-                v-if="isAdvanced"
-                v-slot="{ handleSubmit, setFieldValue }"
-                as=""
-                keep-values
-                :validation-schema="emailFormSchema">
-                <form
-                    id="dialogForm1"
-                    @submit="handleSubmit($event, onSubmitEmailForm)"
-                    class="flex flex-col space-y-4">
-                    <h2 class="flex items-center space-x-2 md:text-2xl text-xl dark:text-[#dbd7aa]">
-                        <Mail class="size-5" />
-                        <p class="line-through">换绑邮箱</p>
-                        <span>（还没做完喵...）</span>
-                    </h2>
-                    <FormField v-slot="{ componentField, value }" name="email">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                新邮箱
-                            </FormLabel>
-                            <FormDescription>换绑邮箱后，您可通过新邮箱登录账户</FormDescription>
-                            <FormControl class="flex space-x-2">
-                                <div class="flex space-x-2">
-                                    <Input type="email" placeholder="请输入您的新邮箱" v-bind="componentField" />
-                                    <primaryButton
-                                        text="发送验证码"
-                                        type="button"
-                                        @click="onSendVerificationCode(value)"
-                                        class="dark:bg-emerald-500 dark:text-[#0E100F] md:text-base"
-                                        mask1-color="#1aa0c2"
-                                        mask2-color="#7de3f3" />
-                                </div>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                    <FormField v-slot="{ value }" name="emailVerificationCode">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                邮箱验证码
-                            </FormLabel>
-                            <FormControl>
-                                <PinInput
-                                    :model-value="value"
-                                    placeholder="○"
-                                    inputmode="numeric"
-                                    class="flex gap-2 items-center mt-1"
-                                    otp
-                                    type="text"
-                                    name="emailVerificationCode"
-                                    @update:model-value="
-                                        (arrStr) => {
-                                            setFieldValue('emailVerificationCode', arrStr);
-                                        }
-                                    ">
-                                    <PinInputGroup>
-                                        <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index" />
-                                    </PinInputGroup>
-                                </PinInput>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                    <secondaryButton
-                        text="换绑邮箱"
-                        type="submit"
-                        form="dialogForm1"
-                        :class="[
+            <div data-lenis-prevent>
+                <DialogHeader>
+                    <DialogTitle class="dark:text-[#CFCBA0] md:text-3xl text-2xl">
+                        <p v-if="!isAdvanced">个人资料</p>
+                        <p v-else>账户安全</p>
+                    </DialogTitle>
+                    <DialogDescription class="dark:text-[#D5C8B0] md:text-lg">
+                        <p v-if="!isAdvanced">于此编辑您用以对外展示的个人资料</p>
+                        <p v-else>您可以在这里更改账户安全信息</p>
+                    </DialogDescription>
+                </DialogHeader>
+                <Form v-if="isAdvanced" v-slot="{ handleSubmit, setFieldValue }" as="" keep-values
+                    :validation-schema="emailFormSchema">
+                    <form id="dialogForm1" @submit="handleSubmit($event, onSubmitEmailForm)"
+                        class="flex flex-col space-y-4">
+                        <h2 class="flex items-center space-x-2 md:text-2xl text-xl dark:text-[#dbd7aa]">
+                            <Mail class="size-5" />
+                            <p class="line-through">换绑邮箱</p>
+                            <span>（还没做完喵...）</span>
+                        </h2>
+                        <FormField v-slot="{ componentField, value }" name="email">
+                            <FormItem>
+                                <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                    新邮箱
+                                </FormLabel>
+                                <FormDescription>换绑邮箱后，您可通过新邮箱登录账户</FormDescription>
+                                <FormControl class="flex space-x-2">
+                                    <div class="flex space-x-2">
+                                        <Input type="email" placeholder="请输入您的新邮箱" v-bind="componentField" />
+                                        <primaryButton text="发送验证码" type="button" @click="onSendVerificationCode(value)"
+                                            class="dark:bg-emerald-500 dark:text-[#0E100F] md:text-base"
+                                            mask1-color="#1aa0c2" mask2-color="#7de3f3" />
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <FormField v-slot="{ value }" name="emailVerificationCode">
+                            <FormItem>
+                                <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                    邮箱验证码
+                                </FormLabel>
+                                <FormControl>
+                                    <PinInput :model-value="value" placeholder="○" inputmode="numeric"
+                                        class="flex gap-2 items-center mt-1" otp type="text"
+                                        name="emailVerificationCode" @update:model-value="
+                                            (arrStr) => {
+                                                setFieldValue('emailVerificationCode', arrStr);
+                                            }
+                                        ">
+                                        <PinInputGroup>
+                                            <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index" />
+                                        </PinInputGroup>
+                                    </PinInput>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <secondaryButton text="换绑邮箱" type="submit" form="dialogForm1" :class="[
                             'dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] ml-auto',
                             { 'cursor-progress': emailUnderSubmit }
                         ]">
-                        <component
-                            :is="emailUseIcon"
-                            :class="['md:size-5 size-4', { 'animate-spin': emailUnderSubmit }]" />
-                    </secondaryButton>
-                    <div class="w-full h-[1px] bg-[#2e2c2c]" />
-                </form>
-            </Form>
-            <Form
-                v-if="!isAdvanced"
-                v-slot="{ handleSubmit, setFieldValue }"
-                as=""
-                keep-values
-                :validation-schema="normalFormSchema"
-                :initial-values="{
-                    nickname: userInfo?.nickname || '',
-                    bio: userInfo?.bio || '',
-                    links: userInfo?.links || []
-                }">
-                <form
-                    id="dialogForm2"
-                    @submit="handleSubmit($event, (values) => onSubmitNormalForm(values, setFieldValue))"
-                    class="space-y-4">
-                    <!-- 昵称 -->
-                    <FormField v-slot="{ componentField }" name="nickname">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                <UserRound class="size-4" />
-                                昵称
-                            </FormLabel>
-                            <FormControl>
-                                <Input type="text" placeholder="昵称" v-bind="componentField" />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                    <!-- 签名 -->
-                    <FormField v-slot="{ componentField }" name="bio">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                <Hash class="size-4" />
-                                签名
-                            </FormLabel>
-                            <FormControl>
-                                <Input type="bio" placeholder="个性签名" v-bind="componentField" />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                    <!-- 友情链接 -->
-                    <FormField v-slot="{ value, setValue }" name="links">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                <Link class="size-4" />
-                                外链
-                            </FormLabel>
-                            <FormDescription>在此添加您的个人网站或社交媒体链接。最多可添加4个链接。</FormDescription>
-                            <div class="space-y-4">
-                                <div v-for="(_, idx) in value || []" :key="idx" class="flex items-center space-x-2">
-                                    <Input type="url" :placeholder="`链接${idx + 1}`" v-model="value[idx]" />
-                                    <outlineText
-                                        @click="removeLink(idx, value, setValue)"
-                                        text="删除"
-                                        lineColor="oklch(63.7% 0.237 25.331)"
-                                        class="w-fit shrink-0 text-red-500" />
+                            <component :is="emailUseIcon"
+                                :class="['md:size-5 size-4', { 'animate-spin': emailUnderSubmit }]" />
+                        </secondaryButton>
+                        <div class="w-full h-[1px] bg-[#2e2c2c]" />
+                    </form>
+                </Form>
+                <Form v-if="!isAdvanced" v-slot="{ handleSubmit, setFieldValue }" as="" keep-values
+                    :validation-schema="normalFormSchema" :initial-values="{
+                        nickname: userInfo?.nickname || '',
+                        bio: userInfo?.bio || '',
+                        links: userInfo?.links || []
+                    }">
+                    <form id="dialogForm2"
+                        @submit="handleSubmit($event, (values) => onSubmitNormalForm(values, setFieldValue))"
+                        class="space-y-4">
+                        <!-- 昵称 -->
+                        <FormField v-slot="{ componentField }" name="nickname">
+                            <FormItem>
+                                <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                    <UserRound class="size-4" />
+                                    昵称
+                                </FormLabel>
+                                <FormControl>
+                                    <Input type="text" placeholder="昵称" v-bind="componentField" />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <!-- 签名 -->
+                        <FormField v-slot="{ componentField }" name="bio">
+                            <FormItem>
+                                <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                    <Hash class="size-4" />
+                                    签名
+                                </FormLabel>
+                                <FormControl>
+                                    <Input type="bio" placeholder="个性签名" v-bind="componentField" />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <!-- 友情链接 -->
+                        <FormField v-slot="{ value, setValue }" name="links">
+                            <FormItem>
+                                <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                    <Link class="size-4" />
+                                    外链
+                                </FormLabel>
+                                <FormDescription>在此添加您的个人网站或社交媒体链接。最多可添加4个链接。</FormDescription>
+                                <div class="space-y-4">
+                                    <div v-for="(_, idx) in value || []" :key="idx" class="flex items-center space-x-2">
+                                        <Input type="url" :placeholder="`链接${idx + 1}`" v-model="value[idx]" />
+                                        <outlineText @click="removeLink(idx, value, setValue)" text="删除"
+                                            lineColor="oklch(63.7% 0.237 25.331)" class="w-fit shrink-0 text-red-500" />
+                                    </div>
+                                    <outlineText v-if="(value || []).length < 4" @click="addLink(value, setValue)"
+                                        text="添加" lineColor="oklch(62.3% 0.214 259.815)" class="w-fit text-blue-500" />
                                 </div>
-                                <outlineText
-                                    v-if="(value || []).length < 4"
-                                    @click="addLink(value, setValue)"
-                                    text="添加"
-                                    lineColor="oklch(62.3% 0.214 259.815)"
-                                    class="w-fit text-blue-500" />
-                            </div>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                </form>
-            </Form>
-            <Form v-else v-slot="{ handleSubmit }" as="" keep-values :validation-schema="passwordFormSchema">
-                <form
-                    id="dialogForm3"
-                    @submit="handleSubmit($event, onSubmitPasswordForm)"
-                    class="flex flex-col space-y-4">
-                    <h2 class="flex items-center space-x-2 md:text-2xl text-xl dark:text-[#dbd7aa]">
-                        <KeyRound class="size-5" />
-                        <p>修改密码</p>
-                        <input
-                            type="text"
-                            name="username"
-                            :value="userInfo.studentNumber"
-                            autocomplete="username"
-                            tabindex="-1"
-                            class="hidden" />
-                    </h2>
-                    <FormField v-slot="{ componentField }" name="oldPassword">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                原密码
-                            </FormLabel>
-                            <FormControl>
-                                <div class="relative w-full">
-                                    <Input
-                                        :type="showPassword ? 'text' : 'password'"
-                                        placeholder="原密码"
-                                        v-bind="componentField"
-                                        autocomplete="old-password" />
-                                    <button
-                                        type="button"
-                                        @click="showPassword = !showPassword"
-                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                                        <component :is="showPassword ? Eye : EyeOff" class="size-5" />
-                                    </button>
-                                </div>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                    <FormField v-slot="{ componentField }" name="newPassword">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                新密码
-                            </FormLabel>
-                            <FormControl>
-                                <div class="relative w-full">
-                                    <Input
-                                        :type="showPassword ? 'text' : 'password'"
-                                        placeholder="新密码"
-                                        v-bind="componentField"
-                                        autocomplete="new-password" />
-                                    <button
-                                        type="button"
-                                        @click="showPassword = !showPassword"
-                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                                        <component :is="showPassword ? Eye : EyeOff" class="size-5" />
-                                    </button>
-                                </div>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                    <FormField v-slot="{ componentField }" name="confirmPassword">
-                        <FormItem>
-                            <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
-                                确认密码
-                            </FormLabel>
-                            <FormControl>
-                                <div class="relative w-full">
-                                    <Input
-                                        :type="showConfirmPassword ? 'text' : 'password'"
-                                        placeholder="请再次输入新密码"
-                                        v-bind="componentField"
-                                        autocomplete="new-password" />
-                                    <button
-                                        type="button"
-                                        @click="showConfirmPassword = !showConfirmPassword"
-                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                                        <component :is="showConfirmPassword ? Eye : EyeOff" class="size-5" />
-                                    </button>
-                                </div>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                </form>
-            </Form>
-            <DialogFooter class="flex flex-row items-center !justify-between space-y-0">
-                <outlineButton
-                    :text="isAdvanced ? '返回' : '高级选项'"
-                    :icon="isAdvanced ? Undo2 : ArrowRight"
-                    icon-class="!size-5"
-                    @click="handleClick"
-                    class="!text-lg dark:text-[#FEF3C6]"
-                    bottom-line-class="!mt-0"
-                    :keep-in-end="!isDesktop" />
-                <secondaryButton
-                    :text="isAdvanced ? '修改密码' : '保存更改'"
-                    type="submit"
-                    :form="isAdvanced ? 'dialogForm3' : 'dialogForm2'"
-                    :class="[
-                        'dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem]',
-                        { 'cursor-progress': isAdvanced ? normalUnderSubmit : passwordUnderSubmit }
-                    ]">
-                    <component
-                        :is="isAdvanced ? normalUseIcon : passwordUseIcon"
-                        :class="[
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                    </form>
+                </Form>
+                <Form v-else v-slot="{ handleSubmit }" as="" keep-values :validation-schema="passwordFormSchema">
+                    <form id="dialogForm3" @submit="handleSubmit($event, onSubmitPasswordForm)"
+                        class="flex flex-col space-y-4">
+                        <h2 class="flex items-center space-x-2 md:text-2xl text-xl dark:text-[#dbd7aa]">
+                            <KeyRound class="size-5" />
+                            <p>修改密码</p>
+                            <input type="text" name="username" :value="userInfo.studentNumber" autocomplete="username"
+                                tabindex="-1" class="hidden" />
+                        </h2>
+                        <FormField v-slot="{ componentField }" name="oldPassword">
+                            <FormItem>
+                                <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                    原密码
+                                </FormLabel>
+                                <FormControl>
+                                    <div class="relative w-full">
+                                        <Input :type="showPassword ? 'text' : 'password'" placeholder="原密码"
+                                            v-bind="componentField" autocomplete="old-password" />
+                                        <button type="button" @click="showPassword = !showPassword"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                            <component :is="showPassword ? Eye : EyeOff" class="size-5" />
+                                        </button>
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <FormField v-slot="{ componentField }" name="newPassword">
+                            <FormItem>
+                                <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                    新密码
+                                </FormLabel>
+                                <FormControl>
+                                    <div class="relative w-full">
+                                        <Input :type="showPassword ? 'text' : 'password'" placeholder="新密码"
+                                            v-bind="componentField" autocomplete="new-password" />
+                                        <button type="button" @click="showPassword = !showPassword"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                            <component :is="showPassword ? Eye : EyeOff" class="size-5" />
+                                        </button>
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <FormField v-slot="{ componentField }" name="confirmPassword">
+                            <FormItem>
+                                <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-base text-sm">
+                                    确认密码
+                                </FormLabel>
+                                <FormControl>
+                                    <div class="relative w-full">
+                                        <Input :type="showConfirmPassword ? 'text' : 'password'" placeholder="请再次输入新密码"
+                                            v-bind="componentField" autocomplete="new-password" />
+                                        <button type="button" @click="showConfirmPassword = !showConfirmPassword"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                            <component :is="showConfirmPassword ? Eye : EyeOff" class="size-5" />
+                                        </button>
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                    </form>
+                </Form>
+                <DialogFooter class="flex flex-row items-center !justify-between space-y-0">
+                    <outlineButton :text="isAdvanced ? '返回' : '高级选项'" :icon="isAdvanced ? Undo2 : ArrowRight"
+                        icon-class="!size-5" @click="handleClick" class="!text-lg dark:text-[#FEF3C6]"
+                        bottom-line-class="!mt-0" :keep-in-end="!isDesktop" />
+                    <secondaryButton :text="isAdvanced ? '修改密码' : '保存更改'" type="submit"
+                        :form="isAdvanced ? 'dialogForm3' : 'dialogForm2'" :class="[
+                            'dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem]',
+                            { 'cursor-progress': isAdvanced ? normalUnderSubmit : passwordUnderSubmit }
+                        ]">
+                        <component :is="isAdvanced ? normalUseIcon : passwordUseIcon" :class="[
                             'md:size-5 size-4',
                             { 'animate-spin': isAdvanced ? normalUnderSubmit : passwordUnderSubmit }
                         ]" />
-                </secondaryButton>
-            </DialogFooter>
+                    </secondaryButton>
+                </DialogFooter>
+            </div>
         </DialogScrollContent>
     </Dialog>
 </template>

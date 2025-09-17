@@ -7,7 +7,6 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
 import { SplitText } from 'gsap/SplitText';
 
 // 注册 GSAP 插件
@@ -19,7 +18,6 @@ gsap.registerPlugin(
     ScrambleTextPlugin,
     ScrollTrigger,
     ScrollToPlugin,
-    ScrollSmoother,
     SplitText
 );
 
@@ -69,6 +67,26 @@ const app = createApp(App);
 
 //     toast.error(`应用错误: ${errorMessage}`)
 // }
+
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css'
+
+const lenis = new Lenis({
+    duration: 0.75,
+    easing: (t) => {
+        return 1 - Math.pow(1 - t, 5);
+    }
+});
+
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+});
+
+gsap.ticker.lagSmoothing(0);
+
+window.lenis = lenis;
 
 app.use(router);
 app.use(pinia);

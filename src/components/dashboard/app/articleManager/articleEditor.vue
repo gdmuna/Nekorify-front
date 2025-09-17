@@ -286,14 +286,18 @@ const useIcon = computed(() => {
 function onInvalidSubmit() {
     toast.error('请检查表单填写内容');
     const errorField = formRef.value?.querySelector('[data-error=true]');
-    gsap.to(window, {
-        duration: 0.5,
-        ease: 'power3.out',
-        scrollTo: {
-            y: errorField!,
-            offsetY: getRemPx(3.5)
-        }
-    });
+    const offset = getRemPx(3.5);
+    window.lenis.scrollTo(errorField as HTMLElement, {
+        offset: -offset,
+    })
+    // gsap.to(window, {
+    //     duration: 0.5,
+    //     ease: 'power3.out',
+    //     scrollTo: {
+    //         y: errorField!,
+    //         offsetY: getRemPx(3.5)
+    //     }
+    // });
 }
 
 const fileInput = ref<HTMLInputElement>();

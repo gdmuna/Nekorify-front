@@ -49,13 +49,17 @@ const props = defineProps<{
 }>();
 
 function scrollTo(el: HTMLElement) {
-    gsap.to(window, {
-        scrollTo: {
-            y: el,
-            offsetY: getRemPx(3.5)
-        },
-        duration: 0.5,
-        ease: 'circ.out'
-    });
+    const offset = getRemPx(3.5);
+    window.lenis.scrollTo(el, {
+        offset: -offset,
+    })
+    // gsap.to(window, {
+    //     scrollTo: {
+    //         y: el,
+    //         offsetY: getRemPx(3.5)
+    //     },
+    //     duration: 0.5,
+    //     ease: 'circ.out'
+    // });
 }
 </script>

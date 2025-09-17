@@ -9,7 +9,7 @@
                 <ChevronLast class="size-6" />
             </Button>
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent data-lenis-prevent>
             <!-- <SidebarGroup>
                 <SidebarGroupLabel>Changes</SidebarGroupLabel>
                 <SidebarGroupContent>

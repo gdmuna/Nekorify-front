@@ -5,8 +5,6 @@ import home from '../views/home/index.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useSystemStore } from '@/stores/system';
 
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
-
 import { nextTick, h } from 'vue';
 
 import { showModal, openInNewTab } from '@/lib/utils';
@@ -289,8 +287,7 @@ router.beforeEach((to, from, next) => {
     const isChildRoute = from.matched.length > 0 && to.path === from.matched[0].path;
     const scrollToTop = to.meta.scrollToTop && !(from.meta.parentAction?.doNotScrollToTop && isChildRoute);
     if (scrollToTop) {
-        const smoother = ScrollSmoother.get();
-        smoother?.scrollTo(0, false);
+        window.lenis.scrollTo(0, { immediate: true });
     }
     if (to.meta.requireAuth && !authStore.isAuthenticated) {
         systemStore.targetPath = to.fullPath;

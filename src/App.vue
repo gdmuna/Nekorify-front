@@ -17,38 +17,21 @@
                     <p>已经到底了喵~</p>
                     <p class="inline-flex flex-wrap justify-center items-center">
                         Copyright © 2025 &nbsp;
-                        <outlineText
-                            text="GDMU-NA"
-                            lineColor="#B0B0B0"
-                            keepInEnd
-                            bottomLineClass="!mt-0"
+                        <outlineText text="GDMU-NA" lineColor="#B0B0B0" keepInEnd bottomLineClass="!mt-0"
                             @click="openInNewTab('https://github.com/gdmuna')" />
                         &nbsp; & &nbsp;
-                        <outlineText
-                            text="GDMU-ACM"
-                            lineColor="#B0B0B0"
-                            keepInEnd
-                            bottomLineClass="!mt-0"
+                        <outlineText text="GDMU-ACM" lineColor="#B0B0B0" keepInEnd bottomLineClass="!mt-0"
                             @click="openInNewTab('https://github.com/gdmuna')" />
                         &nbsp; & &nbsp;
-                        <outlineText
-                            text="MyGO!!!"
-                            lineColor="#B0B0B0"
-                            keepInEnd
-                            bottomLineClass="!mt-0"
+                        <outlineText text="MyGO!!!" lineColor="#B0B0B0" keepInEnd bottomLineClass="!mt-0"
                             @click="openInNewTab('https://github.com/gdmuna')" />
                         &nbsp;.&nbsp;
                         <span>All Rights Reserved.</span>
                     </p>
                     <p>
                         Powered by
-                        <outlineText
-                            text="Nekorify"
-                            lineColor="#B0B0B0"
-                            class="inline-block"
-                            keepInEnd
-                            bottomLineClass="!mt-0"
-                            @click="openInNewTab('https://github.com/gdmuna/Nekorify-front')" />
+                        <outlineText text="Nekorify" lineColor="#B0B0B0" class="inline-block" keepInEnd
+                            bottomLineClass="!mt-0" @click="openInNewTab('https://github.com/gdmuna/Nekorify-front')" />
                     </p>
                 </div>
             </footer>
@@ -67,8 +50,6 @@ import { outlineText } from './components/ui/text';
 import { onMounted, onBeforeMount, ref } from 'vue';
 
 import { openInNewTab, imgFireworkInit } from './lib/utils';
-
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
 import { useSystemStore } from '@/stores/system';
 import { useUserStore } from '@/stores/user';
@@ -108,15 +89,19 @@ onBeforeMount(() => {
 
 onMounted(async () => {
     // 初始化 GSAP ScrollSmoother
-    smoother.value = ScrollSmoother.create({
-        wrapper: '#app',
-        content: '#content',
-        smooth: 0.75,
-        // smoothTouch: 0,
-        onUpdate: (self: any) => {
-            const progress = self.progress;
-            scroll_progress.value!.style.clipPath = `inset(0 0 ${100 - progress * 100}% 0)`;
-        }
+    // smoother.value = ScrollSmoother.create({
+    //     wrapper: '#app',
+    //     content: '#content',
+    //     smooth: 0.75,
+    //     // smoothTouch: 0,
+    //     onUpdate: (self: any) => {
+    //         const progress = self.progress;
+    //         scroll_progress.value!.style.clipPath = `inset(0 0 ${100 - progress * 100}% 0)`;
+    //     }
+    // });
+    window.lenis.on('scroll', (self) => {
+        const progress = self.progress;
+        scroll_progress.value!.style.clipPath = `inset(0 0 ${100 - progress * 100}% 0)`;
     });
     // 路由跳转后重置滚动进度
     // router.beforeEach(() => {

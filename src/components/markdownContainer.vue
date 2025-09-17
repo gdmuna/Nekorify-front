@@ -6,7 +6,7 @@
             </div>
         </template>
         <template v-if="dataStatus === 'loaded'">
-            <teleport to="#appContainer">
+            <teleport to="html">
                 <SidebarProvider :defaultOpen="false">
                     <appSidebar side="right" variant="floating" class="p-0 mt-14 pb-14" :treeData="treeData" />
                     <SidebarTrigger ref="sidebarTriggerRef" class="hidden" />
@@ -374,14 +374,18 @@ const copyAnimate = {
 };
 
 function scrollToTop() {
-    gsap.to(window, {
-        scrollTo: {
-            y: root.value!,
-            offsetY: getRemPx(3.5)
-        },
-        duration: 0.5,
-        ease: 'circ.out'
-    });
+    const offset = getRemPx(3.5)
+    window.lenis.scrollTo(root.value!, {
+        offset: -offset,
+    })
+    // gsap.to(window, {
+    //     scrollTo: {
+    //         y: root.value!,
+    //         offsetY: getRemPx(3.5)
+    //     },
+    //     duration: 0.5,
+    //     ease: 'circ.out'
+    // });
 }
 
 function buildHeadingsTree(headingsList: any[]) {

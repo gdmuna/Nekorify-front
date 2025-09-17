@@ -1,4 +1,5 @@
 import 'vue-router';
+import type Lenis from 'lenis';
 
 export {};
 
@@ -18,6 +19,8 @@ declare global {
         RANAMINDER_BASE_URL: string;
         CASDOOR_ENDPOINT: string;
         GDMUNA_OSS_ENDPOINT: string;
+
+        lenis: Lenis;
     }
 }
 

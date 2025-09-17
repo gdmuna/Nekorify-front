@@ -6,28 +6,16 @@
                 请如实填写以下信息，所有内容仅用于本次面试报名及后续联系，我们将严格保密您的个人信息
             </p>
         </section>
-        <Form
-            v-slot="{ handleSubmit }"
-            @invalid-submit="onInvalidSubmit"
-            keep-values
-            :validation-schema="formSchema"
+        <Form v-slot="{ handleSubmit }" @invalid-submit="onInvalidSubmit" keep-values :validation-schema="formSchema"
             class="min-w-[min(78rem,90%dvw)] mt-6">
-            <form
-                id="form"
-                ref="formRef"
-                @submit.prevent="handleSubmit($event, onSubmit)"
+            <form id="form" ref="formRef" @submit.prevent="handleSubmit($event, onSubmit)"
                 class="flex flex-col space-y-4 md:px-0 px-4">
                 <!-- 昵称 -->
-                <FormField
-                    v-slot="{ componentField, value, setValue, meta }"
-                    v-for="(item, index) in currentInterviewFormJSON"
-                    :key="index"
-                    :name="item.fieldName">
+                <FormField v-slot="{ componentField, value, setValue, meta }"
+                    v-for="(item, index) in currentInterviewFormJSON" :key="index" :name="item.fieldName">
                     <FormItem>
-                        <FormLabel
-                            class="data-[error=false]:dark:text-[#FEFCE4] md:text-xl text-lg cursor-pointer"
-                            :data-index="`formLabel-${index}`"
-                            @click="scrollTo(`formLabel-${index}`)">
+                        <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] md:text-xl text-lg cursor-pointer"
+                            :data-index="`formLabel-${index}`" @click="scrollTo(`formLabel-${index}`)">
                             <Hash class="size-5 data-[error=false]:text-[#E9EBE4] data-[error=true]:text-red-500" />
                             <p>{{ item.label }}</p>
                             <sup v-if="item.required" class="text-[#FF5F56]">
@@ -39,22 +27,14 @@
                             <p class="inline">{{ item.description }}</p>
                         </FormDescription>
                         <FormControl>
-                            <Input
-                                v-if="item.type === 'input'"
-                                :type="item.style?.inputType || 'text'"
-                                :placeholder="item.label"
-                                v-bind="componentField" />
-                            <RadioGroup
-                                v-if="item.type === 'radioGroup'"
-                                class="flex flex-col space-y-1"
+                            <Input v-if="item.type === 'input'" :type="item.style?.inputType || 'text'"
+                                :placeholder="item.label" v-bind="componentField" />
+                            <RadioGroup v-if="item.type === 'radioGroup'" class="flex flex-col space-y-1"
                                 v-bind="componentField">
-                                <FormItem
-                                    v-for="(option, optionIndex) in item.value.options"
-                                    :key="optionIndex"
+                                <FormItem v-for="(option, optionIndex) in item.value.options" :key="optionIndex"
                                     class="flex items-center space-y-0 gap-x-3">
                                     <FormControl>
-                                        <RadioGroupItem
-                                            :value="String(option.value)"
+                                        <RadioGroupItem :value="String(option.value)"
                                             class="cursor-pointer dark:bg-[#202420]" />
                                     </FormControl>
                                     <FormLabel class="data-[error=false]:dark:text-[#FEFCE4] cursor-pointer">
@@ -68,18 +48,14 @@
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectItem
-                                            v-for="(option, optionIndex) in item.value.options"
-                                            :key="optionIndex"
-                                            :value="String(option.value)"
-                                            class="cursor-pointer">
+                                        <SelectItem v-for="(option, optionIndex) in item.value.options"
+                                            :key="optionIndex" :value="String(option.value)" class="cursor-pointer">
                                             {{ option.label }}
                                         </SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
-                            <div
-                                v-if="item.type === 'upload'"
+                            <div v-if="item.type === 'upload'"
                                 :data-error="!meta.valid && meta.touched ? 'true' : 'false'"
                                 @blur="componentField.onBlur"
                                 class="size-30 flex items-center justify-center cursor-pointer border-2 upload-container-dashed [data-error=false]:dark:border-[#B0B0B0]"
@@ -89,31 +65,21 @@
                                     <ImageUp class="size-6" />
                                     <p>点击上传图片</p>
                                 </div>
-                                <input
-                                    ref="fileInput"
-                                    type="file"
-                                    :accept="handleFileAccept(item.value.accept)"
-                                    class="hidden"
-                                    @change="onFileChange($event, setValue)"
-                                    :data-index="index"
+                                <input ref="fileInput" type="file" :accept="handleFileAccept(item.value.accept)"
+                                    class="hidden" @change="onFileChange($event, setValue)" :data-index="index"
                                     @click.stop />
                             </div>
                             <div v-if="item.type === 'checkbox'" class="flex flex-col space-y-3">
-                                <div
-                                    v-for="(option, optionIndex) in item.value.options"
-                                    :key="optionIndex"
+                                <div v-for="(option, optionIndex) in item.value.options" :key="optionIndex"
                                     class="flex items-center space-x-3">
                                     <FormControl>
-                                        <Checkbox
-                                            :id="`${index}-${optionIndex}`"
+                                        <Checkbox :id="`${index}-${optionIndex}`"
                                             :checked="Array.isArray(value) && value.includes(option.value)"
                                             @update:modelValue="
                                                 (checked) => updateCheckboxArray(option.value, checked, value, setValue)
-                                            "
-                                            @blur="componentField.onBlur"
+                                            " @blur="componentField.onBlur"
                                             class="cursor-pointer data-[state=unchecked]:dark:bg-[#202420]" />
-                                        <label
-                                            :for="`${index}-${optionIndex}`"
+                                        <label :for="`${index}-${optionIndex}`"
                                             :data-error="!meta.valid && meta.touched ? 'true' : 'false'"
                                             class="cursor-pointer select-none data-[error=true]:text-red-500 data-[error=false]:dark:text-[#FEFCE4]">
                                             {{ option.label }}
@@ -121,23 +87,16 @@
                                     </FormControl>
                                 </div>
                             </div>
-                            <Textarea
-                                v-if="item.type === 'textarea'"
-                                :placeholder="item.label"
+                            <Textarea v-if="item.type === 'textarea'" :placeholder="item.label"
                                 v-bind="componentField" />
                         </FormControl>
                         <FormMessage class="whitespace-pre-line select-none" />
                     </FormItem>
                 </FormField>
-                <secondaryButton
-                    text="提交报名表"
-                    type="submit"
-                    form="form"
-                    :icon="useIcon"
-                    :class="[
-                        'dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] mt-2 w-fit',
-                        { 'cursor-progress': underSubmit }
-                    ]" />
+                <secondaryButton text="提交报名表" type="submit" form="form" :icon="useIcon" :class="[
+                    'dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] mt-2 w-fit',
+                    { 'cursor-progress': underSubmit }
+                ]" />
             </form>
         </Form>
     </div>
@@ -252,39 +211,46 @@ function handleFileAccept(accept: string[] | undefined) {
 function onInvalidSubmit() {
     toast.error('请检查表单填写内容');
     const errorField = formRef.value?.querySelector('[data-error=true]');
-    gsap.to(window, {
-        duration: 0.5,
-        ease: 'power3.out',
-        scrollTo: {
-            y: errorField!,
-            offsetY: getRemPx(3.5)
-        }
-    });
+    const offset = getRemPx(3.5);
+    window.lenis.scrollTo(errorField! as HTMLElement, {
+        offset: -offset,
+    })
+    // gsap.to(window, {
+    //     duration: 0.5,
+    //     ease: 'power3.out',
+    //     scrollTo: {
+    //         y: errorField!,
+    //         offsetY: getRemPx(3.5)
+    //     }
+    // });
 }
 
 function scrollTo(index: string) {
     const label = formRef.value?.querySelector(`[data-index="${index}"]`);
     if (label) {
-        gsap.to(window, {
-            duration: 0.5,
-            ease: 'power3.out',
-            scrollTo: {
-                y: label,
-                offsetY: getRemPx(3.5)
-            }
-        });
+        const offset = getRemPx(3.5);
+        window.lenis.scrollTo(label as HTMLElement, {
+            offset: -offset,
+        })
+        // gsap.to(window, {
+        //     duration: 0.5,
+        //     ease: 'power3.out',
+        //     scrollTo: {
+        //         y: label,
+        //         offsetY: getRemPx(3.5)
+        //     }
+        // });
     }
 }
 </script>
 
 <style scoped>
 .upload-container-dashed[data-error='true'] {
-    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23FB2C36'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E")
-        2;
+    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23FB2C36'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E") 2;
 }
+
 .upload-container-dashed[data-error='false'] {
-    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23A0A0A0'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E")
-        2;
+    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23A0A0A0'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E") 2;
 }
 
 /* Chrome, Safari, Edge */
