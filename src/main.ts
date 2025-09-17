@@ -69,9 +69,9 @@ const app = createApp(App);
 // }
 
 import Lenis from 'lenis';
-import 'lenis/dist/lenis.css'
+import 'lenis/dist/lenis.css';
 
-const content = document.getElementById('app')
+const content = document.getElementById('app');
 const lenis = new Lenis({
     wrapper: document.documentElement,
     content: content!,

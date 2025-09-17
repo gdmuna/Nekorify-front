@@ -51,8 +51,8 @@ const props = defineProps<{
 function scrollTo(el: HTMLElement) {
     const offset = getRemPx(3.5);
     window.lenis.scrollTo(el, {
-        offset: -offset,
-    })
+        offset: -offset
+    });
     // gsap.to(window, {
     //     scrollTo: {
     //         y: el,

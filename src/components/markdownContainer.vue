@@ -11,22 +11,23 @@
                 <SidebarTrigger ref="sidebarTriggerRef" class="hidden" />
                 <SidebarInset class="bg-transparent">
                     <div ref="buttonGroup" class="fixed bottom-15 right-5 flex flex-col space-y-4 invisible">
-                    <Button
-                        class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
-                        @click="sidebarTriggerRef.$el.click()">
-                        <ListTree class="size-6" />
-                    </Button>
-                    <Button
-                        class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
-                        @click="scrollToTop">
-                        <ArrowUpToLine class="size-6" />
-                    </Button>
-                </div>
+                        <Button
+                            class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
+                            @click="sidebarTriggerRef.$el.click()">
+                            <ListTree class="size-6" />
+                        </Button>
+                        <Button
+                            class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
+                            @click="scrollToTop">
+                            <ArrowUpToLine class="size-6" />
+                        </Button>
+                    </div>
                     <div class="w-fit mx-auto">
                         <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
-                        <article v-html="sanitizedHtml" ref="articleRef"
-                            class="prose prose-customDark prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert">
-                        </article>
+                        <article
+                            v-html="sanitizedHtml"
+                            ref="articleRef"
+                            class="prose prose-customDark prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert"></article>
                     </div>
                 </SidebarInset>
             </SidebarProvider>
@@ -373,10 +374,10 @@ const copyAnimate = {
 };
 
 function scrollToTop() {
-    const offset = getRemPx(3.5)
+    const offset = getRemPx(3.5);
     window.lenis.scrollTo(root.value!, {
-        offset: -offset,
-    })
+        offset: -offset
+    });
     // gsap.to(window, {
     //     scrollTo: {
     //         y: root.value!,
@@ -425,7 +426,6 @@ function buildHeadingsTree(headingsList: any[]) {
 
 <style scoped>
 :deep.article-container article {
-
     p,
     h2,
     h3,
@@ -522,7 +522,7 @@ function buildHeadingsTree(headingsList: any[]) {
         background: var(--background-color);
     }
 
-    .markdown-alert>span {
+    .markdown-alert > span {
         display: flex;
         flex-direction: row;
         align-items: center;

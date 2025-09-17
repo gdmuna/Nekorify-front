@@ -288,8 +288,8 @@ function onInvalidSubmit() {
     const errorField = formRef.value?.querySelector('[data-error=true]');
     const offset = getRemPx(3.5);
     window.lenis.scrollTo(errorField as HTMLElement, {
-        offset: -offset,
-    })
+        offset: -offset
+    });
     // gsap.to(window, {
     //     duration: 0.5,
     //     ease: 'power3.out',

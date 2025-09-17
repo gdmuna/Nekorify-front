@@ -3,7 +3,10 @@
         <scrollHint />
         <!-- Section 1 -->
         <section ref="section1" class="relative h-[100dvh] flex items-center justify-center pt-14 bg-gray-100">
-            <matrix class="absolute z-1 select-none" :width="setion1_width" :height="setion1_height"
+            <matrix
+                class="absolute z-1 select-none"
+                :width="setion1_width"
+                :height="setion1_height"
                 v-if="setion1_width > 0 && setion1_height > 0" />
             <!-- section 主内容 -->
             <div
@@ -28,11 +31,16 @@
             <!-- section 主内容 -->
             <div class="xl:pt-72 pt-64">
                 <!-- section title -->
-                <titleBlock class="md:ml-8 ml-4" titleA="WHO" titleA_color="#F5C7F8" titleB="WE ARE"
+                <titleBlock
+                    class="md:ml-8 ml-4"
+                    titleA="WHO"
+                    titleA_color="#F5C7F8"
+                    titleB="WE ARE"
                     titleB_color="#EF8D36" />
                 <div class="flex flex-col items-center font-bold lg:my-32 md:my-16 my-8">
                     <h1 class="lg:text-9xl md:text-[5rem] text-5xl whitespace-nowrap">WE ARE THE</h1>
-                    <div ref="section2_title_1"
+                    <div
+                        ref="section2_title_1"
                         class="relative w-full lg:h-[4.5rem] md:h-[3rem] h-[1.875rem] mt-4 overflow-hidden *:whitespace-nowrap lg:*:text-7xl md:*:text-5xl text-3xl lg:*:space-x-6 md:*:space-x-4 *:space-x-2">
                         <h2 ref="section2_dynamicTitle_1" class="flex items-center absolute left-1/2 -translate-x-1/2">
                             <span class="block">DEVELOPER</span>
@@ -52,7 +60,10 @@
                     <!-- card-1 -->
                     <div class="relative">
                         <div ref="lottieContainerA" v-if="isXlDesktop" class="size-[42rem] absolute top-0 left-0"></div>
-                        <macWindow border enterAnimate :enableSplitText="!isMobile"
+                        <macWindow
+                            border
+                            enterAnimate
+                            :enableSplitText="!isMobile"
                             class="xl:!w-128 xl:mr-20 xl:ml-auto md:mx-auto">
                             <template #TR>
                                 <div class="flex-1"></div>
@@ -61,7 +72,9 @@
                             </template>
                             <template #main>
                                 <div class="flex-1 flex justify-between items-center w-full h-full">
-                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt=""
+                                    <img
+                                        src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg"
+                                        alt=""
                                         class="xl:size-32 md:size-36 size-20" />
                                     <div class="bg-[#595959] w-[1px] self-stretch mr-4" />
                                     <div class="flex-1 xl:text-lg md:text-2xl split-text">
@@ -81,7 +94,9 @@
                             </template>
                             <template #main>
                                 <div class="flex-1 flex justify-between items-center w-full h-full">
-                                    <img src="/src/assets/ACM-LOGO/acm-logo.svg" alt=""
+                                    <img
+                                        src="/src/assets/ACM-LOGO/acm-logo.svg"
+                                        alt=""
                                         class="xl:size-32 md:size-36 size-20" />
                                     <div class="bg-[#595959] w-[1px] self-stretch mr-4" />
                                     <div class="flex-1 xl:text-lg md:text-2xl split-text">
@@ -90,12 +105,18 @@
                                 </div>
                             </template>
                         </macWindow>
-                        <div ref="lottieContainerB" v-if="isXlDesktop"
+                        <div
+                            ref="lottieContainerB"
+                            v-if="isXlDesktop"
                             class="size-[42rem] absolute top-0 right-0 -translate-y-1/2"></div>
                     </div>
                     <!-- card-3 -->
                     <div class="flex items-center justify-evenly xl:mt-48 mt-6">
-                        <img ref="cat_smile" src="/src/assets/cat-smile.webp" alt="" class="size-64"
+                        <img
+                            ref="cat_smile"
+                            src="/src/assets/cat-smile.webp"
+                            alt=""
+                            class="size-64"
                             v-if="isXlDesktop" />
                         <macWindow border enterAnimate :enableSplitText="!isMobile" class="xl:!w-128">
                             <template #TR>
@@ -118,7 +139,11 @@
                                 </div>
                             </template>
                         </macWindow>
-                        <img ref="fish_smile" src="/src/assets/fish-smile.webp" alt="" class="size-64"
+                        <img
+                            ref="fish_smile"
+                            src="/src/assets/fish-smile.webp"
+                            alt=""
+                            class="size-64"
                             v-if="isXlDesktop" />
                     </div>
                 </div>
@@ -132,9 +157,15 @@
                 <div ref="section3_scrollMain" class="relative w-full xl:h-[100dvh] md:pt-14 pt-8 flex flex-col">
                     <!-- section title -->
                     <div class="flex items-center justify-between">
-                        <titleBlock class="ml-8 mt-8" titleA="WHAT SKILLS" titleA_color="#9C95F8"
-                            titleB="CAN YOU MASTER" titleB_color="#53B7DE" />
-                        <div v-if="isDesktop" ref="section3_progressDivs"
+                        <titleBlock
+                            class="ml-8 mt-8"
+                            titleA="WHAT SKILLS"
+                            titleA_color="#9C95F8"
+                            titleB="CAN YOU MASTER"
+                            titleB_color="#53B7DE" />
+                        <div
+                            v-if="isDesktop"
+                            ref="section3_progressDivs"
                             class="will-change-transform font-bold mr-8 flex flex-col">
                             <div class="text-2xl flex justify-between">
                                 <p>{{ section3_progressText }}</p>
@@ -142,9 +173,9 @@
                             </div>
                             <div class="relative overflow-hidden truncate break-all">
                                 <span v-for="(_, index) in Array.from({ length: 15 })" :key="index">░░░</span>
-                                <div ref="section3_progressBlock"
-                                    class="absolute top-0 w-full h-full section3-progressBlock">
-                                </div>
+                                <div
+                                    ref="section3_progressBlock"
+                                    class="absolute top-0 w-full h-full section3-progressBlock"></div>
                             </div>
                             <div class="flex items-center justify-between">
                                 <p>{{ section3_scrollLengthProgressPx }}</p>
@@ -175,12 +206,15 @@
                         <!-- 横向滚动内容 - card -->
                         <!-- 为什么不使用 v-for ? -->
                         <!-- 每张卡片main区域上部的logo中空白区域所占比例都不同，为了视觉一致性，需要微调，故不使用 v-for -->
-                        <div ref="section3_cards"
+                        <div
+                            ref="section3_cards"
                             class="xl:ml-32 xl:flex xl:flex-row grid grid-cols-1 md:grid-cols-2 gap-10 xl:space-x-16 space-y-2 xl:mx-0 xl:pl-0 pl-4 pr-8 *:break-all xl:*:!w-110 xl:*:!h-90 md:*:!h-80 lg:overflow-visible overflow-hidden md:pb-0 pb-2">
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt=""
+                                    <img
+                                        src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg"
+                                        alt=""
                                         class="md:size-8 size-6" />
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
@@ -188,7 +222,9 @@
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] mx-16 w-full">
-                                            <img src="/src/assets/tech-stack-logos/cpp.svg" alt=""
+                                            <img
+                                                src="/src/assets/tech-stack-logos/cpp.svg"
+                                                alt=""
                                                 class="xl:size-20 size-16" />
                                             <span class="code-cpp xl:text-3xl text-xl font-bold">C++</span>
                                         </div>
@@ -202,7 +238,9 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt=""
+                                    <img
+                                        src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg"
+                                        alt=""
                                         class="md:size-8 size-6" />
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
@@ -210,7 +248,9 @@
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/tech-stack-logos/javascript.svg" alt=""
+                                            <img
+                                                src="/src/assets/tech-stack-logos/javascript.svg"
+                                                alt=""
                                                 class="xl:size-16 size-12" />
                                             <span class="code-JS xl:text-3xl text-xl font-bold">JavaScript</span>
                                         </div>
@@ -224,7 +264,9 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt=""
+                                    <img
+                                        src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg"
+                                        alt=""
                                         class="md:size-8 size-6" />
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
@@ -232,7 +274,9 @@
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/tech-stack-logos/vue-js.svg" alt=""
+                                            <img
+                                                src="/src/assets/tech-stack-logos/vue-js.svg"
+                                                alt=""
                                                 class="xl:size-16 size-12" />
                                             <span class="brand-vue xl:text-3xl text-xl font-bold">VUE</span>
                                         </div>
@@ -247,7 +291,9 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt=""
+                                    <img
+                                        src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg"
+                                        alt=""
                                         class="md:size-8 size-6" />
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
@@ -255,7 +301,9 @@
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 space-x-2 w-full">
-                                            <img src="/src/assets/tech-stack-logos/express-js.svg" alt=""
+                                            <img
+                                                src="/src/assets/tech-stack-logos/express-js.svg"
+                                                alt=""
                                                 class="xl:size-20 size-16" />
                                             <span class="brand-express xl:text-3xl text-xl font-bold">Express</span>
                                         </div>
@@ -270,7 +318,9 @@
                             <macWindow border>
                                 <template #TR>
                                     <div class="flex-1"></div>
-                                    <img src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg" alt=""
+                                    <img
+                                        src="/src/assets/NA-LOGO/gdmuna-logo_gradient.svg"
+                                        alt=""
                                         class="md:size-8 size-6" />
                                     <span class="text-lg Association-NA">GDMU-NA</span>
                                 </template>
@@ -278,7 +328,9 @@
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 space-x-4 w-full">
-                                            <img src="/src/assets/tech-stack-logos/mysql-logo.svg" alt=""
+                                            <img
+                                                src="/src/assets/tech-stack-logos/mysql-logo.svg"
+                                                alt=""
                                                 class="xl:size-20 size-16" />
                                             <span class="brand-mysql xl:text-3xl text-xl font-bold">MySQL</span>
                                         </div>
@@ -299,7 +351,9 @@
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/tech-stack-logos/python.svg" alt=""
+                                            <img
+                                                src="/src/assets/tech-stack-logos/python.svg"
+                                                alt=""
                                                 class="xl:size-16 size-12" />
                                             <span class="code-python xl:text-3xl text-xl font-bold">Python</span>
                                         </div>
@@ -320,7 +374,9 @@
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-2 w-full">
-                                            <img src="/src/assets/tech-stack-logos/pytorch.svg" alt=""
+                                            <img
+                                                src="/src/assets/tech-stack-logos/pytorch.svg"
+                                                alt=""
                                                 class="xl:size-16 size-12" />
                                             <span class="brand-pytorch xl:text-3xl text-xl font-bold">PyTorch</span>
                                         </div>
@@ -341,7 +397,9 @@
                                     <div class="flex flex-col items-center justify-between h-full w-full">
                                         <div
                                             class="flex items-center justify-center border-b-1 border-[#595959] px-14 py-2 space-x-4 w-full">
-                                            <img src="/src/assets/tech-stack-logos/yolo.svg" alt=""
+                                            <img
+                                                src="/src/assets/tech-stack-logos/yolo.svg"
+                                                alt=""
                                                 class="xl:size-16 size-12" />
                                             <span class="brand-yolo xl:text-3xl text-xl font-bold">YOLO</span>
                                         </div>
@@ -354,12 +412,15 @@
                                 </template>
                             </macWindow>
                             <!-- card 后的文字 -->
-                            <p ref="section3_PTag"
+                            <p
+                                ref="section3_PTag"
                                 class="flex items-center justify-center xl:text-7xl md:text-5xl text-3xl font-bold whitespace-nowrap will-change-transform md:col-span-2">
                                 AND MORE...
                             </p>
                         </div>
-                        <div v-if="isMobile" ref="section3_cards_toggle"
+                        <div
+                            v-if="isMobile"
+                            ref="section3_cards_toggle"
                             class="mt-8 relative overflow-hidden text-xl text-[#0E100F] font-bold py-2 pl-4 pr-2 bg-[#23d1dd] rounded-lg"
                             @click="section3CardsManager.toggleStatus">
                             <div class="flex items-center justify-center">
@@ -373,7 +434,8 @@
                         </div>
                     </div>
                 </div>
-                <div ref="section_3_title_3"
+                <div
+                    ref="section_3_title_3"
                     class="w-full flex flex-col items-center justify-center xl:text-7xl md:text-5xl text-2xl xl:pt-16 md:pt-0 pt-16 font-bold whitespace-nowrap will-change-transform">
                     <div>
                         <h1>NEXT</h1>
@@ -393,7 +455,11 @@
             <!-- section 主内容 -->
             <div class="xl:pt-36 pt-18">
                 <!-- section title -->
-                <titleBlock class="ml-8" titleA="QUESTION" titleA_color="#27AFA5" titleB="AND ANSWER"
+                <titleBlock
+                    class="ml-8"
+                    titleA="QUESTION"
+                    titleA_color="#27AFA5"
+                    titleB="AND ANSWER"
                     titleB_color="#119DEC" />
                 <QA class="xl:mt-32 mt-18 md:mx-8 mx-4" />
                 <h1
@@ -415,9 +481,13 @@
                     <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
-                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
+                            <outlineText
+                                text="GitHub主页"
+                                bottomLineClass="!mt-0"
                                 class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC] transition-colors duration-300 pb-2 md:pb-0"
-                                lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
+                                lineColor="#119DEC"
+                                transitionLineColor
+                                :keepInEnd="isMobile"
                                 @click="openInNewTab('https://github.com/kz2006a')">
                                 <ExternalLink class="size-4 translate-y-0.5" />
                             </outlineText>
@@ -426,7 +496,9 @@
                             <div class="flex-1 flex items-center">
                                 <div
                                     class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/developer-avatars/Almighty.jpg" alt=""
+                                    <img
+                                        src="/src/assets/developer-avatars/Almighty.jpg"
+                                        alt=""
                                         class="md:size-24 size-16 rounded-full" />
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Almighty</p>
                                 </div>
@@ -444,9 +516,13 @@
                     <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
-                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
+                            <outlineText
+                                text="GitHub主页"
+                                bottomLineClass="!mt-0"
                                 class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC] transition-colors duration-300 pb-2 md:pb-0"
-                                lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
+                                lineColor="#119DEC"
+                                transitionLineColor
+                                :keepInEnd="isMobile"
                                 @click="openInNewTab('https://github.com/FOV-RGT')">
                                 <ExternalLink class="size-4 translate-y-0.5" />
                             </outlineText>
@@ -455,25 +531,27 @@
                             <div class="flex-1 flex items-center">
                                 <div
                                     class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/developer-avatars/FOV-RGT.jpg" alt=""
+                                    <img
+                                        src="/src/assets/developer-avatars/FOV-RGT.jpg"
+                                        alt=""
                                         class="md:size-24 size-16 rounded-full" />
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">FOV-RGT</p>
                                 </div>
                                 <div class="flex-1 h-full flex items-start ml-4 min-w-1/3 flex-col">
                                     <p class="md:text-lg text-sm">Ciallo～(∠・ω< )⌒☆</p>
-                                            <p class="md:text-lg text-sm">
-                                                第22届 GDMU-NA BI部部长，全栈开发者，目前头发还很多🤓
-                                            </p>
-                                            <p class="md:text-lg text-sm">
-                                                喜欢看番打游戏，还会点电吉他，只可惜染上蓝色原神（VSCode）后就很少空闲时间了😭
-                                            </p>
-                                            <!-- <p class="md:text-lg text-sm">
+                                    <p class="md:text-lg text-sm">
+                                        第22届 GDMU-NA BI部部长，全栈开发者，目前头发还很多🤓
+                                    </p>
+                                    <p class="md:text-lg text-sm">
+                                        喜欢看番打游戏，还会点电吉他，只可惜染上蓝色原神（VSCode）后就很少空闲时间了😭
+                                    </p>
+                                    <!-- <p class="md:text-lg text-sm">
                                         前端常用 Vue 3 + TypeScript，搭配 Shadcn 和 Tailwind 写界面；后端也能整，Express + Sequelize 写 API，MySQL、Redis 都摸过🧐
                                     </p> -->
-                                            <p class="md:text-lg text-sm">
-                                                啥都想做：前后端、组乐队、嵌入式、无线电、摄影、视频剪辑、3D建模、游戏开发……😋
-                                            </p>
-                                            <p class="md:text-lg text-sm">愿有志者不负少年时，你所热爱的，就是你的生活🤓</p>
+                                    <p class="md:text-lg text-sm">
+                                        啥都想做：前后端、组乐队、嵌入式、无线电、摄影、视频剪辑、3D建模、游戏开发……😋
+                                    </p>
+                                    <p class="md:text-lg text-sm">愿有志者不负少年时，你所热爱的，就是你的生活🤓</p>
                                 </div>
                             </div>
                         </template>
@@ -481,9 +559,13 @@
                     <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
-                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
+                            <outlineText
+                                text="GitHub主页"
+                                bottomLineClass="!mt-0"
                                 class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC] transition-colors duration-300 pb-2 md:pb-0"
-                                lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
+                                lineColor="#119DEC"
+                                transitionLineColor
+                                :keepInEnd="isMobile"
                                 @click="openInNewTab('https://github.com/seeleclover')">
                                 <ExternalLink class="size-4 translate-y-0.5" />
                             </outlineText>
@@ -492,7 +574,9 @@
                             <div class="flex-1 flex items-center">
                                 <div
                                     class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/developer-avatars/Seele.Clover.png" alt=""
+                                    <img
+                                        src="/src/assets/developer-avatars/Seele.Clover.png"
+                                        alt=""
                                         class="md:size-24 size-16 rounded-full" />
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">Seele.Clover</p>
                                 </div>
@@ -507,9 +591,13 @@
                     <macWindow border class="md:!h-full h-64 w-full">
                         <template #TR>
                             <div class="flex-1" />
-                            <outlineText text="GitHub主页" bottomLineClass="!mt-0"
+                            <outlineText
+                                text="GitHub主页"
+                                bottomLineClass="!mt-0"
                                 class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC] transition-colors duration-300 pb-2 md:pb-0"
-                                lineColor="#119DEC" transitionLineColor :keepInEnd="isMobile"
+                                lineColor="#119DEC"
+                                transitionLineColor
+                                :keepInEnd="isMobile"
                                 @click="openInNewTab('https://github.com/xl-xlxl')">
                                 <ExternalLink class="size-4 translate-y-0.5" />
                             </outlineText>
@@ -518,7 +606,9 @@
                             <div class="flex-1 flex items-center">
                                 <div
                                     class="flex h-full flex-col items-center justify-center space-y-4 border-r-1 border-r-[#595959] px-4">
-                                    <img src="/src/assets/developer-avatars/xl-xlxl.jpg" alt=""
+                                    <img
+                                        src="/src/assets/developer-avatars/xl-xlxl.jpg"
+                                        alt=""
                                         class="md:size-24 size-16 rounded-full" />
                                     <p class="md:text-2xl text-lg whitespace-nowrap overflow-ellipsis">xl-xlxl</p>
                                 </div>
@@ -778,7 +868,7 @@ function initAnimate() {
                     ease: 'power3.out'
                 });
             },
-            onEnterBack: () => { }
+            onEnterBack: () => {}
         });
     }
 }
@@ -920,8 +1010,8 @@ const section3CardsManager = {
         );
         const offset = getRemPx(3.5);
         window.lenis.scrollTo(section3_cards.value!, {
-            offset: -offset,
-        })
+            offset: -offset
+        });
         // gsap.to(window, {
         //     duration: 1,
         //     ease: 'power2.inOut',
