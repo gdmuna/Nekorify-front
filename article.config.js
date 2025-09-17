@@ -33,7 +33,7 @@ module.exports = {
                         '--tw-prose-td-borders': 'var(--color-pink-200)',
                         // 以下是暗色模式（使用 dark 类时）的对应设置
                         // 暗色模式下的正文文本颜色
-                        '--tw-prose-invert-body': '#FEFCE4',
+                        '--tw-prose-invert-body': '#EAE8DD',
                         // 暗色模式下的标题颜色
                         '--tw-prose-invert-headings': '#E0DEC0',
                         // 暗色模式下的引导段落颜色
@@ -41,7 +41,7 @@ module.exports = {
                         // 暗色模式下的链接颜色
                         '--tw-prose-invert-links': 'var(--color-blue-400)',
                         // 暗色模式下的粗体文本颜色
-                        '--tw-prose-invert-bold': '#FFF3BF',
+                        '--tw-prose-invert-bold': '#F7F1D8',
                         // 暗色模式下的有序列表数字颜色
                         '--tw-prose-invert-counters': '#FFF3BF',
                         // 暗色模式下的无序列表项目符号颜色

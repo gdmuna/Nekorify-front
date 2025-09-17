@@ -185,24 +185,18 @@
                                         <span @click="firework.baseConfettiFirework" class="cursor-pointer select-none">
                                             🎉
                                         </span>
-                                        <span>
-                                            恭喜通过面试！
-                                        </span>
+                                        <span>恭喜通过面试！</span>
                                     </h3>
                                     <p class="text-lg md:text-2xl text-amber-100">
                                         {{ userInfo.username }}同学，展信安好，特此致贺！
                                     </p>
                                     <p>
                                         你已顺利通过
-                                        <span
-                                            v-if="currentAssociation"
-                                            class="font-bold text-emerald-500">
+                                        <span v-if="currentAssociation" class="font-bold text-emerald-500">
                                             {{ currentAssociation }}
                                         </span>
                                         的干事招新面试，正式进入为期25天的考察期，加入
-                                        <span
-                                            v-if="currentDepartment"
-                                            class="font-bold text-emerald-500">
+                                        <span v-if="currentDepartment" class="font-bold text-emerald-500">
                                             {{ currentDepartment }}
                                         </span>
                                         预备干事的行列。感谢你的到来，愿这一方天地成为你成长与创造的起点。
@@ -222,14 +216,15 @@
                                         “ 行之力则知愈进，知之深则行愈达 。”
                                     </blockquote>
                                     <p>
-                                        <span
-                                            v-if="currentAssociation"
-                                            class="font-bold text-emerald-500">
+                                        <span v-if="currentAssociation" class="font-bold text-emerald-500">
                                             {{ currentAssociation }}
                                         </span>
                                         ，期待与你并肩，书写新的篇章。
                                     </p>
-                                    <img src="@/assets/Examine-QR-code.png" alt="" style="width: 10rem; height: 10rem; margin: auto;" />
+                                    <img
+                                        src="@/assets/Examine-QR-code.png"
+                                        alt=""
+                                        style="width: 10rem; height: 10rem; margin: auto" />
                                     <p class="text-center mt-2">扫码进入干事考核群</p>
                                 </template>
                                 <template v-if="step.result === 'approved' && currentInterviewAssociation === 'ACM'">
@@ -244,24 +239,18 @@
                                         <span @click="firework.baseConfettiFirework" class="cursor-pointer select-none">
                                             🎉
                                         </span>
-                                        <span>
-                                            恭喜通过面试！
-                                        </span>
+                                        <span>恭喜通过面试！</span>
                                     </h3>
                                     <p class="text-lg md:text-2xl text-amber-100">
                                         {{ userInfo.username }}同学，见信欢愉，谨以为贺！
                                     </p>
                                     <p>
                                         恭喜你成功通过
-                                        <span
-                                            v-if="currentAssociation"
-                                            class="font-bold text-emerald-500">
+                                        <span v-if="currentAssociation" class="font-bold text-emerald-500">
                                             {{ currentAssociation }}
                                         </span>
                                         的干事招新面试，正式进入为期25天的考核期，成为
-                                        <span
-                                            v-if="currentDepartment"
-                                            class="font-bold text-emerald-500">
+                                        <span v-if="currentDepartment" class="font-bold text-emerald-500">
                                             {{ currentDepartment }}
                                         </span>
                                         预备干事中的一员，感谢你选择我们，愿这里成为你梦想启航的地方。
@@ -281,14 +270,15 @@
                                         “试玉要烧三日满，辨材须待七年期。”
                                     </blockquote>
                                     <p>
-                                        <span
-                                            v-if="currentAssociation"
-                                            class="font-bold text-emerald-500">
+                                        <span v-if="currentAssociation" class="font-bold text-emerald-500">
                                             {{ currentAssociation }}
                                         </span>
                                         ，期待与你并肩，见证更多可能。
                                     </p>
-                                    <img src="@/assets/Examine-QR-code.png" alt="" style="width: 10rem; height: 10rem; margin: auto;" />
+                                    <img
+                                        src="@/assets/Examine-QR-code.png"
+                                        alt=""
+                                        style="width: 10rem; height: 10rem; margin: auto" />
                                     <p class="text-center mt-2">扫码进入干事考核群</p>
                                 </template>
                                 <template v-if="step.result === 'rejected'">
@@ -396,11 +386,11 @@ function teleportTo(index: number, type: string) {
 }
 
 const currentAssociation = computed(() => {
-    return currentInterviewResult.value?.association
+    return currentInterviewResult.value?.association;
 });
 
 const currentDepartment = computed(() => {
-    return currentInterviewResult.value?.department
+    return currentInterviewResult.value?.department;
 });
 
 const stepRoot = ref<HTMLElement | null>(null);
@@ -409,13 +399,17 @@ function goto(index: number) {
     currentStep.value = index + 1;
 }
 
-watch(() => currentStep.value, (newVal) => {
-    if (newVal === undefined) newVal = activeStepIndex.value + 1
-    console.log('Current step changed to:', newVal, steps.value.length);
-    if (newVal === steps.value.length && currentInterviewResult.value?.status === 'approved') {
-        firework.baseConfettiFirework()
-    }
-}, { immediate: true });
+watch(
+    () => currentStep.value,
+    (newVal) => {
+        if (newVal === undefined) newVal = activeStepIndex.value + 1;
+        console.log('Current step changed to:', newVal, steps.value.length);
+        if (newVal === steps.value.length && currentInterviewResult.value?.status === 'approved') {
+            firework.baseConfettiFirework();
+        }
+    },
+    { immediate: true }
+);
 </script>
 
 <style scoped>

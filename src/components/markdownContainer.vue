@@ -6,17 +6,31 @@
             </div>
         </template>
         <template v-if="dataStatus === 'loaded'">
-            <Navigator v-if="enableNavigator" ref="navigatorRef" class="md:ml-8 mb-6" />
-            <div v-else class="md:ml-8 mb-6" />
             <teleport to="#appContainer">
-                <Button ref="scrollToTopButton" class="fixed bottom-10 right-5 rounded-full size-10 cursor-pointer transition-colors duration-[200]
-            dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px] invisible z-1" @click="scrollToTop">
-                    <ArrowUpToLine class="size-6" />
-                </Button>
+                <SidebarProvider :defaultOpen="false">
+                    <appSidebar side="right" variant="floating" class="p-0 mt-14 pb-14" :treeData="treeData" />
+                    <SidebarTrigger ref="sidebarTriggerRef" class="hidden" />
+                    <div ref="buttonGroup" class="fixed bottom-15 right-5 flex flex-col space-y-4 invisible">
+                        <Button
+                            class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
+                            @click="sidebarTriggerRef.$el.click()">
+                            <ListTree class="size-6" />
+                        </Button>
+                        <Button
+                            class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
+                            @click="scrollToTop">
+                            <ArrowUpToLine class="size-6" />
+                        </Button>
+                    </div>
+                </SidebarProvider>
             </teleport>
-            <article v-html="sanitizedHtml" ref="articleRef"
-                class="prose prose-customDark prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert mx-auto">
-            </article>
+            <div class="w-fit mx-auto">
+                <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
+                <article
+                    v-html="sanitizedHtml"
+                    ref="articleRef"
+                    class="prose prose-customDark prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert"></article>
+            </div>
         </template>
         <template v-if="dataStatus === 'error'">
             <div class="size-full flex-1 flex justify-center items-center">
@@ -29,7 +43,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, createVNode, render, watch, onUnmounted } from 'vue';
 
-import { ArrowUpToLine } from 'lucide-vue-next';
+import { ArrowUpToLine, ListTree } from 'lucide-vue-next';
+import { blockButton, Button } from '@/components/ui/button';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import appSidebar from '@/components/appSidebar.vue';
+import Navigator from '@/components/navigator.vue';
 
 // @ts-ignore
 import markdownit from 'markdown-it';
@@ -45,16 +63,11 @@ import { alertPlugin } from 'markdown-it-github-alert';
 
 // @ts-ignore
 import Prism from 'prismjs';
-
 import DOMPurify from 'dompurify';
-
-import { blockButton, Button } from '@/components/ui/button';
 
 import { gsap } from 'gsap';
 
-import { getRemPx, getRandomNumber, imgFireworkStart } from '@/lib/utils';
-
-import Navigator from '@/components/navigator.vue';
+import { getRemPx, imgFireworkStart } from '@/lib/utils';
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
@@ -64,6 +77,7 @@ const { isMobile } = storeToRefs(systemStore);
 
 import { resourceApi } from '@/api';
 import type { DataStatus } from '@/types/api';
+import type { TreeData } from '@/types/utils';
 import { toast } from 'vue-sonner';
 
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -73,15 +87,14 @@ const root = ref<HTMLElement>();
 const dataStatus = ref<DataStatus>('idle');
 
 const navigatorRef = ref<any>(null);
-
 const articleRef = ref<HTMLElement | null>(null);
+const buttonGroup = ref<any>(null);
+const sidebarTriggerRef = ref<any>();
 
-const scrollToTopButton = ref<any>(null);
+const treeData = ref<TreeData[]>([]);
 
 let navigatorTrigger: ScrollTrigger | null = null;
-let toTopButtonPinTrigger: ScrollTrigger | null = null;
-let toTopButtonShowTrigger: ScrollTrigger | null = null;
-
+let buttonGroupShowTrigger: ScrollTrigger | null = null;
 let articleHeightObserver: ResizeObserver | null = null;
 
 const md = new markdownit({
@@ -140,13 +153,9 @@ onUnmounted(() => {
         navigatorTrigger.kill();
         navigatorTrigger = null;
     }
-    if (toTopButtonPinTrigger) {
-        toTopButtonPinTrigger.kill();
-        toTopButtonPinTrigger = null;
-    }
-    if (toTopButtonShowTrigger) {
-        toTopButtonShowTrigger.kill();
-        toTopButtonShowTrigger = null;
+    if (buttonGroupShowTrigger) {
+        buttonGroupShowTrigger.kill();
+        buttonGroupShowTrigger = null;
     }
     if (articleHeightObserver) {
         articleHeightObserver.disconnect();
@@ -162,6 +171,48 @@ async function handleSource(url: string) {
         dataStatus.value = 'loaded';
         nextTick(() => {
             Prism.highlightAllUnder(articleRef.value);
+            // 生成标题元素的唯一 ID 并存储结构
+            const headingsList: any[] = [];
+            const slugify = (text: string): string => {
+                return text
+                    .toLowerCase()
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w\-]+/g, '')
+                    .replace(/\-\-+/g, '-')
+                    .replace(/^-+/, '')
+                    .replace(/-+$/, '')
+                    .concat(`-${Math.floor(Math.random() * 10 ** 10)}`); // 添加随机数确保唯一性
+            };
+            if (articleRef.value) {
+                const headings = articleRef.value.querySelectorAll('article > h1, article > h2, article > h3');
+                headings.forEach((heading, index) => {
+                    // 生成唯一 ID
+                    const text = heading.textContent || `heading-${index}`;
+                    const slug = slugify(text);
+                    const id = `heading-${slug}`;
+                    // 设置 ID 属性
+                    heading.setAttribute('id', id);
+                    // 记录标题信息
+                    const level = parseInt(heading.tagName.substring(1));
+                    const headingInfo = {
+                        id,
+                        text,
+                        level,
+                        index,
+                        element: heading
+                    };
+                    headingsList.push(headingInfo);
+                });
+                // 构建层级结构
+                const headingsTree = buildHeadingsTree(headingsList);
+                console.log('headingsTree', headingsTree);
+                treeData.value = headingsTree;
+                // 如果需要，可以在这里将生成的树结构暴露给组件的其他部分使用
+                // 例如传递给 Navigator 组件
+                // if (props.enableNavigator && navigatorRef.value) {
+                //     navigatorRef.value.updateHeadings(headingsTree);
+                // }
+            }
             articleRef.value?.querySelectorAll('span .katex').forEach((el) => {
                 el.classList.add('not-prose');
             });
@@ -209,49 +260,46 @@ async function handleSource(url: string) {
 }
 
 function createScrollTrigger() {
-    const toTopButton = scrollToTopButton.value.$el
-    toTopButtonShowTrigger = ScrollTrigger.create({
+    const buttonGroupEl = buttonGroup.value;
+    buttonGroupShowTrigger = ScrollTrigger.create({
         trigger: root.value,
         start: 'top top',
+        end: 'bottom bottom',
         onEnter: () => {
-            gsap.to(toTopButton, {
+            gsap.to(buttonGroupEl, {
                 autoAlpha: 1,
                 duration: 0.2,
                 ease: 'power2.out'
             });
         },
         onLeaveBack: () => {
-            gsap.to(toTopButton, {
+            gsap.to(buttonGroupEl, {
                 autoAlpha: 0,
                 duration: 0.2,
                 ease: 'power2.out'
             });
         },
         onLeave: () => {
-            gsap.to(toTopButton, {
+            gsap.to(buttonGroupEl, {
                 autoAlpha: 0,
                 duration: 0.2,
                 ease: 'power2.out'
             });
         },
         onEnterBack: () => {
-            gsap.to(toTopButton, {
+            gsap.to(buttonGroupEl, {
                 autoAlpha: 1,
                 duration: 0.2,
                 ease: 'power2.out'
             });
         }
-    })
+    });
 }
 
 function refreshScrollTriggers() {
-    if (toTopButtonPinTrigger) {
-        toTopButtonPinTrigger.kill();
-        toTopButtonPinTrigger = null;
-    }
-    if (toTopButtonShowTrigger) {
-        toTopButtonShowTrigger.kill();
-        toTopButtonShowTrigger = null;
+    if (buttonGroupShowTrigger) {
+        buttonGroupShowTrigger.kill();
+        buttonGroupShowTrigger = null;
     }
     createScrollTrigger();
 }
@@ -295,15 +343,15 @@ const copyAnimate = {
     tls: [] as gsap.core.Timeline[],
     play(target: HTMLElement) {
         const tl = gsap.timeline();
-        const pTag = document.createElement('p');
-        pTag.textContent = '已复制喵~';
-        const btnRect = target.getBoundingClientRect();
-        const rootRect = root.value!.getBoundingClientRect();
-        pTag.style.position = 'absolute';
-        pTag.style.left = `${btnRect.left - rootRect.left + getRemPx(getRandomNumber(-1, 1))}px`;
-        pTag.style.top = `${btnRect.bottom - rootRect.top + getRemPx(getRandomNumber(-1, 1))}px`;
-        pTag.style.transform = `translate(-120%) rotate(${getRandomNumber(-20, 20)}deg)`;
-        pTag.style.whiteSpace = 'nowrap';
+        // const pTag = document.createElement('p');
+        // pTag.textContent = '已复制喵~';
+        // const btnRect = target.getBoundingClientRect();
+        // const rootRect = root.value!.getBoundingClientRect();
+        // pTag.style.position = 'absolute';
+        // pTag.style.left = `${btnRect.left - rootRect.left + getRemPx(getRandomNumber(-1, 1))}px`;
+        // pTag.style.top = `${btnRect.bottom - rootRect.top + getRemPx(getRandomNumber(-1, 1))}px`;
+        // pTag.style.transform = `translate(-120%) rotate(${getRandomNumber(-20, 20)}deg)`;
+        // pTag.style.whiteSpace = 'nowrap';
         // root.value?.appendChild(pTag)
         imgFireworkStart(target, 0);
         // tl.to(pTag, {
@@ -332,15 +380,48 @@ function scrollToTop() {
             offsetY: getRemPx(3.5)
         },
         duration: 0.5,
-        ease: 'power2.out'
+        ease: 'circ.out'
     });
 }
 
+function buildHeadingsTree(headingsList: any[]) {
+    // 如果没有标题，返回空数组
+    if (headingsList.length === 0) return [];
+    // 找到最小标题级别作为基准
+    const minLevel = Math.min(...headingsList.map((h) => h.level));
+    // 递归构建树结构
+    function buildTree(startIndex: number, parentLevel: number): [any[], number] {
+        const children = [];
+        let i = startIndex;
+        // 遍历从startIndex开始的所有标题
+        while (i < headingsList.length) {
+            const heading = headingsList[i];
+            // 如果当前标题级别小于等于父级别，说明当前子树构建完成
+            if (heading.level <= parentLevel) {
+                break;
+            }
+            // 创建当前标题节点
+            const node = { ...heading, children: [] };
+            // 如果这个标题可能有子节点
+            if (i + 1 < headingsList.length && headingsList[i + 1].level > heading.level) {
+                // 递归构建子树
+                const [subChildren, nextIndex] = buildTree(i + 1, heading.level);
+                node.children = subChildren;
+                i = nextIndex; // 跳过已处理的子标题
+            } else {
+                i++; // 移到下一个标题
+            }
+            children.push(node);
+        }
+        return [children, i];
+    }
+    // 构建从最小级别开始的整棵树
+    return buildTree(0, minLevel - 1)[0];
+}
 </script>
 
 <style scoped>
 :deep.article-container article {
-
     p,
     h2,
     h3,
@@ -376,7 +457,7 @@ function scrollToTop() {
     details summary {
         cursor: pointer;
         margin: 0.5em 0;
-        border-bottom: 1px solid #FEFCE4;
+        border-bottom: 1px solid #fefce4;
         width: fit-content;
         user-select: none;
     }
@@ -437,7 +518,7 @@ function scrollToTop() {
         background: var(--background-color);
     }
 
-    .markdown-alert>span {
+    .markdown-alert > span {
         display: flex;
         flex-direction: row;
         align-items: center;

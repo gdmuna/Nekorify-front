@@ -544,15 +544,15 @@ export const firework = {
             },
             particleCount: Math.floor(200 * particleRatio),
             ...opts
-        })
+        });
     },
     baseConfettiFirework() {
         this.fire(0.25, {
             spread: 26,
-            startVelocity: 55,
+            startVelocity: 55
         });
         this.fire(0.2, {
-            spread: 60,
+            spread: 60
         });
         this.fire(0.35, {
             spread: 100,
@@ -568,6 +568,6 @@ export const firework = {
         this.fire(0.1, {
             spread: 120,
             startVelocity: 45
-        })
+        });
     }
-}
+};

@@ -3,4 +3,4 @@
 # 设置 Git 根据文件内容自动决定是否进行相应的行尾处理
 # 设置 Git 将换行符自动转换为 LF
 # 设置 Git 在提交时检查换行符防止混用
-* text=auto eol=lf safecrlf=true
+* text=auto eol=lf safecrlf=true autocrlf=true

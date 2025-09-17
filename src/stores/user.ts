@@ -332,7 +332,7 @@ export const useUserStore = defineStore('user', () => {
 
     const currentInterviewAssociation = computed(() => {
         return currentInterview.value?.title.startsWith('NA') ? 'NA' : 'ACM';
-    })
+    });
 
     const steps = computed(() => {
         let Steps: Step[] = [

@@ -28,10 +28,12 @@
             <template #main>
                 <!-- 代码块 -->
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre :class="[
-                        '!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 !overflow-hidden',
-                        !isMobile ? 'line-numbers' : '!pb-0'
-                    ]" tabindex="-1">
+                    <pre
+                        :class="[
+                            '!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 !overflow-hidden',
+                            !isMobile ? 'line-numbers' : '!pb-0'
+                        ]"
+                        tabindex="-1">
 <code ref="codeBlock" :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.675rem] will-change-contents', codeClass[codesIndex], isMobile ? '!leading-3.5' : '']" ></code><span ref="cursor" class="cursor text-xs">▌</span>
 </pre>
                 </div>
@@ -43,7 +45,8 @@
             </template>
         </macWindow>
         <!-- 用于为可视窗口赋值高度 -->
-        <macWindow ref="hiddenMacWindow"
+        <macWindow
+            ref="hiddenMacWindow"
             class="lg:!w-120 md:!w-108 !w-96 !absolute top-0 left-0 !h-auto invisible pointer-events-none">
             <template #TR>
                 <div class="relative flex-1 overflow-hidden">
@@ -56,10 +59,12 @@
             <template #main>
                 <!-- 代码块 -->
                 <div class="relative flex flex-1 items-start justify-start space-x-4 mb-2">
-                    <pre :class="[
-                        '!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 pointer-events-none',
-                        !isMobile ? 'line-numbers' : '!pb-0'
-                    ]" tabindex="-1">
+                    <pre
+                        :class="[
+                            '!bg-transparent !m-0 !pt-0 lg:!pl-12 md:!pl-8 !pl-2 md:!leading-4 !leading-0 pointer-events-none',
+                            !isMobile ? 'line-numbers' : '!pb-0'
+                        ]"
+                        tabindex="-1">
 <code :class="['lg:!text-sm md:!text-[0.8rem] !text-[0.675rem]', codeClass[codesIndex], isMobile ? '!leading-3.5' : '']" >{{ codes[codesIndex] }}</code>
 </pre>
                 </div>
@@ -352,7 +357,7 @@ function eraseCode() {
         function frame() {
             if (!codeBlock.value) return;
             if (index > 0) {
-                codeBlock.value.textContent = text.slice(0, isMobile.value ? Math.max(index -= 2, 0) : --index);
+                codeBlock.value.textContent = text.slice(0, isMobile.value ? Math.max((index -= 2), 0) : --index);
                 Prism.highlightAllUnder(root.value);
                 codeTimer = requestAnimationFrame(frame);
             } else {
@@ -440,7 +445,6 @@ function initHeightObserver() {
 }
 
 @keyframes blink {
-
     0%,
     100% {
         opacity: 1;

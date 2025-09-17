@@ -28,28 +28,13 @@ import { onMounted, ref, h } from 'vue';
 
 import { liItem } from '@/components/dashboard';
 
-import {
-    ShieldUser,
-    ArrowRight,
-    Newspaper,
-    Notebook,
-    Youtube,
-    Info,
-    BookOpenText
-} from 'lucide-vue-next';
+import { ShieldUser, ArrowRight, Newspaper, Notebook, Youtube, Info, BookOpenText } from 'lucide-vue-next';
 
-import { openInNewTab, showModal } from '@/lib/utils';
-
-import { useRouter } from 'vue-router';
-const router = useRouter();
+import { openInNewTab } from '@/lib/utils';
 
 import { useSystemStore } from '@/stores/system';
 const systemStore = useSystemStore();
 const { routerGoto } = systemStore;
-
-import { useAuthStore } from '@/stores/auth';
-const authStore = useAuthStore();
-const { getGroupByRank } = authStore;
 
 const items = ref([
     {

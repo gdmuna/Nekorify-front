@@ -17,3 +17,12 @@ export interface UseFetchOptions<T, P> {
     append?: boolean;
     filterErr?: (err: any) => boolean;
 }
+
+export interface TreeData {
+    id: string;
+    text: string;
+    index: number;
+    level: number;
+    element: HTMLElement;
+    children: TreeData[];
+}
