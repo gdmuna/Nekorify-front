@@ -33,3 +33,9 @@ body {
 .dark ::-webkit-scrollbar-thumb {
     background: #d5c8b0;
 }
+
+#app {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
