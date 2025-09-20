@@ -2,7 +2,10 @@
     <div class="h-[calc(100vh-3.5rem)] overflow-hidden flex flex-col">
         <template v-if="chapterData.length">
             <p class="p-2 text-lg">本页目录</p>
-            <div :data-lenis-prevent="isTreeScrollable ? '' : undefined"  ref="treeContainerRef" class="max-h-[calc(100vh-13rem)] overflow-auto">
+            <div
+                :data-lenis-prevent="isTreeScrollable ? '' : undefined"
+                ref="treeContainerRef"
+                class="max-h-[calc(100vh-13rem)] overflow-auto">
                 <treeRenderer v-for="(item, index) in chapterData" :key="index" :item :onClick :activeItem />
             </div>
         </template>
@@ -28,7 +31,6 @@ import { ArrowUpToLine } from 'lucide-vue-next';
 
 import { gsap } from 'gsap';
 
-
 interface Props {
     chapterData?: TreeData[];
     scrollToTop?: () => void;
@@ -50,7 +52,7 @@ const onClick = (item: TreeData) => {
         offset: -offset,
         duration: 1
     });
-}
+};
 
 const activeItems = ref(new Set<HTMLElement>());
 
@@ -69,58 +71,72 @@ const activeItem = computed(() => {
     return topElement as HTMLElement;
 });
 
-watch(() => activeItem.value, (newActiveItem) => {
-    if (newActiveItem) {
-        const container = treeContainerRef.value;
-        const headingId = newActiveItem.id
-        if (headingId) {
-            // 通过ID查找对应的树形节点
-            const treeItemId = `treeItem-${headingId}`;
-            const treeItem = treeContainerRef.value?.querySelector(`#${treeItemId}`);
-            if (treeItem && container) {
-                gsap.to(container, {
-                    scrollTo: {
-                        y: treeItem,
-                        offsetY: container?.getBoundingClientRect().height! / 2 - treeItem.getBoundingClientRect().height / 2,
-                        autoKill: true
-                    },
-                    duration: 0.5,
-                    ease: 'power2.out'
-                });
-            }
-        } else {
-            // 如果没有ID，通过内容匹配
-            const headingText = newActiveItem.textContent?.trim();
-            const allTreeItems = treeContainerRef.value?.querySelectorAll('.text-sm.p-2');
-            if (!allTreeItems) return;
-            for (const item of allTreeItems) {
-                if (item.textContent?.includes(headingText || '') && container) {
+watch(
+    () => activeItem.value,
+    (newActiveItem) => {
+        if (newActiveItem) {
+            const container = treeContainerRef.value;
+            const headingId = newActiveItem.id;
+            if (headingId) {
+                // 通过ID查找对应的树形节点
+                const treeItemId = `treeItem-${headingId}`;
+                const treeItem = treeContainerRef.value?.querySelector(`#${treeItemId}`);
+                if (treeItem && container) {
                     gsap.to(container, {
-                        scrollTo: { y: item, offsetY: container?.getBoundingClientRect().height! / 2 - item.getBoundingClientRect().height / 2 },
+                        scrollTo: {
+                            y: treeItem,
+                            offsetY:
+                                container?.getBoundingClientRect().height! / 2 -
+                                treeItem.getBoundingClientRect().height / 2,
+                            autoKill: true
+                        },
                         duration: 0.5,
                         ease: 'power2.out'
                     });
-                    break;
+                }
+            } else {
+                // 如果没有ID，通过内容匹配
+                const headingText = newActiveItem.textContent?.trim();
+                const allTreeItems = treeContainerRef.value?.querySelectorAll('.text-sm.p-2');
+                if (!allTreeItems) return;
+                for (const item of allTreeItems) {
+                    if (item.textContent?.includes(headingText || '') && container) {
+                        gsap.to(container, {
+                            scrollTo: {
+                                y: item,
+                                offsetY:
+                                    container?.getBoundingClientRect().height! / 2 -
+                                    item.getBoundingClientRect().height / 2
+                            },
+                            duration: 0.5,
+                            ease: 'power2.out'
+                        });
+                        break;
+                    }
                 }
             }
         }
     }
-})
+);
 
 onMounted(() => {
     if (props.chapterData.length) {
         observer.init();
         window.addEventListener('resize', checkIfScrollable);
-        nextTick(() => checkIfScrollable())
+        nextTick(() => checkIfScrollable());
     }
-})
+});
 
-watch(() => props.chapterData, (newChapterData) => {
-    if (newChapterData.length) {
-        observer.init();
-        nextTick(() => checkIfScrollable())
-    }
-}, { deep: true });
+watch(
+    () => props.chapterData,
+    (newChapterData) => {
+        if (newChapterData.length) {
+            observer.init();
+            nextTick(() => checkIfScrollable());
+        }
+    },
+    { deep: true }
+);
 
 // 组件卸载时清理
 onUnmounted(() => {
@@ -130,7 +146,7 @@ onUnmounted(() => {
 
 function getChapterElements(chapterData: TreeData[]) {
     const elements: HTMLElement[] = [];
-    chapterData.forEach(item => {
+    chapterData.forEach((item) => {
         if (item.element) {
             elements.push(item.element);
         }
@@ -152,7 +168,7 @@ const observer = {
         this.observerEls = getChapterElements(props.chapterData);
         this.unmounted();
         this.fontSize.value = getComputedStyle(document.documentElement).fontSize;
-        this.createChapterObserver()
+        this.createChapterObserver();
         this.addEventListener();
     },
     unmounted() {
@@ -167,32 +183,35 @@ const observer = {
         const headerOffset = getRemPx(3); // 3rem header 高度
         const viewportHeight = window.innerHeight;
         const bottomMargin = -(viewportHeight - headerOffset - getRemPx(6)) + 'px';
-        this.chapterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (this.closestElement) {
-                    activeItems.value.delete(this.closestElement);
-                    this.closestElement = null;
+        this.chapterObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (this.closestElement) {
+                        activeItems.value.delete(this.closestElement);
+                        this.closestElement = null;
+                    }
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        activeItems.value.add(el as HTMLElement);
+                    } else {
+                        activeItems.value.delete(entry.target as HTMLElement);
+                    }
+                });
+                if (!activeItems.value.size) {
+                    this.closestElement = this.findClosedChapter();
+                    if (this.closestElement) {
+                        activeItems.value.add(this.closestElement);
+                    }
                 }
-                if (entry.isIntersecting) {
-                    const el = entry.target;
-                    activeItems.value.add(el as HTMLElement);
-                } else {
-                    activeItems.value.delete(entry.target as HTMLElement);
-                }
-            });
-            if (!activeItems.value.size) {
-                this.closestElement = this.findClosedChapter();
-                if (this.closestElement) {
-                    activeItems.value.add(this.closestElement);
-                }
+            },
+            {
+                // 配置项
+                threshold: 0,
+                rootMargin: `-${headerOffset}px 0px ${bottomMargin} 0px`
             }
-        }, {
-            // 配置项
-            threshold: 0,
-            rootMargin: `-${headerOffset}px 0px ${bottomMargin} 0px`
-        });
+        );
         // 开始观察目标元素
-        this.observerEls.forEach(el => {
+        this.observerEls.forEach((el) => {
             this.chapterObserver?.observe(el);
         });
     },
@@ -201,7 +220,7 @@ const observer = {
         const headerOffset = getRemPx(3);
         let closestElement = null;
         let minDistance = Infinity;
-        this.observerEls.forEach(el => {
+        this.observerEls.forEach((el) => {
             const rect = el.getBoundingClientRect();
             if (rect.bottom < headerOffset) {
                 const distance = headerOffset - rect.bottom;
@@ -212,7 +231,7 @@ const observer = {
             }
         });
         if (!closestElement) {
-            this.observerEls.forEach(el => {
+            this.observerEls.forEach((el) => {
                 const rect = el.getBoundingClientRect();
                 const distance = Math.abs(rect.top - headerOffset);
                 if (distance < minDistance) {
@@ -230,17 +249,16 @@ const observer = {
     removeEventListener() {
         window.removeEventListener('resize', this._createChapterObserver!);
     }
-}
+};
 
 const isTreeScrollable = ref(false);
 
 function checkIfScrollable() {
     if (treeContainerRef.value) {
         // 检查内容高度是否大于容器高度
-        isTreeScrollable.value =  treeContainerRef.value.scrollHeight > treeContainerRef.value.clientHeight;
+        isTreeScrollable.value = treeContainerRef.value.scrollHeight > treeContainerRef.value.clientHeight;
     }
 }
-
 </script>
 
 <style scoped></style>

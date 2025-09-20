@@ -15,21 +15,38 @@
                 <p>已经到底了喵~</p>
                 <p class="inline-flex flex-wrap justify-center items-center">
                     Copyright © 2025 &nbsp;
-                    <outlineText text="GDMU-NA" lineColor="#B0B0B0" keepInEnd bottomLineClass="!mt-0"
+                    <outlineText
+                        text="GDMU-NA"
+                        lineColor="#B0B0B0"
+                        keepInEnd
+                        bottomLineClass="!mt-0"
                         @click="openInNewTab('https://github.com/gdmuna')" />
                     &nbsp; & &nbsp;
-                    <outlineText text="GDMU-ACM" lineColor="#B0B0B0" keepInEnd bottomLineClass="!mt-0"
+                    <outlineText
+                        text="GDMU-ACM"
+                        lineColor="#B0B0B0"
+                        keepInEnd
+                        bottomLineClass="!mt-0"
                         @click="openInNewTab('https://github.com/gdmuna')" />
                     &nbsp; & &nbsp;
-                    <outlineText text="MyGO!!!" lineColor="#B0B0B0" keepInEnd bottomLineClass="!mt-0"
+                    <outlineText
+                        text="MyGO!!!"
+                        lineColor="#B0B0B0"
+                        keepInEnd
+                        bottomLineClass="!mt-0"
                         @click="openInNewTab('https://github.com/gdmuna')" />
                     &nbsp;.&nbsp;
                     <span>All Rights Reserved.</span>
                 </p>
                 <p>
                     Powered by
-                    <outlineText text="Nekorify" lineColor="#B0B0B0" class="inline-block" keepInEnd
-                        bottomLineClass="!mt-0" @click="openInNewTab('https://github.com/gdmuna/Nekorify-front')" />
+                    <outlineText
+                        text="Nekorify"
+                        lineColor="#B0B0B0"
+                        class="inline-block"
+                        keepInEnd
+                        bottomLineClass="!mt-0"
+                        @click="openInNewTab('https://github.com/gdmuna/Nekorify-front')" />
                 </p>
             </div>
         </footer>

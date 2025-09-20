@@ -1,15 +1,23 @@
 <template>
-    <button ref="root" class="cursor-pointer select-none" @mouseenter="animate.play('enter')"
+    <button
+        ref="root"
+        class="cursor-pointer select-none"
+        @mouseenter="animate.play('enter')"
         @mouseleave="animate.play('leave')">
         <div class="relative flex flex-col overflow-hidden">
             <div :class="props.textClass">
                 <slot />
                 {{ text }}
             </div>
-            <div ref="bottomLine" :class="cn(
-                'w-full h-[1px] mt-[0.1rem] mb-[1px] will-change-transform pointer-events-none',
-                props.bottomLineClass
-            )" :style="{ backgroundColor: props.lineColor }" />
+            <div
+                ref="bottomLine"
+                :class="
+                    cn(
+                        'w-full h-[1px] mt-[0.1rem] mb-[1px] will-change-transform pointer-events-none',
+                        props.bottomLineClass
+                    )
+                "
+                :style="{ backgroundColor: props.lineColor }" />
         </div>
     </button>
 </template>
@@ -42,14 +50,11 @@ interface Props {
     textClass?: string;
 }
 
-const props = withDefaults(
-    defineProps<Props>(),
-    {
-        lineColor: '#FEF3C6',
-        transitionLineColor: false,
-        keepInEnd: false
-    }
-);
+const props = withDefaults(defineProps<Props>(), {
+    lineColor: '#FEF3C6',
+    transitionLineColor: false,
+    keepInEnd: false
+});
 
 onUnmounted(() => {
     animate.tl.kill();

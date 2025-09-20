@@ -83,8 +83,10 @@ const currentArticle = computed(() => {
 });
 
 const sectionData = computed(() => {
-    return currentArticle.value ? [{ title: currentArticle.value.title, resourceUrl: currentArticle.value.text_md_url }] : [];
-})
+    return currentArticle.value
+        ? [{ title: currentArticle.value.title, resourceUrl: currentArticle.value.text_md_url }]
+        : [];
+});
 
 const section = computed(() => {
     const section = route.query.section;
@@ -92,9 +94,9 @@ const section = computed(() => {
         return Number(section);
     } else {
         router.replace({ query: { ...route.query, section: '1' } });
-        return 1
+        return 1;
     }
-})
+});
 </script>
 
 <style scoped></style>

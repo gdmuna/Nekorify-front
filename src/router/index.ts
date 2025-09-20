@@ -290,9 +290,8 @@ router.beforeEach((to, from, next) => {
         JSON.stringify(to.query) !== JSON.stringify(from.query);
     // 修改scrollToTop条件，在query参数变化时不滚动
     const isChildRoute = from.matched.length > 0 && to.path === from.matched[0].path;
-    const scrollToTop = to.meta.scrollToTop &&
-        !(from.meta.parentAction?.doNotScrollToTop && isChildRoute) &&
-        !onlyQueryChanged; // 新增条件
+    const scrollToTop =
+        to.meta.scrollToTop && !(from.meta.parentAction?.doNotScrollToTop && isChildRoute) && !onlyQueryChanged; // 新增条件
     if (scrollToTop) {
         window.lenis.scrollTo(0, { immediate: true });
     }

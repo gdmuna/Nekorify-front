@@ -7,9 +7,10 @@
         </template>
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
-            <article v-html="sanitizedHtml" ref="articleRef"
-                class="prose prose-customDark prose-base max-w-full lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert article-fixed-size">
-            </article>
+            <article
+                v-html="sanitizedHtml"
+                ref="articleRef"
+                class="prose prose-customDark prose-base max-w-full lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert article-fixed-size"></article>
         </template>
         <template v-if="dataStatus === 'error'">
             <div class="size-full flex-1 flex justify-center items-center">
@@ -98,12 +99,9 @@ interface Props {
     currentResourceURL: string | null;
     enableNavigator: boolean;
 }
-const props = withDefaults(
-    defineProps<Props>(),
-    {
-        enableNavigator: true
-    }
-);
+const props = withDefaults(defineProps<Props>(), {
+    enableNavigator: true
+});
 
 onMounted(() => {
     if (props.currentResourceURL) {
@@ -203,7 +201,6 @@ watch(
     }
 );
 
-
 const copyAnimate = {
     play(target: HTMLElement) {
         imgFireworkStart(target, 0);
@@ -255,7 +252,6 @@ function buildHeadingsTree(headingsList: any[]) {
 
 <style scoped>
 :deep.article-container article {
-
     p,
     h2,
     h3,
@@ -358,7 +354,7 @@ function buildHeadingsTree(headingsList: any[]) {
         background: var(--background-color);
     }
 
-    .markdown-alert>span {
+    .markdown-alert > span {
         display: flex;
         flex-direction: row;
         align-items: center;

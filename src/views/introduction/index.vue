@@ -2,7 +2,7 @@
     <div ref="introPageRoot" class="dark:bg-[#0E100F] w-full mb-10 overflow-x-hidden">
         <scrollHint />
         <!-- Section 1 -->
-        <section ref="section1" class="relative h-[100dvh] w-full flex items-center justify-center pt-14 bg-gray-100 ">
+        <section ref="section1" class="relative h-[100dvh] w-full flex items-center justify-center pt-14 bg-gray-100">
             <matrix
                 class="absolute z-1 select-none"
                 :width="setion1_width"

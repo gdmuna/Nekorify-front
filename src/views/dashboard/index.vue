@@ -1,8 +1,8 @@
 <template>
-    <div ref="root" class="relative flex-1 flex mt-14">
+    <div ref="root" id="dashboard-root" class="relative flex-1 flex flex-col mt-14">
         <div class="flex-1 flex flex-col md:flex-row md:space-x-10 xl:mx-10 md:mx-8 mx-4">
             <sidebar v-if="isDashboard" class="py-10" />
-            <div class="md:pt-10 pt-6 flex-1 flex flex-col">
+            <div class="md:pt-10 pt-6 flex-1">
                 <navigator v-if="!isDashboard" class="mb-5" />
                 <router-view />
             </div>

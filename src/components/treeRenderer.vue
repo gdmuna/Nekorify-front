@@ -1,9 +1,15 @@
 <template>
     <div class="text-sm p-2 pb-1">
-        <outlineText :id="`treeItem-${item.id}`" :class="[
-            'w-full flex hover:text-emerald-400 transition-colors duration-300',
-            isActive ? 'text-emerald-400' : 'text-[#FEFCE4]'
-        ]" bottomLineClass="mt-1" :keep-in-end="isActive" lineColor="#00d492" transitionLineColor
+        <outlineText
+            :id="`treeItem-${item.id}`"
+            :class="[
+                'w-full flex hover:text-emerald-400 transition-colors duration-300',
+                isActive ? 'text-emerald-400' : 'text-[#FEFCE4]'
+            ]"
+            bottomLineClass="mt-1"
+            :keep-in-end="isActive"
+            lineColor="#00d492"
+            transitionLineColor
             @click="onClick ? onClick(item) : null">
             <p class="truncate">{{ item.text }}</p>
         </outlineText>
@@ -31,8 +37,6 @@ const props = defineProps<Props>();
 const isActive = computed(() => {
     return props.activeItem === props.item.element;
 });
-
-
 </script>
 
 <style scoped></style>
