@@ -1,8 +1,8 @@
 <template>
-    <div ref="introPageRoot" class="dark:bg-[#0E100F] w-[100dvw] mb-10">
+    <div ref="introPageRoot" class="dark:bg-[#0E100F] w-full mb-10 overflow-x-hidden">
         <scrollHint />
         <!-- Section 1 -->
-        <section ref="section1" class="relative h-[100dvh] flex items-center justify-center pt-14 bg-gray-100">
+        <section ref="section1" class="relative h-[100dvh] w-full flex items-center justify-center pt-14 bg-gray-100 ">
             <matrix
                 class="absolute z-1 select-none"
                 :width="setion1_width"
@@ -152,7 +152,7 @@
         <!-- Section 3 -->
         <section class="bg-gray-100 dark:bg-[#0E100F]">
             <!-- section 主内容 -->
-            <div ref="section3_main" class="xl:pt-36 md:pt-10">
+            <div ref="section3_main" class="xl:pt-36 md:pt-10 overflow-hidden">
                 <!-- section 横向滚动主内容 -->
                 <div ref="section3_scrollMain" class="relative w-full xl:h-[100dvh] md:pt-14 pt-8 flex flex-col">
                     <!-- section title -->
@@ -483,13 +483,14 @@
                             <div class="flex-1" />
                             <outlineText
                                 text="GitHub主页"
+                                text-class=""
                                 bottomLineClass="!mt-0"
                                 class="hover:text-[#119DEC] md:text-[#FEFCE4] text-[#119DEC] transition-colors duration-300 pb-2 md:pb-0"
                                 lineColor="#119DEC"
                                 transitionLineColor
                                 :keepInEnd="isMobile"
                                 @click="openInNewTab('https://github.com/kz2006a')">
-                                <ExternalLink class="size-4 translate-y-0.5" />
+                                <ExternalLink class="size-4 -translate-y-0.5 inline" />
                             </outlineText>
                         </template>
                         <template #main>
@@ -524,7 +525,7 @@
                                 transitionLineColor
                                 :keepInEnd="isMobile"
                                 @click="openInNewTab('https://github.com/FOV-RGT')">
-                                <ExternalLink class="size-4 translate-y-0.5" />
+                                <ExternalLink class="size-4 -translate-y-0.5 inline" />
                             </outlineText>
                         </template>
                         <template #main>
@@ -567,7 +568,7 @@
                                 transitionLineColor
                                 :keepInEnd="isMobile"
                                 @click="openInNewTab('https://github.com/seeleclover')">
-                                <ExternalLink class="size-4 translate-y-0.5" />
+                                <ExternalLink class="size-4 -translate-y-0.5 inline" />
                             </outlineText>
                         </template>
                         <template #main>
@@ -599,7 +600,7 @@
                                 transitionLineColor
                                 :keepInEnd="isMobile"
                                 @click="openInNewTab('https://github.com/xl-xlxl')">
-                                <ExternalLink class="size-4 translate-y-0.5" />
+                                <ExternalLink class="size-4 -translate-y-0.5 inline" />
                             </outlineText>
                         </template>
                         <template #main>

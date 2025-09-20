@@ -41,7 +41,7 @@ const routes = [
         children: [
             {
                 path: ':id',
-                component: () => import('../components/markdownContainer.vue'),
+                component: () => import('../components/textContainer.vue'),
                 name: 'announcementDetail',
                 meta: {
                     title: '公告详情',
@@ -61,7 +61,7 @@ const routes = [
         children: [
             {
                 path: ':id',
-                component: () => import('../components/markdownContainer.vue'),
+                component: () => import('../components/textContainer.vue'),
                 name: 'articleDetail',
                 meta: {
                     title: '文章详情',
@@ -284,8 +284,15 @@ router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
     document.title = title + ' - ' + (to.meta.title || 'Nekorify');
     // 只有在不是子路由跳转时，且目标路由配置了 scrollToTop 时，才滚动到顶部
+    const onlyQueryChanged =
+        to.path === from.path &&
+        JSON.stringify(to.params) === JSON.stringify(from.params) &&
+        JSON.stringify(to.query) !== JSON.stringify(from.query);
+    // 修改scrollToTop条件，在query参数变化时不滚动
     const isChildRoute = from.matched.length > 0 && to.path === from.matched[0].path;
-    const scrollToTop = to.meta.scrollToTop && !(from.meta.parentAction?.doNotScrollToTop && isChildRoute);
+    const scrollToTop = to.meta.scrollToTop &&
+        !(from.meta.parentAction?.doNotScrollToTop && isChildRoute) &&
+        !onlyQueryChanged; // 新增条件
     if (scrollToTop) {
         window.lenis.scrollTo(0, { immediate: true });
     }

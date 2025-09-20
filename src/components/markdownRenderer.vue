@@ -1,36 +1,15 @@
 <template>
-    <div ref="root" class="pb-14 px-4 article-container flex-1 relative">
+    <div ref="root" class="pb-8 px-4 article-container relative">
         <template v-if="dataStatus === 'loading'">
             <div class="size-full flex-1 flex justify-center items-center">
                 <p class="dark:text-[#A0A0A0]">正在努力加载喵~</p>
             </div>
         </template>
         <template v-if="dataStatus === 'loaded'">
-            <SidebarProvider :defaultOpen="false">
-                <appSidebar side="right" variant="floating" class="p-0 mt-14 pb-14" :treeData="treeData" />
-                <SidebarTrigger ref="sidebarTriggerRef" class="hidden" />
-                <SidebarInset class="bg-transparent">
-                    <div ref="buttonGroup" class="fixed bottom-15 right-5 flex flex-col space-y-4 invisible">
-                        <Button
-                            class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
-                            @click="sidebarTriggerRef.$el.click()">
-                            <ListTree class="size-6" />
-                        </Button>
-                        <Button
-                            class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
-                            @click="scrollToTop">
-                            <ArrowUpToLine class="size-6" />
-                        </Button>
-                    </div>
-                    <div class="w-fit mx-auto">
-                        <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
-                        <article
-                            v-html="sanitizedHtml"
-                            ref="articleRef"
-                            class="prose prose-customDark prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert"></article>
-                    </div>
-                </SidebarInset>
-            </SidebarProvider>
+            <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
+            <article v-html="sanitizedHtml" ref="articleRef"
+                class="prose prose-customDark prose-base max-w-[85ch] lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert article-fixed-size">
+            </article>
         </template>
         <template v-if="dataStatus === 'error'">
             <div class="size-full flex-1 flex justify-center items-center">
@@ -41,12 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, createVNode, render, watch, onUnmounted } from 'vue';
+import { ref, computed, onMounted, nextTick, createVNode, render, watch } from 'vue';
 
-import { ArrowUpToLine, ListTree } from 'lucide-vue-next';
-import { blockButton, Button } from '@/components/ui/button';
-import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
-import appSidebar from '@/components/appSidebar.vue';
+import { blockButton } from '@/components/ui/button';
 import Navigator from '@/components/navigator.vue';
 
 // @ts-ignore
@@ -65,22 +41,12 @@ import { alertPlugin } from 'markdown-it-github-alert';
 import Prism from 'prismjs';
 import DOMPurify from 'dompurify';
 
-import { gsap } from 'gsap';
-
 import { getRemPx, imgFireworkStart } from '@/lib/utils';
-
-import { storeToRefs } from 'pinia';
-import { useSystemStore } from '@/stores/system';
-
-const systemStore = useSystemStore();
-const { isMobile } = storeToRefs(systemStore);
 
 import { resourceApi } from '@/api';
 import type { DataStatus } from '@/types/api';
 import type { TreeData } from '@/types/utils';
 import { toast } from 'vue-sonner';
-
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const root = ref<HTMLElement>();
 
@@ -88,14 +54,13 @@ const dataStatus = ref<DataStatus>('idle');
 
 const navigatorRef = ref<any>(null);
 const articleRef = ref<HTMLElement | null>(null);
-const buttonGroup = ref<any>(null);
-const sidebarTriggerRef = ref<any>();
+const chapterData = ref<TreeData[]>([]);
 
-const treeData = ref<TreeData[]>([]);
-
-let navigatorTrigger: ScrollTrigger | null = null;
-let buttonGroupShowTrigger: ScrollTrigger | null = null;
-let articleHeightObserver: ResizeObserver | null = null;
+defineExpose({
+    chapterData,
+    dataStatus,
+    scrollToTop
+});
 
 const md = new markdownit({
     html: true,
@@ -129,37 +94,23 @@ const sanitizedHtml = computed(() => {
     return DOMPurify.sanitize(html);
 });
 
+interface Props {
+    currentResourceURL: string | null;
+    enableNavigator: boolean;
+}
 const props = withDefaults(
-    defineProps<{
-        currentSourceUrl: any;
-        enableNavigator?: boolean;
-    }>(),
+    defineProps<Props>(),
     {
         enableNavigator: true
     }
 );
 
 onMounted(() => {
-    if (props.currentSourceUrl) {
-        handleSource(props.currentSourceUrl);
+    if (props.currentResourceURL) {
+        handleSource(props.currentResourceURL);
     } else {
         dataStatus.value = 'error';
         toast.error('无效的资源ID');
-    }
-});
-
-onUnmounted(() => {
-    if (navigatorTrigger) {
-        navigatorTrigger.kill();
-        navigatorTrigger = null;
-    }
-    if (buttonGroupShowTrigger) {
-        buttonGroupShowTrigger.kill();
-        buttonGroupShowTrigger = null;
-    }
-    if (articleHeightObserver) {
-        articleHeightObserver.disconnect();
-        articleHeightObserver = null;
     }
 });
 
@@ -206,12 +157,7 @@ async function handleSource(url: string) {
                 // 构建层级结构
                 const headingsTree = buildHeadingsTree(headingsList);
                 console.log('headingsTree', headingsTree);
-                treeData.value = headingsTree;
-                // 如果需要，可以在这里将生成的树结构暴露给组件的其他部分使用
-                // 例如传递给 Navigator 组件
-                // if (props.enableNavigator && navigatorRef.value) {
-                //     navigatorRef.value.updateHeadings(headingsTree);
-                // }
+                chapterData.value = headingsTree;
             }
             articleRef.value?.querySelectorAll('span .katex').forEach((el) => {
                 el.classList.add('not-prose');
@@ -237,21 +183,6 @@ async function handleSource(url: string) {
                 render(vnode, container);
                 el.appendChild(container);
             });
-            // if (props.enableNavigator && isDesktop.value) {
-            //     const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight;
-            //     navigatorTrigger = ScrollTrigger.create({
-            //         trigger: navigatorRef.value.$el,
-            //         start: `top top+=${offset}`,
-            //         end: `+=${root.value?.offsetHeight}`,
-            //         pin: true,
-            //         pinSpacing: false
-            //     });
-            // }
-            if (articleRef.value) {
-                createScrollTrigger();
-                articleHeightObserver = new ResizeObserver(() => refreshScrollTriggers());
-                articleHeightObserver.observe(articleRef.value!);
-            }
         });
     } else {
         dataStatus.value = 'error';
@@ -259,55 +190,10 @@ async function handleSource(url: string) {
     }
 }
 
-function createScrollTrigger() {
-    const buttonGroupEl = buttonGroup.value;
-    buttonGroupShowTrigger = ScrollTrigger.create({
-        trigger: root.value,
-        start: 'top top',
-        end: 'bottom bottom',
-        onEnter: () => {
-            gsap.to(buttonGroupEl, {
-                autoAlpha: 1,
-                duration: 0.2,
-                ease: 'power2.out'
-            });
-        },
-        onLeaveBack: () => {
-            gsap.to(buttonGroupEl, {
-                autoAlpha: 0,
-                duration: 0.2,
-                ease: 'power2.out'
-            });
-        },
-        onLeave: () => {
-            gsap.to(buttonGroupEl, {
-                autoAlpha: 0,
-                duration: 0.2,
-                ease: 'power2.out'
-            });
-        },
-        onEnterBack: () => {
-            gsap.to(buttonGroupEl, {
-                autoAlpha: 1,
-                duration: 0.2,
-                ease: 'power2.out'
-            });
-        }
-    });
-}
-
-function refreshScrollTriggers() {
-    if (buttonGroupShowTrigger) {
-        buttonGroupShowTrigger.kill();
-        buttonGroupShowTrigger = null;
-    }
-    createScrollTrigger();
-}
-
 watch(
-    () => props.currentSourceUrl,
+    () => props.currentResourceURL,
     (newVal) => {
-        console.log('currentSourceUrl changed', newVal);
+        console.log('currentResourceURL changed', newVal);
         if (newVal) {
             handleSource(newVal);
         } else {
@@ -317,59 +203,10 @@ watch(
     }
 );
 
-watch(
-    [() => props.enableNavigator, isMobile],
-    ([newEnableNavigator, newIsMobile]) => {
-        if (!newEnableNavigator || newIsMobile) {
-            if (navigatorTrigger) {
-                navigatorTrigger.kill();
-                navigatorTrigger = null;
-            }
-        } else if (newEnableNavigator && !newIsMobile && !navigatorTrigger && navigatorRef.value?.$el) {
-            const offset = navigatorRef.value.$el.offsetTop + navigatorRef.value.$el.offsetHeight;
-            navigatorTrigger = ScrollTrigger.create({
-                trigger: navigatorRef.value.$el,
-                start: `top top+=${offset}`,
-                end: `+=${root.value?.offsetHeight}`,
-                pin: true,
-                pinSpacing: false
-            });
-        }
-    },
-    { immediate: true }
-);
 
 const copyAnimate = {
-    tls: [] as gsap.core.Timeline[],
     play(target: HTMLElement) {
-        const tl = gsap.timeline();
-        // const pTag = document.createElement('p');
-        // pTag.textContent = '已复制喵~';
-        // const btnRect = target.getBoundingClientRect();
-        // const rootRect = root.value!.getBoundingClientRect();
-        // pTag.style.position = 'absolute';
-        // pTag.style.left = `${btnRect.left - rootRect.left + getRemPx(getRandomNumber(-1, 1))}px`;
-        // pTag.style.top = `${btnRect.bottom - rootRect.top + getRemPx(getRandomNumber(-1, 1))}px`;
-        // pTag.style.transform = `translate(-120%) rotate(${getRandomNumber(-20, 20)}deg)`;
-        // pTag.style.whiteSpace = 'nowrap';
-        // root.value?.appendChild(pTag)
         imgFireworkStart(target, 0);
-        // tl.to(pTag, {
-        //     opacity: 1,
-        //     y: '-100%',
-        //     ease: 'power2.out',
-        //     duration: 0.5
-        // }).to(pTag, {
-        //     opacity: 0,
-        //     duration: 0.5,
-        //     ease: 'power2.out',
-        //     onComplete: () => {
-        //         pTag.remove()
-        //         tl.kill()
-        //         this.tls = this.tls.filter(t => t !== tl)
-        //     }
-        // })
-        this.tls.push(tl);
     }
 };
 
@@ -378,14 +215,6 @@ function scrollToTop() {
     window.lenis.scrollTo(root.value!, {
         offset: -offset
     });
-    // gsap.to(window, {
-    //     scrollTo: {
-    //         y: root.value!,
-    //         offsetY: getRemPx(3.5)
-    //     },
-    //     duration: 0.5,
-    //     ease: 'circ.out'
-    // });
 }
 
 function buildHeadingsTree(headingsList: any[]) {
@@ -426,6 +255,7 @@ function buildHeadingsTree(headingsList: any[]) {
 
 <style scoped>
 :deep.article-container article {
+
     p,
     h2,
     h3,
@@ -456,6 +286,12 @@ function buildHeadingsTree(headingsList: any[]) {
                 height: 0.8em;
             }
         }
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #fefce4;
+        margin: 2em 0;
     }
 
     details summary {
@@ -522,7 +358,7 @@ function buildHeadingsTree(headingsList: any[]) {
         background: var(--background-color);
     }
 
-    .markdown-alert > span {
+    .markdown-alert>span {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -589,6 +425,23 @@ function buildHeadingsTree(headingsList: any[]) {
     .markdown-alert.tip strong {
         color: #57ab5a;
         font-weight: 600;
+    }
+}
+
+.article-fixed-size {
+    font-size: 16px !important;
+}
+
+/* 响应式设置 */
+@media (min-width: 1024px) {
+    .article-fixed-size {
+        font-size: 18px !important;
+    }
+}
+
+@media (min-width: 1280px) {
+    .article-fixed-size {
+        font-size: 20px !important;
     }
 }
 </style>

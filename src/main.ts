@@ -22,7 +22,7 @@ gsap.registerPlugin(
 );
 
 // 导入 Vue 相关库和组件
-import { createApp } from 'vue';
+import { createApp, nextTick } from 'vue';
 import App from './App.vue';
 
 // 导入 vue-router
