@@ -74,6 +74,8 @@ export const useSystemStore = defineStore('system', () => {
     const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
     const isDesktop = useMediaQuery('(min-width: 1024px)');
     const isXlDesktop = useMediaQuery('(min-width: 1280px)');
+    const is1point5XlDesktop = useMediaQuery('(min-width: 1368px)');
+    const is2XlDesktop = useMediaQuery('(min-width: 1536px)');
 
     const isLoginCallback = computed(() => {
         return router.currentRoute.value.path === '/loginCallback';
@@ -85,6 +87,8 @@ export const useSystemStore = defineStore('system', () => {
         isTablet,
         isDesktop,
         isXlDesktop,
+        is1point5XlDesktop,
+        is2XlDesktop,
         initTheme,
         toggleTheme,
         forceToggleTheme,

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full">
+    <div class="w-full overflow-hidden">
         <scrollHint />
         <!-- Section 1 -->
         <section
