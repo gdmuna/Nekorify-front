@@ -79,18 +79,18 @@ const currentAnnouncement = computed(() => {
 });
 
 const sectionData = computed(() => {
-    const num = 30
-    const data: { title: string; resourceUrl: string }[] = []
-    function generateData(announcement: Announcement) {
-        for (let i = 1; i <= num; i++) {
-            data.push({ title: `章节 ${i}`, resourceUrl: announcement.text_md_url });
-        }
-    }
-    if (currentAnnouncement.value) {
-        generateData(currentAnnouncement.value);
-    }
-    return data
-    // return currentAnnouncement.value ? [{ title: currentAnnouncement.value.title, resourceUrl: currentAnnouncement.value.text_md_url }] : [];
+    // const num = 30
+    // const data: { title: string; resourceUrl: string }[] = []
+    // function generateData(announcement: Announcement) {
+    //     for (let i = 1; i <= num; i++) {
+    //         data.push({ title: `章节 ${i}`, resourceUrl: announcement.text_md_url });
+    //     }
+    // }
+    // if (currentAnnouncement.value) {
+    //     generateData(currentAnnouncement.value);
+    // }
+    // return data
+    return currentAnnouncement.value ? [{ title: currentAnnouncement.value.title, resourceUrl: currentAnnouncement.value.text_md_url }] : [];
 })
 
 const section = computed(() => {
