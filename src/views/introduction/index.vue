@@ -1,6 +1,5 @@
 <template>
     <div ref="introPageRoot" class="dark:bg-[#0E100F] w-full mb-10 overflow-x-hidden">
-        <scrollHint />
         <!-- Section 1 -->
         <section ref="section1" class="relative h-[100dvh] w-full flex items-center justify-center pt-14 bg-gray-100">
             <matrix
@@ -656,7 +655,6 @@ import QA from '@/components/introduction/QA.vue';
 import section4Terminal from '@/components/introduction/section4Terminal.vue';
 import section1Left from '@/components/introduction/section1Left.vue';
 import section1Right from '@/components/introduction/section1Right.vue';
-import scrollHint from '@/components/scrollHint.vue';
 
 import { outlineText } from '@/components/ui/text';
 

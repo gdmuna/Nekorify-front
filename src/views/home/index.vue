@@ -1,6 +1,5 @@
 <template>
     <div class="w-full overflow-hidden">
-        <scrollHint />
         <!-- Section 1 -->
         <section
             ref="section1"
@@ -31,7 +30,6 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from 'vue';
 
-import scrollHint from '@/components/scrollHint.vue';
 import photobox from '@/components/home/photos.vue';
 import titleBlock from '@/components/home/titleBlock.vue';
 import announcement from '@/components/home/announcements.vue';
