@@ -8,7 +8,7 @@
         <template v-if="dataStatus === 'loaded'">
             <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
             <article v-html="sanitizedHtml" ref="articleRef"
-                class="prose prose-customDark prose-base max-w-[85ch] lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert article-fixed-size">
+                class="prose prose-customDark prose-base max-w-full lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert article-fixed-size">
             </article>
         </template>
         <template v-if="dataStatus === 'error'">

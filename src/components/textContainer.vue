@@ -1,30 +1,29 @@
 <template>
-    <div class="flex mx-auto">
-        <!-- 左侧本文章节 -->
-        <div v-if="isDesktop"
-        :class="[
-            'sticky top-14 h-fit pb-8 shrink-0',
-            isDesktop ? 'lg:w-48' : '',
-            isXlDesktop ? 'xl:w-56' : '',
-            is1point5XlDesktop ? 'xl:w-64' : ''
-        ]"
-        >
-            <textSection :sectionData :section />
+        <div class="flex w-full max-w-[90rem] mx-auto">
+            <!-- 左侧本文章节 -->
+            <div v-if="isDesktop" :class="[
+                'sticky top-14 h-fit pb-8 shrink-0',
+                isDesktop ? 'lg:w-48' : '',
+                isXlDesktop ? 'xl:w-56' : '',
+                is1point5XlDesktop ? 'xl:w-64' : ''
+            ]">
+                <textSection :sectionData :section />
+            </div>
+            <!-- 中间正文内容 -->
+            <Transition name="fade" mode="out-in">
+                <markdownRenderer ref="markdownRef" :key="section" class="flex-auto" :currentResourceURL
+                    :enableNavigator />
+            </Transition>
+            <!-- 右侧本页目录 -->
+            <div v-if="markdownDataStatus === 'loaded' && isDesktop" :class="[
+                'sticky top-14 h-fit pb-8 shrink-0',
+                isDesktop ? 'lg:w-48' : '',
+                isXlDesktop ? 'xl:w-56' : '',
+                is1point5XlDesktop ? 'xl:w-64' : ''
+            ]">
+                <textChapter :chapterData="markdownChapterData" :scrollToTop="markdownRef?.scrollToTop" />
+            </div>
         </div>
-        <!-- 中间正文内容 -->
-        <Transition name="fade" mode="out-in">
-            <markdownRenderer ref="markdownRef" :key="section" :currentResourceURL :enableNavigator />
-        </Transition>
-        <!-- 右侧本页目录 -->
-        <div v-if="markdownDataStatus === 'loaded' && isDesktop" :class="[
-            'sticky top-14 h-fit pb-8 shrink-0',
-            isDesktop ? 'lg:w-48' : '',
-            isXlDesktop ? 'xl:w-56' : '',
-            is1point5XlDesktop ? 'xl:w-64' : ''
-        ]">
-            <textChapter :chapterData="markdownChapterData" :scrollToTop="markdownRef?.scrollToTop" />
-        </div>
-    </div>
 </template>
 
 <script setup lang="ts">

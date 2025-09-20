@@ -24,7 +24,7 @@ import treeRenderer from './treeRenderer.vue';
 import { getRemPx } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
-import { ArrowUpToLine, Check } from 'lucide-vue-next';
+import { ArrowUpToLine } from 'lucide-vue-next';
 
 import { gsap } from 'gsap';
 
