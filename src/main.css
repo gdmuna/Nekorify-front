@@ -11,8 +11,8 @@ body {
 
 /* 全局滚动条样式 */
 ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -34,7 +34,8 @@ body {
     background: #d5c8b0;
 }
 
-body::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+#app {
+    width: 100%;
+    height: 100%;
+    position: relative;
 }

@@ -1,17 +1,25 @@
 <template>
-    <button ref="root" class="cursor-pointer select-none" @mouseenter="animate.play('enter')"
+    <div
+        ref="root"
+        class="cursor-pointer relative select-none"
+        @mouseenter="animate.play('enter')"
         @mouseleave="animate.play('leave')">
-        <div class="relative flex flex-col overflow-hidden">
-            <div :class="props.textClass">
+        <p :class="cn(props.textClass, 'text-center')">
+            <span v-if="$slots.default" class="inline-block">
                 <slot />
-                {{ text }}
-            </div>
-            <div ref="bottomLine" :class="cn(
-                'w-full h-[1px] mt-[0.1rem] mb-[1px] will-change-transform pointer-events-none',
-                props.bottomLineClass
-            )" :style="{ backgroundColor: props.lineColor }" />
-        </div>
-    </button>
+            </span>
+            {{ text }}
+        </p>
+        <div
+            ref="bottomLine"
+            :class="
+                cn(
+                    props.bottomLineClass,
+                    'w-full h-[1px] mt-[0.1rem] absolute will-change-transform pointer-events-none'
+                )
+            "
+            :style="{ backgroundColor: props.lineColor }" />
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -33,19 +41,17 @@ onMounted(() => {
     }
 });
 
-interface Props {
-    text?: string;
-    lineColor?: string;
-    transitionLineColor?: boolean;
-    keepInEnd?: boolean;
-    bottomLineClass?: string;
-    textClass?: string;
-}
-
 const props = withDefaults(
-    defineProps<Props>(),
+    defineProps<{
+        text?: string;
+        lineColor?: string;
+        transitionLineColor?: boolean;
+        keepInEnd?: boolean;
+        bottomLineClass?: string;
+        textClass?: string;
+    }>(),
     {
-        lineColor: '#FEF3C6',
+        lineColor: '#FEFCE4',
         transitionLineColor: false,
         keepInEnd: false
     }

@@ -1,15 +1,19 @@
 <template>
-    <div class="flex flex-1 flex-col mb-10">
-        <Form v-slot="{ handleSubmit }" @invalid-submit="onInvalidSubmit" keep-values :validation-schema="formSchema"
-            class="flex flex-col space-y-4" :initial-values="initVal">
+    <div id="announcementEdit" class="flex flex-1 flex-col mb-10">
+        <Form
+            v-slot="{ handleSubmit }"
+            @invalid-submit="onInvalidSubmit"
+            keep-values
+            :validation-schema="formSchema"
+            class="flex flex-col space-y-4"
+            :initial-values="initVal">
             <form id="form" ref="formRef" @submit.prevent="handleSubmit($event, onSubmit)" class="space-y-8">
                 <FormField v-slot="{ componentField, value }" name="title">
                     <FormItem class="flex md:flex-row flex-col gap-4">
                         <div class="flex-1 space-y-2">
                             <FormLabel>标题</FormLabel>
                             <FormControl>
-                                <Input v-bind="componentField" placeholder="请输入公告标题"
-                                    @input="titleValue = $event.target.value" />
+                                <Input v-bind="componentField" placeholder="请输入公告标题" />
                             </FormControl>
                             <FormDescription>
                                 公告的标题，将展示在公告详情页顶部，建议简明扼要，20字以内
@@ -46,20 +50,29 @@
                             <FormLabel>封面图片</FormLabel>
                             <FormControl>
                                 <div class="flex items-center gap-4">
-                                    <div :data-error="!meta.valid && meta.touched ? 'true' : 'false'"
+                                    <div
+                                        :data-error="!meta.valid && meta.touched ? 'true' : 'false'"
                                         @blur="componentField.onBlur"
                                         class="size-30 flex items-center justify-center cursor-pointer border-2 upload-container-dashed [data-error=false]:dark:border-[#B0B0B0]"
                                         @click="triggerFileInput">
-                                        <img v-if="!!CoverPreviewURL" :src="CoverPreviewURL" alt="预览"
+                                        <img
+                                            v-if="!!CoverPreviewURL"
+                                            :src="CoverPreviewURL"
+                                            alt="预览"
                                             class="size-full object-cover" />
-                                        <div v-else
+                                        <div
+                                            v-else
                                             class="text-sm text-center dark:text-[#D5C8B0] flex flex-col items-center">
                                             <ImageUp class="size-6" />
                                             <p>点击上传图片</p>
                                         </div>
-                                        <input ref="fileInput" type="file"
-                                            accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" class="hidden"
-                                            @change="onCoverChange($event, 'article', setValue)" data-index="1"
+                                        <input
+                                            ref="fileInput"
+                                            type="file"
+                                            accept="image/png,image/jpeg,image/jpg,image/webp,image/gif"
+                                            class="hidden"
+                                            @change="onCoverChange($event, 'article', setValue)"
+                                            data-index="1"
                                             @click.stop />
                                     </div>
                                     <div class="flex-1 space-y-2">
@@ -93,7 +106,9 @@
                         <div class="flex flex-1 flex-col space-y-2">
                             <FormLabel>markdown 文件上传</FormLabel>
                             <FormControl>
-                                <Input type="file" @change="onFileChange($event, 'article', setValue)"
+                                <Input
+                                    type="file"
+                                    @change="onFileChange($event, 'article', setValue)"
                                     class="cursor-pointer" />
                             </FormControl>
                             <FormDescription>
@@ -104,13 +119,26 @@
                         <div class="flex flex-1 flex-col space-y-2">
                             <FormLabel>markdown 文件URL</FormLabel>
                             <FormControl>
-                                <Input v-bind="componentField" placeholder="请输入markdown 文件URL"
-                                    @input="textUrlValue = $event.target.value" />
+                                <Input v-bind="componentField" placeholder="请输入markdown 文件URL" />
                             </FormControl>
                             <FormDescription>可手动填写 Markdown 文件的外链地址，或通过上传自动生成</FormDescription>
                             <FormMessage />
                         </div>
                     </FormItem>
+                    <teleport defer to="#announcementEdit">
+                        <div class="text-center mt-5 space-y-4">
+                            <h3 class="md:text-3xl text-2xl">内容预览</h3>
+                            <div class="w-full h-[1px] bg-[#5f5f5f]" />
+                            <p v-if="!value" class="dark:text-[#A0A0A0] mt-10">
+                                请上传或填写 markdown 文件URL 以预览文章内容
+                            </p>
+                        </div>
+                        <markdownContainer
+                            v-if="value"
+                            :current-source-url="value"
+                            :enableNavigator="false"
+                            class="mt-10" />
+                    </teleport>
                 </FormField>
                 <FormField v-slot="{ componentField }" name="status">
                     <FormItem class="flex md:flex-row flex-col gap-4">
@@ -123,8 +151,11 @@
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            <SelectItem v-for="(option, optionIndex) in resourceStatus"
-                                                :key="optionIndex" :value="String(option.value)" class="cursor-pointer">
+                                            <SelectItem
+                                                v-for="(option, optionIndex) in resourceStatus"
+                                                :key="optionIndex"
+                                                :value="String(option.value)"
+                                                class="cursor-pointer">
                                                 {{ option.label }}
                                             </SelectItem>
                                         </SelectGroup>
@@ -140,37 +171,38 @@
                         </div>
                     </FormItem>
                     <div class="flex flex-col gap-2">
-                        <secondaryButton text="保存编辑" type="submit" form="form" :icon="useIcon" :class="[
-                            'dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] w-fit',
-                            { 'cursor-progress': underSubmit }
-                        ]" />
-                        <secondaryButton v-if="type === 'edit'" text="删除公告" :icon="Trash2" type="button"
+                        <secondaryButton
+                            text="保存编辑"
+                            type="submit"
+                            form="form"
+                            :icon="useIcon"
+                            :class="[
+                                'dark:bg-[#CFCBA0] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] w-fit',
+                                { 'cursor-progress': underSubmit }
+                            ]" />
+                        <secondaryButton
+                            v-if="type === 'edit'"
+                            text="删除公告"
+                            :icon="Trash2"
+                            type="button"
                             class="dark:bg-[#f19180] dark:text-[#0E100F] rounded xl:text-xl md:text-[1rem] md:mt-4 mt-2 w-fit"
                             @click="onDelete" />
                     </div>
                 </FormField>
             </form>
         </Form>
-        <div class="text-center mt-5 space-y-4">
-            <h3 class="md:text-3xl text-2xl">内容预览</h3>
-            <div class="w-full h-[1px] bg-[#5f5f5f]" />
-            <p v-if="!textUrlValue" class="dark:text-[#A0A0A0] mt-10">
-                请上传或填写 markdown 文件URL 以预览文章内容
-            </p>
-        </div>
-        <textContainer v-if="textUrlValue" :sectionData :section :enableNavigator="false" class="mt-10" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted, computed, toRaw, watch } from 'vue';
+import { onMounted, ref, onUnmounted, computed, toRaw } from 'vue';
 
 import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 
 import { toast } from 'vue-sonner';
 
-import textContainer from '@/components/textContainer.vue';
+import markdownContainer from '@/components/markdownContainer.vue';
 
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -184,11 +216,12 @@ import { FileUp, LoaderCircle, ImageUp, Info, Hash, Asterisk, Trash2 } from 'luc
 
 import { getRemPx } from '@/lib/utils';
 
+import { gsap } from 'gsap';
+
 import { resourceApi } from '@/api';
 
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 const route = useRoute();
-const router = useRouter();
 
 import { useSystemStore } from '@/stores/system';
 const systemStore = useSystemStore();
@@ -438,37 +471,22 @@ async function onDelete() {
 function isFormChanged(originalValues: any, currentValues: any) {
     return JSON.stringify(originalValues) !== JSON.stringify(currentValues);
 }
-
-const titleValue = ref(initVal.value.title);
-const textUrlValue = ref(initVal.value.textUrl);
-
-const sectionData = computed(() => {
-    return [{ title: titleValue.value, resourceUrl: textUrlValue.value }]
-})
-
-const section = computed(() => {
-    const section = route.query.section;
-    if (section !== undefined && section !== null) {
-        return Number(section);
-    } else {
-        router.replace({ query: { ...route.query, section: '1' } });
-        return 1
-    }
-})
-
 </script>
 
 <style scoped>
 .upload-container-dashed[data-error='true'] {
-    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23FB2C36'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E") 2;
+    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23FB2C36'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E")
+        2;
 }
 
 .upload-container-dashed[data-error='false'] {
-    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23A0A0A0'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E") 2;
+    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23A0A0A0'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E")
+        2;
 }
 
 .upload-container-dashed {
-    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23A0A0A0'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E") 2;
+    border-image: url("data:image/svg+xml,%3Csvg%20width%3D'10'%20height%3D'10'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'8'%20height%3D'8'%20fill%3D'none'%20stroke%3D'%23A0A0A0'%20stroke-width%3D'2'%20stroke-dasharray%3D'4%2C4'%20stroke-dashoffset%3D'2'/%3E%3C/svg%3E")
+        2;
 }
 
 /* Chrome, Safari, Edge */
