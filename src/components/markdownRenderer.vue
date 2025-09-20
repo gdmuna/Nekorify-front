@@ -1,17 +1,18 @@
 <template>
     <div ref="root" class="pb-8 px-4 article-container relative">
+        <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
         <template v-if="dataStatus === 'loading'">
             <div class="size-full flex-1 flex justify-center items-center">
                 <p class="dark:text-[#A0A0A0]">正在努力加载喵~</p>
             </div>
         </template>
-        <template v-if="dataStatus === 'loaded'">
-            <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
+        <Transition :name="enableTransition ? 'fade' : 'none'" mode="out-in">
             <article
+                v-if="dataStatus === 'loaded'"
                 v-html="sanitizedHtml"
                 ref="articleRef"
                 class="prose prose-customDark prose-base max-w-full lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert article-fixed-size"></article>
-        </template>
+        </Transition>
         <template v-if="dataStatus === 'error'">
             <div class="size-full flex-1 flex justify-center items-center">
                 <p class="dark:text-[#A0A0A0]">加载失败喵... 请稍后再试~</p>
@@ -47,6 +48,7 @@ import { getRemPx, imgFireworkStart } from '@/lib/utils';
 import { resourceApi } from '@/api';
 import type { DataStatus } from '@/types/api';
 import type { TreeData } from '@/types/utils';
+import type { Ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 const root = ref<HTMLElement>();
@@ -57,10 +59,25 @@ const navigatorRef = ref<any>(null);
 const articleRef = ref<HTMLElement | null>(null);
 const chapterData = ref<TreeData[]>([]);
 
-defineExpose({
+interface Expose {
+    chapterData: Ref<TreeData[]>;
+    dataStatus: Ref<DataStatus>;
+    scrollToTop: () => void;
+}
+defineExpose<Expose>({
     chapterData,
     dataStatus,
     scrollToTop
+});
+
+interface Props {
+    currentResourceURL: string | null;
+    enableNavigator?: boolean;
+    enableTransition?: boolean;
+}
+const props = withDefaults(defineProps<Props>(), {
+    enableNavigator: true,
+    enableTransition: true
 });
 
 const md = new markdownit({
@@ -93,14 +110,6 @@ const sanitizedHtml = computed(() => {
     if (!markdown.value || typeof markdown.value !== 'string') return '';
     const html = md.render(markdown.value);
     return DOMPurify.sanitize(html);
-});
-
-interface Props {
-    currentResourceURL: string | null;
-    enableNavigator: boolean;
-}
-const props = withDefaults(defineProps<Props>(), {
-    enableNavigator: true
 });
 
 onMounted(() => {
@@ -182,10 +191,7 @@ async function handleSource(url: string) {
                 el.appendChild(container);
             });
         });
-    } else {
-        dataStatus.value = 'error';
-        toast.error('加载失败喵... 请稍后再试~');
-    }
+    } else handleError();
 }
 
 watch(
@@ -194,12 +200,14 @@ watch(
         console.log('currentResourceURL changed', newVal);
         if (newVal) {
             handleSource(newVal);
-        } else {
-            dataStatus.value = 'error';
-            toast.error('无效的资源ID');
-        }
+        } else handleError();
     }
 );
+
+function handleError() {
+    dataStatus.value = 'error';
+    toast.error('加载失败喵... 请稍后再试~');
+}
 
 const copyAnimate = {
     play(target: HTMLElement) {
@@ -251,6 +259,19 @@ function buildHeadingsTree(headingsList: any[]) {
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition:
+        opacity 0.2s,
+        transform 0.2s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
 :deep.article-container article {
     p,
     h2,

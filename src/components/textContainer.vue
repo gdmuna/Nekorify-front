@@ -2,7 +2,7 @@
     <div class="flex w-full max-w-[90rem] mx-auto">
         <!-- 左侧本文章节 -->
         <div
-            v-if="isDesktop"
+            v-if="isDesktop && markdownOK"
             :class="[
                 'sticky top-14 h-fit pb-8 shrink-0',
                 isDesktop ? 'lg:w-48' : '',
@@ -12,12 +12,10 @@
             <textSection :sectionData :section />
         </div>
         <!-- 中间正文内容 -->
-        <Transition name="fade" mode="out-in">
-            <markdownRenderer ref="markdownRef" :key="section" class="flex-auto" :currentResourceURL :enableNavigator />
-        </Transition>
+        <markdownRenderer ref="markdownRef" class="flex-auto" :currentResourceURL />
         <!-- 右侧本页目录 -->
         <div
-            v-if="markdownDataStatus === 'loaded' && isDesktop"
+            v-if="isDesktop && markdownOK"
             :class="[
                 'sticky top-14 h-fit pb-8 shrink-0',
                 isDesktop ? 'lg:w-48' : '',
@@ -59,9 +57,13 @@ const currentResourceURL = computed(() => {
     return section ? section.resourceUrl : null;
 });
 
-const markdownRef = ref<any>();
+const markdownRef = ref<InstanceType<typeof markdownRenderer>>();
 const markdownChapterData = ref<TreeData[]>([]);
 const markdownDataStatus = ref<DataStatus>('idle');
+
+const markdownOK = computed(() => {
+    return markdownRef.value?.dataStatus !== 'idle' && markdownRef.value?.dataStatus !== 'error';
+});
 
 watch(
     () => markdownRef.value?.chapterData,
