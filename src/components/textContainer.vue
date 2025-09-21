@@ -4,7 +4,7 @@
         <div
             v-if="isDesktop && markdownOK"
             :class="[
-                'sticky top-14 h-fit pb-8 shrink-0',
+                'sticky top-14 h-fit shrink-0',
                 isDesktop ? 'lg:w-48' : '',
                 isXlDesktop ? 'xl:w-56' : '',
                 is1point5XlDesktop ? 'xl:w-64' : ''
@@ -12,7 +12,7 @@
             <textSection :sectionData :section class="h-[calc(100vh-3.5rem)]" />
         </div>
         <!-- 中间正文内容 -->
-        <markdownRenderer ref="markdownRef" class="flex-auto" :currentResourceURL>
+        <markdownRenderer ref="markdownRef" class="flex-auto pb-8" :currentResourceURL>
             <template #top v-if="!isDesktop && markdownOK">
                 <Collapsible
                     :unmountOnHide="false"
@@ -39,7 +39,7 @@
         <div
             v-if="isDesktop && markdownDataStatus === 'loaded'"
             :class="[
-                'sticky top-14 h-fit pb-8 shrink-0',
+                'sticky top-14 h-fit shrink-0',
                 isDesktop ? 'lg:w-48' : '',
                 isXlDesktop ? 'xl:w-56' : '',
                 is1point5XlDesktop ? 'xl:w-64' : ''

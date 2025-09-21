@@ -9,8 +9,8 @@
                 @click="collapsibleTriggerRef?.$el.click()">
                 <span>本页目录</span>
                 <template v-if="enableCollapsible">
-                    <LiseChevronsDownUp v-if="isContainerOpen" class="inline ml-2" />
-                    <ListChevronsUpDown v-else class="inline ml-2" />
+                    <ListChevronsUpDown v-if="isContainerOpen" class="inline ml-2" />
+                    <LiseChevronsDownUp v-else class="inline ml-2" />
                 </template>
             </div>
             <Collapsible
@@ -20,7 +20,7 @@
                 :unmountOnHide="false"
                 v-model:open="isContainerOpen"
                 :data-lenis-prevent="isTreeScrollable ? '' : undefined"
-                class="break-words overflow-auto lg:mb-8">
+                :class="['break-words overflow-auto lg:mb-8', isContainerOpen ? 'mb-4' : '']">
                 <CollapsibleTrigger ref="collapsibleTriggerRef" class="hidden" />
                 <CollapsibleContent>
                     <div>

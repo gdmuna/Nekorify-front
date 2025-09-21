@@ -8,8 +8,8 @@
             @click="collapsibleTriggerRef?.$el.click()">
             <span class="">本文章节</span>
             <template v-if="enableCollapsible">
-                <LiseChevronsDownUp v-if="isContainerOpen" class="inline ml-2" />
-                <ListChevronsUpDown v-else class="inline ml-2" />
+                <ListChevronsUpDown v-if="isContainerOpen" class="inline ml-2" />
+                <LiseChevronsDownUp v-else class="inline ml-2" />
             </template>
         </div>
         <Collapsible

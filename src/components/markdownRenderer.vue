@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="pb-8 px-4 w-full article-container relative">
+    <div ref="root" class="px-4 w-full article-container relative">
         <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
         <slot name="top" v-if="dataStatus === 'loaded'" />
         <template v-if="dataStatus === 'loading'">
