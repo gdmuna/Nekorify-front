@@ -1,6 +1,7 @@
 <template>
-    <div ref="root" class="pb-8 px-4 article-container relative">
+    <div ref="root" class="pb-8 px-4 w-full article-container relative">
         <Navigator v-if="enableNavigator" ref="navigatorRef" class="mb-6" />
+        <slot name="top" v-if="dataStatus === 'loaded'" />
         <template v-if="dataStatus === 'loading'">
             <div class="size-full flex-1 flex justify-center items-center">
                 <p class="dark:text-[#A0A0A0]">正在努力加载喵~</p>
@@ -11,7 +12,7 @@
                 v-if="dataStatus === 'loaded'"
                 v-html="sanitizedHtml"
                 ref="articleRef"
-                class="prose prose-customDark prose-base max-w-full lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert article-fixed-size"></article>
+                class="prose prose-customDark prose-base max-w-full lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert article-fixed-size" />
         </Transition>
         <template v-if="dataStatus === 'error'">
             <div class="size-full flex-1 flex justify-center items-center">

@@ -1,49 +1,63 @@
 <template>
-    <div class="h-[calc(100vh-3.5rem)] overflow-hidden flex flex-col">
-        <template v-if="chapterData.length">
-            <p class="p-2 text-lg">本页目录</p>
-            <div
-                :data-lenis-prevent="isTreeScrollable ? '' : undefined"
-                ref="treeContainerRef"
-                class="max-h-[calc(100vh-13rem)] overflow-auto">
-                <treeRenderer v-for="(item, index) in chapterData" :key="index" :item :onClick :activeItem />
-            </div>
-        </template>
-        <div class="flex flex-col items-center justify-center mt-auto mb-8">
-            <Button
-                class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
-                @click="scrollToTop">
-                <ArrowUpToLine class="size-6" />
-            </Button>
+    <div class="overflow-hidden flex flex-col">
+        <div
+            :class="[
+                'p-2 md:text-lg sm:text-base text-sm flex items-center',
+                enableCollapsible ? 'cursor-pointer select-none' : ''
+            ]"
+            @click="collapsibleTriggerRef?.$el.click()">
+            <span>本页目录</span>
+            <template v-if="enableCollapsible">
+                <LiseChevronsDownUp v-if="isContainerOpen" class="inline ml-2" />
+                <ListChevronsUpDown v-else class="inline ml-2" />
+            </template>
         </div>
+        <Collapsible
+            v-if="chapterData.length"
+            ref="treeContainerRef"
+            :defaultOpen
+            :disabled="!enableCollapsible"
+            :unmountOnHide="false"
+            v-model:open="isContainerOpen"
+            :data-lenis-prevent="isTreeScrollable ? '' : undefined"
+            class="break-words overflow-auto">
+            <CollapsibleTrigger ref="collapsibleTriggerRef" class="hidden" />
+            <CollapsibleContent>
+                <div class="md:mb-8 mb-4">
+                    <treeRenderer v-for="(item, index) in chapterData" :key="index" :item :onClick :activeItem />
+                </div>
+            </CollapsibleContent>
+        </Collapsible>
+        <slot name="bottom" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue';
-import type { TreeData } from '@/types/utils';
 import treeRenderer from './treeRenderer.vue';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import LiseChevronsDownUp from '@/assets/icons/list-chevrons-down-up.svg?component';
+import ListChevronsUpDown from '@/assets/icons/list-chevrons-up-down.svg?component';
 
+import type { TreeData } from '@/types/utils';
 import { getRemPx } from '@/lib/utils';
-
-import { Button } from '@/components/ui/button';
-import { ArrowUpToLine } from 'lucide-vue-next';
 
 import { gsap } from 'gsap';
 
 interface Props {
     chapterData?: TreeData[];
-    scrollToTop?: () => void;
+    enableCollapsible?: boolean;
+    defaultOpen?: boolean;
 }
-
 const props = withDefaults(defineProps<Props>(), {
     chapterData: () => [],
-    scrollToTop: () => {
-        window.lenis.scrollTo(0, { duration: 0.5 });
-    }
+    enableCollapsible: false,
+    defaultOpen: true
 });
 
-const treeContainerRef = ref<HTMLElement | null>(null);
+const isContainerOpen = ref(props.defaultOpen);
+const collapsibleTriggerRef = ref<any>();
+const treeContainerRef = ref<any>();
 
 const onClick = (item: TreeData) => {
     const offset = getRemPx(3.5);
@@ -75,12 +89,12 @@ watch(
     () => activeItem.value,
     (newActiveItem) => {
         if (newActiveItem) {
-            const container = treeContainerRef.value;
+            const container = treeContainerRef.value.$el;
             const headingId = newActiveItem.id;
             if (headingId) {
                 // 通过ID查找对应的树形节点
                 const treeItemId = `treeItem-${headingId}`;
-                const treeItem = treeContainerRef.value?.querySelector(`#${treeItemId}`);
+                const treeItem = container?.querySelector(`#${treeItemId}`);
                 if (treeItem && container) {
                     gsap.to(container, {
                         scrollTo: {
@@ -256,7 +270,7 @@ const isTreeScrollable = ref(false);
 function checkIfScrollable() {
     if (treeContainerRef.value) {
         // 检查内容高度是否大于容器高度
-        isTreeScrollable.value = treeContainerRef.value.scrollHeight > treeContainerRef.value.clientHeight;
+        isTreeScrollable.value = treeContainerRef.value.$el.scrollHeight > treeContainerRef.value.$el.clientHeight;
     }
 }
 </script>

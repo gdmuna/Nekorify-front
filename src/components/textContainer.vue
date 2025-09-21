@@ -9,10 +9,31 @@
                 isXlDesktop ? 'xl:w-56' : '',
                 is1point5XlDesktop ? 'xl:w-64' : ''
             ]">
-            <textSection :sectionData :section />
+            <textSection :sectionData :section class="h-[calc(100vh-3.5rem)]" />
         </div>
         <!-- 中间正文内容 -->
-        <markdownRenderer ref="markdownRef" class="flex-auto" :currentResourceURL />
+        <markdownRenderer ref="markdownRef" class="flex-auto" :currentResourceURL>
+            <template #top v-if="!isDesktop && markdownOK">
+                <Collapsible
+                    :unmountOnHide="false"
+                    class="sticky top-14 overflow-hidden rounded-sm bg-[#0E100F]/60 backdrop-blur-[2px] transition-colors duration-[200ms] break-words z-20">
+                    <CollapsibleTrigger asChild>
+                        <button
+                            class="p-2 cursor-pointer w-full text-start [&[data-state=open]_svg]:rotate-90 select-none">
+                            <span class="md:text-lg sm:text-base text-sm dark:text-[#FEFCE4] break-all">本文目录</span>
+                            <ChevronRight class="size-4 inline-block ml-1" />
+                        </button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                        <textSection :sectionData :section enableCollapsible class="max-h-[calc(50vh-6.5rem)]" />
+                        <textChapter
+                            :chapterData="markdownChapterData"
+                            enableCollapsible
+                            class="max-h-[calc(50vh-6.5rem)]" />
+                    </CollapsibleContent>
+                </Collapsible>
+            </template>
+        </markdownRenderer>
         <!-- 右侧本页目录 -->
         <div
             v-if="isDesktop && markdownOK"
@@ -22,15 +43,28 @@
                 isXlDesktop ? 'xl:w-56' : '',
                 is1point5XlDesktop ? 'xl:w-64' : ''
             ]">
-            <textChapter :chapterData="markdownChapterData" :scrollToTop="markdownRef?.scrollToTop" />
+            <textChapter :chapterData="markdownChapterData" class="h-[calc(100vh-3.5rem)]">
+                <template #bottom>
+                    <div class="flex flex-col items-center justify-center mt-auto mb-8">
+                        <Button
+                            class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
+                            @click="markdownRef?.scrollToTop">
+                            <ArrowUpToLine class="size-6" />
+                        </Button>
+                    </div>
+                </template>
+            </textChapter>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import markdownRenderer from './markdownRenderer.vue';
-import textChapter from './textChapter.vue';
-import textSection from './textSection.vue';
+import markdownRenderer from '@/components/markdownRenderer.vue';
+import textChapter from '@/components/textChapter.vue';
+import textSection from '@/components/textSection.vue';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Button } from '@/components/ui/button';
+import { ArrowUpToLine, ChevronRight } from 'lucide-vue-next';
 
 import { ref, watch, computed } from 'vue';
 import type { TreeData } from '@/types/utils';

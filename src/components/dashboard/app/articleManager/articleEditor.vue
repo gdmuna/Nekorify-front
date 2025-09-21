@@ -173,7 +173,12 @@
                 <p v-if="!textUrlValue" class="dark:text-[#A0A0A0] mt-10">
                     请上传或填写 markdown 文件URL 以预览文章内容
                 </p>
-                <textContainer v-if="textUrlValue" :sectionData :section :enableNavigator="false" class="mt-10 text-start" />
+                <textContainer
+                    v-if="textUrlValue"
+                    :sectionData
+                    :section
+                    :enableNavigator="false"
+                    class="mt-10 text-start" />
             </div>
         </Teleport>
     </div>

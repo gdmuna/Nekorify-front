@@ -58,6 +58,7 @@
         "prettier": "3.6.2",
         "typescript": "~5.8.3",
         "vite": "^7.0.4",
+        "vite-svg-loader": "^5.1.0",
         "vue-tsc": "^2.2.12"
     }
 }

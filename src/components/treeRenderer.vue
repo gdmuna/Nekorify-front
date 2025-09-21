@@ -1,12 +1,12 @@
 <template>
-    <div class="text-sm p-2 pb-1">
+    <div class="sm:text-sm text-xs p-2 pb-1">
         <outlineText
             :id="`treeItem-${item.id}`"
             :class="[
                 'w-full flex hover:text-emerald-400 transition-colors duration-300',
                 isActive ? 'text-emerald-400' : 'text-[#FEFCE4]'
             ]"
-            bottomLineClass="mt-1"
+            bottomLineClass="md:mt-1"
             :keep-in-end="isActive"
             lineColor="#00d492"
             transitionLineColor
