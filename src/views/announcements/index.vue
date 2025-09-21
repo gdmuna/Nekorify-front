@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-20 px-1 md:px-2 lg:px-3 xl:px-4 pb-10 flex-1 flex flex-col">
+    <div class="mt-18 px-1 md:px-2 lg:px-3 xl:px-4 pb-10 flex-1 flex flex-col">
         <template v-if="!showDetail">
             <template v-if="announcementDataStatus === 'loading'">
                 <div class="size-full flex justify-center items-center">

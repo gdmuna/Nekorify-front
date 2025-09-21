@@ -184,14 +184,14 @@
             </form>
         </Form>
         <Teleport to="#dashboard-root">
-            <div class="text-center mt-5 space-y-4 px-1 md:px-2 lg:px-3 xl:px-4">
+            <div class="text-center mt-4 space-y-4 px-1 md:px-2 lg:px-3 xl:px-4">
                 <h3 class="md:text-3xl text-2xl">内容预览</h3>
                 <div class="w-[100%-1rem] h-[1px] bg-[#5f5f5f] mx-4" />
-                <p v-if="!textUrlValue" class="dark:text-[#A0A0A0] mt-10">
+                <p v-if="!textUrlValue" class="dark:text-[#A0A0A0] my-8">
                     请上传或填写 markdown 文件URL 以预览文章内容
                 </p>
                 <textContainer
-                    v-if="textUrlValue"
+                    v-else
                     :sectionData
                     :section
                     :enableNavigator="true"
