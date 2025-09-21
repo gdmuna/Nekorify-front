@@ -190,16 +190,16 @@ export const useUserStore = defineStore('user', () => {
         return activeInterviewIds.value.includes(id);
     }
     const inactiveInterviewIds = computed(() => {
-        return interviews.value.filter((item) => !item.is_active).map((item) => item.id);
+        return interviews.value.filter((item) => !item.is_active || isAfterNow(item.end_date)).map((item) => item.id);
     });
     function checkInactiveInterviewId(id: number) {
         return inactiveInterviewIds.value.includes(id);
     }
     const activeInterview = computed(() => {
-        return interviews.value.filter((item) => item.is_active);
+        return interviews.value.filter((item) => item.is_active && !isAfterNow(item.end_date));
     });
     const inactiveInterview = computed(() => {
-        return interviews.value.filter((item) => !item.is_active);
+        return interviews.value.filter((item) => !item.is_active || isAfterNow(item.end_date));
     });
     const currentInterview = computed(() => {
         let result: Interview | null | undefined = interviews.value.find(

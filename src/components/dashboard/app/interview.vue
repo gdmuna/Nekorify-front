@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-1 flex flex-col">
+    <div class="flex-auto flex flex-col">
         <div v-if="!showDetail" class="space-y-4 flex-1 mb-10">
             <template v-if="interviewDataStatus === 'loaded'">
                 <section class="space-y-2">

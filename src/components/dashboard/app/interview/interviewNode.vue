@@ -1,18 +1,18 @@
 <template>
-    <div class="flex-1 flex flex-col">
+    <div class="flex-auto flex flex-col">
         <template v-if="interviewResultStatus === 'loading'">
-            <div class="size-full flex justify-center items-center">
+            <div class="size-full flex-auto flex justify-center items-center">
                 <p class="text-center dark:text-[#A0A0A0]">正在努力加载节点信息喵~</p>
             </div>
         </template>
         <template v-else-if="interviewResultStatus === 'error'">
-            <div class="size-full flex justify-center items-center">
+            <div class="size-full flex-auto flex justify-center items-center">
                 <p class="text-center dark:text-[#A0A0A0]">加载节点信息失败喵... 请稍后再试~</p>
             </div>
         </template>
         <template v-else-if="interviewResultStatus === 'loaded'">
             <template v-if="!checkActiveInterviewId(Number(nodeId)) && !checkInactiveInterviewId(Number(nodeId))">
-                <div class="w-full h-full flex flex-col justify-center items-center space-y-6">
+                <div class="size-full flex-auto flex flex-col justify-center items-center space-y-6">
                     <div class="inline-flex space-x-2 items-center text-[#53B7DE]">
                         <Info class="size-6" />
                         <p class="text-2xl">无效的面试ID</p>
@@ -21,7 +21,7 @@
                 </div>
             </template>
             <template v-else-if="!checkHasInterview(Number(nodeId)) && checkInactiveInterviewId(Number(nodeId))">
-                <div class="w-full h-full flex flex-col justify-center items-center space-y-6">
+                <div class="size-full flex-auto flex flex-col justify-center items-center space-y-6 pb-24">
                     <div class="inline-flex space-x-2 items-center text-[#53B7DE]">
                         <Info class="size-6" />
                         <p class="text-2xl">报名已截止</p>
@@ -32,7 +32,7 @@
             <template v-else>
                 <div
                     v-if="!checkHasInterview(Number(nodeId)) && checkActiveInterviewId(Number(nodeId)) && !editForm"
-                    class="w-full h-full flex flex-col justify-between">
+                    class="size-full flex-auto flex flex-col justify-between">
                     <div class="inline-flex space-x-2 items-center text-[#53B7DE]">
                         <Info class="size-6" />
                         <p class="text-xl">尚未报名参加此面试</p>
