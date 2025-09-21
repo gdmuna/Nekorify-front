@@ -17,7 +17,7 @@
                 <Collapsible
                     :unmountOnHide="false"
                     v-model:open="stickyContainerOpen"
-                    class="sticky top-14 overflow-hidden rounded-sm bg-[#212422]/90 backdrop-blur-[2px] transition-colors duration-[200ms] break-words z-20">
+                    class="sticky top-14 my-4 overflow-hidden rounded-sm bg-[#212422]/90 backdrop-blur-[2px] transition-colors duration-[200ms] break-words z-20">
                     <CollapsibleTrigger asChild>
                         <button
                             class="p-2 cursor-pointer w-full text-start [&[data-state=open]_svg]:rotate-90 select-none">

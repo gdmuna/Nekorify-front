@@ -41,7 +41,7 @@ import LiseChevronsDownUp from '@/assets/icons/list-chevrons-down-up.svg?compone
 import ListChevronsUpDown from '@/assets/icons/list-chevrons-up-down.svg?component';
 
 import type { TreeData } from '@/types/utils';
-import { getRemPx, defer } from '@/lib/utils';
+import { getRemPx } from '@/lib/utils';
 
 import { gsap } from 'gsap';
 
@@ -200,7 +200,8 @@ const observer = {
         if (this.chapterObserver) {
             this.chapterObserver.disconnect(); // 断开之前的观察器
         }
-        const headerOffset = getRemPx(3.5); // 3.5rem header 高度
+        const headerOffsetRem = isDesktop.value ? 3.5 : 6.5;
+        const headerOffset = getRemPx(headerOffsetRem)
         const viewportHeight = window.innerHeight;
         const bottomMargin = -(viewportHeight - headerOffset - getRemPx(7)) + 'px';
         this.chapterObserver = new IntersectionObserver(
@@ -237,7 +238,8 @@ const observer = {
     },
     findClosedChapter() {
         if (!this.observerEls.length) return null;
-        const headerOffset = getRemPx(3.5);
+        const headerOffsetRem = isDesktop.value ? 3.5 : 6.5;
+        const headerOffset = getRemPx(headerOffsetRem);
         let closestElement = null;
         let minDistance = Infinity;
         this.observerEls.forEach((el) => {
