@@ -10,7 +10,7 @@
             :keep-in-end="isActive"
             lineColor="#00d492"
             transitionLineColor
-            @click="onClick ? onClick(item) : null">
+            @click="handleClick">
             <p class="truncate">{{ item.text }}</p>
         </outlineText>
         <div v-if="item.children.length" class="ml-2 pl-1 border-l-1 border-l-[#f5f0bd2a]">
@@ -31,12 +31,17 @@ interface Props {
     onClick?: (item: TreeData) => void;
     activeItem?: HTMLElement;
 }
-
 const props = defineProps<Props>();
 
 const isActive = computed(() => {
     return props.activeItem === props.item.element;
 });
+
+function handleClick() {
+    if (props.onClick) {
+        props.onClick(props.item);
+    }
+}
 </script>
 
 <style scoped></style>

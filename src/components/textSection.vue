@@ -34,7 +34,7 @@
                                 ? 'border-l-cyan-400 bg-cyan-500/10 text-cyan-400'
                                 : 'text-[#d1d1c4] hover:text-[#FEFCE4]'
                         ]"
-                        @click="toggleSection(index)">
+                        @click="handleClick(index)">
                         <p class="truncate transition-colors duration-200">{{ item.title }}</p>
                     </button>
                 </div>
@@ -66,13 +66,18 @@ const props = withDefaults(defineProps<Props>(), {
     defaultOpen: true
 });
 
+interface Emits {
+    underClick: [itemIndex: number, item: { title: string; resourceUrl: string }];
+}
+const emit = defineEmits<Emits>();
+
 const sectionIndex = computed(() => {
     return props.section - 1;
 });
 
-function toggleSection(index: number) {
-    router.replace({ query: { ...route.query, section: (index + 1).toString() } });
-    window.lenis.scrollTo(0, { duration: 0.3 });
+function handleClick(index: number) {
+    if (props.section === index + 1) return;
+    emit('underClick', index, props.sectionData[index]);
 }
 
 const collapsibleTriggerRef = ref<any>(null);

@@ -9,13 +9,14 @@
                 isXlDesktop ? 'xl:w-56' : '',
                 is1point5XlDesktop ? 'xl:w-64' : ''
             ]">
-            <textSection :sectionData :section class="h-[calc(100vh-3.5rem)]" />
+            <textSection :sectionData :section class="h-[calc(100vh-3.5rem)]" @underClick="textSectionUnderClick" />
         </div>
         <!-- 中间正文内容 -->
         <markdownRenderer ref="markdownRef" class="flex-auto pb-8" :currentResourceURL>
             <template #top v-if="!isDesktop && markdownOK">
                 <Collapsible
                     :unmountOnHide="false"
+                    v-model:open="stickyContainerOpen"
                     class="sticky top-14 overflow-hidden rounded-sm bg-[#212422]/90 backdrop-blur-[2px] transition-colors duration-[200ms] break-words z-20">
                     <CollapsibleTrigger asChild>
                         <button
@@ -25,12 +26,18 @@
                         </button>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
-                        <textSection :sectionData :section enableCollapsible class="max-h-[calc(50vh-6.5rem)]" />
+                        <textSection
+                            :sectionData
+                            :section
+                            enableCollapsible
+                            class="max-h-[calc(50vh-6.5rem)]"
+                            @underClick="textSectionUnderClick" />
                         <textChapter
                             v-if="markdownDataStatus === 'loaded'"
                             :chapterData="markdownChapterData"
                             enableCollapsible
-                            class="max-h-[calc(50vh-6.5rem)]" />
+                            class="max-h-[calc(50vh-6.5rem)]"
+                            @underClick="textChapterUnderClick" />
                     </CollapsibleContent>
                 </Collapsible>
             </template>
@@ -44,9 +51,10 @@
                 isXlDesktop ? 'xl:w-56' : '',
                 is1point5XlDesktop ? 'xl:w-64' : ''
             ]">
-            <textChapter :chapterData="markdownChapterData" class="h-[calc(100vh-3.5rem)]">
+            <textChapter :chapterData="markdownChapterData" class="h-[calc(100vh-3.5rem)]" @underClick="textChapterUnderClick">
                 <template #bottom>
-                    <div class="flex flex-col items-center justify-center mt-auto mb-8 pointer-events-none *:pointer-events-auto">
+                    <div
+                        class="flex flex-col items-center justify-center mt-auto mb-8 pointer-events-none *:pointer-events-auto">
                         <Button
                             ref="scrollToTopButton_1"
                             class="rounded-full size-14 cursor-pointer duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0d5] backdrop-blur-[2px] p-0"
@@ -112,17 +120,20 @@ import { Button } from '@/components/ui/button';
 import { ArrowUpToLine, ChevronRight } from 'lucide-vue-next';
 
 import { ref, watch, computed, onUnmounted } from 'vue';
-import { getRemPx } from '@/lib/utils';
+import { getRemPx, defer } from '@/lib/utils';
 import type { TreeData } from '@/types/utils';
 import type { DataStatus } from '@/types/api';
 
-import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
 const systemStore = useSystemStore();
 const { isDesktop, isXlDesktop, is1point5XlDesktop } = storeToRefs(systemStore);
+
+import { useRoute, useRouter } from 'vue-router';
+const route = useRoute();
+const router = useRouter();
 
 interface Props {
     sectionData?: { title: string; resourceUrl: string }[];
@@ -147,6 +158,8 @@ const markdownDataStatus = ref<DataStatus>('idle');
 const markdownOK = computed(() => {
     return markdownRef.value?.dataStatus !== 'idle' && markdownRef.value?.dataStatus !== 'error';
 });
+
+const stickyContainerOpen = ref(false);
 
 const scrollToTopButton_1 = ref<InstanceType<typeof Button>>();
 const scrollToTopButton_2 = ref<InstanceType<typeof Button>>();
@@ -287,6 +300,33 @@ const markdownObServer = {
         this.resizeObserver = null;
     }
 };
+
+function textSectionUnderClick(index: number) {
+    router.replace({ query: { ...route.query, section: (index + 1).toString() } });
+    if (!isDesktop.value) {
+        stickyContainerOpen.value = false;
+    }
+    defer(() => {
+        window.lenis.resize();
+        markdownRef.value?.scrollToTop();
+    });
+}
+
+function textChapterUnderClick(item: TreeData) {
+    if (!isDesktop.value) {
+        stickyContainerOpen.value = false;
+    }
+    defer(() => {
+        window.lenis.resize();
+        const offsetRem = isDesktop.value ? 3.5 : 6.5;
+        const offset = getRemPx(offsetRem);
+        const el = item.element;
+        window.lenis.scrollTo(el, {
+            offset: -offset,
+            duration: 1
+        });
+    });
+}
 </script>
 
 <style scoped>

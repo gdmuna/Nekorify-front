@@ -41,9 +41,14 @@ import LiseChevronsDownUp from '@/assets/icons/list-chevrons-down-up.svg?compone
 import ListChevronsUpDown from '@/assets/icons/list-chevrons-up-down.svg?component';
 
 import type { TreeData } from '@/types/utils';
-import { getRemPx } from '@/lib/utils';
+import { getRemPx, defer } from '@/lib/utils';
 
 import { gsap } from 'gsap';
+
+import { storeToRefs } from 'pinia';
+import { useSystemStore } from '@/stores/system';
+const systemStore = useSystemStore();
+const { isDesktop } = storeToRefs(systemStore);
 
 interface Props {
     chapterData?: TreeData[];
@@ -56,17 +61,17 @@ const props = withDefaults(defineProps<Props>(), {
     defaultOpen: true
 });
 
+interface Emits {
+    underClick: [item: TreeData];
+}
+const emit = defineEmits<Emits>();
+
 const isContainerOpen = ref(props.defaultOpen);
 const collapsibleTriggerRef = ref<any>();
 const treeContainerRef = ref<any>();
 
 const onClick = (item: TreeData) => {
-    const offset = getRemPx(3.5);
-    const el = item.element;
-    window.lenis.scrollTo(el, {
-        offset: -offset,
-        duration: 1
-    });
+    emit('underClick', item);
 };
 
 const activeItems = ref(new Set<HTMLElement>());

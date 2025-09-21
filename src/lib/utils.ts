@@ -571,3 +571,27 @@ export const firework = {
         });
     }
 };
+
+export function defer<T extends (...args: any[]) => any>(callback: T, frames: number = 1): () => void {
+    let frameCount = 0;
+    let animationFrameId: number | null = null;
+    let isCancelled = false;
+    const execute = () => {
+        if (isCancelled) return;
+        frameCount++;
+        if (frameCount >= frames) {
+            callback();
+        } else {
+            animationFrameId = requestAnimationFrame(execute);
+        }
+    };
+    animationFrameId = requestAnimationFrame(execute);
+    // 返回取消函数
+    return () => {
+        isCancelled = true;
+        if (animationFrameId !== null) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+    };
+}
