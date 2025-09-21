@@ -20,7 +20,7 @@
             :unmountOnHide="false"
             v-model:open="isContainerOpen"
             :data-lenis-prevent="isContainerScrollable ? '' : undefined"
-            class="break-words overflow-auto">
+            class="break-words overflow-auto lg:mb-8">
             <CollapsibleTrigger ref="collapsibleTriggerRef" class="hidden" />
             <CollapsibleContent>
                 <div class="p-2">
@@ -93,7 +93,6 @@ onMounted(() => {
         window.addEventListener('resize', checkIfScrollable);
         nextTick(() => checkIfScrollable());
     }
-    console.log('Mounted textSection.vue', props.sectionData, props.section);
 });
 
 onUnmounted(() => {

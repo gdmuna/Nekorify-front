@@ -1,33 +1,34 @@
 <template>
     <div class="overflow-hidden flex flex-col">
-        <div
-            :class="[
-                'p-2 md:text-lg sm:text-base text-sm flex items-center',
-                enableCollapsible ? 'cursor-pointer select-none' : ''
-            ]"
-            @click="collapsibleTriggerRef?.$el.click()">
-            <span>本页目录</span>
-            <template v-if="enableCollapsible">
-                <LiseChevronsDownUp v-if="isContainerOpen" class="inline ml-2" />
-                <ListChevronsUpDown v-else class="inline ml-2" />
-            </template>
-        </div>
-        <Collapsible
-            v-if="chapterData.length"
-            ref="treeContainerRef"
-            :defaultOpen
-            :disabled="!enableCollapsible"
-            :unmountOnHide="false"
-            v-model:open="isContainerOpen"
-            :data-lenis-prevent="isTreeScrollable ? '' : undefined"
-            class="break-words overflow-auto">
-            <CollapsibleTrigger ref="collapsibleTriggerRef" class="hidden" />
-            <CollapsibleContent>
-                <div class="md:mb-8 mb-4">
-                    <treeRenderer v-for="(item, index) in chapterData" :key="index" :item :onClick :activeItem />
-                </div>
-            </CollapsibleContent>
-        </Collapsible>
+        <template v-if="chapterData.length">
+            <div
+                :class="[
+                    'p-2 md:text-lg sm:text-base text-sm flex items-center',
+                    enableCollapsible ? 'cursor-pointer select-none' : ''
+                ]"
+                @click="collapsibleTriggerRef?.$el.click()">
+                <span>本页目录</span>
+                <template v-if="enableCollapsible">
+                    <LiseChevronsDownUp v-if="isContainerOpen" class="inline ml-2" />
+                    <ListChevronsUpDown v-else class="inline ml-2" />
+                </template>
+            </div>
+            <Collapsible
+                ref="treeContainerRef"
+                :defaultOpen
+                :disabled="!enableCollapsible"
+                :unmountOnHide="false"
+                v-model:open="isContainerOpen"
+                :data-lenis-prevent="isTreeScrollable ? '' : undefined"
+                class="break-words overflow-auto lg:mb-8">
+                <CollapsibleTrigger ref="collapsibleTriggerRef" class="hidden" />
+                <CollapsibleContent>
+                    <div>
+                        <treeRenderer v-for="(item, index) in chapterData" :key="index" :item :onClick :activeItem />
+                    </div>
+                </CollapsibleContent>
+            </Collapsible>
+        </template>
         <slot name="bottom" />
     </div>
 </template>
@@ -194,9 +195,9 @@ const observer = {
         if (this.chapterObserver) {
             this.chapterObserver.disconnect(); // 断开之前的观察器
         }
-        const headerOffset = getRemPx(3); // 3rem header 高度
+        const headerOffset = getRemPx(3.5); // 3.5rem header 高度
         const viewportHeight = window.innerHeight;
-        const bottomMargin = -(viewportHeight - headerOffset - getRemPx(6)) + 'px';
+        const bottomMargin = -(viewportHeight - headerOffset - getRemPx(7)) + 'px';
         this.chapterObserver = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -231,7 +232,7 @@ const observer = {
     },
     findClosedChapter() {
         if (!this.observerEls.length) return null;
-        const headerOffset = getRemPx(3);
+        const headerOffset = getRemPx(3.5);
         let closestElement = null;
         let minDistance = Infinity;
         this.observerEls.forEach((el) => {

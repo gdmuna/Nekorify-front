@@ -56,19 +56,25 @@ const root = ref<HTMLElement>();
 
 const dataStatus = ref<DataStatus>('idle');
 
-const navigatorRef = ref<any>(null);
-const articleRef = ref<HTMLElement | null>(null);
+const navigatorRef = ref<InstanceType<typeof Navigator>>();
+const articleRef = ref<HTMLElement>();
 const chapterData = ref<TreeData[]>([]);
 
 interface Expose {
     chapterData: Ref<TreeData[]>;
     dataStatus: Ref<DataStatus>;
     scrollToTop: () => void;
+    root: Ref<HTMLElement | undefined>;
+    navigatorRef: Ref<InstanceType<typeof Navigator> | undefined>;
+    articleRef: Ref<HTMLElement | undefined>;
 }
 defineExpose<Expose>({
     chapterData,
     dataStatus,
-    scrollToTop
+    scrollToTop,
+    root,
+    navigatorRef,
+    articleRef
 });
 
 interface Props {

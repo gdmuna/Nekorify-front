@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full max-w-[90rem] mx-auto">
+    <div class="flex w-full max-w-[90rem] mx-auto relative">
         <!-- 左侧本文章节 -->
         <div
             v-if="isDesktop && markdownOK"
@@ -16,7 +16,7 @@
             <template #top v-if="!isDesktop && markdownOK">
                 <Collapsible
                     :unmountOnHide="false"
-                    class="sticky top-14 overflow-hidden rounded-sm bg-[#0E100F]/60 backdrop-blur-[2px] transition-colors duration-[200ms] break-words z-20">
+                    class="sticky top-14 overflow-hidden rounded-sm bg-[#212422]/90 backdrop-blur-[2px] transition-colors duration-[200ms] break-words z-20">
                     <CollapsibleTrigger asChild>
                         <button
                             class="p-2 cursor-pointer w-full text-start [&[data-state=open]_svg]:rotate-90 select-none">
@@ -27,6 +27,7 @@
                     <CollapsibleContent>
                         <textSection :sectionData :section enableCollapsible class="max-h-[calc(50vh-6.5rem)]" />
                         <textChapter
+                            v-if="markdownDataStatus === 'loaded'"
                             :chapterData="markdownChapterData"
                             enableCollapsible
                             class="max-h-[calc(50vh-6.5rem)]" />
@@ -36,7 +37,7 @@
         </markdownRenderer>
         <!-- 右侧本页目录 -->
         <div
-            v-if="isDesktop && markdownOK"
+            v-if="isDesktop && markdownDataStatus === 'loaded'"
             :class="[
                 'sticky top-14 h-fit pb-8 shrink-0',
                 isDesktop ? 'lg:w-48' : '',
@@ -45,15 +46,59 @@
             ]">
             <textChapter :chapterData="markdownChapterData" class="h-[calc(100vh-3.5rem)]">
                 <template #bottom>
-                    <div class="flex flex-col items-center justify-center mt-auto mb-8">
+                    <div class="flex flex-col items-center justify-center mt-auto mb-8 pointer-events-none *:pointer-events-auto">
                         <Button
-                            class="rounded-full size-10 cursor-pointer transition-colors duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0] backdrop-blur-[2px]"
+                            ref="scrollToTopButton_1"
+                            class="rounded-full size-14 cursor-pointer duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0d5] backdrop-blur-[2px] p-0"
                             @click="markdownRef?.scrollToTop">
-                            <ArrowUpToLine class="size-6" />
+                            <div class="relative scale-102">
+                                <svg
+                                    class="size-full -rotate-90"
+                                    viewBox="0 0 100 100"
+                                    shape-rendering="geometricPrecision">
+                                    <circle
+                                        cx="50"
+                                        cy="50"
+                                        r="45"
+                                        fill="none"
+                                        stroke-width="10"
+                                        stroke="#053345"
+                                        :stroke-dasharray="`${progressCircleLength} ${remainingLength}`" />
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center text-cyan-950">
+                                    <ArrowUpToLine class="size-6" />
+                                </div>
+                            </div>
                         </Button>
                     </div>
                 </template>
             </textChapter>
+        </div>
+        <div
+            v-if="!isDesktop && markdownDataStatus === 'loaded'"
+            class="absolute h-full top-0 right-4 z-15 pb-14 pt-28 pointer-events-none">
+            <div class="sticky top-[calc(100vh-8rem)] flex flex-col *:pointer-events-auto">
+                <Button
+                    ref="scrollToTopButton_2"
+                    class="rounded-full size-14 cursor-pointer duration-[200ms] dark:bg-[#f5f4d0a1] hover:dark:bg-[#f5f4d0d5] backdrop-blur-[2px] p-0"
+                    @click="markdownRef?.scrollToTop">
+                    <div class="relative scale-102">
+                        <svg class="size-full -rotate-90" viewBox="0 0 100 100" shape-rendering="geometricPrecision">
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="45"
+                                fill="none"
+                                stroke-width="10"
+                                stroke="#053345"
+                                :stroke-dasharray="`${progressCircleLength} ${remainingLength}`" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center text-cyan-950">
+                            <ArrowUpToLine class="size-6" />
+                        </div>
+                    </div>
+                </Button>
+            </div>
         </div>
     </div>
 </template>
@@ -66,9 +111,13 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Button } from '@/components/ui/button';
 import { ArrowUpToLine, ChevronRight } from 'lucide-vue-next';
 
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onUnmounted } from 'vue';
+import { getRemPx } from '@/lib/utils';
 import type { TreeData } from '@/types/utils';
 import type { DataStatus } from '@/types/api';
+
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores/system';
@@ -99,6 +148,9 @@ const markdownOK = computed(() => {
     return markdownRef.value?.dataStatus !== 'idle' && markdownRef.value?.dataStatus !== 'error';
 });
 
+const scrollToTopButton_1 = ref<InstanceType<typeof Button>>();
+const scrollToTopButton_2 = ref<InstanceType<typeof Button>>();
+
 watch(
     () => markdownRef.value?.chapterData,
     (newChapterData) => {
@@ -118,19 +170,127 @@ watch(
     },
     { deep: true }
 );
+
+const scrollProgress = ref(0);
+
+// 圆的总周长
+const circumference = computed(() => 2 * Math.PI * 45);
+
+// 进度占用的长度
+const progressCircleLength = computed(() => {
+    return scrollProgress.value * circumference.value;
+});
+
+// 剩余的长度
+const remainingLength = computed(() => {
+    return circumference.value - progressCircleLength.value;
+});
+
+watch(
+    () => markdownRef.value?.root,
+    (newRoot) => {
+        if (!newRoot) return;
+        const run = (el: HTMLElement) => {
+            const els = [scrollToTopButton_1.value?.$el, scrollToTopButton_2.value?.$el];
+            markdownScrollTrigger.init({
+                trigger: el,
+                onUpdate: (self) => {
+                    scrollProgress.value = self.progress;
+                },
+                onEnter: () => {
+                    els.filter(Boolean).forEach((el) => {
+                        el.style.pointerEvents = 'auto';
+                        el.style.opacity = '1';
+                    });
+                },
+                onLeave: () => {
+                    els.filter(Boolean).forEach((el) => {
+                        el.style.pointerEvents = 'none';
+                        el.style.opacity = '0';
+                    });
+                },
+                onEnterBack: () => {
+                    els.filter(Boolean).forEach((el) => {
+                        el.style.pointerEvents = 'auto';
+                        el.style.opacity = '1';
+                    });
+                },
+                onLeaveBack: () => {
+                    els.filter(Boolean).forEach((el) => {
+                        el.style.pointerEvents = 'none';
+                        el.style.opacity = '0';
+                    });
+                }
+            });
+        };
+        markdownObServer.init(newRoot, (entry) => {
+            run(entry.target as HTMLElement);
+        });
+        run(newRoot);
+    },
+    { deep: true }
+);
+
+onUnmounted(() => {
+    markdownScrollTrigger.unmount();
+    markdownObServer.unmount();
+});
+
+interface initOptions {
+    trigger: HTMLElement;
+    onEnter?: (self: ScrollTrigger) => void;
+    onLeave?: (self: ScrollTrigger) => void;
+    onEnterBack?: (self: ScrollTrigger) => void;
+    onLeaveBack?: (self: ScrollTrigger) => void;
+    onUpdate?: (self: ScrollTrigger) => void;
+}
+const markdownScrollTrigger = {
+    trigger: null as ScrollTrigger | null,
+    state: 'idle' as 'idle' | 'running',
+    init(options: initOptions) {
+        this.unmount();
+        const { trigger, onEnter, onLeave, onEnterBack, onLeaveBack, onUpdate } = options;
+        this.trigger = ScrollTrigger.create({
+            trigger,
+            start: `top top+=${getRemPx(3.5)}`,
+            end: 'bottom bottom',
+            onEnter,
+            onLeave,
+            onEnterBack,
+            onLeaveBack,
+            onUpdate
+        });
+    },
+    unmount() {
+        this.trigger?.kill();
+        this.trigger = null;
+    }
+};
+
+const markdownObServer = {
+    resizeObserver: null as ResizeObserver | null,
+    callback: null as ((entry: ResizeObserverEntry) => void) | null,
+    init(el: HTMLElement, callback: (entry: ResizeObserverEntry) => void) {
+        this.unmount();
+        this.callback = callback;
+        this.resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                if (typeof this.callback === 'function') {
+                    this.callback(entry);
+                }
+            });
+        });
+        this.resizeObserver.observe(el);
+    },
+    unmount() {
+        this.resizeObserver?.disconnect();
+        this.resizeObserver = null;
+    }
+};
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition:
-        opacity 0.2s,
-        transform 0.2s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-    transform: translateY(20px);
+.progress-circle {
+    transition: stroke-dasharray 0.3s ease;
 }
 </style>
