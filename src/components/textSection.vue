@@ -23,16 +23,16 @@
             class="break-words overflow-auto lg:mb-8">
             <CollapsibleTrigger ref="collapsibleTriggerRef" class="hidden" />
             <CollapsibleContent>
-                <div class="p-2">
+                <div class="p-2 space-y-2">
                     <button
                         v-for="(item, index) in sectionData"
                         :key="index"
                         :class="[
-                            'lg:text-lg md:text-base sm:text-sm text-xs select-none',
+                            'md:text-base sm:text-sm text-xs select-none',
                             'w-full flex p-2 overflow-hidden cursor-pointer border-l-[0.2rem] border-transparent transition-colors rounded-r-sm duration-200',
                             sectionIndex === index
                                 ? 'border-l-cyan-400 bg-cyan-500/10 text-cyan-400'
-                                : 'text-[#d1d1c4] hover:text-[#FEFCE4]'
+                                : 'text-[#d1d1c4] hover:text-[#ecebd8] hover:border-l-slate-400 hover:bg-slate-600/25',
                         ]"
                         @click="handleClick(index)">
                         <p class="truncate transition-colors duration-200">{{ item.title }}</p>
