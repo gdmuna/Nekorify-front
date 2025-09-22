@@ -386,6 +386,7 @@ async function onFileChange(e: Event, type: string, setValue: (value: any) => vo
         const { err, res } = await resourceApi.uploadFile(formData);
         if (res) {
             uploadFileURL.value = res.data.url;
+            textUrlValue.value = res.data.url;
             setValue(res.data.url);
             toast.success('文件上传成功');
         } else {
