@@ -224,7 +224,7 @@ const copyAnimate = {
 
 function scrollToTop() {
     const offset = getRemPx(3.5);
-    window.lenis.scrollTo(root.value!, {
+    window.ILenis.scrollTo(root.value!, {
         offset: -offset
     });
 }

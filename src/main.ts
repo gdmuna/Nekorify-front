@@ -91,7 +91,7 @@ gsap.ticker.add((time) => {
 
 gsap.ticker.lagSmoothing(0);
 
-window.lenis = lenis;
+window.ILenis = lenis;
 
 app.use(router);
 app.use(pinia);

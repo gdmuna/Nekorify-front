@@ -293,7 +293,7 @@ router.beforeEach((to, from, next) => {
     const scrollToTop =
         to.meta.scrollToTop && !(from.meta.parentAction?.doNotScrollToTop && isChildRoute) && !onlyQueryChanged; // 新增条件
     if (scrollToTop) {
-        window.lenis.scrollTo(0, { immediate: true });
+        window.ILenis.scrollTo(0, { immediate: true });
     }
     if (to.meta.requireAuth && !authStore.isAuthenticated) {
         systemStore.targetPath = to.fullPath;

@@ -317,7 +317,7 @@ function onInvalidSubmit() {
     toast.error('请检查表单填写内容');
     const errorField = formRef.value?.querySelector('[data-error=true]');
     const offset = getRemPx(3.5);
-    window.lenis.scrollTo(errorField as HTMLElement, {
+    window.ILenis.scrollTo(errorField as HTMLElement, {
         offset: -offset
     });
     // gsap.to(window, {

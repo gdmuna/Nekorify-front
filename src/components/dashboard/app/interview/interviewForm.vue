@@ -253,7 +253,7 @@ function onInvalidSubmit() {
     toast.error('请检查表单填写内容');
     const errorField = formRef.value?.querySelector('[data-error=true]');
     const offset = getRemPx(3.5);
-    window.lenis.scrollTo(errorField! as HTMLElement, {
+    window.ILenis.scrollTo(errorField! as HTMLElement, {
         offset: -offset
     });
     // gsap.to(window, {
@@ -270,7 +270,7 @@ function scrollTo(index: string) {
     const label = formRef.value?.querySelector(`[data-index="${index}"]`);
     if (label) {
         const offset = getRemPx(3.5);
-        window.lenis.scrollTo(label as HTMLElement, {
+        window.ILenis.scrollTo(label as HTMLElement, {
             offset: -offset
         });
         // gsap.to(window, {

@@ -1008,7 +1008,7 @@ const section3CardsManager = {
             }
         );
         const offset = getRemPx(3.5);
-        window.lenis.scrollTo(section3_cards.value!, {
+        window.ILenis.scrollTo(section3_cards.value!, {
             offset: -offset
         });
         // gsap.to(window, {

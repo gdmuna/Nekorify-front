@@ -20,7 +20,7 @@ declare global {
         CASDOOR_ENDPOINT: string;
         GDMUNA_OSS_ENDPOINT: string;
 
-        lenis: Lenis;
+        ILenis: Lenis;
     }
 }
 

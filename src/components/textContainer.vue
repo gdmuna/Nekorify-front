@@ -307,7 +307,7 @@ function textSectionUnderClick(index: number) {
         stickyContainerOpen.value = false;
     }
     defer(() => {
-        window.lenis.resize();
+        window.ILenis.resize();
         markdownRef.value?.scrollToTop();
     });
 }
@@ -317,11 +317,11 @@ function textChapterUnderClick(item: TreeData) {
         stickyContainerOpen.value = false;
     }
     defer(() => {
-        window.lenis.resize();
+        window.ILenis.resize();
         const offsetRem = isDesktop.value ? 3.5 : 6.5;
         const offset = getRemPx(offsetRem);
         const el = item.element;
-        window.lenis.scrollTo(el, {
+        window.ILenis.scrollTo(el, {
             offset: -offset,
             duration: 1
         });
